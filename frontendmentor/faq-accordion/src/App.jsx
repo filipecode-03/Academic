@@ -1,12 +1,17 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import iconStar from './assets/images/icon-star.svg'
+import iconMore from './assets/images/icon-plus.svg'
+import pictureBg from './assets/images/background-pattern-desktop.svg'
 
 function App() {
   return (
-    <>
-      <h1 className='text-red-500'>Olá mundo</h1>
-    </>
+    <main className='w-screen h-screen bg-[#f9f0ff]'>
+      <img src={pictureBg} alt="picture backgroud" />
+      <img src={iconStar} alt="star icon" />
+      <h1>FAQs</h1>
+      <button>What is Frontend Mentor, and how will it help me?</button>
+      <button><img src={iconMore} alt="more icon" /></button>
+    </main>
   )
 }
 
