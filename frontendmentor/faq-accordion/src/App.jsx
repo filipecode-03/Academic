@@ -1,17 +1,13 @@
-import { useState } from 'react'
-import iconStar from './assets/images/icon-star.svg'
-import iconMore from './assets/images/icon-plus.svg'
-import pictureBg from './assets/images/background-pattern-desktop.svg'
+// import pictureBg from './assets/images/background-pattern-desktop.svg'
+import pictureBgMobile from './assets/images/background-pattern-mobile.svg'
+import Dad from './assets/components/Dad.jsx'
 
 function App() {
   return (
-    <main className='w-screen h-screen bg-[#f9f0ff]'>
-      <img src={pictureBg} alt="picture backgroud" />
-      <img src={iconStar} alt="star icon" />
-      <h1>FAQs</h1>
-      <button>What is Frontend Mentor, and how will it help me?</button>
-      <button><img src={iconMore} alt="more icon" /></button>
-    </main>
+      <div>
+        <img src={pictureBgMobile} alt="picture backgroud" className='absolute inset-0 w-full object-cover'/>
+        <Dad />
+      </div>
   )
 }
 
