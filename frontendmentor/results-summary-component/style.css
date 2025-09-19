@@ -1,0 +1,19 @@
+:root {
+    /* Primary */
+    --Light-red: #ff5757;
+    --Orangey-yellow: #ffb01f;
+    --Green-teal: #00bd91;
+    --Cobalt-blue: #1125d4;
+
+    /* Gradients */
+    --Light-slate-blue: #7857ff; /* background */
+    --Light-royal-blue: #2e2be9; /* background */
+    --Violet-blue: #4e21caff; /* circle */
+    --Persian-blue: #2421ca00; /* circle */
+
+    /* Neutral */
+    --white: #ffffff;
+    --Pale-blue: #ebf1ff;
+    --Light-lavender: #c8c7ff;
+    --Dark-gray-blue: #303b5a;
+}
