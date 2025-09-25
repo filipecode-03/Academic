@@ -14,17 +14,20 @@
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-[#f2ebe3ff]">
-  <main class="bg-white my-[30px] mx-[19px] rounded-xl">
-    <img src="images/image-product-mobile.jpg" alt="product" class="rounded-xl">
-    <section class="py-[25px] mx-[30px] space-y-2">
+  <main class="bg-white my-[30px] lg:my-[75px] mx-[19px] lg:w-[700px] rounded-xl lg:flex lg:mx-auto">
+    <img src="images/image-product-mobile.jpg" alt="product" class="block lg:hidden rounded-t-xl object-cover w-full h-[300px]">
+    <img src="images/image-product-desktop.jpg" alt="product" class="hidden lg:block rounded-tl-xl rounded-bl-xl w-[330px] h-full">
+    <section class="py-[25px] mx-[30px] space-y-3 lg:space-y-5">
       <p class="font-['Montserrat'] font-medium text-[#6c7289] tracking-[8px] text-[15px]">PERFUME</p>
       <h1 class="font-['Fraunces'] font-bold text-[43px] leading-[48px]">Gabrielle Essence Eau De Parfum</h1>
       <p class="font-['Montserrat'] font-medium text-[#6c7289]">A floral, solar and voluptuous interpretation composed by Olivier Polge, Perfumer-Creator for the House of CHANEL.</p>
-      <div class="flex gap-4">
+      <div class="flex items-center gap-4">
         <p class="font-['Fraunces'] font-bold text-[#3c8067] text-[38px]">$149.99</p>
-        <p class="font-['Montserrat'] font-medium text-[#6c7289]">$169.99</p>
+        <p class="font-['Montserrat'] font-medium text-[#6c7289]"><s>$169.99</s></p>
       </div>
-      <button class="font-['Montserrat'] bg-[#3c8067] text-white rounded-md"><img src="images/icon-cart.svg" alt=""> Add to Cart</button>
+      <div class="flex justify-center">
+        <button class="w-full font-['Montserrat'] font-semibold bg-[#3c8067] hover:bg-[#1b4133] text-white rounded-md flex justify-center items-center gap-2 px-6 py-3"><img src="images/icon-cart.svg" alt="icon"> Add to Cart</button>
+      </div>
     </section>
   </main>
   <div class="attribution">
