@@ -11,11 +11,11 @@ The designs were created to the following widths:
 
 ## Colors
 
-- White: hsl(0, 0%, 100%)
+- White: #ffffffff
 
-- Slate 300: hsl(212, 45%, 89%)
-- Slate 500: hsl(216, 15%, 48%)
-- Slate 900: hsl(218, 44%, 22%)
+- Slate 300: #d6e2f0ff
+- Slate 500: #68778dff
+- Slate 900: #1f3251ff
 
 ## Typography
 

@@ -2,23 +2,25 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- displays site properly based on user's device -->
-
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" type="image/png" sizes="32x32" href="./images/favicon-32x32.png">
-  
   <title>Frontend Mentor | QR code component</title>
-
-  <!-- Feel free to remove these styles or customise in your own stylesheet 👍 -->
   <style>
+    @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
+
     .attribution { font-size: 11px; text-align: center; }
     .attribution a { color: hsl(228, 45%, 44%); }
   </style>
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-
-  Improve your front-end skills by building projects
-
-  Scan the QR code to visit Frontend Mentor and take your coding skills to the next level
+<body class="bg-[#d6e2f0] font-['Outfit']">
+  <main class="bg-white rounded-2xl my-[100px] mx-[30px] lg:mx-auto p-5 shadow-xl lg:w-[400px]">
+    <img src="images/image-qr-code.png" alt="qr-code picture" class="rounded-xl">
+    <section class="text-center my-[28px] space-y-4">
+      <h1 class="font-bold text-[30px] leading-[38px]">Improve your front-end skills by building projects</h1>
+      <p class="text-[#68778d] text-[18px] px-[25px]">Scan the QR code to visit Frontend Mentor and take your coding skills to the next level</p>
+    </section>
+  </main>
   
   <div class="attribution">
     Challenge by <a href="https://www.frontendmentor.io?ref=challenge" target="_blank">Frontend Mentor</a>. 
