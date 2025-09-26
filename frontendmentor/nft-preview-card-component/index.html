@@ -2,28 +2,34 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- displays site properly based on user's device -->
-
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" type="image/png" sizes="32x32" href="./images/favicon-32x32.png">
-  
   <title>Frontend Mentor | NFT preview card component</title>
-
-  <!-- Feel free to remove these styles or customise in your own stylesheet 👍 -->
   <style>
+    @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
+
     .attribution { font-size: 11px; text-align: center; }
     .attribution a { color: hsl(228, 45%, 44%); }
   </style>
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-
-  Equilibrium #3429
-
-  Our Equilibrium collection promotes balance and calm.
-
-  0.041 ETH
-  3 days left
-  
-  Creation of Jules Wyvern
+<body class="bg-[#0d192b] font-['Outfit']">
+  <main class="bg-[#14253d] my-[70px] mx-[30px] rounded-2xl p-8">
+    <img src="images/image-equilibrium.jpg" alt="picture" class="rounded-2xl">
+    <h1 class="text-white text-[30px] font-semibold">Equilibrium #3429</h1>
+    <p class="text-[#8bacda] text-[18px] font-light">Our Equilibrium collection promotes balance and calm.</p>
+    <div class="flex">
+      <img src="images/icon-ethereum.svg" alt="ethereum">
+      <p class="text-[#00fff7] text-[18px]">0.041 ETH</p>
+      <img src="images/icon-clock.svg" alt="clock">
+      <p class="text-[#8bacda] text-[18px]">3 days left</p>
+    </div>
+    <hr class="">
+    <div class="flex">
+      <img src="images/image-avatar.png" alt="avatar">
+      <p class="text-white font-light"><span class="text-[#8bacda]">Creation of</span> Jules Wyvern</p>
+    </div>
+  </main>
 
   <div class="attribution">
     Challenge by <a href="https://www.frontendmentor.io?ref=challenge" target="_blank">Frontend Mentor</a>. 
