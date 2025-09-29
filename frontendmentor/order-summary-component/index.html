@@ -6,23 +6,36 @@
   <link rel="icon" type="image/png" sizes="32x32" href="./images/favicon-32x32.png">
   <title>Frontend Mentor | Order summary card</title>
   <style>
-
+    @import url('https://fonts.googleapis.com/css2?family=Red+Hat+Display:ital,wght@0,300..900;1,300..900&display=swap');
 
     .attribution { font-size: 11px; text-align: center; }
     .attribution a { color: hsl(228, 45%, 44%); }
   </style>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-  <main>
-    Order Summary
-    You can now listen to millions of songs, audiobooks, and podcasts on any
-    device anywhere you like!
-    Annual Plan
-    $59.99/year
-    Change
-    Proceed to Payment
-    Cancel Order
+<body class="bg-[#e0e8ff] bg-[url('images/pattern-background-mobile.svg')] lg:bg-[url('images/pattern-background-desktop.svg')] bg-no-repeat bg-top bg-cover font-['Red_Hat_Display']">
+  <main class="bg-white mx-[30px] my-[60px] rounded-2xl lg:w-[500px] lg:mx-auto overflow-hidden" style="box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;">
+    <img src="images/illustration-hero.svg" alt="picture" class="w-full block rounded-t-2xl">
+    <div class="py-[30px]">
+      <h1 class="font-black text-center text-[28px]">Order Summary</h1>
+      <p class="font-medium text-center tracking-[1px] leading-[28px] text-[#7280a7] mx-[70px] my-[20px]">You can now listen to millions of songs, audiobooks, and podcasts on any device anywhere you like!</p>
+      <div class="flex bg-[#f5f7ff] mx-[60px] p-4 rounded-2xl justify-between items-center">
+        <!-- Grupo da esquerda -->
+        <div class="flex items-center">
+          <img src="images/icon-music.svg" alt="icon" class="mr-[20px]">
+          <div>
+            <h1 class="font-extrabold">Annual Plan</h1>
+            <p class="text-[#7280a7] font-medium">$59.99/year</p>
+          </div>
+        </div>
+        <!-- Link à direita -->
+        <a href="#" class="font-extrabold text-[#3829e0] underline hover:text-[#6658ff] hover:no-underline">Change</a>
+      </div>
+      <div class="flex flex-col mt-[20px]">
+        <button class="bg-[#3829e0] text-white font-extrabold text-[18px] mx-[60px] p-4 rounded-2xl hover:bg-[#6658ff]" style="box-shadow: rgba(56, 41, 224, 0.25) 0px 14px 28px, rgba(56, 41, 224, 0.22) 0px 10px 10px;">Proceed to Payment</button>
+        <button class="font-extrabold text-[#7280a7] mt-[20px] hover:text-[#1f2f56]">Cancel Order</button> 
+      </div>
+    </div>
   </main>
   <div class="attribution">
     Challenge by <a href="https://www.frontendmentor.io?ref=challenge" target="_blank">Frontend Mentor<a>. 
