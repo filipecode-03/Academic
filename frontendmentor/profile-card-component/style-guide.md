@@ -13,13 +13,13 @@ The designs were created to the following widths:
 
 ### Primary
 
-Blue 600: hsl(185, 75%, 39%)
-Navy 950: hsl(229, 23%, 23%)
-Gray 500: hsl(227, 10%, 46%)
+Blue 600: #19a2aeff
+Navy 950: #2d3248ff
+Gray 500: #6a6f81ff
 
 ### Neutral
 
-Gray 100: hsl(225, 10%, 92%)
+Gray 100: #e9eaedff
 
 ## Typography
 
