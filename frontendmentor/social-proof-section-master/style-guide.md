@@ -12,24 +12,25 @@ The designs were created to the following widths:
 ## Colors
 
 ### Primary
-#30ceccff
-- Teal 500: #2ab2afff
-- Green 400: #c0df34ff
+
+Very Dark Magenta: #502050ff
+Soft Pink: #ee68a4ff
 
 ### Neutral
 
-- Teal 100: #e5eff5ff
-- Gray 500: #98a6bdff
+Dark Grayish Magenta: #937b92ff
+Light Grayish Magenta: #f7f2f7ff
+White: #ffffffff
 
 ## Typography
 
 ### Body Copy
 
-- Font size: 16px
+- Font size: 15px
 
 ### Font
 
-- Family: [Karla](https://fonts.google.com/specimen/Karla)
-- Weights: 400, 700
+- Family: [League Spartan](https://fonts.google.com/specimen/League+Spartan)
+- Weights: 400, 500, 700
 
 > 💎 [Upgrade to Pro](https://www.frontendmentor.io/pro?ref=style-guide) for design file access to see all design details and get hands-on experience using a professional workflow with tools like Figma.
