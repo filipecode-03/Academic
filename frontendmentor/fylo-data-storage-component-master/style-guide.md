@@ -19,8 +19,8 @@ The designs were created to the following widths:
 
 - Blue 200: hsl(243, 100%, 93%)
 - Grayish Blue: hsl(229, 7%, 55%)
-- Blue 850: hsl(228, 56%, 26%)
-- Blue 950: hsl(229, 57%, 11%)
+- Blue 850: #1d2c67ff
+- Blue 950: #0c122cff
 
 ## Typography
 
