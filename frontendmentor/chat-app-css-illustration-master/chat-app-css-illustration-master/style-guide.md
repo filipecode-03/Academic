@@ -16,9 +16,9 @@ The designs were created to the following widths:
 #### Text
 
 - Purple 300 (sub-heading at the top of the app UI): hsl(276, 100%, 81%)
-- Purple 600 (chat on the left): hsl(276, 55%, 52%)
-- Gray 500 (chat on the right, paragraph): hsl(270, 7%, 64%)
-- Gray 300 (placeholder text): hsl(206, 6%, 79%)
+- Purple 600 (chat on the left): #9241c8ff
+- Gray 500 (chat on the right, paragraph): #a39daaff
+- Gray 300 (placeholder text): #c6cacdff
 - Purple 950 (main heading): hsl(271, 36%, 24%)
 
 #### Gradients
@@ -31,7 +31,7 @@ These two colors are the vibrant background colors you see throughout the design
 ### Secondary
 
 - White: hsl(0, 100%, 100%)
-- Gray 100 (app background): hsl(270, 20%, 96%)
+- Gray 100 (app background): #f5f3f7ff
 - Purple 950 (submit button background): hsl(271, 36%, 24%)
 - Pink 400 (radio button outline): hsl(289, 100%, 72%)
 
