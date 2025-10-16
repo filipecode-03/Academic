@@ -19,7 +19,7 @@ The designs were created to the following widths:
 - Purple 600 (chat on the left): #9241c8ff
 - Gray 500 (chat on the right, paragraph): #a39daaff
 - Gray 300 (placeholder text): #c6cacdff
-- Purple 950 (main heading): hsl(271, 36%, 24%)
+- Purple 950 (main heading): #3e2753ff
 
 #### Gradients
 
