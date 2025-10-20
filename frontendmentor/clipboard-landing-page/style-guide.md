@@ -13,13 +13,13 @@ The designs were created to the following widths:
 
 ### Primary
 
-- Green 500: hsl(171, 66%, 44%)
-- Blue 100: hsl(233, 100%, 69%)
+- Green 500: #26baa4ff
+- Blue 100: #6173ffff
 
 ### Neutral
 
-- Gray 700: hsl(210, 10%, 33%)
-- Gray 500: hsl(201, 11%, 66%)
+- Gray 700: #4c545dff
+- Gray 500: #9fabb2ff
 
 ## Typography
 
