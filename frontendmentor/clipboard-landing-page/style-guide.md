@@ -12,9 +12,10 @@ The designs were created to the following widths:
 ## Colors
 
 ### Primary
-
+#2ee5c9ff
 - Green 500: #26baa4ff
     #1e8676ff
+#7f8dfdff
 - Blue 100: #6173ffff
     #4350b5ff
 
