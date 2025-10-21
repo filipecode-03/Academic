@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" type="image/png" sizes="32x32" href="./images/favicon-32x32.png">
   <title>Frontend Mentor | Clipboard landing page</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Bai+Jamjuree:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;1,200;1,300;1,400;1,500;1,600;1,700&display=swap');
 
@@ -87,24 +88,30 @@
       <img src="images/logo-hp.png" alt="logo hp" class="mx-auto">
       <img src="images/logo-vector-graphics.png" alt="logo vector-graphics" class="mx-auto">
     </div>
-    <h1>Clipboard for iOS and Mac OS</h1>
-    <p>Available for free on the App Store. Download for Mac or iOS, sync with iCloud and you’re ready to start adding to your clipboard.</p>
-    <button>Download for iOS</button>
-    <button>Download for Mac</button>
-  </main>
-  <footer>
-    <div>
-      <img src="images/logo.svg" alt="">
-      <a href="#">FAQs</a>
-      <a href="#">Contact Us</a>
-      <a href="#">Privacy Policy</a>
-      <a href="#">Press Kit</a>
-      <a href="#">Install Guide</a>
+    <div class="text-center mt-[170px] mb-[170px]">
+      <h1 class="mt-[70px] font-semibold text-[40px] leading-[50px]">Clipboard for iOS and Mac OS</h1>
+      <p class="text-[20px] mt-[20px]">Available for free on the App Store. Download for Mac or iOS, sync with iCloud and you’re ready to start adding to your clipboard.</p>
+      <div class="flex flex-col space-y-[30px] text-white font-semibold text-[20px] mt-[50px]">
+        <button class="bg-[#26baa4] rounded-full p-[20px] border-b-[4px] border-x-[1px] border-[#1e8676] shadow-2xl">Download for iOS</button>
+        <button class="bg-[#6173ff] rounded-full p-[20px] border-b-[4px] border-x-[1px] border-[#4350b5] shadow-2xl">Download for Mac</button>
+      </div>
     </div>
-    <div>
-      <img src="images/icon-facebook.svg" alt="icon facebook">
-      <img src="images/icon-twitter.svg" alt="icon twitter">
-      <img src="images/icon-instagram.svg" alt="icon instagram">
+  </main>
+  <footer class="bg-gray-100">
+    <div class="pt-[50px]">
+      <img src="images/logo.svg" alt="logo" class="mx-auto h-[80px]">
+      <div class="flex flex-col items-center mt-[40px] text-[20px] space-y-[20px]">
+        <a href="#" class="w-fit hover:text-[#26baa4]">FAQs</a>
+        <a href="#" class="w-fit hover:text-[#26baa4]">Contact Us</a>
+        <a href="#" class="w-fit hover:text-[#26baa4]">Privacy Policy</a>
+        <a href="#" class="w-fit hover:text-[#26baa4]">Press Kit</a>
+        <a href="#" class="w-fit hover:text-[#26baa4]">Install Guide</a>
+      </div>
+    </div>
+    <div class="flex gap-[30px] mt-[40px] pb-[50px] justify-center">
+      <a href="#"><i class="fa-brands fa-square-facebook text-[30px] text-[#4c545d] hover:text-[#26baa4]"></i></a>
+      <a href="#"><i class="fa-brands fa-twitter text-[30px] text-[#4c545d] hover:text-[#26baa4]"></i></a>
+      <a href="#"><i class="fa-brands fa-instagram text-[30px] text-[#4c545d] hover:text-[#26baa4]"></i></a>
     </div>
   </footer>
 </body>

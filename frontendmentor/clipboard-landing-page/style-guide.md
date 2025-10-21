@@ -22,7 +22,7 @@ The designs were created to the following widths:
 
 - Gray 700: #4c545dff
 - Gray 500: #9fabb2ff
-
+    #b9cad3ff
 ## Typography
 
 ### Body Copy
