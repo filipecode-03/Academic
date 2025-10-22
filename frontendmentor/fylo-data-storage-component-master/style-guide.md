@@ -13,12 +13,12 @@ The designs were created to the following widths:
 
 ### Primary
 
-- Gradient: hsl(6, 100%, 80%) to hsl(335, 100%, 65%)
+- Gradient: #ffa399ff to #ff4d97ff
 
 ### Neutral
 
-- Blue 200: hsl(243, 100%, 93%)
-- Grayish Blue: hsl(229, 7%, 55%)
+- Blue 200: #dddbffff
+- Grayish Blue: #848794ff
 - Blue 850: #1d2c67ff
 - Blue 950: #0c122cff
 
