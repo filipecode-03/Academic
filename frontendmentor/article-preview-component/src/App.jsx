@@ -1,34 +1,20 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import picture from './assets/images/drawers.jpg'
+import Profile from './assets/components/Profile.jsx'
 
 function App() {
-  const [count, setCount] = useState(0)
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <div className="min-h-screen w-full py-[70px] px-[30px] bg-[#ECF2F8] font-['Manrope']">
+      <div className='bg-white rounded-2xl shadow-2xl'>
+        <img src={picture} alt="picture" className='rounded-t-2xl' />
+        <div className='px-10 pt-10 pb-7 space-y-4'>
+          <h1 className='font-bold text-[#48556A] text-[23px]'>Shift the overall look and feel by adding these wonderful touches to furniture in your home</h1>
+          <p className='text-[#48556A] text-[18px] tracking-[1px]'>Ever been in a room and felt like something was missing? Perhaps it felt slightly bare and uninviting. I’ve got some simple tips to help you make any room feel complete.</p>
+          <Profile />
+        </div>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    </div>
   )
 }
 
