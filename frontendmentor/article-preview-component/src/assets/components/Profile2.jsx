@@ -27,9 +27,9 @@ function Profile2() {
                                 lg:w-[265px] lg:h-[55%] lg:rounded-2xl lg:px-0 lg:gap-3 lg:left-[363px] lg:bottom-[100px]'>
                     <div class="hidden lg:block absolute top-[55px] left-[119px] z-11
                                 w-0 h-0
-                                border-l-[15px] border-l-transparent
-                                border-r-[15px] border-r-transparent
-                                border-t-[20px] border-t-[#49556B]">
+                                border-l-15 border-l-transparent
+                                border-r-15 border-r-transparent
+                                border-t-20 border-t-[#49556B]">
                                 </div>
                     <h1 className='my-auto uppercase tracking-[5px] text-gray-400 lg:pl-[38px]'>Share</h1>
                     <div className='flex gap-5 my-auto'>
