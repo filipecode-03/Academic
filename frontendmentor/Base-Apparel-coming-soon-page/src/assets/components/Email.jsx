@@ -12,7 +12,7 @@ function Email() {
             <form 
                 action="/enviar" 
                 method="post" 
-                class={`flex items-center bg-[#fff5f5] rounded-full overflow-hidden border w-[85%] mx-auto ${email ? 'border-red-500' : 'border-[#C19799]'}`}>
+                class={`flex items-center bg-[#fff5f5] rounded-full overflow-hidden border w-[85%] lg:w-[70%] mx-auto lg:mx-0 ${email ? 'border-red-500' : 'border-[#C19799]'}`}>
                 <label for="email" class="sr-only">Email</label>
                 <input
                     type="email"
@@ -34,7 +34,7 @@ function Email() {
                 </button>
             </form>
             {email && (
-                <p className='text-left text-red-500 pl-[64px] pt-3'>Please provide a valid email</p>
+                <p className='text-left text-red-500 pl-[64px] lg:pl-[30px] pt-3'>Please provide a valid email</p>
             )}
         </div>
     )
