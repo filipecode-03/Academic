@@ -1,10 +1,27 @@
+import { useForm } from "react-hook-form";
 import { useState } from "react"
 
 function App() {
+
+  function MeuFormulario() {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors }
+  } = useForm();
+  
+  function onSubmit(data) {
+    setSucesso(true);
+    console.log(data);
+  }
+
   const [selected, setSelected] = useState("");
+  const [sucesso, setSucesso] = useState(false);
+
+  
   return (
     <div className="min-h-screen bg-green-200 font-['Karla'] p-7">
-      <form action="/enviar" className="bg-white rounded-[10px] py-3 pb-7 px-6">
+      <form onSubmit={handleSubmit(onSubmit)} className="bg-white rounded-[10px] py-3 pb-7 px-6">
         <h1 className="font-bold text-[28px]">Contact Us</h1>
         <div className="flex flex-col mt-[15px]">
           <label htmlFor="first" className="text-[18px]">First Name <span className="text-green-600">*</span></label>
@@ -94,4 +111,5 @@ function App() {
   )
 }
 
-export default App
+export default App 
+export default MeuFormulario
