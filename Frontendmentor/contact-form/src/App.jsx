@@ -2,22 +2,17 @@ import { useForm } from "react-hook-form";
 import { useState } from "react"
 
 function App() {
-
-  function MeuFormulario() {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors }
-  } = useForm();
+  
+  const { register, handleSubmit, formState: { errors } } = useForm();
   
   function onSubmit(data) {
     setSucesso(true);
     console.log(data);
   }
 
-  const [selected, setSelected] = useState("");
+  const [selected, setSelected] = useState(""); // State dos botões de radio
+  
   const [sucesso, setSucesso] = useState(false);
-
   
   return (
     <div className="min-h-screen bg-green-200 font-['Karla'] p-7">
@@ -112,4 +107,3 @@ function App() {
 }
 
 export default App 
-export default MeuFormulario
