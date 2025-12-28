@@ -3,7 +3,7 @@ import { useState } from "react"
 
 function App() {
   
-  const { register, handleSubmit, formState: { errors } } = useForm();
+  const { register, handleSubmit, watch, formState: { errors } } = useForm();
   
   function onSubmit(data) {
     setSucesso(true);
@@ -21,29 +21,29 @@ function App() {
         <div className="flex flex-col mt-[15px]">
           <label htmlFor="first" className="text-[18px]">First Name <span className="text-green-600">*</span></label>
           <input 
-          type="text" 
-          name="first" 
+          type="text"
           id="first"
-          required
-          className="border hover:border-green-600 rounded-lg h-10 mt-1 text-black px-3" />
+          {...register("first", { required: "This field is required" })}
+          className={errors.first ? "border-red-600" : "border hover:border-green-600 rounded-lg h-10 mt-1 text-black px-3"}/>
+          {errors.first && <span className="text-red-600">{errors.first.message}</span>}
         </div>
         <div className="flex flex-col mt-5">
           <label htmlFor="last" className="text-[18px]">Last Name <span className="text-green-600">*</span></label>
           <input 
-          type="text" 
-          name="last" 
+          type="text"  
           id="last"
-          required
-          className="border hover:border-green-600 rounded-lg h-10 mt-1 text-black px-3" />
+          {...register("last", { required: "This field is required" })}
+          className={errors.last ? "border-red-600" : "border hover:border-green-600 rounded-lg h-10 mt-1 text-black px-3"}/>
+          {errors.last && <span className="text-red-600">{errors.last.message}</span>}
         </div>
         <div className="flex flex-col mt-5">
-          <label htmlFor="first" className="text-[18px]">Email Address <span className="text-green-600">*</span></label>
+          <label htmlFor="email" className="text-[18px]">Email Address <span className="text-green-600">*</span></label>
           <input 
           type="email" 
-          name="email" 
           id="email"
-          required
-          className="border hover:border-green-600 rounded-lg h-10 mt-1 text-black px-3" />
+          {...register("email", { required: "Please enter a valid email address" })}
+          className={errors.email ? "border-red-600" : "border hover:border-green-600 rounded-lg h-10 mt-1 text-black px-3"}/>
+          {errors.email && <span className="text-red-600">{errors.email.message}</span>}
         </div>
         <div className="flex flex-col mt-5">
           <label className="text-[18px]">
@@ -54,17 +54,20 @@ function App() {
           <label
             className={`
               border rounded-lg py-3 px-6 text-[18px] mt-2 flex items-center cursor-pointer
-              hover:border-green-600 
-              ${selected === "1" ? "bg-green-100 border-green-600" : ""}
+              hover:border-green-600
+              ${
+                watch("opcao") === "1"
+                  ? "bg-green-100 border-green-600"
+                  : ""
+              }
             `}
           >
             <input
               type="radio"
-              name="opcao"
               value="1"
-              checked={selected === "1"}
-              onChange={() => setSelected("1")}
-              required
+              {...register("opcao", {
+                required: "Selecione uma opção"
+              })}
               className="mr-3 scale-150 accent-green-600 cursor-pointer"
             />
             General Enquiry
@@ -74,21 +77,29 @@ function App() {
           <label
             className={`
               border rounded-lg py-3 px-6 text-[18px] mt-4 flex items-center cursor-pointer
-              hover:border-green-600 
-              ${selected === "2" ? "bg-green-100 border-green-600" : ""}
+              hover:border-green-600
+              ${
+                watch("opcao") === "2"
+                  ? "bg-green-100 border-green-600"
+                  : ""
+              }
             `}
           >
             <input
               type="radio"
-              name="opcao"
               value="2"
-              checked={selected === "2"}
-              onChange={() => setSelected("2")}
-              required
+              {...register("opcao")}
               className="mr-3 scale-150 accent-green-600 cursor-pointer"
             />
             Support Request
           </label>
+
+          {/* ERRO */}
+          {errors.opcao && (
+            <span className="text-red-600 text-sm mt-2">
+              {errors.opcao.message}
+            </span>
+          )}
         </div>
         <div className="flex flex-col mt-5">
           <label htmlFor="first" className="text-[18px]">Message <span className="text-green-600">*</span></label>
