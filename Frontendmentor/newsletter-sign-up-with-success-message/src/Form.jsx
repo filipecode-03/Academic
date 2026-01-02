@@ -19,7 +19,7 @@ function Form() {
     }
 
     return (
-        <div className="min-h-screen min-w-screen font-['Roboto']">
+        <div className="min-h-screen font-['Roboto']">
       <div>
         <img src={imgMobile} alt="mobile image" className='w-full'/>
       </div>
@@ -41,13 +41,17 @@ function Form() {
           </div>
         </div>
       </div>
-      <form onSubmit={handleSubmit(onSubmit)} >
-        <label htmlFor="">Email address</label>
-        <input type="email" id=""
-        {...register("email", {
-            required: ""
-        })}/>
-        <button type="submit" className='bg-[#232742] p-4 px-[45px] font-normal text-white rounded-[10px]'>Subscribe to monthly newsletter</button>
+      <form onSubmit={handleSubmit(onSubmit)} className='mx-5 mt-[40px] pb-[50px] space-y-6' >
+        <div className='flex flex-col'>
+            <label htmlFor="email" className='text-[14px] font-semibold'>Email address</label>
+            <input type="email" id="email" placeholder='email@company.com'
+            {...register("email", {
+                required: "Valide email required"
+            })}
+            className={errors.email ? "" : "border rounded-[10px] p-4 mt-2"}
+            />
+        </div>
+        <button type="submit" className='bg-[#232742] p-4 font-semibold text-white rounded-[10px] w-full'>Subscribe to monthly newsletter</button>
       </form>
     </div>
     )
