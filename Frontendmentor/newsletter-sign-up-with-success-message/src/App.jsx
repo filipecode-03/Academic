@@ -1,11 +1,16 @@
-import { useState } from 'react'
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Form from "./Form.jsx";
+import Sucesso from "./Sucesso.jsx";
 
 function App() {
 
   return (
-    <div>
-      
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Form />} />
+        <Route path="/sucesso" element={<Sucesso />} />
+      </Routes>
+    </BrowserRouter>
   )
 }
 
