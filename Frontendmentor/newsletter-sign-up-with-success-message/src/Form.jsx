@@ -52,7 +52,7 @@ function Form() {
                   {...register("email", {
                       required: "Valide email required"
                   })}
-                  className={errors.email ? "border border-red-500 bg-red-200 rounded-[10px] w-full p-4 mt-3" : "border border-gray-400 rounded-[10px] w-full p-4 mt-3"}
+                  className={errors.email ? "border border-red-500 bg-red-200 rounded-[10px] w-full p-4 mt-3" : "border border-gray-400 rounded-[10px] w-full p-4 mt-3 hover:border-black"}
                   />
               <button type="submit" className='bg-[#232742] p-4 mt-6 font-semibold text-white rounded-[10px] w-full cursor-pointer
                                               hover:bg-gradient-to-r hover:from-[#FF5378] hover:to-[#FF6841] transition-all duration-400
