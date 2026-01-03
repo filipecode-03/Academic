@@ -54,7 +54,10 @@ function Form() {
                   })}
                   className={errors.email ? "border border-red-500 bg-red-200 rounded-[10px] w-full p-4 mt-3" : "border border-gray-400 rounded-[10px] w-full p-4 mt-3"}
                   />
-              <button type="submit" className='bg-[#232742] p-4 mt-6 font-semibold text-white rounded-[10px] w-full cursor-pointer'>Subscribe to monthly newsletter</button>
+              <button type="submit" className='bg-[#232742] p-4 mt-6 font-semibold text-white rounded-[10px] w-full cursor-pointer
+                                              hover:bg-gradient-to-r hover:from-[#FF5378] hover:to-[#FF6841] transition-all duration-400
+                                              hover:shadow-lg hover:shadow-[#FF5378]
+                                            hover:shadow-[#FF6841]'>Subscribe to monthly newsletter</button>
             </form>
           </div>
         </div>
