@@ -54,7 +54,7 @@ function Form() {
                   })}
                   className={errors.email ? "border border-red-500 bg-red-200 rounded-[10px] w-full p-4 mt-3" : "border border-gray-400 rounded-[10px] w-full p-4 mt-3"}
                   />
-              <button type="submit" className='bg-[#232742] p-4 mt-6 font-semibold text-white rounded-[10px] w-full'>Subscribe to monthly newsletter</button>
+              <button type="submit" className='bg-[#232742] p-4 mt-6 font-semibold text-white rounded-[10px] w-full cursor-pointer'>Subscribe to monthly newsletter</button>
             </form>
           </div>
         </div>
