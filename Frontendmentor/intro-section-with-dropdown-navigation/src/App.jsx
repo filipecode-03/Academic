@@ -9,12 +9,26 @@ import picture3 from './assets/images/client-meet.svg'
 import picture4 from './assets/images/client-maker.svg'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
+import todoList from './assets/images/icon-todo.svg'
+import calendar from './assets/images/icon-calendar.svg'
+import reminders from './assets/images/icon-reminders.svg'
+import planning from './assets/images/icon-planning.svg'
 
 function App() {
 
   const [open, setOpen] = useState(false)
   const [aberto1, setAberto1] = useState(false)
   const [aberto2, setAberto2] = useState(false)
+
+  const toggleFeatures = () => {
+  setAberto1(!aberto1)
+  setAberto2(false)
+}
+
+const toggleCompany = () => {
+  setAberto2(!aberto2)
+  setAberto1(false)
+}
 
   return (
     <main className="min-h-screen my-8 mb-20 font-['Epilogue']">
@@ -25,32 +39,43 @@ function App() {
       { open && (
         <div className='fixed text-[22px] top-0 right-0 h-full w-84 bg-white z-50 p-8 space-y-5 font-semibold text-gray-500'>
             <img onClick={() => setOpen(!open)} src={menuClosed} alt="menu closed" className='cursor-pointer ml-auto' />
-            <div onClick={() => setAberto1(!aberto1)} className="mt-15 flex gap-3 hover:text-black w-fit cursor-pointer">
+            <div onClick={toggleFeatures} className="mt-15 flex gap-3 hover:text-black w-fit cursor-pointer">
               <p className="w-fit">Features</p>
               <FontAwesomeIcon icon={aberto1 ? faChevronUp : faChevronDown} 
               className="transition-transform text-[14px] mt-2" />
             </div>
             { aberto1 && (
-              <div>
-                <div>
-                  <img src="" alt="" />
+              <div className='space-y-5 ml-7 text-[20px]'>
+                <div className='flex gap-4 hover:text-black cursor-pointer'>
+                  <img src={todoList} alt="todo list" className='w-5 h-6' />
                   <p>Todo List</p>
                 </div>
-                <div>
-                  <img src="" alt="Calendar" />
+                <div className='flex gap-4 hover:text-black cursor-pointer'>
+                  <img src={calendar} alt="Calendar" className='w-5 h-6' />
                   <p>Calendar</p>
                 </div>
-                <div>
-                  <img src="" alt="" />
+                <div className='flex gap-4 hover:text-black cursor-pointer'>
+                  <img src={reminders} alt="reminders" className='w-5 h-6' />
                   <p>Reminders</p>
                 </div>
-                <div>
-                  <img src="" alt="" />
+                <div className='flex gap-4 hover:text-black cursor-pointer'>
+                  <img src={planning} alt="planning" className='w-5 h-6' />
                   <p>Planning</p>
                 </div>
               </div>
             ) }
-            <p className='cursor-pointer hover:text-black w-fit'>Company</p>
+            <div onClick={toggleCompany} className="flex gap-3 hover:text-black w-fit cursor-pointer">
+              <p className="w-fit">Company</p>
+              <FontAwesomeIcon icon={aberto2 ? faChevronUp : faChevronDown} 
+              className="transition-transform text-[14px] mt-2" />
+            </div>
+            { aberto2 && (
+              <div className='space-y-5 ml-7 text-[20px]'>
+                <p className='cursor-pointer hover:text-black'>History</p>
+                <p className='cursor-pointer hover:text-black'>Our Team</p>
+                <p className='cursor-pointer hover:text-black'>Blog</p>
+              </div>
+            ) }
             <p className='cursor-pointer hover:text-black w-fit'>Careers</p>
             <p className='cursor-pointer hover:text-black w-fit'>About</p>
             <div className='flex flex-col mt-10 space-y-5 text-[20px]'>
@@ -58,7 +83,7 @@ function App() {
               <button className='cursor-pointer border-2 border-gray-500 hover:border-black hover:text-black rounded-[15px] py-3'>Register</button>
             </div>
         </div>
-      )
+        )
       }
       <nav className='flex justify-between mx-8'>
         <div>
