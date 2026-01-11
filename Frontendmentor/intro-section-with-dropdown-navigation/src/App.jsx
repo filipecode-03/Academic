@@ -3,6 +3,7 @@ import menu from './assets/images/icon-menu.svg'
 import menuClosed from './assets/images/icon-close-menu.svg'
 import { useState } from 'react'
 import mainPictureMobile from './assets/images/image-hero-mobile.png'
+import mainPictureDesktop from './assets/images/image-hero-desktop.png'
 import picture1 from './assets/images/client-databiz.svg'
 import picture2 from './assets/images/client-audiophile.svg'
 import picture3 from './assets/images/client-meet.svg'
@@ -94,7 +95,7 @@ const toggleCompany = () => {
             <img src={menu} alt="menu" className='w-12 h-6' />
           </button>
         </div>
-        <div className='hidden lg:block'>
+        <div className='hidden lg:block text-gray-700'>
           <div className='flex gap-12'>
             <p className='cursor-pointer hover:text-black w-fit'>Features</p>
             <p className='cursor-pointer hover:text-black w-fit'>Company</p>
@@ -102,20 +103,21 @@ const toggleCompany = () => {
             <p className='cursor-pointer hover:text-black w-fit'>About</p>
           </div>
         </div>
-        <div className='hidden lg:block ml-auto'>
+        <div className='hidden lg:block ml-auto text-gray-700'>
           <button className='hover:text-black cursor-pointer w-fit mr-10'>Login</button>
-          <button className='cursor-pointer border-2 border-gray-500 hover:border-black hover:text-black rounded-[15px] p-2'>Register</button>
+          <button className='cursor-pointer border-2 border-gray-500 hover:border-black hover:text-black rounded-[15px] p-2 px-5'>Register</button>
         </div>
       </nav>
-      <section>
-        <div className='mt-8'>
-          <img src={mainPictureMobile} alt="main picture" />
+      <section className='lg:flex lg:flex-row-reverse lg:gap-30 lg:w-[80%] lg:mx-auto'>
+        <div className='mt-8 lg:mt-10'>
+          <img src={mainPictureMobile} alt="main picture" className='block lg:hidden' />
+          <img src={mainPictureDesktop} alt="main picture" className='hidden lg:block w-220 h-140' />
         </div>
-        <div className='text-center mt-10 mx-3'>
-          <h1 className='font-bold text-[45px]'>Make remote work</h1>
-          <p className='mt-2 text-[18px]'>Get your team in sync, no matter your location. Streamline processes, create team rituals, and watch productivity soar.</p>
-          <button className='cursor-pointer mt-6 border-2 border-black hover:bg-white hover:text-black bg-black text-white font-semibold p-4 px-8 rounded-[15px]'>Learn more</button>
-          <div className='flex justify-between mt-12'>
+        <div className='text-center lg:text-left mt-10 lg:mt-30 mx-3'>
+          <h1 className='font-bold text-[45px] lg:text-[85px] lg:leading-[80px] lg:w-[98%]'>Make remote work</h1>
+          <p className='mt-2 lg:mt-10 lg:w-[80%] text-[18px]'>Get your team in sync, no matter your location. Streamline processes, create team rituals, and watch productivity soar.</p>
+          <button className='cursor-pointer mt-6 lg:mt-12 border-2 border-black hover:bg-white hover:text-black bg-black text-white font-semibold p-4 px-8 rounded-[15px]'>Learn more</button>
+          <div className='flex justify-between mt-12 lg:mt-17'>
             <div>
               <img src={picture1} alt="databiz" />
             </div>
