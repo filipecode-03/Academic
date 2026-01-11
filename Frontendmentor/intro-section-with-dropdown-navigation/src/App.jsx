@@ -2,7 +2,7 @@ import logo from './assets/images/logo.svg'
 import menu from './assets/images/icon-menu.svg'
 import menuClosed from './assets/images/icon-close-menu.svg'
 import { useState } from 'react'
-import mainPicture from './assets/images/image-hero-mobile.png'
+import mainPictureMobile from './assets/images/image-hero-mobile.png'
 import picture1 from './assets/images/client-databiz.svg'
 import picture2 from './assets/images/client-audiophile.svg'
 import picture3 from './assets/images/client-meet.svg'
@@ -85,33 +85,36 @@ const toggleCompany = () => {
         </div>
         )
       }
-      <nav className='flex justify-between mx-8'>
+      <nav className='flex mx-8 gap-15'>
         <div>
           <img src={logo} alt="logo" className='h-8' />
         </div>
-        <div className='block lg:hidden'>
+        <div className='block lg:hidden ml-auto'>
           <button onClick={() => setOpen(!open)} className='cursor-pointer h-full'>
             <img src={menu} alt="menu" className='w-12 h-6' />
           </button>
         </div>
-        <div className='mt-auto hidden lg:block'>
+        <div className='hidden lg:block'>
           <div className='flex gap-12'>
-            <p className='cursor-pointer hover:text-[#F15D51] w-fit'>Home</p>
-            <p className='cursor-pointer hover:text-[#F15D51] w-fit'>New</p>
-            <p className='cursor-pointer hover:text-[#F15D51] w-fit'>Popular</p>
-            <p className='cursor-pointer hover:text-[#F15D51] w-fit'>Trending</p>
-            <p className='cursor-pointer hover:text-[#F15D51] w-fit'>Categories</p>
+            <p className='cursor-pointer hover:text-black w-fit'>Features</p>
+            <p className='cursor-pointer hover:text-black w-fit'>Company</p>
+            <p className='cursor-pointer hover:text-black w-fit'>Careers</p>
+            <p className='cursor-pointer hover:text-black w-fit'>About</p>
           </div>
+        </div>
+        <div className='hidden lg:block ml-auto'>
+          <button className='hover:text-black cursor-pointer w-fit mr-10'>Login</button>
+          <button className='cursor-pointer border-2 border-gray-500 hover:border-black hover:text-black rounded-[15px] p-2'>Register</button>
         </div>
       </nav>
       <section>
         <div className='mt-8'>
-          <img src={mainPicture} alt="main picture" />
+          <img src={mainPictureMobile} alt="main picture" />
         </div>
         <div className='text-center mt-10 mx-3'>
           <h1 className='font-bold text-[45px]'>Make remote work</h1>
           <p className='mt-2 text-[18px]'>Get your team in sync, no matter your location. Streamline processes, create team rituals, and watch productivity soar.</p>
-          <button className='mt-6 border-2 border-black hover:bg-white hover:text-black bg-black text-white font-semibold p-4 px-8 rounded-[15px]'>Learn more</button>
+          <button className='cursor-pointer mt-6 border-2 border-black hover:bg-white hover:text-black bg-black text-white font-semibold p-4 px-8 rounded-[15px]'>Learn more</button>
           <div className='flex justify-between mt-12'>
             <div>
               <img src={picture1} alt="databiz" />
@@ -123,7 +126,7 @@ const toggleCompany = () => {
               <img src={picture3} alt="meet" />
             </div>
             <div>
-              <img src={picture4} alt="" />
+              <img src={picture4} alt="maker" />
             </div>
           </div>
         </div>
