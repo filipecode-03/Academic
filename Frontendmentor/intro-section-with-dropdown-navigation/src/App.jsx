@@ -21,7 +21,7 @@ function App() {
   const [aberto1, setAberto1] = useState(false)
   const [aberto2, setAberto2] = useState(false)
   const [aberto3, setAberto3] = useState(false)
-  const [aberto3, setAberto3] = useState(false)
+  const [aberto4, setAberto4] = useState(false)
 
   const toggleFeatures = () => {
   setAberto1(!aberto1)
@@ -124,11 +124,18 @@ const toggleCompany = () => {
                 </div>
               </div>
             ) }
-            <div onClick={toggleCompany} className="flex mt-1 gap-1 hover:text-black w-fit cursor-pointer">
+            <div onClick={() => setAberto4(!aberto4)} className="flex mt-1 gap-1 hover:text-black w-fit cursor-pointer">
               <p className="w-fit">Company</p>
-              <FontAwesomeIcon icon={aberto2 ? faChevronUp : faChevronDown} 
+              <FontAwesomeIcon icon={aberto4 ? faChevronUp : faChevronDown} 
               className="transition-transform text-[12px] mt-1" />
             </div>
+            { aberto4 && (
+              <div className='p-6 fixed top-18 tracking-[1px] space-y-3 left-83 z-40 text-[14px] shadow-2xl rounded-[10px] bg-white'>
+                <p className='cursor-pointer hover:text-black'>History</p>
+                <p className='cursor-pointer hover:text-black'>Our Team</p>
+                <p className='cursor-pointer hover:text-black'>Blog</p>
+              </div>
+            ) }
             <p className='cursor-pointer hover:text-black w-fit mt-1'>Careers</p>
             <p className='cursor-pointer hover:text-black w-fit mt-1'>About</p>
           </div>
