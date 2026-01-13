@@ -20,6 +20,8 @@ function App() {
   const [open, setOpen] = useState(false)
   const [aberto1, setAberto1] = useState(false)
   const [aberto2, setAberto2] = useState(false)
+  const [aberto3, setAberto3] = useState(false)
+  const [aberto3, setAberto3] = useState(false)
 
   const toggleFeatures = () => {
   setAberto1(!aberto1)
@@ -97,10 +99,38 @@ const toggleCompany = () => {
         </div>
         <div className='hidden lg:block text-gray-700'>
           <div className='flex gap-12'>
-            <p className='cursor-pointer hover:text-black w-fit'>Features</p>
-            <p className='cursor-pointer hover:text-black w-fit'>Company</p>
-            <p className='cursor-pointer hover:text-black w-fit'>Careers</p>
-            <p className='cursor-pointer hover:text-black w-fit'>About</p>
+            <div onClick={() => setAberto3(!aberto3)} className="flex mt-1 gap-1 hover:text-black w-fit cursor-pointer">
+              <p className="w-fit">Features</p>
+              <FontAwesomeIcon icon={aberto3 ? faChevronUp : faChevronDown} 
+              className="transition-transform text-[12px] mt-1" />
+            </div>
+            { aberto3 && (
+              <div className='p-5 fixed top-18 tracking-[1px] space-y-5 left-33 z-40 text-[14px] shadow-2xl rounded-[10px] bg-white'>
+                <div className='flex gap-4 hover:text-black cursor-pointer'>
+                  <img src={todoList} alt="todo list" className='w-4 h-5' />
+                  <p>Todo List</p>
+                </div>
+                <div className='flex gap-4 hover:text-black cursor-pointer'>
+                  <img src={calendar} alt="Calendar" className='w-4 h-5' />
+                  <p>Calendar</p>
+                </div>
+                <div className='flex gap-4 hover:text-black cursor-pointer'>
+                  <img src={reminders} alt="reminders" className='w-4 h-5' />
+                  <p>Reminders</p>
+                </div>
+                <div className='flex gap-4 hover:text-black cursor-pointer'>
+                  <img src={planning} alt="planning" className='w-4 h-5' />
+                  <p>Planning</p>
+                </div>
+              </div>
+            ) }
+            <div onClick={toggleCompany} className="flex mt-1 gap-1 hover:text-black w-fit cursor-pointer">
+              <p className="w-fit">Company</p>
+              <FontAwesomeIcon icon={aberto2 ? faChevronUp : faChevronDown} 
+              className="transition-transform text-[12px] mt-1" />
+            </div>
+            <p className='cursor-pointer hover:text-black w-fit mt-1'>Careers</p>
+            <p className='cursor-pointer hover:text-black w-fit mt-1'>About</p>
           </div>
         </div>
         <div className='hidden lg:block ml-auto text-gray-700'>
