@@ -12,6 +12,9 @@ import milkMobile from './assets/images/mobile/image-gallery-milkbottles.jpg'
 import orangeMobile from './assets/images/mobile/image-gallery-orange.jpg'
 import coneMobile from './assets/images/mobile/image-gallery-cone.jpg'
 import sugarMobile from './assets/images/mobile/image-gallery-sugar-cubes.jpg'
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTwitter, faInstagram, faSquareFacebook, faPinterest } from '@fortawesome/free-brands-svg-icons'
+
 
 function App() {
 
@@ -86,12 +89,18 @@ function App() {
           <img src={sugarMobile} alt="sugar" className="w-full h-auto object-cover" />
         </div>
       </section>
-      <footer className='bg-[#90D4C5] pt-18 pb-30 px-10'>
+      <footer className='bg-[#90D4C5] pt-18 pb-20 px-10'>
         <img src={logoGreen} alt="logo green" className='mx-auto' />
-        <div className='flex justify-between'>
-          <p>About</p>
-          <p>Services</p>
-          <p>Projects</p>
+        <div className='flex mt-12 justify-between text-[18px] text-[#266758] w-[80%] mx-auto'>
+          <p className='hover:text-white cursor-pointer'>About</p>
+          <p className='hover:text-white cursor-pointer'>Services</p>
+          <p className='hover:text-white cursor-pointer'>Projects</p>
+        </div>
+        <div className='mt-22 flex justify-between w-[50%] mx-auto'>
+          <FontAwesomeIcon icon={faSquareFacebook} className="text-[#266758] hover:text-white cursor-pointer text-2xl" />
+          <FontAwesomeIcon icon={faInstagram} className="text-[#266758] hover:text-white cursor-pointer text-2xl" />
+          <FontAwesomeIcon icon={faTwitter} className="text-[#266758] hover:text-white cursor-pointer text-2xl" />
+          <FontAwesomeIcon icon={faPinterest} className="text-[#266758] hover:text-white cursor-pointer text-2xl" />
         </div>
       </footer>
     </div>
