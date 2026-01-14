@@ -32,24 +32,32 @@ function App() {
         <img src={eggMobile} alt="egg" />
         <div className='p-8 space-y-8 pt-16 pb-14'>
           <h1 className="font-['Fraunces'] font-bold text-[35px] w-[80%] mx-auto leading-10">Transform your brand</h1>
-          <p className="font-['Barlow'] text-gray-700 text-[18px]">We are a full-service creative agency specializing in helping brands grow fast. Engage your clients through compelling visuals that do most of the marketing for you.</p>
-          <button className="font-['Fraunces'] font-bold tracking-[1px]">LEARN MORE</button>
+          <p className="font-medium text-gray-700 text-[18px]">We are a full-service creative agency specializing in helping brands grow fast. Engage your clients through compelling visuals that do most of the marketing for you.</p>
+          <p className="group relative inline-block w-fit font-extrabold font-['Fraunces'] tracking-[1px] cursor-pointer">
+          LEARN MORE
+          <span className="absolute -left-2.5 bottom-0.5 h-[8px] w-[115%] bg-[#fff2ab] rounded-[10px] -z-10 transition-colors duration-300 group-hover:bg-[#FFD100]"></span>
+          </p>
         </div>
       </div>
       <div className='text-center'>
         <img src={juiceMobile} alt="juice" />
         <div className='p-8 space-y-8 pt-16 pb-14'>
           <h1 className="font-['Fraunces'] font-bold text-[35px] w-[80%] mx-auto leading-10">Stand out to the right audience</h1>
-          <p className="font-['Barlow'] text-gray-700 text-[18px]">Using a collaborative formula of designers, researchers, photographers, videographers, and copywriters, we’ll build and extend your brand in digital places.</p>
-          <button className="font-['Fraunces'] font-bold tracking-[1px]">LEARN MORE</button>
+          <p className="font-medium text-gray-700 text-[18px]">Using a collaborative formula of designers, researchers, photographers, videographers, and copywriters, we’ll build and extend your brand in digital places.</p>
+          <p className="group relative inline-block w-fit font-extrabold font-['Fraunces'] tracking-[1px] cursor-pointer">
+          LEARN MORE
+          <span className="absolute -left-2.5 bottom-0.5 h-[8px] w-[115%] bg-[#FED9D0] rounded-[10px] -z-10 transition-colors duration-300 group-hover:bg-[#FD7863]"></span>
+          </p>
         </div>
       </div>
       <div>
-        <div className="bg-[url('./assets/images/mobile/image-graphic-design.jpg')] bg-cover bg-center h-200">
-
+        <div className="text-[#1A5245] pt-140 px-8 space-y-5 text-center bg-[url('./assets/images/mobile/image-graphic-design.jpg')] bg-cover bg-center h-200">
+          <h1 className="font-['Fraunces'] text-[38px] font-extrabold">Graphic Design</h1>
+          <p className='text-[18px] font-medium'>Great design makes you memorable. We deliver artwork that underscores your brand message and captures potential clients’ attention.</p>
         </div>
-        <div className="bg-[url('./assets/images/mobile/image-photography.jpg')] bg-cover bg-center h-200">
-
+        <div className="text-[#1F546E] pt-140 px-10 space-y-5 text-center bg-[url('./assets/images/mobile/image-photography.jpg')] bg-cover bg-center h-200">
+          <h1 className="font-['Fraunces'] text-[38px] font-extrabold">Photography</h1>
+          <p className='text-[18px] font-medium'>Increase your credibility by getting the most stunning, high-quality photos that improve your business image.</p>
         </div>
       </div>
       <div className='text-center p-8 space-y-15 pt-16 pb-14'>
@@ -74,10 +82,10 @@ function App() {
           <div>
             <div className='space-y-8'>
               <img src={jennie} alt="emily" className='mx-auto rounded-full w-20' />
-              <p className='text-[18px]'>Sunnyside’s enthusiasm coupled with their keen interest in our brand’s success made it a satisfying and enjoyable experience.</p>
-              <h1 className="font-['Fraunces'] font-bold text-[20px]">Thomas S.</h1>
+              <p className='text-[18px]'>Incredible end result! Our sales increased over 400% when we worked with Sunnyside. Highly recommended!</p>
+              <h1 className="font-['Fraunces'] font-bold text-[20px]">Jennie F.</h1>
             </div>
-            <h2 className='text-gray-500'>Chief Operating Officer</h2>
+            <h2 className='text-gray-500'>Business Owner</h2>
           </div>
         </div>
       </div>
