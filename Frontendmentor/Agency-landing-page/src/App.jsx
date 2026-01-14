@@ -18,13 +18,27 @@ import { faTwitter, faInstagram, faSquareFacebook, faPinterest } from '@fortawes
 
 function App() {
 
+  const [open, setOpen] = useState(false)
+
   return (
     <div className="min-h-screen font-['Barlow']">
       <div className="text-center text-white bg-[url('./assets/images/mobile/image-header.jpg')] bg-cover bg-center h-160 p-7">
         <div className='flex items-center justify-between'>
           <img src={logo} alt="logo" />
-          <img src={menuHamburguer} alt="menu" />
+          <img src={menuHamburguer} alt="menu" onClick={() => setOpen(!open)} className='cursor-pointer' />
         </div>
+        { open && (
+          <div className="absolute top-20 left-106 z-10 w-7 h-7.5 bg-white [clip-path:polygon(100%_0,100%_100%,0_100%)]"></div>
+        ) }
+        { open && (
+          <div className='bg-white w-105 pt-12 h-80 space-y-6 text-gray-500 text-[20px] p-5 absolute z-11 left-8 top-27'>
+            <p className='cursor-pointer w-fit mx-auto hover:text-black'>About</p>
+            <p className='cursor-pointer w-fit mx-auto hover:text-black'>Services</p>
+            <p className='cursor-pointer w-fit mx-auto hover:text-black'>Projects</p>
+            <p className='p-3 px-7 font-bold font-["Fraunces"] text-gray-800 rounded-full w-fit mx-auto bg-[#FBD600] cursor-pointer hover:bg-[#fff2ab]'>CONTACT</p>
+          </div>
+        )
+        }
         <h1 className="mt-20 font-['Fraunces'] font-extrabold text-[60px] tracking-[6px] leading-18">WE ARE CREATIVES</h1>
         <img src={arrow} alt="arrow down" className='mx-auto mt-25' />
       </div>
@@ -35,7 +49,7 @@ function App() {
           <p className="font-medium text-gray-700 text-[18px]">We are a full-service creative agency specializing in helping brands grow fast. Engage your clients through compelling visuals that do most of the marketing for you.</p>
           <p className="group relative inline-block w-fit font-extrabold font-['Fraunces'] tracking-[1px] cursor-pointer">
           LEARN MORE
-          <span className="absolute -left-2.5 bottom-0.5 h-[8px] w-[115%] bg-[#fff2ab] rounded-[10px] -z-10 transition-colors duration-300 group-hover:bg-[#FFD100]"></span>
+          <span className="absolute -left-2.5 bottom-0.5 h-2 w-[115%] bg-[#fff2ab] rounded-[10px] -z-10 transition-colors duration-300 group-hover:bg-[#FFD100]"></span>
           </p>
         </div>
       </div>
@@ -46,7 +60,7 @@ function App() {
           <p className="font-medium text-gray-700 text-[18px]">Using a collaborative formula of designers, researchers, photographers, videographers, and copywriters, we’ll build and extend your brand in digital places.</p>
           <p className="group relative inline-block w-fit font-extrabold font-['Fraunces'] tracking-[1px] cursor-pointer">
           LEARN MORE
-          <span className="absolute -left-2.5 bottom-0.5 h-[8px] w-[115%] bg-[#FED9D0] rounded-[10px] -z-10 transition-colors duration-300 group-hover:bg-[#FD7863]"></span>
+          <span className="absolute -left-2.5 bottom-0.5 h-2 w-[115%] bg-[#FED9D0] rounded-[10px] -z-10 transition-colors duration-300 group-hover:bg-[#FD7863]"></span>
           </p>
         </div>
       </div>
