@@ -14,7 +14,7 @@ import coneMobile from './assets/images/mobile/image-gallery-cone.jpg'
 import sugarMobile from './assets/images/mobile/image-gallery-sugar-cubes.jpg'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTwitter, faInstagram, faSquareFacebook, faPinterest } from '@fortawesome/free-brands-svg-icons'
-
+import Sec01 from './assets/components/Sec01'
 
 function App() {
 
@@ -22,7 +22,7 @@ function App() {
 
   return (
     <div className="min-h-screen font-['Barlow']">
-      <div className="text-center text-white bg-[url('./assets/images/mobile/image-header.jpg')] bg-cover bg-center h-160 p-7">
+      <div className="block lg:hidden text-center text-white bg-[url('./assets/images/mobile/image-header.jpg')] bg-cover bg-center h-160 p-7">
         <div className='flex items-center justify-between'>
           <img src={logo} alt="logo" />
           <img src={menuHamburguer} alt="menu" onClick={() => setOpen(!open)} className='cursor-pointer' />
@@ -42,6 +42,9 @@ function App() {
         <h1 className="mt-20 font-['Fraunces'] font-extrabold text-[60px] tracking-[6px] leading-18">WE ARE CREATIVES</h1>
         <img src={arrow} alt="arrow down" className='mx-auto mt-25' />
       </div>
+
+      <Sec01 />
+      
       <div className='text-center'>
         <img src={eggMobile} alt="egg" />
         <div className='p-8 space-y-8 pt-16 pb-14'>
