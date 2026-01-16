@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import './App.css'
 import logo from './assets/images/logo.svg'
 import hamburguer from './assets/images/icon-hamburger.svg'
 import editor from './assets/images/illustration-editor-mobile.svg'
@@ -38,11 +39,11 @@ function App() {
           </div>
         </div>
       </section>
-      <img src={phones} alt="phones" className='absolute z-11' />
-      <section className='mt-80 text-center text-white rounded-bl-[150px] rounded-tr-[150px] bg-[linear-gradient(to_bottom,rgba(48,49,69,0.9),rgba(58,61,92,0.9)),url("./assets/images/bg-pattern-circles.svg")] bg-center bg-cover bg-no-repeat'>
-        <div className='pt-80 pb-40 px-20'>
-          <h1 className='font-["Ubuntu"] text-[38px] leading-8'>State of the Art Infra</h1>
-          <p>With reliability and speed in mind, worldwide data centers provide the backbone for ultra-fast connectivity. This ensures your site will load instantly, no matter where your readers are, keeping your site competitive.</p>
+      <img src={phones} alt="phones" className='absolute z-11 top-450' />
+      <section className='mt-80 text-center text-white rounded-bl-[150px] hero rounded-tr-[150px]'>
+        <div className='pt-75 pb-40 px-15 space-y-6'>
+          <h1 className='font-["Ubuntu"] text-[44px] leading-14'>State of the Art Infrastructure</h1>
+          <p className='text-[18px]'>With reliability and speed in mind, worldwide data centers provide the backbone for ultra-fast connectivity. This ensures your site will load instantly, no matter where your readers are, keeping your site competitive.</p>
         </div>
       </section>
     </div>
