@@ -2,10 +2,17 @@ import { useState } from 'react'
 import './App.css'
 import logo from './assets/images/logo.svg'
 import hamburguer from './assets/images/icon-hamburger.svg'
-import editor from './assets/images/illustration-editor-mobile.svg'
+import close from './assets/images/icon-close.svg'
+import editorMobile from './assets/images/illustration-editor-mobile.svg'
 import phones from './assets/images/illustration-phones.svg'
+import laptopMobile from './assets/images/illustration-laptop-mobile.svg'
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
+
 
 function App() {
+
+  const [menu, setMenu] = useState(false)
 
   return (
     <div className='min-h-screen font-["Overpass"]'>
@@ -13,22 +20,32 @@ function App() {
         <div className='p-8 pt-12 pb-42'>
           <div className='flex justify-between items-center'>
             <img src={logo} alt="logo" />
-            <img src={hamburguer} alt="menu" />
+            <img src={menu ? close : hamburguer} alt="menu" onClick={() => setMenu(!menu)} className='cursor-pointer' />
           </div>
+          {menu && (
+            <div>
+              <p>Product</p>
+              <p>Company</p>
+              <p>Connect</p>
+              <hr />
+              <button>Login</button>
+              <button>Sign Up</button>
+            </div>
+          )}
           <div className='mt-20 space-y-5'>
             <h1 className='font-["Ubuntu"] w-[80%] mx-auto leading-12 text-[38px]'>A modern publishing platform</h1>
             <p className='font-light text-[18px] w-[70%] mx-auto'>Grow your audience and build your online brand</p>
           </div>
           <div className='mt-15 space-x-5 font-["Ubuntu"] font-bold'>
-            <button className='bg-white text-[#FF4B5A] p-3 px-5 rounded-full'>Start for Free</button>
-            <button className='border border-white rounded-full p-3 px-6'>Learn More</button>
+            <button className='bg-white text-[#FF4B5A] p-3 px-5 rounded-full hover:bg-[#ffffff48] transition-all duration-300 cursor-pointer hover:text-white'>Start for Free</button>
+            <button className='border border-white rounded-full p-3 px-6 cursor-pointer hover:bg-white hover:text-[#FF4B5A] transition-all duration-300'>Learn More</button>
           </div>
         </div>
       </nav>
       <section className='text-center mt-25'>
         <h1 className='font-["Ubuntu"] text-[28px]'>Designed for the future</h1>
         <div className='mt-10 space-y-10'>
-          <img src={editor} alt="editor" className='mx-auto' />
+          <img src={editorMobile} alt="editor" className='mx-auto' />
           <div className='px-12 space-y-4'>
             <h1 className='font-["Ubuntu"] text-[28px] px-15 leading-8'>Introducing an extensible editor</h1>
             <p className='text-gray-600'>Blogr features an exceedingly intuitive interface which lets you focus on one thing: creating content. The editor supports management of multiple blogs and allows easy manipulation of embeds such as images, videos, and Markdown. Extensibility with plugins and themes provide easy ways to add functionality or change the looks of a blog.</p>
@@ -39,13 +56,58 @@ function App() {
           </div>
         </div>
       </section>
+
       <img src={phones} alt="phones" className='absolute z-11 top-450' />
+      
       <section className='mt-80 text-center text-white rounded-bl-[150px] hero rounded-tr-[150px]'>
-        <div className='pt-75 pb-40 px-15 space-y-6'>
+        <div className='pt-70 pb-40 px-15 space-y-7'>
           <h1 className='font-["Ubuntu"] text-[44px] leading-14'>State of the Art Infrastructure</h1>
           <p className='text-[18px]'>With reliability and speed in mind, worldwide data centers provide the backbone for ultra-fast connectivity. This ensures your site will load instantly, no matter where your readers are, keeping your site competitive.</p>
         </div>
       </section>
+      <section className='text-center mt-20'>
+        <img src={laptopMobile} alt="laptop" />
+        <div className='px-12 space-y-10 mt-10'>
+          <div className='space-y-6'>
+            <h1 className='font-["Ubuntu"] text-[28px] px-15 leading-8'>Free, open, simple</h1>
+            <p className='text-gray-600'>Blogr is a free and open source application backed by a large community of helpful developers. It supports features such as code syntax highlighting, RSS feeds, social media integration, third-party commenting tools, and works seamlessly with Google Analytics. The architecture is clean and is relatively easy to learn.</p>
+          </div>
+          <div className='space-y-6'>
+            <h1 className='font-["Ubuntu"] text-[28px] px-15 leading-8'>Powerful tooling</h1>
+            <p className='text-gray-600'>Batteries included. We built a simple and straightforward CLI tool that makes customization and deployment a breeze, but capable of producing even the most complicated sites.</p>
+          </div>
+        </div>
+      </section>
+      <footer className='text-center mt-20 bg-[#24242C] rounded-tr-[150px] py-20 text-[18px]'>
+        <img src={logo} alt="logo" className='mx-auto' />
+        <div className='space-y-5 mt-15'>
+          <h1 className='text-white font-["Ubuntu"] font-medium'>Product</h1>
+          <div className='space-y-1 text-gray-300'>
+            <p className="hover:underline cursor-pointer w-fit mx-auto">Overview</p>
+            <p className="hover:underline cursor-pointer w-fit mx-auto">Pricing</p>
+            <p className="hover:underline cursor-pointer w-fit mx-auto">Marketplace</p>
+            <p className="hover:underline cursor-pointer w-fit mx-auto">Features</p>
+            <p className="hover:underline cursor-pointer w-fit mx-auto">Integrations</p>
+          </div>
+        </div>
+        <div className='space-y-5 mt-15'>
+          <h1 className='text-white font-["Ubuntu"] font-medium'>Company</h1>
+          <div className='space-y-1 text-gray-300'>
+            <p className="hover:underline cursor-pointer w-fit mx-auto">About</p>
+            <p className="hover:underline cursor-pointer w-fit mx-auto">Team</p>
+            <p className="hover:underline cursor-pointer w-fit mx-auto">Blog</p>
+            <p className="hover:underline cursor-pointer w-fit mx-auto">Careers</p>
+          </div>
+        </div>
+        <div className='space-y-5 mt-15'>
+          <h1 className='text-white font-["Ubuntu"] font-medium'>Connect</h1>
+          <div className='space-y-1 text-gray-300'>
+            <p className="hover:underline cursor-pointer w-fit mx-auto">Contact</p>
+            <p className="hover:underline cursor-pointer w-fit mx-auto">Newsletter</p>
+            <p className="hover:underline cursor-pointer w-fit mx-auto">LinkedIn</p>
+          </div>
+        </div>
+      </footer>
     </div>
   )
 }
