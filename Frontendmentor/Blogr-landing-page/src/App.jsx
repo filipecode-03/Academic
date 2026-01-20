@@ -32,7 +32,7 @@ function App() {
 
   return (
     <div className='min-h-screen font-["Overpass"]'>
-      <nav className='text-center text-white rounded-bl-[150px] bg-[linear-gradient(to_bottom,rgba(254,141,111,0.9),rgba(255,71,90,0.9)),url("./assets/images/bg-pattern-intro-mobile.svg")] bg-center bg-no-repeat'>
+      <nav className='text-center text-white rounded-bl-[150px] bg-[linear-gradient(to_bottom,rgba(254,141,111,0.9),rgba(255,71,90,0.9)),url("./assets/images/bg-pattern-intro-mobile.svg")] lg:bg-[linear-gradient(to_bottom,rgba(254,141,111,0.9),rgba(255,71,90,0.9)),url("./assets/images/bg-pattern-intro-desktop.svg")] bg-center bg-no-repeat'>
         <div className='p-8 pt-12 pb-42'>
           <div className='flex justify-between items-center'>
             <img src={logo} alt="logo" />
