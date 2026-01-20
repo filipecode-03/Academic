@@ -8,11 +8,22 @@ import phones from './assets/images/illustration-phones.svg'
 import laptopMobile from './assets/images/illustration-laptop-mobile.svg'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
-
+import { useFloating, offset, flip, shift, autoUpdate, } from "@floating-ui/react";
 
 function App() {
 
   const [menu, setMenu] = useState(false)
+
+  const { x, y, refs, strategy } = useFloating({
+    placement: "bottom-start",
+    middleware: [
+      offset(30),
+      flip(),
+      shift({ padding: 8 }),
+    ],
+    whileElementsMounted: autoUpdate,
+  });
+
   const [openToggle, setOpenToggle] = useState(null)
 
   const toggle = (name) => {
@@ -25,10 +36,10 @@ function App() {
         <div className='p-8 pt-12 pb-42'>
           <div className='flex justify-between items-center'>
             <img src={logo} alt="logo" />
-            <img src={menu ? close : hamburguer} alt="menu" onClick={() => setMenu(!menu)} className='cursor-pointer' />
+            <img src={menu ? close : hamburguer} alt="menu" ref={refs.setReference} onClick={() => setMenu(!menu)} className='cursor-pointer' />
           </div>
           {menu && (
-            <div className='text-[20px] font-medium bg-white w-[87%] top-30 p-8 shadow-2xl text-black rounded-[10px] absolute z-11'>
+            <div ref={refs.setFloating} style={{position: strategy, top: y ?? 0, left: x ?? 0,}} className='text-[20px] font-medium bg-white w-[87%] p-8 shadow-2xl text-black rounded-[10px] z-50'>
               <div onClick={() => toggle("Product")} className="flex gap-1 hover:text-black w-fit cursor-pointer mx-auto">
                 <p className={openToggle === "Product" ? 'w-fit text-gray-600' : 'w-fit'}>Product</p>
                 <FontAwesomeIcon icon={openToggle === "Product" ? faChevronUp : faChevronDown} 
