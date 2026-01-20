@@ -13,6 +13,11 @@ import { faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
 function App() {
 
   const [menu, setMenu] = useState(false)
+  const [openToggle, setOpenToggle] = useState(null)
+
+  const toggle = (name) => {
+    setOpenToggle((prev) => (prev === name ? null : name))
+  } 
 
   return (
     <div className='min-h-screen font-["Overpass"]'>
@@ -23,13 +28,51 @@ function App() {
             <img src={menu ? close : hamburguer} alt="menu" onClick={() => setMenu(!menu)} className='cursor-pointer' />
           </div>
           {menu && (
-            <div>
-              <p>Product</p>
-              <p>Company</p>
-              <p>Connect</p>
-              <hr />
-              <button>Login</button>
-              <button>Sign Up</button>
+            <div className='text-[20px] font-medium bg-white w-[87%] top-30 p-8 shadow-2xl text-black rounded-[10px] absolute z-11'>
+              <div onClick={() => toggle("Product")} className="flex gap-1 hover:text-black w-fit cursor-pointer mx-auto">
+                <p className={openToggle === "Product" ? 'w-fit text-gray-600' : 'w-fit'}>Product</p>
+                <FontAwesomeIcon icon={openToggle === "Product" ? faChevronUp : faChevronDown} 
+                className="transition-transform text-[12px] text-[#FF4B5A] mt-1.5" />
+              </div>
+              {openToggle === "Product" && (
+                <div className='bg-gray-200 rounded-[5px] mt-4 p-6 space-y-4 text-gray-600'>
+                  <p className='cursor-pointer hover:text-black w-fit mx-auto'>Overview</p>
+                  <p className='cursor-pointer hover:text-black w-fit mx-auto'>Pricing</p>
+                  <p className='cursor-pointer hover:text-black w-fit mx-auto'>Marketplace</p>
+                  <p className='cursor-pointer hover:text-black w-fit mx-auto'>Features</p>
+                  <p className='cursor-pointer hover:text-black w-fit mx-auto'>Integrations</p>
+                </div>
+              )}
+              <div onClick={() => toggle("Company")} className="mt-5 flex gap-1 hover:text-black w-fit cursor-pointer mx-auto">
+                <p className={openToggle === "Company" ? 'w-fit text-gray-600' : 'w-fit'}>Company</p>
+                <FontAwesomeIcon icon={openToggle === "Company" ? faChevronUp : faChevronDown} 
+                className="transition-transform text-[12px] text-[#FF4B5A] mt-1.5" />
+              </div>
+              {openToggle === "Company" && (
+                <div className='bg-gray-200 rounded-[5px] mt-4 p-6 space-y-4 text-gray-600'>
+                  <p className='cursor-pointer hover:text-black w-fit mx-auto'>About</p>
+                  <p className='cursor-pointer hover:text-black w-fit mx-auto'>Team</p>
+                  <p className='cursor-pointer hover:text-black w-fit mx-auto'>Blog</p>
+                  <p className='cursor-pointer hover:text-black w-fit mx-auto'>Careers</p>
+                </div>
+              )}
+              <div onClick={() => toggle("Connect")} className="mt-5 flex gap-1 hover:text-black w-fit cursor-pointer mx-auto">
+                <p className={openToggle === "Connect" ? 'w-fit text-gray-600' : 'w-fit'}>Connect</p>
+                <FontAwesomeIcon icon={openToggle === "Connect" ? faChevronUp : faChevronDown} 
+                className="transition-transform text-[12px] text-[#FF4B5A] mt-1.5" />
+              </div>
+              {openToggle === "Connect" && (
+                <div className='bg-gray-200 rounded-[5px] mt-4 p-6 space-y-4 text-gray-600'>
+                  <p className='cursor-pointer hover:text-black w-fit mx-auto'>Contact</p>
+                  <p className='cursor-pointer hover:text-black w-fit mx-auto'>Newsletter</p>
+                  <p className='cursor-pointer hover:text-black w-fit mx-auto'>Linkedln</p>
+                </div>
+              )}
+              <hr className='border-gray-300 mt-5 mb-8' />
+              <div className='flex flex-col space-y-4'>
+                <button className='w-fit mx-auto cursor-pointer'>Login</button>
+                <button className='cursor-pointer rounded-full bg-linear-to-r from-[#FE8D6F] to-[#FF475A] hover:bg-[#ffffff48] w-fit mx-auto p-3 px-10 text-white font-bold'>Sign Up</button>
+              </div>
             </div>
           )}
           <div className='mt-20 space-y-5'>
