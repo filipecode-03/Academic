@@ -33,10 +33,42 @@ function App() {
   return (
     <div className='min-h-screen font-["Overpass"]'>
       <nav className='text-center text-white rounded-bl-[150px] bg-[linear-gradient(to_bottom,rgba(254,141,111,0.9),rgba(255,71,90,0.9)),url("./assets/images/bg-pattern-intro-mobile.svg")] lg:bg-[linear-gradient(to_bottom,rgba(254,141,111,0.9),rgba(255,71,90,0.9)),url("./assets/images/bg-pattern-intro-desktop.svg")] bg-center bg-no-repeat'>
-        <div className='p-8 pt-12 pb-42'>
-          <div className='flex justify-between items-center'>
+        <div className='p-8 lg:px-30 lg:pt-14 pt-12 pb-42'>
+          <div className='flex lg:justify-start justify-between items-center'>
             <img src={logo} alt="logo" />
-            <img src={menu ? close : hamburguer} alt="menu" ref={refs.setReference} onClick={() => setMenu(!menu)} className='cursor-pointer' />
+            <div className='hidden lg:block ml-15'>
+              <div className='flex gap-8'>
+                <div ref={refs.setReference} onClick={() => toggle("ProductDesktop")} className="flex mt-3 gap-1 hover:text-black w-fit cursor-pointer mx-auto">
+                  <p className={openToggle === "ProductDesktop" ? 'w-fit text-white hover:underline' : 'w-fit text-gray-200 hover:underline'}>Product</p>
+                  <FontAwesomeIcon icon={openToggle === "ProductDesktop" ? faChevronUp : faChevronDown}
+                  className="transition-transform text-[10px] text-gray-200 mt-1.5" />
+                </div>
+                { openToggle === "ProductDesktop" && (
+                  <div ref={refs.setFloating} style={{position: strategy, top: y ?? 0, left: x ?? 0,}} className='bg-white rounded-[5px] text-gray-600 z-50'>
+                    <p className='cursor-pointer hover:text-black w-fit mx-auto'>Overview</p>
+                    <p className='cursor-pointer hover:text-black w-fit mx-auto'>Pricing</p>
+                    <p className='cursor-pointer hover:text-black w-fit mx-auto'>Marketplace</p>
+                    <p className='cursor-pointer hover:text-black w-fit mx-auto'>Features</p>
+                    <p className='cursor-pointer hover:text-black w-fit mx-auto'>Integrations</p>
+                  </div>
+                ) }
+                <div onClick={() => toggle("Product")} className="flex mt-3 gap-1 hover:text-black w-fit cursor-pointer mx-auto">
+                  <p className={openToggle === "Product" ? 'w-fit text-white hover:underline' : 'w-fit text-gray-200 hover:underline'}>Company</p>
+                  <FontAwesomeIcon icon={openToggle === "Product" ? faChevronUp : faChevronDown}
+                  className="transition-transform text-[10px] text-gray-200 mt-1.5" />
+                </div>
+                <div onClick={() => toggle("Product")} className="flex mt-3 gap-1 hover:text-black w-fit cursor-pointer mx-auto">
+                  <p className={openToggle === "Product" ? 'w-fit text-white hover:underline' : 'w-fit text-gray-200 hover:underline'}>Connect</p>
+                  <FontAwesomeIcon icon={openToggle === "Product" ? faChevronUp : faChevronDown}
+                  className="transition-transform text-[10px] text-gray-200 mt-1.5" />
+                </div>
+                <div className='flex ml-140 gap-5'>
+                  <button className='w-fit mx-auto cursor-pointer'>Login</button>
+                  <button className='cursor-pointer rounded-full bg-white hover:bg-[#ffffff48] w-fit mx-auto p-3 px-10 text-[#FF4B5A] hover:text-white font-bold'>Sign Up</button>
+                </div>
+              </div>
+            </div>
+            <img src={menu ? close : hamburguer} alt="menu" ref={refs.setReference} onClick={() => setMenu(!menu)} className='cursor-pointer block lg:hidden' />
           </div>
           {menu && (
             <div ref={refs.setFloating} style={{position: strategy, top: y ?? 0, left: x ?? 0,}} className='text-[20px] font-medium bg-white w-[87%] p-8 shadow-2xl text-black rounded-[10px] z-50'>
@@ -86,8 +118,8 @@ function App() {
               </div>
             </div>
           )}
-          <div className='mt-20 space-y-5'>
-            <h1 className='font-["Ubuntu"] w-[80%] mx-auto leading-12 text-[38px]'>A modern publishing platform</h1>
+          <div className='mt-20 lg:mt-30 space-y-5 lg:space-y-10'>
+            <h1 className='font-["Ubuntu"] w-[80%] mx-auto leading-12 text-[38px] lg:text-[58px]'>A modern publishing platform</h1>
             <p className='font-light text-[18px] w-[70%] mx-auto'>Grow your audience and build your online brand</p>
           </div>
           <div className='mt-15 space-x-5 font-["Ubuntu"] font-bold'>
