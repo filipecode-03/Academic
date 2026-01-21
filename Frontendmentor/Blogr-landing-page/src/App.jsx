@@ -14,12 +14,42 @@ function App() {
 
   const [menu, setMenu] = useState(false)
 
-  const { x, y, refs, strategy } = useFloating({
+  const { x: menuX, y: menuY, refs: menuRefs, strategy: menuStrategy } = useFloating({
     placement: "bottom-start",
     middleware: [
       offset(30),
       flip(),
       shift({ padding: 8 }),
+    ],
+    whileElementsMounted: autoUpdate,
+  });
+
+  const { x: productX, y: productY, refs: productRefs, strategy: productStrategy } = useFloating({
+    placement: "bottom",
+    middleware: [
+      offset(10),
+      flip(),
+      shift({ padding: 258 }),
+    ],
+    whileElementsMounted: autoUpdate,
+  });
+
+  const { x: companyX, y: companyY, refs: companyRefs, strategy: companyStrategy } = useFloating({
+    placement: "bottom",
+    middleware: [
+      offset(10),
+      flip(),
+      shift({ padding: 365 }),
+    ],
+    whileElementsMounted: autoUpdate,
+  });
+
+  const { x: connectX, y: connectY, refs: connectRefs, strategy: connectStrategy } = useFloating({
+    placement: "bottom",
+    middleware: [
+      offset(10),
+      flip(),
+      shift({ padding: 485 }),
     ],
     whileElementsMounted: autoUpdate,
   });
@@ -38,40 +68,57 @@ function App() {
             <img src={logo} alt="logo" />
             <div className='hidden lg:block ml-15'>
               <div className='flex gap-8'>
-                <div ref={refs.setReference} onClick={() => toggle("ProductDesktop")} className="flex mt-3 gap-1 hover:text-black w-fit cursor-pointer mx-auto">
+                <div ref={productRefs.setReference} onClick={() => toggle("ProductDesktop")} className="flex mt-2 gap-1 hover:text-black w-fit cursor-pointer mx-auto">
                   <p className={openToggle === "ProductDesktop" ? 'w-fit text-white hover:underline' : 'w-fit text-gray-200 hover:underline'}>Product</p>
                   <FontAwesomeIcon icon={openToggle === "ProductDesktop" ? faChevronUp : faChevronDown}
-                  className="transition-transform text-[10px] text-gray-200 mt-1.5" />
+                  className={openToggle === "ProductDesktop" ? "transition-transform text-[10px] text-white mt-1.5" : "transition-transform text-[10px] text-gray-200 mt-1.5"} />
                 </div>
                 { openToggle === "ProductDesktop" && (
-                  <div ref={refs.setFloating} style={{position: strategy, top: y ?? 0, left: x ?? 0,}} className='bg-white rounded-[5px] text-gray-600 z-50'>
-                    <p className='cursor-pointer hover:text-black w-fit mx-auto'>Overview</p>
-                    <p className='cursor-pointer hover:text-black w-fit mx-auto'>Pricing</p>
-                    <p className='cursor-pointer hover:text-black w-fit mx-auto'>Marketplace</p>
-                    <p className='cursor-pointer hover:text-black w-fit mx-auto'>Features</p>
-                    <p className='cursor-pointer hover:text-black w-fit mx-auto'>Integrations</p>
+                  <div ref={productRefs.setFloating} style={{position: productStrategy, top: productY ?? 0, left: productX ?? 0,}} className='shadow-2xl bg-white p-6 pr-15 rounded-[5px] text-gray-600 z-50 space-y-3'>
+                    <p className='cursor-pointer hover:text-black w-fit'>Overview</p>
+                    <p className='cursor-pointer hover:text-black w-fit'>Pricing</p>
+                    <p className='cursor-pointer hover:text-black w-fit'>Marketplace</p>
+                    <p className='cursor-pointer hover:text-black w-fit'>Features</p>
+                    <p className='cursor-pointer hover:text-black w-fit'>Integrations</p>
                   </div>
                 ) }
-                <div onClick={() => toggle("Product")} className="flex mt-3 gap-1 hover:text-black w-fit cursor-pointer mx-auto">
-                  <p className={openToggle === "Product" ? 'w-fit text-white hover:underline' : 'w-fit text-gray-200 hover:underline'}>Company</p>
-                  <FontAwesomeIcon icon={openToggle === "Product" ? faChevronUp : faChevronDown}
-                  className="transition-transform text-[10px] text-gray-200 mt-1.5" />
+                <div ref={companyRefs.setReference} onClick={() => toggle("CompanyDesktop")} className="flex mt-2 gap-1 hover:text-black w-fit cursor-pointer mx-auto">
+                  <p className={openToggle === "CompanyDesktop" ? 'w-fit text-white hover:underline' : 'w-fit text-gray-200 hover:underline'}>Company</p>
+                  <FontAwesomeIcon icon={openToggle === "CompanyDesktop" ? faChevronUp : faChevronDown}
+                  className={openToggle === "CompanyDesktop" ? "transition-transform text-[10px] text-white mt-1.5" : "transition-transform text-[10px] text-gray-200 mt-1.5"} />
                 </div>
-                <div onClick={() => toggle("Product")} className="flex mt-3 gap-1 hover:text-black w-fit cursor-pointer mx-auto">
-                  <p className={openToggle === "Product" ? 'w-fit text-white hover:underline' : 'w-fit text-gray-200 hover:underline'}>Connect</p>
-                  <FontAwesomeIcon icon={openToggle === "Product" ? faChevronUp : faChevronDown}
-                  className="transition-transform text-[10px] text-gray-200 mt-1.5" />
+                { openToggle === "CompanyDesktop" && (
+                  <div ref={companyRefs.setFloating} style={{position: companyStrategy, top: companyY ?? 0, left: companyX ?? 0,}} className='shadow-2xl bg-white p-6 pr-15 rounded-[5px] text-gray-600 z-50 space-y-3'>
+                    <p className='cursor-pointer hover:text-black w-fit'>About</p>
+                    <p className='cursor-pointer hover:text-black w-fit'>Team</p>
+                    <p className='cursor-pointer hover:text-black w-fit'>Blog</p>
+                    <p className='cursor-pointer hover:text-black w-fit'>Careers</p>
+                  </div>
+                ) }
+                <div ref={connectRefs.setReference} onClick={() => toggle("ConnectDesktop")} className="flex mt-2 gap-1 hover:text-black w-fit cursor-pointer mx-auto">
+                  <p className={openToggle === "ConnectDesktop" ? 'w-fit text-white hover:underline' : 'w-fit text-gray-200 hover:underline'}>Connect</p>
+                  <FontAwesomeIcon icon={openToggle === "ConnectDesktop" ? faChevronUp : faChevronDown}
+                  className={openToggle === "ConnectDesktop" ? "transition-transform text-[10px] text-white mt-1.5" : "transition-transform text-[10px] text-gray-200 mt-1.5"} />
                 </div>
-                <div className='flex ml-140 gap-5'>
-                  <button className='w-fit mx-auto cursor-pointer'>Login</button>
-                  <button className='cursor-pointer rounded-full bg-white hover:bg-[#ffffff48] w-fit mx-auto p-3 px-10 text-[#FF4B5A] hover:text-white font-bold'>Sign Up</button>
-                </div>
+                { openToggle === "ConnectDesktop" && (
+                  <div ref={connectRefs.setFloating} style={{position: connectStrategy, top: connectY ?? 0, left: connectX ?? 0,}} className='shadow-2xl bg-white p-6 pr-15 rounded-[5px] text-gray-600 z-50 space-y-3'>
+                    <p className='cursor-pointer hover:text-black w-fit'>Contact</p>
+                    <p className='cursor-pointer hover:text-black w-fit'>Newsletter</p>
+                    <p className='cursor-pointer hover:text-black w-fit'>Linkedln</p>
+                  </div>
+                ) }
               </div>
             </div>
-            <img src={menu ? close : hamburguer} alt="menu" ref={refs.setReference} onClick={() => setMenu(!menu)} className='cursor-pointer block lg:hidden' />
+            <div className='hidden lg:block ml-auto'>
+              <div className='flex gap-5'>
+                <button className='w-fit mx-auto cursor-pointer'>Login</button>
+                <button className='cursor-pointer rounded-full bg-white hover:bg-[#ffffff48] w-fit mx-auto p-3 px-10 text-[#FF4B5A] hover:text-white font-bold'>Sign Up</button>
+              </div>
+            </div>
+            <img src={menu ? close : hamburguer} alt="menu" ref={menuRefs.setReference} onClick={() => setMenu(!menu)} className='cursor-pointer block lg:hidden' />
           </div>
           {menu && (
-            <div ref={refs.setFloating} style={{position: strategy, top: y ?? 0, left: x ?? 0,}} className='text-[20px] font-medium bg-white w-[87%] p-8 shadow-2xl text-black rounded-[10px] z-50'>
+            <div ref={menuRefs.setFloating} style={{position: menuStrategy, top: menuY ?? 0, left: menuX ?? 0,}} className='block lg:hidden text-[20px] font-medium bg-white w-[87%] p-8 shadow-2xl text-black rounded-[10px] z-50'>
               <div onClick={() => toggle("Product")} className="flex gap-1 hover:text-black w-fit cursor-pointer mx-auto">
                 <p className={openToggle === "Product" ? 'w-fit text-gray-600' : 'w-fit'}>Product</p>
                 <FontAwesomeIcon icon={openToggle === "Product" ? faChevronUp : faChevronDown} 
