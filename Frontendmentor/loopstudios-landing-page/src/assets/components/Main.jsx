@@ -1,10 +1,12 @@
 import interactiveMobile from '../images/mobile/image-interactive.jpg'
+import interactiveDesktop from '../images/desktop/image-interactive.jpg'
 import { useState } from 'react'
 
 function Main() {
     return (
         <section className='p-8'>
-            <img src={interactiveMobile} alt="interactive" className='mt-20' />
+            <img src={interactiveMobile} alt="interactive" className='mt-20 block lg:hidden' />
+            <img src={interactiveDesktop} alt="interactive" className='hidden lg:block' />
             <div className='text-center mt-15 space-y-4'>
                 <h1 className='font-["Josefin_Sans"] leading-11 font-light text-[45px]'>THE LEADER IN INTERACTIVE VR</h1>
                 <p className='text-gray-600 px-6'>Founded in 2011, Loopstudios has been producing world-class virtual reality projects for some of the best companies around the globe. Our award-winning creations have transformed businesses through digital experiences that bind to their brand.</p>
