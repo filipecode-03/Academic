@@ -37,7 +37,7 @@ function Main() {
                         <h1 className='w-[40%] leading-8'>MAKE IT FISHEYE</h1>
                     </div>
                 </div>
-                <button className='mt-10 mx-auto tracking-[5px] border-2 p-2 px-10'>SEE ALL</button>
+                <button className='mt-10 mx-auto tracking-[5px] border-2 p-2 px-10 hover:bg-black cursor-pointer hover:text-white'>SEE ALL</button>
             </div>
         </section>
     )
