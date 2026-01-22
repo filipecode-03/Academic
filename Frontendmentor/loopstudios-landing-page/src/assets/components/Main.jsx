@@ -4,12 +4,12 @@ import { useState } from 'react'
 
 function Main() {
     return (
-        <section className='p-8'>
+        <section className='p-8 lg:px-40 lg:py-28'>
             <img src={interactiveMobile} alt="interactive" className='mt-20 block lg:hidden' />
             <img src={interactiveDesktop} alt="interactive" className='hidden lg:block' />
-            <div className='text-center mt-15 space-y-4'>
+            <div className='text-center mt-15 space-y-4 lg:bg-red-100 lg:p-10 lg:absolute lg:top-248 lg:left-150 lg:text-left'>
                 <h1 className='font-["Josefin_Sans"] leading-11 font-light text-[45px]'>THE LEADER IN INTERACTIVE VR</h1>
-                <p className='text-gray-600 px-6'>Founded in 2011, Loopstudios has been producing world-class virtual reality projects for some of the best companies around the globe. Our award-winning creations have transformed businesses through digital experiences that bind to their brand.</p>
+                <p className='text-gray-600 px-6 lg:px-0'>Founded in 2011, Loopstudios has been producing world-class virtual reality projects for some of the best companies around the globe. Our award-winning creations have transformed businesses through digital experiences that bind to their brand.</p>
             </div>
             <div className='mt-20'>
                 <h1 className='text-[45px] text-center font-["Josefin_Sans"] leading-11 font-light'>OUR CREATIONS</h1>
