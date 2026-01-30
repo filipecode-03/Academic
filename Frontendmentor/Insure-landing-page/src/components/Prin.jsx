@@ -21,22 +21,22 @@ function Prin() {
                     <div>
                         <img src={iconSnappy} alt="snappy" className='mx-auto' />
                         <h1 className='font-["DM_Serif_Display"] text-[28px] mt-5'>Snappy Process</h1>
-                        <p className='mt-2 text-gray-600'>Our application process can be completed in minutes, not hours. Don’t get stuck filling in tedious forms.</p>
+                        <p className='mt-2 px-4 text-gray-600'>Our application process can be completed in minutes, not hours. Don’t get stuck filling in tedious forms.</p>
                     </div>
                     <div>
                         <img src={iconAffordable} alt="affordable" className='mx-auto' />
-                        <h1 className='font-["DM_Serif_Display"] text-[28px] mt-5'></h1>
-                        <p className='mt-2 text-gray-600'>We don’t want you worrying about high monthly costs. Our prices may be low, but we still offer the best coverage possible.</p>
+                        <h1 className='font-["DM_Serif_Display"] text-[28px] mt-5'>Affordable Prices</h1>
+                        <p className='mt-2 px-4 text-gray-600'>We don’t want you worrying about high monthly costs. Our prices may be low, but we still offer the best coverage possible.</p>
                     </div>
                     <div>
                         <img src={iconPeople} alt="people" className='mx-auto' />
-                        <h1 className='font-["DM_Serif_Display"] text-[28px] mt-5'></h1>
-                        <p className='mt-2 text-gray-600'>Our plans aren’t full of conditions and clauses to prevent payouts. We make sure you’re covered when you need it.</p>
+                        <h1 className='font-["DM_Serif_Display"] text-[28px] mt-5'>People First</h1>
+                        <p className='mt-2 px-4 text-gray-600'>Our plans aren’t full of conditions and clauses to prevent payouts. We make sure you’re covered when you need it.</p>
                     </div>
                 </div>
-                <div>
-                    <h1 className='font-["DM_Serif_Display"]'>Find out more about how we work</h1>
-                    <button>HOW WE WORK</button>
+                <div className='p-5 py-15 mt-36 text-white bg-[url("./assets/images/bg-pattern-how-we-work-mobile.svg")] bg-no-repeat bg-top-right bg-[#2C2640]'>
+                    <h1 className='font-["DM_Serif_Display"] text-[45px] leading-12'>Find out more about how we work</h1>
+                    <button className='border-2 mt-8 tracking-[1px] p-2 px-6'>HOW WE WORK</button>
                 </div>
             </section>
         </main>

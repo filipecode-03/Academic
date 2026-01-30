@@ -1,11 +1,27 @@
 import logo from '../assets/images/logo.svg'
 import hamburger from '../assets/images/icon-hamburger.svg'
+import close from '../assets/images/icon-close.svg'
+import { useState } from 'react'
 
 function NavBar() {
+
+    const [open, setOpen] = useState(false)
+
     return (
-        <nav className='p-5 flex items-center justify-between'>
+        <nav className={`
+    p-6 flex items-center justify-between
+    ${open ? 'fixed top-0 left-0 w-full z-20 bg-white' : 'relative'}
+  `}>
             <img src={logo} alt="logo" />
-            <img src={hamburger} alt="menu" />
+            <img src={open ? close : hamburger} alt="menu" className='cursor-pointer' onClick={() => setOpen(!open)} />
+            { open && (
+                <div className='fixed text-white text-center text-[24px] space-y-8 py-18 tracking-[1px] h-screen w-screen left-0 z-11 top-20 p-8 bg-[#2B282F] bg-[url("./assets/images/bg-pattern-mobile-nav.svg")] bg-no-repeat bg-bottom bg-[size:100%_auto]'>
+                    <p>HOW WE WORK</p>
+                    <p>BLOG</p>
+                    <p>ACCOUNT</p>
+                    <button className='border-2 p-2 w-full'>VIEW PLANS</button>
+                </div>
+            ) }
         </nav>
     )
 }
