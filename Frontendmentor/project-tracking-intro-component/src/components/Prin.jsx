@@ -5,7 +5,7 @@ function Prin() {
         <main>
             <div className="rounded-bl-[80px] bg-gray-200 h-130 lg:h-100 w-[50%] ml-auto"></div>
             <img src={intro} alt="intro" className='absolute top-35 lg:right-0 lg:top-40' />
-            <section className='absolute lg:top-50 lg:left-42 p-8 pb-25'>
+            <section className='absolute lg:top-50 lg:left-32 p-8 pb-25'>
                 <div className='flex items-center gap-5'>
                     <h1 className='bg-[#212840] text-white text-[18px] rounded-full px-3 p-0.5 font-["Barlow_Condensed"] font-semibold tracking-[1px]'>NEW</h1>
                     <h2 className='font-["Barlow"] text-gray-500 text-[18px] tracking-[3px]'>MONOGRAPH DASHBOARD</h2>
