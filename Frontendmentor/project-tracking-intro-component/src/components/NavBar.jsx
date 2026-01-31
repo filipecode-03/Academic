@@ -20,9 +20,18 @@ function NavBar() {
     });
 
     return (
-        <nav className="absolute flex p-8 justify-between items-center w-full">
+        <nav className="absolute flex p-8 lg:p-15 lg:px-50 justify-between items-center w-full">
             <img src={logo} alt="logo" />
-            <img src={menu} alt="menu" className='cursor-pointer' ref={refs.setReference} onClick={() => setOpen(!open)} />
+            <div className='hidden lg:block'>
+                <div className='flex items-center'>
+                    <p></p>
+                    <p></p>
+                    <p></p>
+                    <div className='rounded-full bg-gray-600 h-2 w-2'></div>
+                    <button>LOGIN</button>
+                </div>
+            </div>
+            <img src={menu} alt="menu" className='cursor-pointer block lg:hidden' ref={refs.setReference} onClick={() => setOpen(!open)} />
             { open && (
                 <div ref={refs.setFloating} style={{ position: strategy, top: y ?? 0, left: x ?? 0,}} className='bg-white p-5 px-10 shadow-2xl w-[87%] text-center space-y-5 tracking-[1px] text-[20px] font-["Barlow_Condensed"] z-11 font-bold'>
                     <p className="hover:underline cursor-pointer">PRODUCT</p>
