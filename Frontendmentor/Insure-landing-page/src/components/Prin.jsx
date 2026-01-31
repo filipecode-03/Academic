@@ -11,7 +11,7 @@ function Prin() {
             <section className='text-white text-center py-25 p-8 bg-[url("./assets/images/bg-pattern-intro-left-mobile.svg")] bg-no-repeat bg-top-left bg-[#2C2640]'>
                 <h1 className='font-["DM_Serif_Display"] text-[55px] px-4 leading-14'>Humanizing your insurance.</h1>
                 <p className='mt-5'>Get your life insurance coverage easier and faster. We blend our expertise and technology to help you find the plan that’s right for you. Ensure you and your loved ones are protected.</p>
-                <button className='border-2 p-2 px-6 mt-10'>VIEW PLANS</button>
+                <button className='border-2 p-2 px-6 mt-10 hover:bg-white hover:text-black cursor-pointer'>VIEW PLANS</button>
             </section>
             <img src={bgImageMobile} alt="bg image" className='absolute top-253 right-0' />
             <section className='py-35 p-8 text-center'>
@@ -36,7 +36,7 @@ function Prin() {
                 </div>
                 <div className='p-5 py-15 mt-36 text-white bg-[url("./assets/images/bg-pattern-how-we-work-mobile.svg")] bg-no-repeat bg-top-right bg-[#2C2640]'>
                     <h1 className='font-["DM_Serif_Display"] text-[45px] leading-12'>Find out more about how we work</h1>
-                    <button className='border-2 mt-8 tracking-[1px] p-2 px-6'>HOW WE WORK</button>
+                    <button className='border-2 mt-8 tracking-[1px] p-2 px-6 hover:bg-white hover:text-black cursor-pointer'>HOW WE WORK</button>
                 </div>
             </section>
         </main>
