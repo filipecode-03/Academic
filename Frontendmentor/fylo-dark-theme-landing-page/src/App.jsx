@@ -1,10 +1,14 @@
-
+import Navbar from './components/NavBar'
+import Prin from './components/Prin'
+import End from './components/End'
 
 function App() {
 
   return (
-    <div>
-      
+    <div className='min-h-screen bg-[#27314b] text-white'>
+      <Navbar />
+      <Prin />
+      <End /> 
     </div>
   )
 }
