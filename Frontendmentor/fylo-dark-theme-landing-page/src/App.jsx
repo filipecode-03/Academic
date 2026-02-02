@@ -1,6 +1,7 @@
 import Navbar from './components/NavBar'
 import Prin from './components/Prin'
 import End from './components/End'
+import './App.css'
 
 function App() {
 
