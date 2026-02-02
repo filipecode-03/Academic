@@ -7,6 +7,10 @@ import iconSecurity from '../assets/images/icon-security.svg'
 import iconTime from '../assets/images/icon-collaboration.svg'
 import iconFile from '../assets/images/icon-any-file.svg'
 import iconArrow from '../assets/images/icon-arrow.svg'
+import aspas from '../assets/images/bg-quotes.png'
+import profileOne from '../assets/images/profile-1.jpg'
+import profileTwo from '../assets/images/profile-2.jpg'
+import profileThree from '../assets/images/profile-3.jpg'
 
 function Prin() {
     return (
@@ -19,7 +23,7 @@ function Prin() {
             </section>
             <img src={curvyMobile} alt="curvy" className='w-full pt-70' />
             <section className='bg-[#181F2B] pt-90'>
-                <section className='px-8 text-center grid gap-20'>
+                <section className='px-8 text-center grid gap-20 lg:grid-cols-2'>
                     <div>
                         <img src={iconAcess} alt="acess" className='mx-auto' />
                         <h1 className='mt-8 text-[22px]'>Access your files, anywhere</h1>
@@ -27,32 +31,68 @@ function Prin() {
                     </div>
                     <div>
                         <img src={iconSecurity} alt="security" className='mx-auto' />
-                        <h1>Security you can trust</h1>
-                        <p>2-factor authentication and user-controlled encryption are just a couple of the security features we allow to help secure your files.</p>
+                        <h1 className='mt-8 text-[22px]'>Security you can trust</h1>
+                        <p className='mt-2'>2-factor authentication and user-controlled encryption are just a couple of the security features we allow to help secure your files.</p>
                     </div>
                     <div>
                         <img src={iconTime} alt="time" className='mx-auto' />
-                        <h1>Real-time collaboration</h1>
-                        <p>Securely share files and folders with friends, family and colleagues for live collaboration. No email attachments required.</p>
+                        <h1 className='mt-8 text-[22px]'>Real-time collaboration</h1>
+                        <p className='mt-2'>Securely share files and folders with friends, family and colleagues for live collaboration. No email attachments required.</p>
                     </div>
                     <div>
                         <img src={iconFile} alt="file" className='mx-auto' />
-                        <h1>Store any type of file</h1>
-                        <p>Whether you're sharing holidays photos or work documents, Fylo has you covered allowing for all file types to be securely stored and shared.</p>
+                        <h1 className='mt-8 text-[22px]'>Store any type of file</h1>
+                        <p className='mt-2'>Whether you're sharing holidays photos or work documents, Fylo has you covered allowing for all file types to be securely stored and shared.</p>
                     </div>
                 </section>
-                <section className='mt-20'>
-                    <img src={illustration2} alt="illustration 2" />
-                    <div>
-                        <h1 className='text-center'>Stay productive, wherever you are</h1>
+                <section className='mt-20 p-8'>
+                    <img src={illustration2} alt="illustration 2" className='w-100 mx-auto' />
+                    <div className='space-y-4 mt-15'>
+                        <h1 className='text-center text-[24px]'>Stay productive, wherever you are</h1>
                         <p>Never let location be an issue when accessing your files. Fylo has you covered for all of your file storage needs.</p>
                         <p>Securely share files and folders with friends, family and colleagues for live collaboration. No email attachments required.</p>
-                        <div>
+                        <div className="flex text-[#62D6D0] items-center gap-2 border-b pb-1 border-current w-fit">
                             <a href="#">See how Fylo works</a>
                             <img src={iconArrow} alt="arrow" />
                         </div>
                     </div>
                 </section>
+                <section className='mt-20 p-8'>
+                    <img src={aspas} alt="aspas" className='w-8 ml-2' />
+                    <div className='grid lg:grid-cols-3 gap-10'>
+                        <div className='p-8 bg-[#21293C] rounded-[5px]'>
+                            <p>Fylo has improved our team productivity by an order of magnitude. Since making the switch our team has become a well-oiled collaboration machine.</p>
+                            <div className='flex items-center gap-2 mt-6'>
+                                <img src={profileOne} alt="profile" className='rounded-full w-10' />
+                                <div>
+                                    <h1>Satish Patel</h1>
+                                    <p>Founder & CEO, Huddle</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div className='p-8 bg-[#21293C] rounded-[5px]'>
+                            <p>Fylo has improved our team productivity by an order of magnitude. Since making the switch our team has become a well-oiled collaboration machine.</p>
+                            <div className='flex items-center gap-2 mt-6'>
+                                <img src={profileTwo} alt="profile" className='rounded-full w-10' />
+                                <div>
+                                    <h1>Bruce McKenzie</h1>
+                                    <p>Founder & CEO, Huddle</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div className='p-8 bg-[#21293C] rounded-[5px]'>
+                            <p>Fylo has improved our team productivity by an order of magnitude. Since making the switch our team has become a well-oiled collaboration machine.</p>
+                            <div className='flex items-center gap-2 mt-6'>
+                                <img src={profileThree} alt="profile" className='rounded-full w-10' />
+                                <div>
+                                    <h1>Iva Boyd</h1>
+                                    <p>Founder & CEO, Huddle</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
             </section>
         </main>
     )
