@@ -11,8 +11,20 @@ import aspas from '../assets/images/bg-quotes.png'
 import profileOne from '../assets/images/profile-1.jpg'
 import profileTwo from '../assets/images/profile-2.jpg'
 import profileThree from '../assets/images/profile-3.jpg'
+import { useForm } from "react-hook-form";
 
 function Prin() {
+
+    const {
+        register,
+        handleSubmit,
+        formState: { errors }
+    } = useForm();
+    
+    function onSubmit(data) {
+        console.log(data);
+    }
+
     return (
         <main>
             <section className='absolute text-center p-8'>
@@ -92,11 +104,20 @@ function Prin() {
                         </div>
                     </div>
                 </section>
-                <section>
-                    <div className='bg-[#1B2330] rounded-[5px]'>
-                        <h1>Get early access today</h1>
-                        <p>It only takes a minute to sign up and our free starter tier is extremely generous. If you have any questions, our support team would be happy to help you.</p>
-                        
+                <section className='p-8 absolute top-975'>
+                    <div className='bg-[#1B2330] rounded-[10px] shadow-2xl text-center p-8'>
+                        <h1 className='text-[20px]'>Get early access today</h1>
+                        <p className='mt-4'>It only takes a minute to sign up and our free starter tier is extremely generous. If you have any questions, our support team would be happy to help you.</p>
+                        <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col'>
+                            <input 
+                                className='bg-white p-3 mt-8 pl-8 rounded-full text-black shadow-2xl'
+                                placeholder='email@example.com'
+                                type="email" 
+                                {...register("email", { required: "Please enter a valid email address" })}
+                            />
+                            {errors.email && <span className='text-left ml-8 mt-1 text-[14px] text-red-500'>{errors.email.message}</span>}
+                            <button type="submit" className="mt-5 shadow-2xl p-3 rounded-full bg-linear-to-r from-[#51C7D5] to-[#3DAED0] hover:from-[#85DEE4] hover:to-[#6BD3DA] cursor-pointer transition">Get Started For Free</button>
+                        </form>
                     </div>
                 </section>
             </section>
