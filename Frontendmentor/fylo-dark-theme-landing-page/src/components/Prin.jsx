@@ -14,7 +14,7 @@ import profileThree from '../assets/images/profile-3.jpg'
 
 function Prin() {
     return (
-        <main className=''>
+        <main>
             <section className='absolute text-center p-8'>
                 <img src={illustration} alt="illustration" className='w-100 mx-auto' />
                 <h1 className='text-[30px] mt-10'>All your files in one secure location, accessible anywhere.</h1>
@@ -22,7 +22,7 @@ function Prin() {
                 <button className='mt-10 bg-linear-to-r from-[#50C6D4] to-[#3EAFCF] rounded-full p-3 px-20'>Get Started</button>
             </section>
             <img src={curvyMobile} alt="curvy" className='w-full pt-70' />
-            <section className='bg-[#181F2B] pt-90'>
+            <section className='bg-[#181F2B] py-90'>
                 <section className='px-8 text-center grid gap-20 lg:grid-cols-2'>
                     <div>
                         <img src={iconAcess} alt="acess" className='mx-auto' />
@@ -57,7 +57,7 @@ function Prin() {
                         </div>
                     </div>
                 </section>
-                <section className='mt-20 p-8'>
+                <section className='mt-20 p-12'>
                     <img src={aspas} alt="aspas" className='w-8 ml-2' />
                     <div className='grid lg:grid-cols-3 gap-10'>
                         <div className='p-8 bg-[#21293C] rounded-[5px]'>
@@ -92,7 +92,13 @@ function Prin() {
                         </div>
                     </div>
                 </section>
-                
+                <section>
+                    <div className='bg-[#1B2330] rounded-[5px]'>
+                        <h1>Get early access today</h1>
+                        <p>It only takes a minute to sign up and our free starter tier is extremely generous. If you have any questions, our support team would be happy to help you.</p>
+                        
+                    </div>
+                </section>
             </section>
         </main>
     )
