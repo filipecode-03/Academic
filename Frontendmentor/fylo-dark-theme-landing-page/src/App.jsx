@@ -6,7 +6,7 @@ import './App.css'
 function App() {
 
   return (
-    <div className='min-h-screen bg-[#27314b] text-white'>
+    <div className='min-h-screen  text-white'>
       <Navbar />
       <Prin />
       <End /> 

@@ -2,6 +2,9 @@ import logo from '../assets/images/logo.svg'
 import iconLocation from '../assets/images/icon-location.svg'
 import iconPhone from '../assets/images/icon-phone.svg'
 import iconEmail from '../assets/images/icon-email.svg'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faTwitter, faInstagram, faFacebookF } from '@fortawesome/free-brands-svg-icons'
+
 
 function End() {
     return (
@@ -25,19 +28,21 @@ function End() {
                     </div>
                 </div>
             </div>
-            <div>
-                <a href="#">About Us</a>
-                <a href="#">Jobs</a>
-                <a href="#">Press</a>
-                <a href="#">Blog</a>
+            <div className='flex flex-col mt-15 space-y-3 text-gray-200'>
+                <a href="#" className='hover:text-white w-fit'>About Us</a>
+                <a href="#" className='hover:text-white w-fit'>Jobs</a>
+                <a href="#" className='hover:text-white w-fit'>Press</a>
+                <a href="#" className='hover:text-white w-fit'>Blog</a>
             </div>
-            <div>
-                <a href="#">Contact</a>
-                <a href="#">Terms</a>
-                <a href="#">Privacy</a>
+            <div className='flex flex-col mt-10 space-y-3 text-gray-200'>
+                <a href="#" className='hover:text-white w-fit'>Contact</a>
+                <a href="#" className='hover:text-white w-fit'>Terms</a>
+                <a href="#" className='hover:text-white w-fit'>Privacy</a>
             </div>
-            <div>
-
+            <div className='flex gap-3 justify-center mt-15'>
+                <FontAwesomeIcon icon={faFacebookF} className='border hover:text-[#5FE0D7] cursor-pointer rounded-full p-1.5 py-2' />
+                <FontAwesomeIcon icon={faTwitter} className='border hover:text-[#5FE0D7] cursor-pointer rounded-full p-1.5 py-2' />
+                <FontAwesomeIcon icon={faInstagram} className='border hover:text-[#5FE0D7] cursor-pointer rounded-full p-1.5 py-2' />
             </div>
         </footer>
     )

@@ -7,13 +7,17 @@ import iconSecurity from '../assets/images/icon-security.svg'
 import iconTime from '../assets/images/icon-collaboration.svg'
 import iconFile from '../assets/images/icon-any-file.svg'
 import iconArrow from '../assets/images/icon-arrow.svg'
+import iconArrowWhite from '../assets/images/icon-arrow-white.svg'
 import aspas from '../assets/images/bg-quotes.png'
 import profileOne from '../assets/images/profile-1.jpg'
 import profileTwo from '../assets/images/profile-2.jpg'
 import profileThree from '../assets/images/profile-3.jpg'
 import { useForm } from "react-hook-form";
+import { useState } from 'react'
 
 function Prin() {
+
+    const [hovered, setHovered] = useState(false);
 
     const {
         register,
@@ -26,12 +30,12 @@ function Prin() {
     }
 
     return (
-        <main>
+        <main className='bg-[#27314b]'>
             <section className='absolute text-center p-8'>
                 <img src={illustration} alt="illustration" className='w-100 mx-auto' />
                 <h1 className='text-[30px] mt-10'>All your files in one secure location, accessible anywhere.</h1>
                 <p className='mt-5'>Fylo stores all your most important files in one secure location. Access them wherever you need, share and collaborate with friends family, and co-workers.</p>
-                <button className='mt-10 bg-linear-to-r from-[#50C6D4] to-[#3EAFCF] rounded-full p-3 px-20'>Get Started</button>
+                <button className='mt-10 bg-linear-to-r from-[#50C6D4] to-[#3EAFCF] hover:from-[#85DEE4] hover:to-[#6BD3DA] cursor-pointer transition rounded-full p-3 px-20'>Get Started</button>
             </section>
             <img src={curvyMobile} alt="curvy" className='w-full pt-70' />
             <section className='bg-[#181F2B] py-90'>
@@ -63,9 +67,9 @@ function Prin() {
                         <h1 className='text-center text-[24px]'>Stay productive, wherever you are</h1>
                         <p>Never let location be an issue when accessing your files. Fylo has you covered for all of your file storage needs.</p>
                         <p>Securely share files and folders with friends, family and colleagues for live collaboration. No email attachments required.</p>
-                        <div className="flex text-[#62D6D0] items-center gap-2 border-b pb-1 border-current w-fit">
+                        <div onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)} className="flex text-[#62D6D0] hover:text-white items-center gap-2 border-b pb-1 border-current w-fit">
                             <a href="#">See how Fylo works</a>
-                            <img src={iconArrow} alt="arrow" />
+                            <img src={hovered ? iconArrowWhite : iconArrow} alt="arrow" className='cursor-pointer' />
                         </div>
                     </div>
                 </section>
