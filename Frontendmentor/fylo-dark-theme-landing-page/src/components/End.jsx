@@ -16,13 +16,13 @@ function End() {
                     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua</p>
                 </div>
                 <div>
-                    <div>
+                    <div className='flex items-center gap-4'>
                         <img src={iconPhone} alt="phone" />
                         <p>+1-543-123-4567</p>
                     </div>
-                    <div>
+                    <div className='flex items-center gap-4'>
                         <img src={iconEmail} alt="email" />
-                        <p></p>
+                        <p>example@fylo.com</p>
                     </div>
                 </div>
             </div>

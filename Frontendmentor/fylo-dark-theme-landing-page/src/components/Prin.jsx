@@ -111,7 +111,7 @@ function Prin() {
                 </section>
                 <section className='p-8 absolute top-975 lg:top-755 lg:left-50 lg:right-50'>
                     <div className='bg-[#1B2330] rounded-[10px] boxShadow text-center p-8 lg:px-20'>
-                        <h1 className='text-[20px] lg:text-[40px]'>Get early access today</h1>
+                        <h1 className='text-[24px] lg:text-[40px]'>Get early access today</h1>
                         <p className='mt-4 lg:w-[80%] lg:mx-auto'>It only takes a minute to sign up and our free starter tier is extremely generous. If you have any questions, our support team would be happy to help you.</p>
                         <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col lg:flex-row lg:gap-5'>
                             <div className='mt-8'>
