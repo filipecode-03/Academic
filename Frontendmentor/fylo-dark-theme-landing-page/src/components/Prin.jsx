@@ -113,17 +113,22 @@ function Prin() {
                     <div className='bg-[#1B2330] rounded-[10px] boxShadow text-center p-8 lg:px-20'>
                         <h1 className='text-[24px] lg:text-[40px]'>Get early access today</h1>
                         <p className='mt-4 lg:w-[80%] lg:mx-auto'>It only takes a minute to sign up and our free starter tier is extremely generous. If you have any questions, our support team would be happy to help you.</p>
-                        <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col lg:flex-row lg:gap-5'>
-                            <div className='mt-8'>
-                                <input
-                                    className='bg-white w-full lg:w-167 p-3 pl-8 rounded-full text-black shadow-2xl'
-                                    placeholder='email@example.com'
-                                    type="email"
-                                    {...register("email", { required: "Please enter a valid email address" })}
+                        <form onSubmit={handleSubmit(onSubmit)} className="mt-8 flex flex-col lg:flex-row lg:items-start lg:gap-5">
+                            <div className="w-full lg:flex-1">
+                                <input className="bg-white w-full p-3 pl-8 rounded-full text-black shadow-2xl"
+                                       placeholder="email@example.com"
+                                       type="email"
+                                       {...register("email", {
+                                        required: "Please enter a valid email address",
+                                        })}
                                 />
-                                {errors.email && <span className='text-left ml-8 mt-1 text-[14px] text-red-500'>{errors.email.message}</span>}
+                                {errors.email && (
+                                <span className="block text-left ml-8 mt-1 text-[14px] text-red-500">
+                                    {errors.email.message}
+                                </span>
+                                )}
                             </div>
-                            <button type="submit" className="mt-5 lg:mt-8 shadow-2xl p-3 lg:px-6 lg:h-fit rounded-full bg-linear-to-r from-[#51C7D5] to-[#3DAED0] hover:from-[#85DEE4] hover:to-[#6BD3DA] cursor-pointer transition">Get Started For Free</button>
+                            <button type="submit" className="mt-5 lg:mt-0 shrink-0 shadow-2xl p-3 px-6 rounded-full bg-linear-to-r from-[#51C7D5] to-[#3DAED0] hover:from-[#85DEE4] hover:to-[#6BD3DA] cursor-pointer transition">Get Started For Free</button>
                         </form>
                     </div>
                 </section>
