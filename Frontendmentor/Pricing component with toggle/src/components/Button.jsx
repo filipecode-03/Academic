@@ -26,8 +26,10 @@ function Button({ monthly, setMonthly }) {
                 absolute left-1.5 top-1.5
                 h-5 w-5 rounded-full bg-white
                 transition-transform duration-300
-                peer-checked:translate-x-7
-                " />
+                translate-x-7
+                peer-checked:translate-x-0
+            " />
+
             </label>
             <span className="text-gray-400">
                 Monthly

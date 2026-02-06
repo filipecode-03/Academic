@@ -7,7 +7,7 @@ function Cards({ monthly }) {
                 <h1 className="font-bold text-[22px]">Basic</h1>
                 <div className="flex items-center justify-center">
                     <span className="text-[40px] font-bold">$</span>
-                    <p className="text-[80px] font-bold">{monthly ? "19.99" : "199.99"}</p>
+                    <p className="text-[80px] font-bold">{monthly ? "199.99" : "19.99"}</p>
                 </div>
                 <div className="space-y-4 mt-4">
                     <hr className="text-gray-400" />
@@ -30,7 +30,7 @@ function Cards({ monthly }) {
                 <h1 className="font-bold text-[22px]">Profissional</h1>
                 <div className="flex items-center justify-center">
                     <span className="text-[40px] font-bold">$</span>
-                    <p className="text-[80px] font-bold">{monthly ? "24.99" : "249.99"}</p>
+                    <p className="text-[80px] font-bold">{monthly ? "249.99" : "24.99"}</p>
                 </div>
                 <div className="space-y-4 mt-4">
                     <hr className="text-gray-300" />
@@ -52,7 +52,7 @@ function Cards({ monthly }) {
                 <h1 className="font-bold text-[22px]">Master</h1>
                 <div className="flex items-center justify-center">
                     <span className="text-[40px] font-bold">$</span>
-                    <p className="text-[80px] font-bold">{monthly ? "39.99" : "399.99"}</p>
+                    <p className="text-[80px] font-bold">{monthly ? "399.99" : "39.99"}</p>
                 </div>
                 <div className="space-y-4 mt-4">
                     <hr className="text-gray-400" />
