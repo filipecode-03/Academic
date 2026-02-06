@@ -1,1 +1,15 @@
-@import "tailwindcss";
+.bgGroud {
+        background: #F7F7FF 
+        url('assets/images/bg-top.svg') no-repeat right top;
+        background-size: 100% auto;  /* Ajuste o tamanho conforme necessário */
+        margin: 0;
+        min-height: 100vh;
+        background-position: right -260px top -60px;
+      }
+.shadowB {
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+}
+
+      @media (min-width: 1024px) {
+
+      }
