@@ -11,5 +11,25 @@
 }
 
       @media (min-width: 1024px) {
+  .bgGroud {
+    background-color: #F7F7FF;
 
-      }
+    background-image:
+      url('assets/images/bg-top.svg'),
+      url('assets/images/bg-bottom.svg');
+
+    background-repeat:
+      no-repeat,
+      no-repeat;
+
+    background-position:
+      right top,
+      left bottom;
+
+    background-size:
+      auto,
+      auto;
+
+    min-height: 100vh;
+  }
+}
