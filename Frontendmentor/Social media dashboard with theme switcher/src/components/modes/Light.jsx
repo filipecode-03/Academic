@@ -8,7 +8,7 @@ import arrowDown from '../../assets/images/icon-down.svg'
 function Light() {
     return (
         <div>
-            <section className='mt-12 text-center grid grid-cols-1 gap-12'>
+            <section className='mt-12 text-center grid grid-cols-1 lg:grid-cols-4 gap-12 lg:gap-8'>
                 <div className="rounded-[10px] overflow-hidden bg-gray-100 hover:bg-gray-300 cursor-pointer">
                     <div className="h-[7px] bg-blue-600" />
                     <div className="p-8 text-center">
@@ -72,7 +72,7 @@ function Light() {
             </section>
             <section className='mt-10'>
                 <h1 className='font-bold text-gray-600 text-[28px]'>Overview - Today</h1>
-                <div className='grid grid-cols-1 gap-6 mt-5'>
+                <div className='grid grid-cols-1 lg:grid-cols-4 gap-6 mt-5'>
                     <div className='bg-gray-100 hover:bg-gray-300 cursor-pointer rounded-[10px] p-5 pt-6 px-9 space-y-4'>
                         <div className='flex items-center justify-between'>
                             <p className='font-medium'>Page Views</p>
