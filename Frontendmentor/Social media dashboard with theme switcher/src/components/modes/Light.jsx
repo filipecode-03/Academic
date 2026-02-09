@@ -8,8 +8,8 @@ import arrowDown from '../../assets/images/icon-down.svg'
 function Light() {
     return (
         <div>
-            <section className='mt-12 text-center grid grid-cols-1'>
-                <div className="rounded-[10px] overflow-hidden bg-gray-100">
+            <section className='mt-12 text-center grid grid-cols-1 gap-12'>
+                <div className="rounded-[10px] overflow-hidden bg-gray-100 hover:bg-gray-300 cursor-pointer">
                     <div className="h-[7px] bg-blue-600" />
                     <div className="p-8 text-center">
                         <div className='flex items-center gap-2 justify-center'>
@@ -24,7 +24,7 @@ function Light() {
                         </div>
                     </div>
                 </div>
-                <div className="mt-12 rounded-[10px] overflow-hidden bg-gray-100">
+                <div className="rounded-[10px] overflow-hidden bg-gray-100 hover:bg-gray-300 cursor-pointer">
                     <div className="h-[7px] bg-blue-500" />
                     <div className="p-8 text-center">
                         <div className='flex items-center gap-2 justify-center'>
@@ -39,7 +39,7 @@ function Light() {
                         </div>
                     </div>
                 </div>
-                <div className="mt-12 rounded-[10px] overflow-hidden bg-gray-100">
+                <div className="rounded-[10px] overflow-hidden bg-gray-100 hover:bg-gray-300 cursor-pointer">
                     <div className="h-[7px] bg-gradient-to-r from-[#F5C075] to-[#D45A8F]" />
                     <div className="p-8 text-center">
                         <div className='flex items-center gap-2 justify-center'>
@@ -54,7 +54,7 @@ function Light() {
                         </div>
                     </div>
                 </div>
-                <div className="mt-12 rounded-[10px] overflow-hidden bg-gray-100">
+                <div className="rounded-[10px] overflow-hidden bg-gray-100 hover:bg-gray-300 cursor-pointer">
                     <div className="h-[7px] bg-red-700" />
                     <div className="p-8 text-center">
                         <div className='flex items-center gap-2 justify-center'>
@@ -65,18 +65,116 @@ function Light() {
                         <p className='tracking-[5px] font-light'>SUBSCRIBERS</p>
                         <div className='flex items-center gap-1 justify-center mt-5'>
                             <img src={arrowDown} alt="arrow up" />
-                            <p className='text-[14px] text-red-600 font-medium'>144 Today</p>
+                            <p className='text-[14px] text-[#DC414C] font-medium'>144 Today</p>
                         </div>
                     </div>
                 </div>
             </section>
             <section className='mt-10'>
                 <h1 className='font-bold text-gray-600 text-[28px]'>Overview - Today</h1>
-                <div className='grid grid-cols-1'>
-                    <div className='bg-gray-100 rounded-[10px] p-5'>
+                <div className='grid grid-cols-1 gap-6 mt-5'>
+                    <div className='bg-gray-100 hover:bg-gray-300 cursor-pointer rounded-[10px] p-5 pt-6 px-9 space-y-4'>
                         <div className='flex items-center justify-between'>
-                            <p>Page Views</p>
+                            <p className='font-medium'>Page Views</p>
                             <img src={facebook} alt="facebook" />
+                        </div>
+                        <div className='flex items-center justify-between'>
+                            <p className='text-[35px] font-bold'>87</p>
+                            <div className='flex items-center gap-1 mt-4'>
+                                <img src={arrowUp} alt="arrow up" />
+                                <p className='text-[#1EB589] font-semibold'>3%</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div className='bg-gray-100 hover:bg-gray-300 cursor-pointer rounded-[10px] p-5 pt-6 px-9 space-y-4'>
+                        <div className='flex items-center justify-between'>
+                            <p className='font-medium'>Likes</p>
+                            <img src={facebook} alt="facebook" />
+                        </div>
+                        <div className='flex items-center justify-between'>
+                            <p className='text-[35px] font-bold'>52</p>
+                            <div className='flex items-center gap-1 mt-4'>
+                                <img src={arrowDown} alt="arrow up" />
+                                <p className='text-[#DC414C] font-semibold'>2%</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div className='bg-gray-100 hover:bg-gray-300 cursor-pointer rounded-[10px] p-5 pt-6 px-9 space-y-4'>
+                        <div className='flex items-center justify-between'>
+                            <p className='font-medium'>Likes</p>
+                            <img src={instagram} alt="facebook" />
+                        </div>
+                        <div className='flex items-center justify-between'>
+                            <p className='text-[35px] font-bold'>5462</p>
+                            <div className='flex items-center gap-1 mt-4'>
+                                <img src={arrowUp} alt="arrow up" />
+                                <p className='text-[#1EB589] font-semibold'>2257%</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div className='bg-gray-100 hover:bg-gray-300 cursor-pointer rounded-[10px] p-5 pt-6 px-9 space-y-4'>
+                        <div className='flex items-center justify-between'>
+                            <p className='font-medium'>Profile Views</p>
+                            <img src={instagram} alt="instagram" />
+                        </div>
+                        <div className='flex items-center justify-between'>
+                            <p className='text-[35px] font-bold'>52k</p>
+                            <div className='flex items-center gap-1 mt-4'>
+                                <img src={arrowUp} alt="arrow up" />
+                                <p className='text-[#1EB589] font-semibold'>1375%</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div className='bg-gray-100 hover:bg-gray-300 cursor-pointer rounded-[10px] p-5 pt-6 px-9 space-y-4'>
+                        <div className='flex items-center justify-between'>
+                            <p className='font-medium'>Retweets</p>
+                            <img src={twitter} alt="twitter" />
+                        </div>
+                        <div className='flex items-center justify-between'>
+                            <p className='text-[35px] font-bold'>117</p>
+                            <div className='flex items-center gap-1 mt-4'>
+                                <img src={arrowUp} alt="arrow up" />
+                                <p className='text-[#1EB589] font-semibold'>303%</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div className='bg-gray-100 hover:bg-gray-300 cursor-pointer rounded-[10px] p-5 pt-6 px-9 space-y-4'>
+                        <div className='flex items-center justify-between'>
+                            <p className='font-medium'>Likes</p>
+                            <img src={twitter} alt="twitter" />
+                        </div>
+                        <div className='flex items-center justify-between'>
+                            <p className='text-[35px] font-bold'>507</p>
+                            <div className='flex items-center gap-1 mt-4'>
+                                <img src={arrowUp} alt="arrow up" />
+                                <p className='text-[#1EB589] font-semibold'>553%</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div className='bg-gray-100 hover:bg-gray-300 cursor-pointer rounded-[10px] p-5 pt-6 px-9 space-y-4'>
+                        <div className='flex items-center justify-between'>
+                            <p className='font-medium'>Likes</p>
+                            <img src={youtube} alt="youtube" />
+                        </div>
+                        <div className='flex items-center justify-between'>
+                            <p className='text-[35px] font-bold'>107</p>
+                            <div className='flex items-center gap-1 mt-4'>
+                                <img src={arrowDown} alt="arrow down" />
+                                <p className='text-[#DC414C] font-semibold'>19%</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div className='bg-gray-100 hover:bg-gray-300 cursor-pointer rounded-[10px] p-5 pt-6 px-9 space-y-4'>
+                        <div className='flex items-center justify-between'>
+                            <p className='font-medium'>Total Views</p>
+                            <img src={youtube} alt="youtube" />
+                        </div>
+                        <div className='flex items-center justify-between'>
+                            <p className='text-[35px] font-bold'>1407</p>
+                            <div className='flex items-center gap-1 mt-4'>
+                                <img src={arrowDown} alt="arrow down" />
+                                <p className='text-[#DC414C] font-semibold'>12%</p>
+                            </div>
                         </div>
                     </div>
                 </div>
