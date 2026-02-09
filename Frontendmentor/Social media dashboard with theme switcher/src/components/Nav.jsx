@@ -11,27 +11,43 @@ function Nav({ dark, setDark }) {
             <hr className="my-5" />
             <div className="flex items-center justify-between">
                 <p>Dark Mode</p>
-                <label className="relative inline-flex cursor-pointer items-center">
-                <input
-                type="checkbox"
-                className="peer sr-only"
-                checked={dark}
-                onChange={() => setDark(!dark)}/>
+                <label className="relative inline-flex cursor-pointer items-center group">
+  <input
+    type="checkbox"
+    className="peer sr-only"
+    checked={dark}
+    onChange={() => setDark(!dark)}
+  />
 
-                <div className="
-                w-15 h-8 rounded-full
-                bg-gray-400
-                transition-all duration-300
-                " />
+  {/* Fundo */}
+  <div
+    className="
+      w-14 h-8 rounded-full
+      bg-gray-400
+      transition-all duration-300
 
-                <div className="
-                absolute left-1.5 top-1.5
-                h-5 w-5 rounded-full bg-gray-100
-                transition-transform duration-300
-                translate-x-7
-                peer-checked:translate-x-0
-            " />
-            </label>
+      group-hover:bg-gradient-to-r 
+      group-hover:from-[#3D96D8] 
+      group-hover:to-[#4FCE97]
+
+      peer-checked:bg-gradient-to-r
+      peer-checked:from-[#3D96D8]
+      peer-checked:to-[#4FCE97]
+    "
+  />
+
+  {/* Bola */}
+  <div
+    className="
+      absolute right-1 top-1
+      h-6 w-6 rounded-full bg-white
+      transition-transform duration-300
+
+      peer-checked:-translate-x-6
+    "
+  />
+</label>
+
             </div>
         </nav>
     )
