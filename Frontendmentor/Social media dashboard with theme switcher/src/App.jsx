@@ -7,7 +7,7 @@ function App() {
   const [dark, setDark] = useState(false)
 
   return (
-    <div className={`font-['Inter'] min-h-screen p-8 lg:px-40 ${ dark ? 'bg-black text-white' : 'bg-white'}`}>
+    <div className={`font-['Inter'] min-h-screen p-8 lg:px-40 ${ dark ? 'bg-[#1D2029] text-white' : 'bg-white'}`}>
       <Nav dark={dark} setDark={setDark} />
       <Main dark={dark} />
     </div>

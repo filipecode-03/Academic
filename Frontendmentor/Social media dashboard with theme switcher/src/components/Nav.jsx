@@ -42,7 +42,7 @@ function Nav({ dark, setDark }) {
                         absolute right-1 top-1
                         h-6 w-6 rounded-full bg-white
                         transition-transform duration-300
-
+                        peer-checked:bg-[#323B55]
                         peer-checked:-translate-x-6
                         "
                     />
