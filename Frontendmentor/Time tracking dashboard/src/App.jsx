@@ -28,7 +28,7 @@ function App() {
           <div key={item.title}>
             <div>
               <div className='flex items-center justify-between'>
-                <h1>{item.title}</h1>
+                <h1 class>{item.title}</h1>
                 <img src={ellipsis} alt="points" />
               </div>
               <div className='flex items-center justify-between'>
