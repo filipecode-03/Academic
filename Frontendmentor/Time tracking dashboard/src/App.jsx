@@ -48,22 +48,22 @@ function App() {
 
   return (
     <div className='text-white font-["Rubik"] bg-[#0D1323] min-h-screen p-8 pt-20
-grid grid-cols-1 lg:grid-cols-4 gap-8'>
+grid grid-cols-1 lg:grid-cols-4 gap-8 items-start lg:px-40'>
       <nav className='bg-[#1D204B] rounded-2xl lg:col-span-1'>
-        <div className='bg-[#5746EA] justify-center flex gap-4 py-6 items-center rounded-2xl'>
+        <div className='bg-[#5746EA] justify-center flex lg:flex-col gap-4 py-6 lg:p-8 lg:pb-13 items-center lg:items-start rounded-2xl'>
           <img src={profile} alt="profile" className='w-20 border-3 border-white rounded-full' />
           <div>
             <h2 className='font-light text-gray-300'>Report for</h2>
-            <h1 className='font-light text-[25px]'>Jeremy Robson</h1>
+            <h1 className='font-light text-[25px] lg:text-[42px] lg:leading-12'>Jeremy Robson</h1>
           </div>
         </div>
-        <div className='justify-between flex p-8 text-[18px]'>
-          <button onClick={() => setPeriod("daily")} className={`cursor-pointer ${period === "daily" ? "text-white" : "text-gray-500"}`}>Daily</button>
-          <button onClick={() => setPeriod("weekly")} className={`cursor-pointer ${period === "weekly" ? "text-white" : "text-gray-500"}`}>Weekly</button>
-          <button onClick={() => setPeriod("monthly")} className={`cursor-pointer ${period === "monthly" ? "text-white" : "text-gray-500"}`}>Monthly</button>
+        <div className='flex justify-between lg:flex-col lg:items-start lg:gap-4 p-8 text-[18px]'>
+          <button onClick={() => setPeriod("daily")} className={`cursor-pointer hover:text-white ${period === "daily" ? "text-white" : "text-gray-500"}`}>Daily</button>
+          <button onClick={() => setPeriod("weekly")} className={`cursor-pointer hover:text-white ${period === "weekly" ? "text-white" : "text-gray-500"}`}>Weekly</button>
+          <button onClick={() => setPeriod("monthly")} className={`cursor-pointer hover:text-white ${period === "monthly" ? "text-white" : "text-gray-500"}`}>Monthly</button>
         </div>
       </nav>
-      <section className='grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-6 lg:col-span-3'>
+      <section className='grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-6 lg:col-span-3 '>
         {data.map((item) => (
           <div key={item.title} className="pt-10 rounded-2xl"
           style={{
@@ -72,12 +72,12 @@ grid grid-cols-1 lg:grid-cols-4 gap-8'>
             backgroundRepeat: "no-repeat",
             backgroundPosition: "top -10px right 20px"
           }}>
-            <div className='bg-[#1D204B] p-6 rounded-2xl'>
+            <div className='bg-[#1D204B] p-6 rounded-2xl hover:bg-[#34397B] cursor-pointer'>
               <div className='flex items-center justify-between'>
                 <h1 className='font-semibold text-[18px]'>{item.title}</h1>
                 <img src={ellipsis} alt="points" />
               </div>
-              <div className='flex lg:flex-col items-center lg:items-start justify-between'>
+              <div className='flex lg:flex-col items-center lg:items-start justify-between lg:mt-3'>
                 <p className='text-[30px] lg:text-[50px] font-light'>{item.timeframes[period].current}hrs</p>
                 <p className='text-gray-300 font-light'>Last {periodLabel[period]} - {item.timeframes[period].previous}hrs</p>
               </div>
