@@ -47,8 +47,9 @@ function App() {
 
 
   return (
-    <div className='text-white font-["Rubik"] bg-[#0D1323] min-h-screen p-8 pt-20'>
-      <nav className='bg-[#1D204B] rounded-2xl'>
+    <div className='text-white font-["Rubik"] bg-[#0D1323] min-h-screen p-8 pt-20
+grid grid-cols-1 lg:grid-cols-4 gap-8'>
+      <nav className='bg-[#1D204B] rounded-2xl lg:col-span-1'>
         <div className='bg-[#5746EA] justify-center flex gap-4 py-6 items-center rounded-2xl'>
           <img src={profile} alt="profile" className='w-20 border-3 border-white rounded-full' />
           <div>
@@ -62,7 +63,7 @@ function App() {
           <button onClick={() => setPeriod("monthly")} className={`cursor-pointer ${period === "monthly" ? "text-white" : "text-gray-500"}`}>Monthly</button>
         </div>
       </nav>
-      <section className='grid grid-cols-1 gap-8 mt-10'>
+      <section className='grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-6 lg:col-span-3'>
         {data.map((item) => (
           <div key={item.title} className="pt-10 rounded-2xl"
           style={{
@@ -76,8 +77,8 @@ function App() {
                 <h1 className='font-semibold text-[18px]'>{item.title}</h1>
                 <img src={ellipsis} alt="points" />
               </div>
-              <div className='flex items-center justify-between'>
-                <p className='text-[30px] font-light'>{item.timeframes[period].current}hrs</p>
+              <div className='flex lg:flex-col items-center lg:items-start justify-between'>
+                <p className='text-[30px] lg:text-[50px] font-light'>{item.timeframes[period].current}hrs</p>
                 <p className='text-gray-300 font-light'>Last {periodLabel[period]} - {item.timeframes[period].previous}hrs</p>
               </div>
             </div>
