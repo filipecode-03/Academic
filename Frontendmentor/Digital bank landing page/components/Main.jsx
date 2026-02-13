@@ -9,27 +9,27 @@ function Main() {
         <main>
             <section className='bg-gray-100 text-center p-16'>
                 <h1 className='text-[30px]'>Why choose Digitalbank?</h1>
-                <p className='text-[14px]'>We leverage Open Banking to turn your bank account into your financial hub. Control your finances like never before.</p>
+                <p className='text-[14px] text-gray-500'>We leverage Open Banking to turn your bank account into your financial hub. Control your finances like never before.</p>
                 <div className="grid grid-cols-1 lg:grid-cols-4 gap-10 mt-15">
                     <div>
                         <img src={iconOnline} alt="icon" className='mx-auto' />
-                        <h2 className='mt-8'>Online Banking</h2>
-                        <p className='mt-4 text-[14px]'>Our modern web and mobile applications allow you to keep track of your finances wherever you are in the world.</p>
+                        <h2 className='mt-8 text-[22px]'>Online Banking</h2>
+                        <p className='mt-4 text-[14px] text-gray-500'>Our modern web and mobile applications allow you to keep track of your finances wherever you are in the world.</p>
                     </div>
                     <div>
                         <img src={iconBudgeting} alt="icon" className='mx-auto' />
-                        <h2 className='mt-8'>Simple Budgeting</h2>
-                        <p className='mt-4 text-[14px]'>See exactly where your money goes each month. Receive notifications when you’re close to hitting your limits.</p>
+                        <h2 className='mt-8 text-[22px]'>Simple Budgeting</h2>
+                        <p className='mt-4 text-[14px] text-gray-500'>See exactly where your money goes each month. Receive notifications when you’re close to hitting your limits.</p>
                     </div>
                     <div>
                         <img src={iconOnboarding} alt="icon" className='mx-auto' />
-                        <h2 className='mt-8'>Fast Onboarding</h2>
-                        <p className='mt-4 text-[14px]'>We don’t do branches. Open your account in minutes online and start taking control of your finances right away.</p>
+                        <h2 className='mt-8 text-[22px]'>Fast Onboarding</h2>
+                        <p className='mt-4 text-[14px] text-gray-500'>We don’t do branches. Open your account in minutes online and start taking control of your finances right away.</p>
                     </div>
                     <div>
                         <img src={iconApi} alt="icon" className='mx-auto' />
-                        <h2 className='mt-8'>Open API</h2>
-                        <p className='mt-4 text-[14px]'>Manage your savings, investments, pension, and much more from one account. Tracking your money has never been easier.</p>
+                        <h2 className='mt-8 text-[22px]'>Open API</h2>
+                        <p className='mt-4 text-[14px] text-gray-500'>Manage your savings, investments, pension, and much more from one account. Tracking your money has never been easier.</p>
                     </div>
                 </div>
             </section>
