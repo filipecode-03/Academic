@@ -26,7 +26,7 @@ function Footer() {
                 <a href="#">Privacy Policy</a>
             </div>
             <div className='mt-6'>
-                <button className='bg-gradient-to-r from-[#2BBBC4] to-[#34CF65] p-2.5 px-8 font-semibold rounded-full shadow-2xl'>Request Invite</button>
+                <button className='bg-linear-to-r from-[#2BBBC4] to-[#34CF65] p-2.5 px-8 font-semibold rounded-full shadow-2xl'>Request Invite</button>
                 <p className='text-gray-400 mt-5'>&copy; Digitalbank. All Rights Reserved</p>
             </div>
         </footer>
