@@ -1,6 +1,7 @@
 import Nav from '../components/Nav.jsx'
 import Intro from '../components/Intro.jsx'
 import Main from '../components/Main.jsx'
+import Footer from '../components/Footer.jsx'
 
 function App() {
 
@@ -9,6 +10,7 @@ function App() {
       <Nav />
       <Intro />
       <Main />
+      <Footer />
     </div>
   )
 }
