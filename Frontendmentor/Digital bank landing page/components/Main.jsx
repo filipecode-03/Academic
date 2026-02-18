@@ -10,29 +10,29 @@ import party from '../src/assets/images/image-confetti.jpg'
 function Main() {
     return (
         <main>
-            <section className='bg-gray-100 text-center p-16'>
-                <h1 className='text-[30px]'>Why choose Digitalbank?</h1>
-                <p className='text-[15px] text-gray-500 leading-4.5 mt-2'>We leverage Open Banking to turn your bank account into your financial hub. Control your finances like never before.</p>
-                <div className="grid grid-cols-1 lg:grid-cols-4 gap-10 mt-15">
+            <section className='bg-gray-100 text-center lg:text-left p-16 lg:p-20 lg:px-30'>
+                <h1 className='text-[30px] lg:text-[40px]'>Why choose Digitalbank?</h1>
+                <p className='text-[15px] lg:text-[16px] text-gray-500 leading-4.5 lg:leading-6 lg:w-[45%] mt-2 lg:mt-4'>We leverage Open Banking to turn your bank account into your financial hub. Control your finances like never before.</p>
+                <div className="grid grid-cols-1 lg:grid-cols-4 gap-10 lg:gap-15 mt-15">
                     <div>
-                        <img src={iconOnline} alt="icon" className='mx-auto' />
+                        <img src={iconOnline} alt="icon" className='mx-auto lg:mx-0' />
                         <h2 className='mt-8 text-[25px]'>Online Banking</h2>
-                        <p className='mt-4 text-[15px] text-gray-500 leading-4.5'>Our modern web and mobile applications allow you to keep track of your finances wherever you are in the world.</p>
+                        <p className='mt-4 text-[15px] lg:text-[16px] text-gray-500 leading-4.5 lg:leading-6'>Our modern web and mobile applications allow you to keep track of your finances wherever you are in the world.</p>
                     </div>
                     <div>
-                        <img src={iconBudgeting} alt="icon" className='mx-auto' />
+                        <img src={iconBudgeting} alt="icon" className='mx-auto lg:mx-0' />
                         <h2 className='mt-8 text-[25px]'>Simple Budgeting</h2>
-                        <p className='mt-4 text-[15px] text-gray-500 leading-4.5'>See exactly where your money goes each month. Receive notifications when you’re close to hitting your limits.</p>
+                        <p className='mt-4 text-[15px] lg:text-[16px] text-gray-500 leading-4.5 lg:leading-6'>See exactly where your money goes each month. Receive notifications when you’re close to hitting your limits.</p>
                     </div>
                     <div>
-                        <img src={iconOnboarding} alt="icon" className='mx-auto' />
+                        <img src={iconOnboarding} alt="icon" className='mx-auto lg:mx-0' />
                         <h2 className='mt-8 text-[25px]'>Fast Onboarding</h2>
-                        <p className='mt-4 text-[15px] text-gray-500 leading-4.5'>We don’t do branches. Open your account in minutes online and start taking control of your finances right away.</p>
+                        <p className='mt-4 text-[15px] lg:text-[16px] text-gray-500 leading-4.5 lg:leading-6'>We don’t do branches. Open your account in minutes online and start taking control of your finances right away.</p>
                     </div>
                     <div>
-                        <img src={iconApi} alt="icon" className='mx-auto' />
+                        <img src={iconApi} alt="icon" className='mx-auto lg:mx-0' />
                         <h2 className='mt-8 text-[25px]'>Open API</h2>
-                        <p className='mt-4 text-[15px] text-gray-500 leading-4.5'>Manage your savings, investments, pension, and much more from one account. Tracking your money has never been easier.</p>
+                        <p className='mt-4 text-[15px] lg:text-[16px] text-gray-500 leading-4.5 lg:leading-6'>Manage your savings, investments, pension, and much more from one account. Tracking your money has never been easier.</p>
                     </div>
                 </div>
             </section>

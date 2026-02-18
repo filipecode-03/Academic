@@ -6,7 +6,7 @@ import Footer from '../components/Footer.jsx'
 function App() {
 
   return (
-    <div className='font-["Public_Sans"]'>
+    <div className='font-["Public_Sans"] min-h-screen relative overflow-x-hidden'>
       <Nav />
       <Intro />
       <Main />
