@@ -36,14 +36,14 @@ function Main() {
                     </div>
                 </div>
             </section>
-            <section className='bg-[#FAFAFA] p-8 py-16'>
-                <h1 className='text-center text-[35px]'>Latest Articles</h1>
-                <div className='grid grid-cols-1 lg:grid-cols-4 gap-6 mt-12'>
+            <section className='bg-[#FAFAFA] p-8 py-16 lg:px-30'>
+                <h1 className='text-center lg:text-left text-[35px]'>Latest Articles</h1>
+                <div className='grid grid-cols-1 lg:grid-cols-4 gap-6 lg:gap-8 mt-12'>
                     <div className='bg-white rounded-[5px]'>
-                        <img src={money} alt="money" className='rounded-t-[5px]' />
+                        <img src={money} alt="money" className='rounded-t-[5px] lg:h-49.5 w-full' />
                         <div className='p-8'>
                             <h4 className='text-[13px] text-gray-500'>By Claire Robinson</h4>
-                            <h3 className='text-[18px] mt-3'>Receive money in any currency with no fees</h3>
+                            <h3 className='text-[18px] mt-3 hover:text-green-400 cursor-pointer'>Receive money in any currency with no fees</h3>
                             <p className='text-gray-600 mt-1.5'>The world is getting smaller and we’re becoming more mobile. So why should you be forced to only receive money in a single…</p>
                         </div>
                     </div>
@@ -51,7 +51,7 @@ function Main() {
                         <img src={food} alt="money" className='rounded-t-[5px]' />
                         <div className='p-8'>
                             <h4 className='text-[13px] text-gray-500'>By Wilson Hutton</h4>
-                            <h3 className='text-[18px] mt-3'>Treat yourself without worrying about money</h3>
+                            <h3 className='text-[18px] mt-3 hover:text-green-400 cursor-pointer'>Treat yourself without worrying about money</h3>
                             <p className='text-gray-600 mt-1.5'>Our simple budgeting feature allows you to separate out your spending and set realistic limits each month. That means you…</p>
                         </div>
                     </div>
@@ -59,7 +59,7 @@ function Main() {
                         <img src={plane} alt="money" className='rounded-t-[5px]' />
                         <div className='p-8'>
                             <h4 className='text-[13px] text-gray-500'>By Wilson Hutton</h4>
-                            <h3 className='text-[18px] mt-3'>Take your Digitalbank card wherever you go</h3>
+                            <h3 className='text-[18px] mt-3 hover:text-green-400 cursor-pointer'>Take your Digitalbank card wherever you go</h3>
                             <p className='text-gray-600 mt-1.5'>We want you to enjoy your travels. This is why we don’t charge any fees on purchases while you’re abroad. We’ll even show you…</p>
                         </div>
                     </div>
@@ -67,7 +67,7 @@ function Main() {
                         <img src={party} alt="money" className='rounded-t-[5px]' />
                         <div className='p-8'>
                             <h4 className='text-[13px] text-gray-500'>By Claire Robinson</h4>
-                            <h3 className='text-[18px] mt-3'>Our invite-only Beta accounts are now live!</h3>
+                            <h3 className='text-[18px] mt-3 hover:text-green-400 cursor-pointer'>Our invite-only Beta accounts are now live!</h3>
                             <p className='text-gray-600 mt-1.5'>After a lot of hard work by the whole team, we’re excited to launch our closed beta. It’s easy to request an invite through the site...</p>
                         </div>
                     </div>
