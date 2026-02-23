@@ -4,6 +4,7 @@ import SectionTwo from "../components/SectionTwo"
 import Footer from "../components/Footer"
 import Form from "../components/Form"
 import SectionThree from "../components/SectionThree"
+import SectionAccordion from "../components/SectionAccordion"
 
 function App() {
 
@@ -14,6 +15,7 @@ function App() {
         <SectionOne />
         <SectionTwo />
         <SectionThree />
+        <SectionAccordion />
         <Form />
         <Footer />
       </main>
