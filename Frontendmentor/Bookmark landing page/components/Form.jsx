@@ -13,7 +13,7 @@ function Form() {
     }
 
     return (
-        <section className="bg-[#5266DF] text-center p-8 py-16 text-white">
+        <section className="bg-[#5266DF] mt-20 text-center p-8 py-16 text-white">
             <p className="tracking-[5px] text-[12px]">35.000+ ALREADY JOINED</p>
             <h1 className="text-[25px] font-medium w-[80%] mx-auto leading-8 mt-2">Stay up-to-date with what we-re doing</h1>
             <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col mt-6 text-[14px] gap-4">

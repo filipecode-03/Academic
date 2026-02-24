@@ -5,9 +5,9 @@ import dots from '../src/assets/images/bg-dots.svg'
 
 function SectionThree() {
     return (
-        <section className='text-center p-12'>
+        <section className='text-center p-12 mt-25'>
             <h2 className='text-[25px] font-medium'>Download the extension</h2>
-            <p className='text-gray-500'>We’ve got more browsers in the pipeline. Please do let us know if you’ve got a favourite you’d like us to prioritize.</p>
+            <p className='text-gray-500 mt-2'>We’ve got more browsers in the pipeline. Please do let us know if you’ve got a favourite you’d like us to prioritize.</p>
             <div className='mt-15 flex flex-col lg:flex-row gap-20'>
                 <div className='shadow2 py-8 rounded-[15px]'>
                     <img src={chrome} alt="chrome" className='mx-auto' />

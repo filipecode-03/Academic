@@ -14,6 +14,8 @@ function SectionAccordion() {
 
   return (
     <section className="p-8">
+      <h2 className='text-[25px] font-medium text-center'>Frequently Asked Questions</h2>
+      <p className='text-gray-500 mt-2 mb-10 text-center'>Here are some of our FAQs. If you have any other questions you’d like answered please feel free to email us.</p>
       <Accordion elevation={0} expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
         <AccordionSummary expandIcon={<ExpandMoreIcon sx={{ fontSize: 35, color: '#7e22ce' }} />}>
           <Typography variant="h7">
@@ -74,6 +76,11 @@ function SectionAccordion() {
           </Typography>
         </AccordionDetails>
       </Accordion>
+      <div className="flex justify-center">
+        <button className="cursor-pointer bg-[#5266DF] text-white p-2.5 px-4 rounded-[5px] mt-10 font-medium">
+          More Info
+        </button>
+      </div>
     </section>
   );
 }
