@@ -11,8 +11,8 @@ function SectionOne() {
                 <h1 className='font-medium text-[40px] leading-12'>A Simple Bookmark Manager</h1>
                 <p className='mt-4 text-gray-500 leading-7'>A clean and simple interface to organize your favourite websites. Open a new browser tab and see your sites load instantly. Try it for free.</p>
                 <div className='mt-8 flex gap-5 justify-center'>
-                    <button className='bg-[#5266DE] p-3 rounded-[5px] text-white'>Get it on Chrome</button>
-                    <button className='bg-[#F7F7F7] p-3 shadowBox rounded-[5px]'>Get it on Firefox</button>
+                    <button className='bg-[#5266DE] cursor-pointer p-3 rounded-[5px] text-white'>Get it on Chrome</button>
+                    <button className='bg-[#F7F7F7] cursor-pointer p-3 shadowBox rounded-[5px]'>Get it on Firefox</button>
                 </div>
             </div>
         </section>

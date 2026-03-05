@@ -14,21 +14,21 @@ function SectionThree() {
                     <h3 className='text-[20px] font-medium mt-8'>Add to Chrome</h3>
                     <p className='text-[14px] text-gray-500'>Minimum version 62</p>
                     <img src={dots} alt="dots" className='w-full mx-auto mt-10' />
-                    <button className='bg-[#5266DF] p-3 px-8 text-white mt-6 rounded-[5px] font-medium'>Add & Install Extension</button>
+                    <button className='bg-[#5266DF] cursor-pointer p-3 px-8 text-white mt-6 rounded-[5px] font-medium'>Add & Install Extension</button>
                 </div>
                 <div className='shadow2 py-8 rounded-[15px]'>
                     <img src={firefox} alt="firefox" className='mx-auto' />
                     <h3 className='text-[20px] font-medium mt-8'>Add to Firefox</h3>
                     <p className='text-[14px] text-gray-500'>Minimum version 55</p>
                     <img src={dots} alt="dots" className='w-full mx-auto mt-10' />
-                    <button className='bg-[#5266DF] p-3 px-8 text-white mt-6 rounded-[5px] font-medium'>Add & Install Extension</button>
+                    <button className='bg-[#5266DF] cursor-pointer p-3 px-8 text-white mt-6 rounded-[5px] font-medium'>Add & Install Extension</button>
                 </div>
                 <div className='shadow2 py-8 rounded-[15px]'>
                     <img src={opera} alt="opera" className='mx-auto' />
                     <h3 className='text-[20px] font-medium mt-8'>Add to Opera</h3>
                     <p className='text-[14px] text-gray-500'>Minimum version 46</p>
                     <img src={dots} alt="dots" className='w-full mx-auto mt-10' />
-                    <button className='bg-[#5266DF] p-3 px-8 text-white mt-6 rounded-[5px] font-medium'>Add & Install Extension</button>
+                    <button className='bg-[#5266DF] cursor-pointer p-3 px-8 text-white mt-6 rounded-[5px] font-medium'>Add & Install Extension</button>
                 </div>
             </div>
         </section>

@@ -15,7 +15,7 @@ function SectionTwo() {
                 <div className="mt-10 flex flex-col border-t border-b border-gray-200">
                     <button
                         onClick={() => setActive("btn1")}
-                        className="relative py-4 border-b border-gray-200 text-gray-600"
+                        className="relative cursor-pointer py-4 border-b border-gray-200 text-gray-600"
                     >
                         Simple Bookmarking
                         <span
@@ -26,7 +26,7 @@ function SectionTwo() {
                     </button>
                     <button
                         onClick={() => setActive("btn2")}
-                        className="relative py-4 border-b border-gray-200 text-gray-600"
+                        className="relative cursor-pointer py-4 border-b border-gray-200 text-gray-600"
                     >
                         Speedy Searching
 
@@ -38,7 +38,7 @@ function SectionTwo() {
                     </button>
                     <button
                         onClick={() => setActive("btn3")}
-                        className="relative py-4 text-gray-600"
+                        className="relative cursor-pointer py-4 text-gray-600"
                     >
                         Easy Sharing
 

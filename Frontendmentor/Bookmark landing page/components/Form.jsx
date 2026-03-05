@@ -34,7 +34,7 @@ function Form() {
       className="absolute right-5 top-6.5 -translate-y-1/2"
     />
   )}
-                    {errors.email && <span className="block mt-2 mb-0.5 pl-3 text-white text-[12px]">{errors.email.message}</span>}
+                    {errors.email && <span className="block italic mt-1 mb-0.5 pl-3 text-white text-[12px]">{errors.email.message}</span>}
                 </div>
                 <button type="submit" className="cursor-pointer bg-[#FB5859] p-3 rounded-[5px] w-[80%] mx-auto">Contact Us</button>
             </form>

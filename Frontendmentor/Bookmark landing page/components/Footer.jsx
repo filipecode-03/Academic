@@ -12,8 +12,8 @@ function Footer() {
                 <a href="#" className='w-fit mx-auto'>CONTACT</a>
             </div>
             <div className='flex justify-center gap-5 text-[25px] mt-8'>
-                <FontAwesomeIcon icon={faSquareFacebook} />
-                <FontAwesomeIcon icon={faTwitter} />
+                <FontAwesomeIcon icon={faSquareFacebook} className='cursor-pointer' />
+                <FontAwesomeIcon icon={faTwitter} className='cursor-pointer' />
             </div>
         </footer>
     )
