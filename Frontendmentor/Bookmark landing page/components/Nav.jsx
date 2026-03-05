@@ -1,5 +1,5 @@
 import logo from '../src/assets/images/logo-bookmark.svg'
-import logoNav from '../src/assets/images/logo-bookmark-white.svg'
+import logoNav from '../src/assets/images/logo-bookmark-white-nav.svg'
 import menu from '../src/assets/images/icon-hamburger.svg'
 import { useState } from 'react'
 import close from '../src/assets/images/icon-close.svg'
@@ -11,10 +11,18 @@ function Nav() {
     const [active, setActive] = useState(false)
 
     return (
-        <nav className='p-8'>
+        <nav className='p-8 lg:px-40'>
             <div className='flex items-center justify-between'>
                 <img src={logo} alt="logo" />
-                <img src={menu} alt="menu" onClick={() => setActive(!active)} />
+                <img src={menu} alt="menu" onClick={() => setActive(!active)} className='cursor-pointer block lg:hidden' />
+                <div className='hidden lg:block'>
+                    <div className='flex gap-10 items-center text-[14px] tracking-[1px]'>
+                        <a href="#">FEATURES</a>
+                        <a href="#">PRICING</a>
+                        <a href="#">CONTACT</a>
+                        <button className='bg-[#FB5859] p-2 px-8 rounded-[5px] text-white'>LOGIN</button>
+                    </div>
+                </div>
             </div>
             {active && (
             <div className='fixed inset-0 bg-[#2F354F] h-screen w-screen z-50 p-8 pr-12'>
