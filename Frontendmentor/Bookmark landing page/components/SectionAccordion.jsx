@@ -13,12 +13,18 @@ function SectionAccordion() {
   };
 
   return (
-    <section className="p-8">
-      <h2 className='text-[25px] font-medium text-center'>Frequently Asked Questions</h2>
+    <section className="p-8 lg:w-[35%] lg:mx-auto lg:mt-20">
+      <h2 className='text-[25px] lg:text-[30px] font-medium text-center'>Frequently Asked Questions</h2>
       <p className='text-gray-500 mt-2 mb-10 text-center'>Here are some of our FAQs. If you have any other questions you’d like answered please feel free to email us.</p>
       <Accordion elevation={0} expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
-        <AccordionSummary expandIcon={<ExpandMoreIcon sx={{ fontSize: 35, color: '#7e22ce' }} />}>
-          <Typography variant="h7">
+        <AccordionSummary expandIcon={<ExpandMoreIcon sx={{ fontSize: 35, color: '#7e22ce' }} />}
+          sx={{
+            '&:hover .MuiTypography-root': {
+              color: '#FB5859'
+            }
+          }}
+        >
+          <Typography>
             What is Bookmark
           </Typography>
         </AccordionSummary>
@@ -33,8 +39,14 @@ function SectionAccordion() {
     '&:before': { display: 'none' },
     '&.Mui-expanded': { margin: 0 },
   }} elevation={0} expanded={expanded === 'panel2'} onChange={handleChange('panel2')}>
-        <AccordionSummary expandIcon={<ExpandMoreIcon sx={{ fontSize: 35, color: '#7e22ce' }} />}>
-          <Typography variant="h7">
+        <AccordionSummary expandIcon={<ExpandMoreIcon sx={{ fontSize: 35, color: '#7e22ce' }} />}
+          sx={{
+            '&:hover .MuiTypography-root': {
+              color: '#FB5859'
+            }
+          }}
+        >
+          <Typography>
             How can I request a new browser?
           </Typography>
         </AccordionSummary>
@@ -49,8 +61,14 @@ function SectionAccordion() {
     '&:before': { display: 'none' },
     '&.Mui-expanded': { margin: 0 },
   }} elevation={0} expanded={expanded === 'panel3'} onChange={handleChange('panel3')}>
-        <AccordionSummary expandIcon={<ExpandMoreIcon sx={{ fontSize: 35, color: '#7e22ce' }} />}>
-          <Typography variant="h7">
+        <AccordionSummary expandIcon={<ExpandMoreIcon sx={{ fontSize: 35, color: '#7e22ce' }} />}
+          sx={{
+            '&:hover .MuiTypography-root': {
+              color: '#FB5859'
+            }
+          }}
+        >
+          <Typography>
             Is there a mobile app?
           </Typography>
         </AccordionSummary>
@@ -65,8 +83,14 @@ function SectionAccordion() {
     '&:before': { display: 'none' },
     '&.Mui-expanded': { margin: 0 },
   }} elevation={0} expanded={expanded === 'panel4'} onChange={handleChange('panel4')}>
-        <AccordionSummary expandIcon={<ExpandMoreIcon sx={{ fontSize: 35, color: '#7e22ce' }} />}>
-          <Typography variant="h7">
+        <AccordionSummary expandIcon={<ExpandMoreIcon sx={{ fontSize: 35, color: '#7e22ce' }} />}
+          sx={{
+            '&:hover .MuiTypography-root': {
+              color: '#FB5859'
+            }
+          }}
+        >
+          <Typography>
             What about other Chromium browsers?
           </Typography>
         </AccordionSummary>

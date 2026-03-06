@@ -17,10 +17,10 @@ function Nav() {
                 <img src={menu} alt="menu" onClick={() => setActive(!active)} className='cursor-pointer block lg:hidden' />
                 <div className='hidden lg:block'>
                     <div className='flex gap-10 items-center text-[14px] tracking-[1px]'>
-                        <a href="#">FEATURES</a>
-                        <a href="#">PRICING</a>
-                        <a href="#">CONTACT</a>
-                        <button className='bg-[#FB5859] p-2 px-8 rounded-[5px] text-white'>LOGIN</button>
+                        <a href="#" className='hover:text-red-500'>FEATURES</a>
+                        <a href="#" className='hover:text-red-500'>PRICING</a>
+                        <a href="#" className='hover:text-red-500'>CONTACT</a>
+                        <button className='bg-[#FB5859] hover:bg-white hover:text-red-500 border-3 border-transparent hover:border-[#FB5859] cursor-pointer p-2 px-8 rounded-[5px] text-white'>LOGIN</button>
                     </div>
                 </div>
             </div>
@@ -32,13 +32,13 @@ function Nav() {
                 </div>
                 <div className='mt-10 text-center text-[22px] space-y-5 tracking-[2px] text-white'>
                     <hr className='text-gray-500' />
-                    <button className='text-gray-300'>FEATURES</button>
+                    <button className='text-gray-300 cursor-pointer'>FEATURES</button>
                     <hr className='text-gray-500'  />
-                    <button className='text-gray-300'>PRICING</button>
+                    <button className='text-gray-300 cursor-pointer'>PRICING</button>
                     <hr className='text-gray-500' />
-                    <button className='text-gray-300'>CONTACT</button>
+                    <button className='text-gray-300 cursor-pointer'>CONTACT</button>
                     <hr className='text-gray-500' />
-                    <button className='border-3 w-full p-2 rounded-[5px] border-white'>LOGIN</button>
+                    <button className='border-3 cursor-pointer w-full p-2 rounded-[5px] border-white'>LOGIN</button>
                 </div>
                 <div className='flex text-white justify-center gap-8 text-[35px] mt-60'>
                     <FontAwesomeIcon icon={faSquareFacebook} className='cursor-pointer' />
