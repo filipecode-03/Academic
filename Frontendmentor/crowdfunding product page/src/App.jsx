@@ -4,7 +4,7 @@ import Nav from "./components/Nav"
 function App() {
 
   return (
-    <div className="min-h-screen bg-[#FAFAFA] pb-300 font-['Commissioner']">
+    <div className="min-h-screen bg-[#FAFAFA] pb-600 font-['Commissioner']">
       <Nav />
       <Main />
     </div>

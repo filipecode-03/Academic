@@ -4,9 +4,47 @@ function SectionThree() {
             <h2 className="text-[20px] font-bold text-black">About this project</h2>
             <p className="mt-5">The Mastercraft Bamboo Monitor Riser is a sturdy and stylish platform that elevates your screen to a more comfortable viewing height. Placing your monitor at eye level has the potential to improve your posture and make you more comfortable while at work, helping you stay focused on the task at hand.</p>
             <p className="mt-5">Featuring artisan craftsmanship, the simplicity of design creates extra desk space below your computer to allow notepads, pens, and USB sticks to be stored under the stand.</p>
-            <div>
-                <h3>Bamboo Stand</h3>
-                <h4>Pledge $25 or more</h4>
+            <div className="border rounded-[10px] p-5 mt-10">
+                <div className="lg:flex">
+                    <h3 className="font-bold text-black">Bamboo Stand</h3>
+                    <h4 className="text-[#3CB4AB] font-medium">Pledge $25 or more</h4>
+                </div>
+                <p className="mt-5">You get an ergonomic stand made of natural bamboo. You've helped us launch our promotional campaign, and you’ll be added to a special Backer member list.</p>
+                <div className="mt-5">
+                    <div className="flex items-center gap-2">
+                        <h5 className="text-black font-bold text-[30px]">101</h5>
+                        <p>left</p>
+                    </div>
+                    <button className="bg-[#3CB4AB] mt-3 text-white p-3 px-6 rounded-full">Select Reward</button>
+                </div>
+            </div>
+            <div className="border rounded-[10px] p-5 mt-8">
+                <div className="lg:flex">
+                    <h3 className="font-bold text-black">Black Edition Stand</h3>
+                    <h4 className="text-[#3CB4AB] font-medium">Pledge $75 or more</h4>
+                </div>
+                <p className="mt-5">You get a Black Special Edition computer stand and a personal thank you. You’ll be added to our Backer member list. Shipping is included.</p>
+                <div className="mt-5">
+                    <div className="flex items-center gap-2">
+                        <h5 className="text-black font-bold text-[30px]">64</h5>
+                        <p>left</p>
+                    </div>
+                    <button className="bg-[#3CB4AB] mt-3 text-white p-3 px-6 rounded-full">Select Reward</button>
+                </div>
+            </div>
+            <div className="border border-gray-400 rounded-[10px] p-5 mt-8">
+                <div className="lg:flex">
+                    <h3 className="font-bold text-gray-400">Mahogany Special Edition</h3>
+                    <h4 className="text-[#3cb4ac70] font-medium">Pledge $200 or more</h4>
+                </div>
+                <p className="mt-5 text-gray-400">You get two Special Edition Mahogany stands, a Backer T-Shirt, and a personal thank you. You’ll be added to our Backer member list. Shipping is included.</p>
+                <div className="mt-5">
+                    <div className="flex items-center gap-2">
+                        <h5 className="text-gray-500 font-bold text-[30px]">0</h5>
+                        <p className="text-gray-400">left</p>
+                    </div>
+                    <button className="bg-[#CBCBCB] mt-3 text-white p-3 px-6 rounded-full">Out of Stock</button>
+                </div>
             </div>
         </section>
     )
