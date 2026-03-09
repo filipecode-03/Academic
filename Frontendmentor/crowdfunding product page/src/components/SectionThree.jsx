@@ -1,4 +1,4 @@
-function SectionThree() {
+function SectionThree({ setIsModalOpen, setSelectedCard }) {
     return (
         <section className="bg-white text-gray-600 shadow-2xs p-10 mt-8 rounded-[10px]">
             <h2 className="text-[20px] font-bold text-black">About this project</h2>
@@ -15,7 +15,10 @@ function SectionThree() {
                         <h5 className="text-black font-bold text-[30px]">101</h5>
                         <p>left</p>
                     </div>
-                    <button className="bg-[#3CB4AB] mt-3 text-white p-3 px-6 rounded-full">Select Reward</button>
+                    <button onClick={() => {
+                        setIsModalOpen(true)
+                        setSelectedCard(2)
+                    }} className="bg-[#3CB4AB] mt-3 text-white p-3 px-6 rounded-full">Select Reward</button>
                 </div>
             </div>
             <div className="border rounded-[10px] p-5 mt-8">
@@ -29,7 +32,10 @@ function SectionThree() {
                         <h5 className="text-black font-bold text-[30px]">64</h5>
                         <p>left</p>
                     </div>
-                    <button className="bg-[#3CB4AB] mt-3 text-white p-3 px-6 rounded-full">Select Reward</button>
+                    <button onClick={() => {
+                        setIsModalOpen(true)
+                        setSelectedCard(3)
+                    }} className="bg-[#3CB4AB] mt-3 text-white p-3 px-6 rounded-full">Select Reward</button>
                 </div>
             </div>
             <div className="border border-gray-400 rounded-[10px] p-5 mt-8">
