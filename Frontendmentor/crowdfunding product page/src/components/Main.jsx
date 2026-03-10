@@ -16,7 +16,7 @@ function Main() {
             <SectionTwo />
             <SectionThree setIsModalOpen={setIsModalOpen} setSelectedCard={setSelectedCard} />
             {isModalOpen && (
-                <BackProject setSelectedCard={setSelectedCard} />
+                <BackProject setSelectedCard={setSelectedCard} selectedCard={selectedCard} setIsModalOpen={setIsModalOpen} />
             )}
         </main>
     )
