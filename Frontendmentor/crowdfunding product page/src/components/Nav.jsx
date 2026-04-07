@@ -15,10 +15,17 @@ function Nav() {
     });
 
     return (
-        <nav className="bg-[url('./assets/images/image-hero-mobile.jpg')] bg-cover h-100">
-            <div className='p-10 flex justify-between items-center'>
+        <nav className="bg-[url('./assets/images/image-hero-mobile.jpg')] lg:bg-[url('./assets/images/image-hero-desktop.jpg')] bg-cover h-100">
+            <div className='p-10 lg:w-[83%] lg:mx-auto flex justify-between items-center'>
                 <img src={logo} alt="logo" />
-                <img src={open ? close : menu} alt="menu" ref={refs.setReference} onClick={() => setOpen(true)} className='cursor-pointer' />
+                <img src={open ? close : menu} alt="menu" ref={refs.setReference} onClick={() => setOpen(true)} className='cursor-pointer block lg:hidden' />
+                <div className='hidden lg:block'>
+                    <div className='flex space-x-10 text-white'>
+                        <a href="#">About</a>
+                        <a href="#">Discover</a>
+                        <a href="#">Get Started</a>
+                    </div>
+                </div>
             </div>
             {open && (
                 <div className="fixed inset-0 bg-black/30 z-12" onClick={() => setOpen(false)}></div>
