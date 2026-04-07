@@ -1,7 +1,7 @@
 import close from '../assets/images/icon-close-modal.svg'
 import { useEffect } from "react";
 
-function BackProject({ setSelectedCard, setIsModalOpen, selectedCard }) {
+function BackProject({ setSelectedCard, setIsModalOpen, selectedCard, setShowSuccess }) {
     
     useEffect(() => {
     document.body.style.overflow = "hidden";
@@ -72,10 +72,74 @@ function BackProject({ setSelectedCard, setIsModalOpen, selectedCard }) {
                                 <p className='mt-5'>Enter your pledge</p>
                                 <div className='flex items-center justify-center gap-5 mt-5'>
                                     <button className='p-4 pr-15 pl-6 border border-gray-400 rounded-full '>$ <span className='font-bold text-black'>25</span></button>
-                                    <button className='text-white font-medium bg-[#3CB4AB] p-4 px-7 rounded-full'>Continue</button>
+                                    <button onClick={() => { setIsModalOpen(false); 
+                                                             setShowSuccess(true);
+                                                    }}
+                                        className='text-white font-medium bg-[#3CB4AB] p-4 px-7 rounded-full'>Continue</button>
                                 </div>
                             </div>
                         )}
+                    </div>
+                    <div onClick={() => setSelectedCard(3)}
+                         className={`mt-5 border-3 rounded-[10px] py-8 cursor-pointer transition
+                        ${selectedCard === 3 ? "border-[#3CB4AB]" : "border-gray-200"}`}>
+                        <div className="flex items-center gap-7 px-8">
+                            <input
+                            type="radio"
+                            name="pledge"
+                            checked={selectedCard === 3}
+                            onChange={() => setSelectedCard(3)}
+                            className="appearance-none
+                                        w-6 h-6
+                                        rounded-full
+                                        border-3 border-gray-200
+                                        checked:bg-teal-400
+                                        checked:border-gray-400"
+                            />
+                            <div>
+                                <h3 className='font-bold text-black text-[18px]'>Black Edition Stand</h3>
+                                <h4 className='text-[#3CB4AB] font-medium'>Pledge $75 or more</h4>
+                            </div>
+                        </div>
+                        <p className='mt-5 px-8'>You get a Black Special Edition computer stand and a pernsoanl thank you. You'll be added to our Backer member list. Shipping is included.</p>
+                        <div className='flex items-center gap-2 mt-5 px-8'>
+                            <h5 className='text-black font-bold text-[22px]'>64</h5>
+                            <p>left</p>
+                        </div>
+                        {selectedCard === 3 && (
+                            <div className='mt-5 text-center'>
+                                <hr className='text-gray-200 border-2' />
+                                <p className='mt-5'>Enter your pledge</p>
+                                <div className='flex items-center justify-center gap-5 mt-5'>
+                                    <button className='p-4 pr-15 pl-6 border border-gray-400 rounded-full '>$ <span className='font-bold text-black'>75</span></button>
+                                    <button onClick={() => { setIsModalOpen(false); 
+                                                             setShowSuccess(true);
+                                                    }} 
+                                            className='text-white font-medium bg-[#3CB4AB] p-4 px-7 rounded-full'>Continue</button>
+                                </div>
+                            </div>
+                        )}
+                    </div>
+                    <div className='mt-5 border-3 rounded-[10px] py-8 border-gray-100'>
+                        <div className="flex items-center gap-7 px-8">
+                            <input
+                            type="radio"
+                            name="pledge"
+                            className="appearance-none
+                                        w-6 h-6
+                                        rounded-full
+                                        border-3 border-gray-100"
+                            />
+                            <div>
+                                <h3 className='font-bold text-[#00000049] text-[18px]'>Mahogany Special Edition</h3>
+                                <h4 className='text-[#3cb4ac85] font-medium'>Pledge $200 or more</h4>
+                            </div>
+                        </div>
+                        <p className='mt-5 px-8 text-gray-300'>You get two Special Edition Mahogany stands, a Backer T-Shirt, and a personal thank you. You'll be added to our Backer member list. Shipping is included.</p>
+                        <div className='flex items-center gap-2 mt-5 px-8'>
+                            <h5 className='text-[#00000049] font-bold text-[22px]'>0</h5>
+                            <p className='text-gray-300'>left</p>
+                        </div>
                     </div>
                 </div>
             </div>

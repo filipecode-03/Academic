@@ -2,6 +2,7 @@ import SectionOne from './SectionOne'
 import SectionTwo from './SectionTwo'
 import SectionThree from './SectionThree'
 import BackProject from './BackProject';
+import ShowSuccess from './ShowSuccess';
 import { useState } from 'react';
 
 function Main() {
@@ -16,7 +17,10 @@ function Main() {
             <SectionTwo />
             <SectionThree setIsModalOpen={setIsModalOpen} setSelectedCard={setSelectedCard} />
             {isModalOpen && (
-                <BackProject setSelectedCard={setSelectedCard} selectedCard={selectedCard} setIsModalOpen={setIsModalOpen} />
+                <BackProject setSelectedCard={setSelectedCard} selectedCard={selectedCard} setIsModalOpen={setIsModalOpen} setShowSuccess={setShowSuccess} />
+            )}
+            {showSuccess && (
+                <ShowSuccess setShowSuccess={setShowSuccess} />
             )}
         </main>
     )
