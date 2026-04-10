@@ -1,11 +1,15 @@
 import { useState, useEffect } from 'react'
 import logo from '../assets/images/logo-mastercraft.svg'
 
+// 📱 Mobile
 import bookmark from '../assets/images/icon-bookmark.svg'
 import bookmarkHoverMobile from '../assets/images/icon-bookmark-hover-mobile.svg'
 import bookmarkActiveMobile from '../assets/images/icon-bookmark-active-mobile.svg'
 
+// 🖥️ Desktop
 import bookmarkDesktop from '../assets/images/icon-bookmark-desktop.svg'
+import bookmarkHoverDesktop from '../assets/images/icon-bookmark-hover-desktop.svg'
+import bookmarkedActiveDesktop from '../assets/images/icon-bookmarked-active-desktop.svg'
 
 function SectionOne({ setIsModalOpen, setSelectedCard }) {
 
@@ -13,25 +17,29 @@ function SectionOne({ setIsModalOpen, setSelectedCard }) {
     const [isBookmarked, setIsBookmarked] = useState(false)
     const [isDesktop, setIsDesktop] = useState(false)
 
-    // 🔥 detecta tamanho da tela
+    // 🔥 Detecta breakpoint lg
     useEffect(() => {
         const handleResize = () => {
-            setIsDesktop(window.innerWidth >= 1024) // lg = 1024px
+            setIsDesktop(window.innerWidth >= 1024)
         }
 
-        handleResize() // executa ao carregar
+        handleResize()
         window.addEventListener('resize', handleResize)
 
         return () => window.removeEventListener('resize', handleResize)
     }, [])
 
-    // 🔥 lógica da imagem
+    // 🔥 Lógica final unificada
     const getImage = () => {
 
-        // 👉 Desktop sempre usa imagem própria
-        if (isDesktop) return bookmarkDesktop
+        // 🖥️ DESKTOP
+        if (isDesktop) {
+            if (isBookmarked) return bookmarkedActiveDesktop
+            if (isHover) return bookmarkHoverDesktop
+            return bookmarkDesktop
+        }
 
-        // 👉 Mobile usa lógica normal
+        // 📱 MOBILE
         if (isBookmarked) return bookmarkActiveMobile
         if (isHover) return bookmarkHoverMobile
         return bookmark
