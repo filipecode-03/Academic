@@ -10,13 +10,14 @@ function Nav() {
                     Simple, traffic-based pricing
                 </h1>
 
-                <p className="mt-3 text-[18px] text-gray-600">
-                    Sign-up for our 30-day trial.
-                </p>
-
-                <p className="text-gray-600 text-[18px]">
-                    No credit card required
-                </p>
+                <div className='mt-3 lg:flex lg:gap-1 text-[18px] text-gray-600'>
+                    <p>
+                        Sign-up for our 30-day trial.
+                    </p>
+                    <p>
+                        No credit card required
+                    </p>
+                </div>
             </div>
         </div>
     </div>
