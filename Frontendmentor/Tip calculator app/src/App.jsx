@@ -10,7 +10,7 @@ function App() {
     bill: "",
     tip: 15,
     customTip: "",
-    people: 0
+    people: ""
   }
 });
 
