@@ -13,26 +13,26 @@ The designs were created to the following widths:
 
 ### Primary
 
-- Green 400: hsl(172, 67%, 45%)
+- Purple 500: hsl(259, 100%, 65%)
+- Red 400: hsl(0, 100%, 67%)
 
 ### Neutral
 
-- Green 900: hsl(183, 100%, 15%)
-- Grey 500: hsl(186, 14%, 43%)
-- Grey 400: hsl(184, 14%, 56%)
-- Grey 200: hsl(185, 41%, 84%)
-- Grey 50: hsl(189, 47%, 97%)
 - White: hsl(0, 100%, 100%)
+- Grey 100: hsl(0, 0%, 94%)
+- Grey 200: hsl(0, 0%, 86%)
+- Grey 500: hsl(0, 1%, 44%)
+- Black: hsl(0, 0%, 0%)
 
 ## Typography
 
 ### Body Copy
 
-- Font size (form inputs): 24px
+- Font size (inputs): 32px
 
 ### Font
 
-- Family: [Space Mono](https://fonts.google.com/specimen/Space+Mono)
-- Weights: 700
+- Family: [Poppins](https://fonts.google.com/specimen/Poppins)
+- Weights: 400i, 700, 800i
 
 > 💎 [Upgrade to Pro](https://www.frontendmentor.io/pro?ref=style-guide) for design file access to see all design details and get hands-on experience using a professional workflow with tools like Figma.
