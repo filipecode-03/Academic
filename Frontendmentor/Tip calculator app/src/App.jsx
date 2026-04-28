@@ -32,7 +32,7 @@ function App() {
   return (
     <div className="font-['Space_Mono'] min-h-screen bg-[#C5E4E7] pt-15">
       <img src={logo} alt="logo" className='mx-auto'/>
-      <form className='bg-white rounded-t-[30px] mt-10 px-8 py-10 lg:rounded-2xl lg:max-w-[900px] lg:mx-auto'>
+      <form className='bg-white rounded-t-[30px] mt-10 px-8 py-10 lg:rounded-2xl lg:max-w-225 lg:mx-auto'>
         <section className="flex flex-col gap-8 lg:grid lg:grid-cols-2 lg:gap-10">
           <div className="flex flex-col">
             {/* BILL INPUT */}
