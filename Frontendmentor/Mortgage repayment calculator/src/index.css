@@ -17,3 +17,33 @@ input[type="number"] {
   appearance: textfield;       /* padrão */
   -moz-appearance: textfield;  /* Firefox antigo */
 }
+
+/* círculo externo */
+.radio-circle {
+    width: 16px;
+    height: 16px;
+    border: 2px solid #9CA3AF; /* gray-400 */
+    border-radius: 9999px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* bolinha interna */
+.radio-dot {
+    width: 8px;
+    height: 8px;
+    background: #ABAD29;
+    border-radius: 9999px;
+    transform: scale(0);
+    transition: 0.2s;
+}
+
+/* quando selecionado */
+.peer:checked + div .radio-circle {
+    border-color: #ABAD29;
+}
+
+.peer:checked + div .radio-dot {
+    transform: scale(1);
+}

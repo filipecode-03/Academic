@@ -31,11 +31,11 @@ function Form() {
             <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col mt-5 gap-5">
                 {/* Mortgage Amount */}
                 <div>
-                    <label className="text-gray-600">
+                    <label className="text-gray-600 font-medium">
                         Mortgage Amount
                     </label>
                     <div className="flex items-stretch mt-2 border rounded-md overflow-hidden">
-                        <span className="bg-gray-100 px-5 font-semibold flex items-center">
+                        <span className="bg-[#E3F4FE] text-[#4C626E] px-5 font-semibold flex items-center">
                             £
                         </span>
                         <input
@@ -45,12 +45,12 @@ function Form() {
                         />
                     </div>
                     {errors.amount && (
-                        <p className="text-red-500 text-sm">{errors.amount.message}</p>
+                        <p className="text-red-500">{errors.amount.message}</p>
                     )}
                 </div>
                 {/* Mortgage Term */}
                 <div>
-                    <label className="text-gray-600">
+                    <label className="text-gray-600 font-medium">
                         Mortgage Term
                     </label>
                     <div className="flex items-stretch mt-2 border rounded-md overflow-hidden">
@@ -59,7 +59,7 @@ function Form() {
                             className="w-full font-semibold p-2 outline-none"
                             {...register("term", { required: "This field is required" })}
                         />
-                        <span className="px-3 bg-gray-100 flex items-center">
+                        <span className="px-3 bg-[#E3F4FE] text-[#4C626E] font-semibold flex items-center">
                             years
                         </span>
                     </div>
@@ -69,53 +69,87 @@ function Form() {
                 </div>
                 {/* Interest Rate */}
                 <div>
-                    <label className="text-gray-600">
+                    <label className="text-gray-600 font-medium">
                         Interest Rate
                     </label>
-                    <div className="flex items-center mt-2 border rounded-md overflow-hidden">
+                    <div className="flex items-stretch mt-2 border rounded-md overflow-hidden">
                         <input
                             type="number"
-                            step="0.01"
                             className="w-full font-semibold p-2 outline-none"
                             {...register("rate", { required: "This field is required" })}
                         />
-                        <span className="px-3 bg-gray-100">%</span>
+
+                        <span className="px-3 bg-[#E3F4FE] text-[#4C626E] font-semibold flex items-center">
+                            %
+                        </span>
                     </div>
                     {errors.rate && (
-                        <p className="text-red-500 ">{errors.rate.message}</p>
+                        <p className="text-red-500">{errors.rate.message}</p>
                     )}
                 </div>
                 {/* Mortgage Type */}
                 <div>
-                    <label className=" text-gray-600 block mb-2">
+                    <label className="text-gray-600 block mb-2">
                         Mortgage Type
                     </label>
                     <div className="flex flex-col gap-2">
-                        <label className="flex items-center gap-2 border p-2 rounded cursor-pointer font-semibold">
+                        {/* Repayment */}
+                        <label className="cursor-pointer">
                             <input
                                 type="radio"
                                 value="repayment"
+                                className="hidden peer"
                                 {...register("type", { required: "Select a type" })}
                             />
-                            Repayment
+
+                            <div className="flex items-center gap-2 border p-3 rounded 
+                                            peer-checked:bg-[#caca2b42] 
+                                            peer-checked:border-[#A4A76F] 
+                                            transition">
+
+                                {/* bolinha */}
+                                <div className="radio-circle">
+                                    <div className="radio-dot"></div>
+                                </div>
+
+                                <span className="font-semibold">
+                                    Repayment
+                                </span>
+                            </div>
                         </label>
-                        <label className="flex items-center gap-2 border p-2 rounded cursor-pointer font-semibold">
+                        {/* Interest Only */}
+                        <label className="cursor-pointer">
                             <input
                                 type="radio"
                                 value="interest-only"
+                                className="hidden peer"
                                 {...register("type", { required: "Select a type" })}
                             />
-                            Interest Only
+
+                            <div className="flex items-center gap-2 border p-3 rounded 
+                                            peer-checked:bg-[#caca2b42] 
+                                            peer-checked:border-[#A4A76F] 
+                                            transition">
+
+                                {/* bolinha (AGORA PADRÃO) */}
+                                <div className="radio-circle">
+                                    <div className="radio-dot"></div>
+                                </div>
+
+                                <span className="font-semibold">
+                                    Interest Only
+                                </span>
+                            </div>
                         </label>
                     </div>
                     {errors.type && (
-                        <p className="text-red-500">{errors.type.message}</p>
+                        <p className="text-red-500 text-sm">{errors.type.message}</p>
                     )}
                 </div>
                 {/* Submit */}
                 <button 
                     type="submit"
-                    className="flex items-center justify-center gap-2 bg-[#D9DB30] p-3 w-full rounded-full font-semibold hover:brightness-95 focus:outline-2 focus:outline-offset-2"
+                    className="flex cursor-pointer items-center justify-center gap-2 bg-[#D9DB30] p-3 w-full rounded-full font-semibold hover:brightness-95 focus:outline-2 focus:outline-offset-2"
                 >
                     <img src={calculator} alt="calculator" />
                     Calculate Repayments
