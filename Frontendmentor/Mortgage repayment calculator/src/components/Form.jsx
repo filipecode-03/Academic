@@ -1,6 +1,7 @@
 import { useForm } from "react-hook-form"
 import Painel from "./Pailnel"
 import calculator from '../images/icon-calculator.svg'
+import { useState } from "react"
 
 function Form() {
     const {
@@ -9,14 +10,39 @@ function Form() {
         formState: { errors },
         reset
     } = useForm()
-
+    
     function onSubmit(data) {
         console.log(data)
     }
+    
+    const [result, setResult] = useState(null)
+    
+    function onSubmit(data) {
+        const P = Number(data.amount)
+        const annualRate = Number(data.rate) / 100
+        const r = annualRate / 12
+        const n = Number(data.term) * 12
+
+        let monthly = 0
+        let total = 0
+
+        if (data.type === "repayment") {
+            const pow = Math.pow(1 + r, n)
+
+            monthly = P * (r * pow) / (pow - 1)
+            total = monthly * n
+        } else {
+            monthly = P * r
+            total = monthly * n
+        }
+
+        setResult({ monthly, total })
+    }
+    
 
     return (
-        <div className="p-7 bg-white">
-            <div>
+        <div className="bg-white">
+            <div className="px-7 pt-7">
                 <h1 className="text-[#18303C] font-bold text-[25px]">
                     Mortgage Calculator
                 </h1>
@@ -28,7 +54,7 @@ function Form() {
                     Clear All
                 </button>
             </div>
-            <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col mt-5 gap-5">
+            <form onSubmit={handleSubmit(onSubmit)} className="flex px-7 pb-7 flex-col mt-5 gap-5">
                 {/* Mortgage Amount */}
                 <div>
                     <label className="text-gray-600 font-medium">
@@ -39,10 +65,14 @@ function Form() {
                             £
                         </span>
                         <input
-                            type="number"
-                            className="w-full font-semibold p-2 outline-none"
-                            {...register("amount", { required: "This field is required" })}
-                        />
+                        type="text"
+                        inputMode="numeric"
+                        className="w-full font-semibold p-2 outline-none"
+                        {...register("amount", {
+                            required: "This field is required",
+                            setValueAs: (value) => value.replace(/,/g, "") // 👈 resolve na origem
+                        })}
+                    />
                     </div>
                     {errors.amount && (
                         <p className="text-red-500">{errors.amount.message}</p>
@@ -74,11 +104,17 @@ function Form() {
                     </label>
                     <div className="flex items-stretch mt-2 border rounded-md overflow-hidden">
                         <input
-                            type="number"
-                            className="w-full font-semibold p-2 outline-none"
-                            {...register("rate", { required: "This field is required" })}
+                        type="text"
+                        inputMode="decimal"
+                        className="w-full font-semibold p-2 outline-none"
+                        {...register("rate", {
+                            required: "This field is required",
+                            setValueAs: (value) =>
+                                value
+                                    .replace(",", ".") // aceita vírgula
+                                    .replace(/[^\d.]/g, "") // remove lixo
+                        })}
                         />
-
                         <span className="px-3 bg-[#E3F4FE] text-[#4C626E] font-semibold flex items-center">
                             %
                         </span>
@@ -155,7 +191,7 @@ function Form() {
                     Calculate Repayments
                 </button>
             </form>
-            <Painel />
+            <Painel result={result} />
         </div>
     )
 }
