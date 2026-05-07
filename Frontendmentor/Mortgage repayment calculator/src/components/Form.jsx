@@ -48,7 +48,7 @@ function Form() {
                 </h1>
                 <button 
                     onClick={() => reset()}
-                    className="underline"
+                    className="underline cursor-pointer"
                     type="button"
                 >
                     Clear All

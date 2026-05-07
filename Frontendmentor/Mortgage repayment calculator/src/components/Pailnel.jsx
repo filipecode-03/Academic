@@ -20,15 +20,19 @@ function Painel({ result }) {
     }
     return (
         <div className="bg-[#133040] text-white p-7">
-            <h2 className="text-lg text-gray-300">Your monthly repayments</h2>
-            <p className="text-3xl font-bold mt-2 text-[#D9DB30]">
-                {formatCurrency(result.monthly)}
-            </p>
-            <hr className="my-6 border-gray-600" />
-            <h2 className="text-gray-300">Total you'll repay over the term</h2>
-            <p className="text-xl font-bold mt-2">
-                {formatCurrency(result.total)}
-            </p>
+            <h1 className='text-[30px] font-bold'>Your results</h1>
+            <p className='mt-4 text-gray-300'>Your results are shown below based on the information you provided. To adjust the results, edit the form and click “calculate repayments” again.</p>
+            <div className='bg-[#0E2431] mt-8 p-5 rounded-[10px] border-t-5 border-[#D6D930]'>
+                <h2 className="text-lg text-gray-300">Your monthly repayments</h2>
+                <p className="text-[42px] font-bold mt-2 text-[#D9DB30]">
+                    {formatCurrency(result.monthly)}
+                </p>
+                <hr className="my-6 border-gray-600" />
+                <h2 className="text-gray-300">Total you'll repay over the term</h2>
+                <p className="text-[24px] font-bold mt-2">
+                    {formatCurrency(result.total)}
+                </p>
+            </div>
         </div>
     )
 }
