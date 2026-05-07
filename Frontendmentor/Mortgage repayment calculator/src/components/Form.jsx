@@ -41,156 +41,154 @@ function Form() {
     
 
     return (
-        <div className="bg-white">
-            <div className="px-7 pt-7">
-                <h1 className="text-[#18303C] font-bold text-[25px]">
-                    Mortgage Calculator
-                </h1>
-                <button 
-                    onClick={() => reset()}
-                    className="underline cursor-pointer"
-                    type="button"
-                >
-                    Clear All
-                </button>
-            </div>
-            <form onSubmit={handleSubmit(onSubmit)} className="flex px-7 pb-7 flex-col mt-5 gap-5">
-                {/* Mortgage Amount */}
-                <div>
-                    <label className="text-gray-600 font-medium">
-                        Mortgage Amount
-                    </label>
-                    <div className="flex items-stretch mt-2 border rounded-md overflow-hidden">
-                        <span className="bg-[#E3F4FE] text-[#4C626E] px-5 font-semibold flex items-center">
-                            £
-                        </span>
-                        <input
-                        type="text"
-                        inputMode="numeric"
-                        className="w-full font-semibold p-2 outline-none"
-                        {...register("amount", {
-                            required: "This field is required",
-                            setValueAs: (value) => value.replace(/,/g, "") // 👈 resolve na origem
-                        })}
-                    />
-                    </div>
-                    {errors.amount && (
-                        <p className="text-red-500">{errors.amount.message}</p>
-                    )}
+        <div className="bg-white lg:mt-15 lg:flex lg:max-w-6xl lg:mx-auto lg:rounded-3xl overflow-hidden">
+            <section className="lg:w-1/2">
+                <div className="px-7 pt-7 lg:flex lg:justify-between">
+                    <h1 className="text-[#18303C] font-bold text-[25px]">
+                        Mortgage Calculator
+                    </h1>
+                    <button
+                        onClick={() => reset()}
+                        className="underline cursor-pointer"
+                        type="button"
+                    >
+                        Clear All
+                    </button>
                 </div>
-                {/* Mortgage Term */}
-                <div>
-                    <label className="text-gray-600 font-medium">
-                        Mortgage Term
-                    </label>
-                    <div className="flex items-stretch mt-2 border rounded-md overflow-hidden">
-                        <input
-                            type="number"
-                            className="w-full font-semibold p-2 outline-none"
-                            {...register("term", { required: "This field is required" })}
-                        />
-                        <span className="px-3 bg-[#E3F4FE] text-[#4C626E] font-semibold flex items-center">
-                            years
-                        </span>
-                    </div>
-                    {errors.term && (
-                        <p className="text-red-500">{errors.term.message}</p>
-                    )}
-                </div>
-                {/* Interest Rate */}
-                <div>
-                    <label className="text-gray-600 font-medium">
-                        Interest Rate
-                    </label>
-                    <div className="flex items-stretch mt-2 border rounded-md overflow-hidden">
-                        <input
-                        type="text"
-                        inputMode="decimal"
-                        className="w-full font-semibold p-2 outline-none"
-                        {...register("rate", {
-                            required: "This field is required",
-                            setValueAs: (value) =>
-                                value
-                                    .replace(",", ".") // aceita vírgula
-                                    .replace(/[^\d.]/g, "") // remove lixo
-                        })}
-                        />
-                        <span className="px-3 bg-[#E3F4FE] text-[#4C626E] font-semibold flex items-center">
-                            %
-                        </span>
-                    </div>
-                    {errors.rate && (
-                        <p className="text-red-500">{errors.rate.message}</p>
-                    )}
-                </div>
-                {/* Mortgage Type */}
-                <div>
-                    <label className="text-gray-600 block mb-2">
-                        Mortgage Type
-                    </label>
-                    <div className="flex flex-col gap-2">
-                        {/* Repayment */}
-                        <label className="cursor-pointer">
+                <form onSubmit={handleSubmit(onSubmit)} className="flex px-7 pb-7 flex-col mt-5 lg:mt-8 gap-5">
+                    {/* Mortgage Amount */}
+                    <div>
+                        <label className="text-gray-600 font-medium">
+                            Mortgage Amount
+                        </label>
+                        <div className="group flex items-stretch mt-2 border rounded-md overflow-hidden focus-within:border-[#D9D939] transition">
+                            <span className="bg-[#E3F4FE] text-[#4C626E] px-5 font-semibold flex items-center transition group-focus-within:bg-[#D9D939] group-focus-within:text-[#133040]">
+                                £
+                            </span>
                             <input
-                                type="radio"
-                                value="repayment"
-                                className="hidden peer"
-                                {...register("type", { required: "Select a type" })}
+                                type="text"
+                                inputMode="numeric"
+                                className="w-full font-semibold p-2 outline-none"
+                                {...register("amount", {
+                                    required: "This field is required",
+                                    setValueAs: (value) => value.replace(/,/g, "")
+                                })}
                             />
-
-                            <div className="flex items-center gap-2 border p-3 rounded 
-                                            peer-checked:bg-[#caca2b42] 
-                                            peer-checked:border-[#A4A76F] 
-                                            transition">
-
-                                {/* bolinha */}
-                                <div className="radio-circle">
-                                    <div className="radio-dot"></div>
-                                </div>
-
-                                <span className="font-semibold">
-                                    Repayment
+                        </div>
+                        {errors.amount && (
+                            <p className="text-red-500">{errors.amount.message}</p>
+                        )}
+                    </div>
+                    <section className="flex flex-col lg:flex-row gap-5">
+                        {/* Mortgage Term */}
+                        <div>
+                            <label className="text-gray-600 font-medium">
+                                Mortgage Term
+                            </label>
+                            <div className="group flex items-stretch mt-2 border rounded-md overflow-hidden transition focus-within:border-[#D9D939] focus-within:ring-1 focus-within:ring-[#D9D939]">
+                                <input
+                                    type="number"
+                                    className="w-full font-semibold p-2 outline-none"
+                                    {...register("term", { required: "This field is required" })}
+                                />
+                                <span className="px-3 bg-[#E3F4FE] text-[#4C626E] font-semibold flex items-center transition group-focus-within:bg-[#D9D939] group-focus-within:text-[#133040]">
+                                    years
                                 </span>
                             </div>
-                        </label>
-                        {/* Interest Only */}
-                        <label className="cursor-pointer">
-                            <input
-                                type="radio"
-                                value="interest-only"
-                                className="hidden peer"
-                                {...register("type", { required: "Select a type" })}
-                            />
-
-                            <div className="flex items-center gap-2 border p-3 rounded 
-                                            peer-checked:bg-[#caca2b42] 
-                                            peer-checked:border-[#A4A76F] 
-                                            transition">
-
-                                {/* bolinha (AGORA PADRÃO) */}
-                                <div className="radio-circle">
-                                    <div className="radio-dot"></div>
-                                </div>
-
-                                <span className="font-semibold">
-                                    Interest Only
+                            {errors.term && (
+                                <p className="text-red-500">{errors.term.message}</p>
+                            )}
+                        </div>
+                        {/* Interest Rate */}
+                        <div>
+                            <label className="text-gray-600 font-medium">
+                                Interest Rate
+                            </label>
+                            <div className="group flex items-stretch mt-2 border rounded-md overflow-hidden transition focus-within:border-[#D9D939] focus-within:ring-1 focus-within:ring-[#D9D939]">
+                                <input
+                                    type="text"
+                                    inputMode="decimal"
+                                    className="w-full font-semibold p-2 outline-none"
+                                    {...register("rate", {
+                                        required: "This field is required",
+                                        setValueAs: (value) =>
+                                            value
+                                                .replace(",", ".")
+                                                .replace(/[^\d.]/g, "")
+                                    })}
+                                />
+                                <span className="px-3 bg-[#E3F4FE] text-[#4C626E] font-semibold flex items-center transition group-focus-within:bg-[#D9D939] group-focus-within:text-[#133040]">
+                                    %
                                 </span>
                             </div>
+                            {errors.rate && (
+                                <p className="text-red-500">{errors.rate.message}</p>
+                            )}
+                        </div>
+                    </section>
+                    {/* Mortgage Type */}
+                    <div>
+                        <label className="text-gray-600 block mb-2">
+                            Mortgage Type
                         </label>
+                        <div className="flex flex-col gap-2">
+                            {/* Repayment */}
+                            <label className="cursor-pointer">
+                                <input
+                                    type="radio"
+                                    value="repayment"
+                                    className="hidden peer"
+                                    {...register("type", { required: "Select a type" })}
+                                />
+                                <div className="flex items-center gap-2 border p-3 rounded
+                                                peer-checked:bg-[#caca2b42]
+                                                peer-checked:border-[#A4A76F]
+                                                transition">
+                                    {/* bolinha */}
+                                    <div className="radio-circle">
+                                        <div className="radio-dot"></div>
+                                    </div>
+                                    <span className="font-semibold">
+                                        Repayment
+                                    </span>
+                                </div>
+                            </label>
+                            {/* Interest Only */}
+                            <label className="cursor-pointer">
+                                <input
+                                    type="radio"
+                                    value="interest-only"
+                                    className="hidden peer"
+                                    {...register("type", { required: "This field is required" })}
+                                />
+                                <div className="flex items-center gap-2 border p-3 rounded
+                                                peer-checked:bg-[#caca2b42]
+                                                peer-checked:border-[#A4A76F]
+                                                transition">
+                                    {/* bolinha (AGORA PADRÃO) */}
+                                    <div className="radio-circle">
+                                        <div className="radio-dot"></div>
+                                    </div>
+                                    <span className="font-semibold">
+                                        Interest Only
+                                    </span>
+                                </div>
+                            </label>
+                        </div>
+                        {errors.type && (
+                            <p className="text-red-500 text-[14px] mt-2">{errors.type.message}</p>
+                        )}
                     </div>
-                    {errors.type && (
-                        <p className="text-red-500 text-sm">{errors.type.message}</p>
-                    )}
-                </div>
-                {/* Submit */}
-                <button 
-                    type="submit"
-                    className="flex cursor-pointer items-center justify-center gap-2 bg-[#D9DB30] p-3 w-full rounded-full font-semibold hover:brightness-95 focus:outline-2 focus:outline-offset-2"
-                >
-                    <img src={calculator} alt="calculator" />
-                    Calculate Repayments
-                </button>
-            </form>
+                    {/* Submit */}
+                    <button
+                        type="submit"
+                        className="flex lg:mt-4 cursor-pointer items-center justify-center gap-2 bg-[#D9DB30] p-3 w-full lg:w-70 rounded-full font-semibold hover:brightness-95 focus:outline-2 focus:outline-offset-2"
+                    >
+                        <img src={calculator} alt="calculator" />
+                        Calculate Repayments
+                    </button>
+                </form>
+            </section>
             <Painel result={result} />
         </div>
     )
