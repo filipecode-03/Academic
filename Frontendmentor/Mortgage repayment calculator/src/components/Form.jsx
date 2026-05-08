@@ -61,8 +61,8 @@ function Form() {
                         <label className="text-gray-600 font-medium">
                             Mortgage Amount
                         </label>
-                        <div className="group flex items-stretch mt-2 border rounded-md overflow-hidden focus-within:border-[#D9D939] transition">
-                            <span className="bg-[#E3F4FE] text-[#4C626E] px-5 font-semibold flex items-center transition group-focus-within:bg-[#D9D939] group-focus-within:text-[#133040]">
+                        <div className={`group flex items-stretch mt-2 border rounded-md overflow-hidden transition ${ errors.amount ? "border-red-500" : "focus-within:border-[#D9D939]" }`}>
+                            <span className={`px-5 font-semibold flex items-center transition ${ errors.amount ? "bg-red-500 text-white" : "bg-[#E3F4FE] text-[#4C626E] group-focus-within:bg-[#D9D939] group-focus-within:text-[#133040]" }`}>
                                 £
                             </span>
                             <input
@@ -76,7 +76,9 @@ function Form() {
                             />
                         </div>
                         {errors.amount && (
-                            <p className="text-red-500">{errors.amount.message}</p>
+                            <p className="text-red-500 text-[14px] mt-2">
+                                {errors.amount.message}
+                            </p>
                         )}
                     </div>
                     <section className="flex flex-col lg:flex-row gap-5">
@@ -85,18 +87,21 @@ function Form() {
                             <label className="text-gray-600 font-medium">
                                 Mortgage Term
                             </label>
-                            <div className="group flex items-stretch mt-2 border rounded-md overflow-hidden transition focus-within:border-[#D9D939] focus-within:ring-1 focus-within:ring-[#D9D939]">
+                            <div className={`group flex items-stretch mt-2 border rounded-md overflow-hidden transition ${ errors.term ? "border-red-500" : "focus-within:border-[#D9D939] focus-within:ring-1 focus-within:ring-[#D9D939]" }`}>
                                 <input
                                     type="number"
                                     className="w-full font-semibold p-2 outline-none"
                                     {...register("term", { required: "This field is required" })}
                                 />
-                                <span className="px-3 bg-[#E3F4FE] text-[#4C626E] font-semibold flex items-center transition group-focus-within:bg-[#D9D939] group-focus-within:text-[#133040]">
+                                <span
+                                    className={`px-3 font-semibold flex items-center transition ${ errors.term ? "bg-red-500 text-white" : "bg-[#E3F4FE] text-[#4C626E] group-focus-within:bg-[#D9D939] group-focus-within:text-[#133040]" }`}>
                                     years
                                 </span>
                             </div>
                             {errors.term && (
-                                <p className="text-red-500">{errors.term.message}</p>
+                                <p className="text-red-500 text-[14px] mt-2">
+                                    {errors.term.message}
+                                </p>
                             )}
                         </div>
                         {/* Interest Rate */}
@@ -104,7 +109,7 @@ function Form() {
                             <label className="text-gray-600 font-medium">
                                 Interest Rate
                             </label>
-                            <div className="group flex items-stretch mt-2 border rounded-md overflow-hidden transition focus-within:border-[#D9D939] focus-within:ring-1 focus-within:ring-[#D9D939]">
+                            <div className={`group flex items-stretch mt-2 border rounded-md overflow-hidden transition ${ errors.rate ? "border-red-500" : "focus-within:border-[#D9D939] focus-within:ring-1 focus-within:ring-[#D9D939]" }`}>
                                 <input
                                     type="text"
                                     inputMode="decimal"
@@ -115,14 +120,15 @@ function Form() {
                                             value
                                                 .replace(",", ".")
                                                 .replace(/[^\d.]/g, "")
-                                    })}
-                                />
-                                <span className="px-3 bg-[#E3F4FE] text-[#4C626E] font-semibold flex items-center transition group-focus-within:bg-[#D9D939] group-focus-within:text-[#133040]">
+                                    })}/>
+                                <span className={`px-3 font-semibold flex items-center transition ${ errors.rate ? "bg-red-500 text-white" : "bg-[#E3F4FE] text-[#4C626E] group-focus-within:bg-[#D9D939] group-focus-within:text-[#133040]" }`}>
                                     %
                                 </span>
                             </div>
                             {errors.rate && (
-                                <p className="text-red-500">{errors.rate.message}</p>
+                                <p className="text-red-500 text-[14px] mt-2">
+                                    {errors.rate.message}
+                                </p>
                             )}
                         </div>
                     </section>
