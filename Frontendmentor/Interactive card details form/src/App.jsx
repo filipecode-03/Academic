@@ -13,7 +13,7 @@ function App() {
     const [cardData, setCardData] = useState(initialCardData)
     const [isSubmitted, setIsSubmitted] = useState(false)
     return (
-        <main className="font-['Space_Grotesk'] lg:flex">
+        <main className="font-['Space_Grotesk'] lg:flex lg:items-center">
             <Cards
                 cardData={cardData}
                 isSubmitted={isSubmitted}

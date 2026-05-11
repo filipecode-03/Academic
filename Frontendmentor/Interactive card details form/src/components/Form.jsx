@@ -28,7 +28,7 @@ function Form({ setCardData, isSubmitted, setIsSubmitted, initialCardData, }) {
     }
 
     return (
-        <div className="mt-10 p-8">
+        <div className="mt-10 lg:mt-0 lg:mx-auto p-8">
             {!isSubmitted ? (
             <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5 lg:w-110">
                 {/* Cardholder Name */}
@@ -198,9 +198,9 @@ function Form({ setCardData, isSubmitted, setIsSubmitted, initialCardData, }) {
                 </button>
             </form>
             ) : (
-            <div className="flex flex-col items-center justify-center mt-3 gap-6">
-                <div className="flex flex-col items-center">
-                    <img src={complete} alt="complete" />
+            <div className="mt-3">
+                <div className="text-center">
+                    <img src={complete} alt="complete" className="mx-auto" />
                     <h2 className="text-[30px] mt-6 tracking-[4px] font-semibold text-[#220930]">
                         THANK YOU!
                     </h2>
@@ -211,7 +211,7 @@ function Form({ setCardData, isSubmitted, setIsSubmitted, initialCardData, }) {
                 <button
                     onClick={() => { setIsSubmitted(false) 
                         setCardData(initialCardData) } }
-                    className=" w-full mt-8 bg-[#220930] text-white p-4 rounded-xl cursor-pointer text-[20px] hover:bg-[#2f0f42] transition-all">
+                    className="w-full mt-8 bg-[#220930] text-white p-4 rounded-xl cursor-pointer text-[20px] hover:bg-[#2f0f42] transition-all">
                     Continue
                 </button>
             </div>

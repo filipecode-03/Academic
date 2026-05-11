@@ -24,16 +24,16 @@ function Cards({ cardData, isSubmitted }) {
         <div className="relative">
             {/* Background */}
             <img src={bgMobile} alt="background" className="block lg:hidden w-full h-70"/>
-            <img src={bgDesktop} alt="background" className="hidden lg:block" />
+            <img src={bgDesktop} alt="background" className="hidden lg:block h-185 w-125" />
             {/* BACK CARD */}
-            <div className=" absolute top-10 right-5 w-80 h-45 rounded-xl bg-cover bg-center bg-[url('./images/bg-card-back.png')]">
-                <p className="absolute right-10 top-20 text-white tracking-[2px] text-[12px]">
+            <div className=" absolute top-10 lg:top-93 shadowB right-5 lg:-right-50 w-80 lg:w-100 h-46 lg:h-55 rounded-xl bg-cover bg-center bg-[url('./images/bg-card-back.png')]">
+                <p className="absolute right-10 lg:right-12 top-20.5 lg:top-25 text-white tracking-[2px] text-[12px]">
                     {cardCvc}
                 </p>
             </div>
             {/* FRONT CARD */}
-            <div className="absolute top-35 left-4 w-80 h-43 rounded-xl bg-cover bg-center p-5 bg-[url('./images/bg-card-front.png')]">
-                <img src={logo} alt="logo" className="w-14"/>
+            <div className="absolute top-35 left-4 lg:left-50 w-80 lg:w-100 h-46 lg:h-48 rounded-xl bg-cover bg-center p-5 bg-[url('./images/bg-card-front.png')]">
+                <img src={logo} alt="logo"/>
                 <div className="mt-10">
                     {/* NUMBER */}
                     <h2 className=" text-white text-xl tracking-[3px]">
