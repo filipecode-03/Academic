@@ -70,15 +70,24 @@ function Form({ setCardData }) {
                         {...register("cardNumber", {
                             required: "Can't be blank",
                             pattern: {
-                                value: /^[0-9\s]+$/,
-                                message: "Wrong format, numbers only",
+                                value: /^(\d{4}\s){3}\d{4}$/,
+                                message: "Wrong format",
                             },
-                            minLength: {
-                                value: 19,
-                                message: "Card number is incomplete",
+                            onChange: (e) => {
+                                // Remove tudo que não for número
+                                let value = e.target.value.replace(/\D/g, "")
+
+                                // Limita em 16 números
+                                value = value.substring(0, 16)
+
+                                // Adiciona espaço a cada 4 números
+                                value = value.replace(/(.{4})/g, "$1 ").trim()
+
+                                e.target.value = value
                             },
                         })}
                     />
+
                     {errors.cardNumber && (
                         <span className="text-sm text-red-500">
                             {errors.cardNumber.message}
