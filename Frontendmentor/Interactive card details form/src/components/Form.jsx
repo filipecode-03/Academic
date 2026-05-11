@@ -1,11 +1,19 @@
 import { useForm } from "react-hook-form"
+import { useEffect } from "react"
 
-function Form() {
+function Form({ setCardData }) {
     const {
         register,
         handleSubmit,
+        watch,
         formState: { errors },
     } = useForm()
+
+    const watchedValues = watch()
+
+    useEffect(() => {
+        setCardData(watchedValues)
+    }, [watchedValues, setCardData])
 
     const onSubmit = (data) => {
         console.log(data)
@@ -167,7 +175,7 @@ function Form() {
                     </div>
                 </div>
                 {/* Button */}
-                <button type="submit" className="mt-2 p-4 rounded-[10px] text-[20px] bg-[#220930] text-white w-full hover:bg-[#2f0f42] active:scale-[0.98] transition-all">
+                <button type="submit" className="cursor-pointer mt-2 p-4 rounded-[10px] text-[20px] bg-[#220930] text-white w-full hover:bg-[#2f0f42] active:scale-[0.98] transition-all">
                     Confirm
                 </button>
             </form>
