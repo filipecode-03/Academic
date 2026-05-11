@@ -1,11 +1,13 @@
 import { useForm } from "react-hook-form"
 import { useEffect } from "react"
+import complete from '../images/icon-complete.svg'
 
-function Form({ setCardData }) {
+function Form({ setCardData, isSubmitted, setIsSubmitted, initialCardData, }) {
     const {
         register,
         handleSubmit,
         watch,
+        reset,
         formState: { errors },
     } = useForm()
 
@@ -13,15 +15,22 @@ function Form({ setCardData }) {
 
     useEffect(() => {
         setCardData(watchedValues)
-    }, [watchedValues, setCardData])
+        }, [watchedValues, setCardData])
 
-    const onSubmit = (data) => {
-        console.log(data)
+        const onSubmit = () => {
+        setIsSubmitted(true)
+
+        // limpa os cards
+        setCardData(initialCardData)
+
+        // limpa os inputs
+        reset()
     }
 
     return (
         <div className="mt-10 p-8">
-            <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5">
+            {!isSubmitted ? (
+            <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5 lg:w-110">
                 {/* Cardholder Name */}
                 <div className="flex flex-col gap-2">
                     <label htmlFor="name" className="text-xs tracking-[3px] font-semibold text-[#220930]">
@@ -188,6 +197,25 @@ function Form({ setCardData }) {
                     Confirm
                 </button>
             </form>
+            ) : (
+            <div className="flex flex-col items-center justify-center mt-3 gap-6">
+                <div className="flex flex-col items-center">
+                    <img src={complete} alt="complete" />
+                    <h2 className="text-[30px] mt-6 tracking-[4px] font-semibold text-[#220930]">
+                        THANK YOU!
+                    </h2>
+                    <p className="text-gray-400 mt-2 text-[20px]">
+                        We've added your card details
+                    </p>
+                </div>
+                <button
+                    onClick={() => { setIsSubmitted(false) 
+                        setCardData(initialCardData) } }
+                    className=" w-full mt-8 bg-[#220930] text-white p-4 rounded-xl cursor-pointer text-[20px] hover:bg-[#2f0f42] transition-all">
+                    Continue
+                </button>
+            </div>
+            )}
         </div>
     )
 }
