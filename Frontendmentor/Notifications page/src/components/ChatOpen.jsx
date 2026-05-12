@@ -21,7 +21,7 @@ function ChatOpen() {
                     <p><span className='text-black font-bold pr-1 hover:text-[#13366D] cursor-pointer'>kimberly Smith</span> commented on your picture</p>
                     <p className='text-gray-500'>1 week ago</p>
                 </div>
-                <img src={post} alt="post" className='w-14 hover:border border-red-500 rounded-[5px] p-0.5' />
+                <img src={post} alt="post" className='w-14 hover:bg-gray-300 cursor-pointer rounded-[5px] p-0.5' />
             </section>
             <section className="flex items-start gap-5 p-5 text-gray-700 rounded-[10px]">
                 <img src={avatar06} alt="nathan peterson" className='w-12' />
