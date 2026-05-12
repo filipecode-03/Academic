@@ -4,7 +4,7 @@ import Prin from "./components/Prin"
 function App() {
 
   return (
-    <main className="p-5 lg:rounded-2xl font-['Plus_Jakarta_Sans'] bg-white">
+    <main className="p-5 lg:rounded-2xl font-['Plus_Jakarta_Sans'] bg-white lg:w-175 lg:mx-auto lg:my-15">
       <section className="flex items-center justify-between">
         <div className="flex gap-3 items-center">
           <h1 className="font-bold text-[25px]">Notifications</h1>
