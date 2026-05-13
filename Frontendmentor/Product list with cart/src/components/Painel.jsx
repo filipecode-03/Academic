@@ -19,35 +19,30 @@ function Painel({ cart, total, removeItem, }) {
         <>
           <div className="space-y-4">
             {cart.map((item) => (
-              <div key={item.name} className="border-b border-rose-100 pb-4">
-                <h3 className="font-semibold">
-                  {item.name}
-                </h3>
-                <div className="flex items-center justify-between mt-2">
-                  <div className="flex items-center gap-3">
-                    <button onClick={() => decreaseQuantity(item.name)} className="w-6 h-6 border rounded-full">
-                      -
-                    </button>
-                    <span className='text-[#C83B0E] font-semibold'>{item.quantity}x</span>
-                    <button
-                      onClick={() =>
-                        increaseQuantity(item.name)
-                      }
-                      className="w-6 h-6 border rounded-full"
-                    >
-                      +
-                    </button>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <span>
-                      $
-                      {(item.price * item.quantity).toFixed(2)}
-                    </span>
-                    <button onClick={() => removeItem(item.name)}>
-                      <img src={remove} alt="remove" className='border-2 rounded-full p-0.5 w-5 border-[#CAAFA7]' />
-                    </button>
-                  </div>
+              <div key={item.name} className="border-b flex items-center justify-between border-rose-100 pb-4">
+                <div>
+                    <h3 className="font-semibold">
+                      {item.name}
+                    </h3>
+                    <div className="flex items-center gap-3 mt-1">
+                        <span className='text-[#C83B0E] font-semibold'>
+                        {item.quantity}x
+                        </span>
+                        <span className='text-[#87635A]'>
+                         @ ${item.price.toFixed(2)}
+                        </span>
+                        <span className='text-[#87635A] font-semibold'>
+                        ${(item.price * item.quantity).toFixed(2)}
+                        </span>
+                    </div>
                 </div>
+                <button onClick={() => removeItem(item.name)}>
+                    <img
+                    src={remove}
+                    alt="remove"
+                    className='border-2 rounded-full p-0.5 w-5 border-[#CAAFA7]'
+                    />
+                </button>
               </div>
             ))}
           </div>
