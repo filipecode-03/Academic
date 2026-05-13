@@ -1,9 +1,82 @@
-function Painel() {
-    return (
-        <div>
+import emptyCart from '../images/illustration-empty-cart.svg'
+import tree from '../images/icon-carbon-neutral.svg'
+import remove from '../images/icon-remove-item.svg'
 
+function Painel({ cart, total, removeItem, }) {
+  return (
+    <aside className="bg-white mt-10 shadowB p-6 rounded-2xl">
+      <h2 className="font-bold text-[#C93E11] text-[30px] mb-6">
+        Your Cart ({cart.length})
+      </h2>
+      {cart.length === 0 ? (
+        <div>
+            <img src={emptyCart} alt="Empty Cart" className='mx-auto' />
+            <p className="text-center mt-2 text-[#81726D] font-medium">
+                Your added items will appear here
+            </p>
         </div>
-    )
+      ) : (
+        <>
+          <div className="space-y-4">
+            {cart.map((item) => (
+              <div key={item.name} className="border-b border-rose-100 pb-4">
+                <h3 className="font-semibold">
+                  {item.name}
+                </h3>
+                <div className="flex items-center justify-between mt-2">
+                  <div className="flex items-center gap-3">
+                    <button onClick={() => decreaseQuantity(item.name)} className="w-6 h-6 border rounded-full">
+                      -
+                    </button>
+                    <span className='text-[#C83B0E] font-semibold'>{item.quantity}x</span>
+                    <button
+                      onClick={() =>
+                        increaseQuantity(item.name)
+                      }
+                      className="w-6 h-6 border rounded-full"
+                    >
+                      +
+                    </button>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <span>
+                      $
+                      {(item.price * item.quantity).toFixed(2)}
+                    </span>
+                    <button onClick={() => removeItem(item.name)}>
+                      <img src={remove} alt="remove" className='border-2 rounded-full p-0.5 w-5 border-[#CAAFA7]' />
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+          <div className="flex justify-between items-center mt-8">
+            <span>Order Total</span>
+            <span className='font-bold text-[25px]'>${total.toFixed(2)}</span>
+          </div>
+          <button className='bg-[#fdf5ef] text-[#4b4746] mt-6 w-full justify-center p-3 rounded-[5px] flex items-center'>
+            <img src={tree} alt="tree" className='mr-3' />
+            This is a <span className='font-semibold px-1'>carbon-neutral</span> delivery
+          </button>
+          <button
+            className="
+              w-full
+              bg-[#C83B0E]
+              text-white
+              font-medium
+              py-4
+              rounded-full
+              mt-6
+              transition
+            "
+          >
+            Confirm Order
+          </button>
+        </>
+      )}
+    </aside>
+  );
 }
 
-export default Painel
+export default Painel;
