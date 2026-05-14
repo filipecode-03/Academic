@@ -36,7 +36,7 @@ function Painel({ cart, total, removeItem, }) {
                         </span>
                     </div>
                 </div>
-                <button onClick={() => removeItem(item.name)}>
+                <button className='cursor-pointer' onClick={() => removeItem(item.name)}>
                     <img
                     src={remove}
                     alt="remove"
@@ -47,10 +47,10 @@ function Painel({ cart, total, removeItem, }) {
             ))}
           </div>
           <div className="flex justify-between items-center mt-8">
-            <span>Order Total</span>
+            <span className='font-semibold text-[#4b4746]'>Order Total</span>
             <span className='font-bold text-[25px]'>${total.toFixed(2)}</span>
           </div>
-          <button className='bg-[#fdf5ef] text-[#4b4746] mt-6 w-full justify-center p-3 rounded-[5px] flex items-center'>
+          <button className='bg-[#fdf5ef] text-[#4b4746] mt-6 w-full justify-center p-3 rounded-[10px] flex items-center'>
             <img src={tree} alt="tree" className='mr-3' />
             This is a <span className='font-semibold px-1'>carbon-neutral</span> delivery
           </button>
