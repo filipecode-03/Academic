@@ -64,13 +64,14 @@ function App() {
     <main className="font-['Red_Hat_Text'] px-8 py-6">
         <Produtos
           products={data}
+          cart={cart}
           addToCart={addToCart}
+          increaseQuantity={increaseQuantity}
+          decreaseQuantity={decreaseQuantity}
         />
         <Painel
           cart={cart}
           total={total}
-          increaseQuantity={increaseQuantity}
-          decreaseQuantity={decreaseQuantity}
           removeItem={removeItem}
         />
     </main>
