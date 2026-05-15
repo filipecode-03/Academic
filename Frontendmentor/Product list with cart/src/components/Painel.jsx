@@ -2,11 +2,17 @@ import emptyCart from '../images/illustration-empty-cart.svg'
 import tree from '../images/icon-carbon-neutral.svg'
 import remove from '../images/icon-remove-item.svg'
 
-function Painel({ cart, total, removeItem, }) {
+function Painel({ cart, total, removeItem, openModal }) {
+  
+  const totalItems = cart.reduce(
+    (acc, item) => acc + item.quantity,
+    0
+  )
+  
   return (
     <aside className="bg-white mt-10 shadowB p-6 rounded-2xl">
       <h2 className="font-bold text-[#C93E11] text-[30px] mb-6">
-        Your Cart ({cart.length})
+        Your Cart ({totalItems})
       </h2>
       {cart.length === 0 ? (
         <div>
@@ -54,18 +60,7 @@ function Painel({ cart, total, removeItem, }) {
             <img src={tree} alt="tree" className='mr-3' />
             This is a <span className='font-semibold px-1'>carbon-neutral</span> delivery
           </button>
-          <button
-            className="
-              w-full
-              bg-[#C83B0E]
-              text-white
-              font-medium
-              py-4
-              rounded-full
-              mt-6
-              transition
-            "
-          >
+          <button onClick={openModal} className="w-full bg-[#C83B0E] text-white font-medium py-4 rounded-full mt-6 transition">
             Confirm Order
           </button>
         </>

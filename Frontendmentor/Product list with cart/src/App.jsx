@@ -2,6 +2,7 @@ import { useState } from "react";
 import data from "../data.json";
 import Produtos from "./components/Produtos";
 import Painel from "./components/Painel";
+import Modal from "./components/Modal"
 
 function App() {
   const [cart, setCart] = useState([]);
@@ -60,6 +61,21 @@ function App() {
     0
   );
 
+  const [isModalOpen, setIsModalOpen] = useState(false)
+
+  function openModal() {
+    setIsModalOpen(true)
+  }
+
+  function closeModal() {
+    setIsModalOpen(false)
+  }
+
+  function startNewOrder() {
+    setCart([])
+    setIsModalOpen(false)
+  }
+
   return (
     <main className="font-['Red_Hat_Text'] px-8 py-6">
         <Produtos
@@ -73,7 +89,17 @@ function App() {
           cart={cart}
           total={total}
           removeItem={removeItem}
+          openModal={openModal}
         />
+        {isModalOpen && (
+            <Modal
+              cart={cart}
+              total={total}
+              closeModal={closeModal}
+              startNewOrder={startNewOrder}
+            />
+          )
+        }
     </main>
   );
 }
