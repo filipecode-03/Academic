@@ -3,6 +3,7 @@ import data from "../data.json";
 import Produtos from "./components/Produtos";
 import Painel from "./components/Painel";
 import Modal from "./components/Modal"
+import { useEffect } from "react";
 
 function App() {
   const [cart, setCart] = useState([]);
@@ -76,21 +77,45 @@ function App() {
     setIsModalOpen(false)
   }
 
+  useEffect(() => {
+
+  if (isModalOpen) {
+
+    // trava scroll da página
+    document.body.style.overflow = "hidden";
+
+    // volta para o topo
+    window.scrollTo(0, 0);
+
+  } else {
+
+    document.body.style.overflow = "auto";
+
+  }
+
+  return () => {
+    document.body.style.overflow = "auto";
+  };
+
+}, [isModalOpen]);
+
   return (
-    <main className="font-['Red_Hat_Text'] px-8 py-6">
-        <Produtos
-          products={data}
-          cart={cart}
-          addToCart={addToCart}
-          increaseQuantity={increaseQuantity}
-          decreaseQuantity={decreaseQuantity}
-        />
-        <Painel
-          cart={cart}
-          total={total}
-          removeItem={removeItem}
-          openModal={openModal}
-        />
+    <main className="font-['Red_Hat_Text'] px-8 lg:pl-20 py-6 lg:py-12 lg:pb-25">
+        <div className="lg:grid lg:grid-cols-[1fr_580px] lg:gap-8">
+          <Produtos
+            products={data}
+            cart={cart}
+            addToCart={addToCart}
+            increaseQuantity={increaseQuantity}
+            decreaseQuantity={decreaseQuantity}
+          />
+          <Painel
+            cart={cart}
+            total={total}
+            removeItem={removeItem}
+            openModal={openModal}
+          />
+        </div>
         {isModalOpen && (
             <Modal
               cart={cart}

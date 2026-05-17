@@ -10,14 +10,14 @@ function Painel({ cart, total, removeItem, openModal }) {
   )
   
   return (
-    <aside className="bg-white mt-10 shadowB p-6 rounded-2xl">
+    <aside className="bg-white mt-10 shadowB p-6 lg:p-8 rounded-2xl h-fit lg:sticky lg:top-6 lg:w-120">
       <h2 className="font-bold text-[#C93E11] text-[30px] mb-6">
         Your Cart ({totalItems})
       </h2>
       {cart.length === 0 ? (
         <div>
             <img src={emptyCart} alt="Empty Cart" className='mx-auto' />
-            <p className="text-center mt-2 text-[#81726D] font-medium">
+            <p className="text-center mt-2 text-[#81726D] font-medium lg:text-[18px]">
                 Your added items will appear here
             </p>
         </div>

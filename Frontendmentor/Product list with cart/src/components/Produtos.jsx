@@ -14,15 +14,32 @@ function Produtos({ products, cart, addToCart, increaseQuantity, decreaseQuantit
       <h1 className="text-[50px] font-bold mb-8">
         Desserts
       </h1>
-      <div className="grid gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
         {products.map((product) => {
           const quantity = getProductQuantity(product.name)
           return (
             <div key={product.name}>
               {/* IMAGE */}
               <div className="relative">
-                <img src={product.image.mobile} alt={product.name}
-                  className={`rounded-xl w-full ${quantity > 0 ? 'border-3 border-[#C83B0E]' : ''}`}/>
+                <picture>
+                  <source
+                    media="(min-width: 1280px)"
+                    srcSet={product.image.desktop}
+                  />
+                  <source
+                    media="(min-width: 768px)"
+                    srcSet={product.image.tablet}
+                  />
+                  <img
+                    src={product.image.mobile}
+                    alt={product.name}
+                    className={`
+                      rounded-xl
+                      w-full
+                      ${quantity > 0 ? 'border-3 border-[#C83B0E]' : ''}
+                    `}
+                  />
+                </picture>
                 {/* BUTTON */}
                 <div className="absolute -bottom-5 left-1/2 -translate-x-1/2">
                   {quantity === 0 ? (
