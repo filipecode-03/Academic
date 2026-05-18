@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import Nav from "./components/Nav";
+import ExtensionsList from "./components/ExtensionsList";
 
 function App() {
   const [theme, setTheme] = useState("light");
@@ -19,6 +20,7 @@ function App() {
   return (
     <div className="min-h-screen bg-neutral-100 dark:bg-neutral-900 transition-colors duration-300">
       <Nav theme={theme} toggleTheme={toggleTheme} />
+      <ExtensionsList />
     </div>
   );
 }
