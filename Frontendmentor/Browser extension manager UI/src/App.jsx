@@ -18,7 +18,7 @@ function App() {
   }, [theme]);
 
   return (
-    <div className="min-h-screen bg-neutral-100 dark:bg-neutral-900 transition-colors duration-300">
+    <div className="bg-neutral-100 p-6 dark:bg-neutral-900 transition-colors duration-300">
       <Nav theme={theme} toggleTheme={toggleTheme} />
       <ExtensionsList />
     </div>
