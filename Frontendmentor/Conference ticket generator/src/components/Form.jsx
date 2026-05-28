@@ -4,7 +4,7 @@ import upload from '../../public/images/icon-upload.svg'
 import info from '../../public/images/icon-info.svg'
 import lineBottomMobile from '../../public/images/pattern-squiggly-line-bottom-mobile-tablet.svg'
 
-export default function Form() {
+export default function Form({ setTicketGenerated }) {
 
     const [preview, setPreview] = useState(null);
 
@@ -16,6 +16,7 @@ export default function Form() {
 
     const onSubmit = (data) => {
         console.log(data);
+        setTicketGenerated(true);
     };
 
     const handleImagePreview = (e) => {
