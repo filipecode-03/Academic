@@ -1,5 +1,4 @@
 
-
 function Intro() {
     return (
         <div className="relative mt-10 overflow-hidden text-white">

@@ -11,6 +11,7 @@ import logoFull from '../public/images/logo-full.svg'
 function App() {
 
     const [ticketGenerated, setTicketGenerated] = useState(false);
+    const [userData, setUserData] = useState(null);
 
     return (
         <main className="relative text-white font-['Inconsolata'] overflow-hidden">
@@ -23,10 +24,10 @@ function App() {
                 !ticketGenerated ? (
                     <div className="relative z-10">
                         <Intro />
-                        <Form setTicketGenerated={setTicketGenerated} />
+                        <Form setTicketGenerated={setTicketGenerated} setUserData={setUserData} />
                     </div>
                 ) : (
-                    <Ticket />
+                    <Ticket userData={userData} />
                 )
             }
         </main>

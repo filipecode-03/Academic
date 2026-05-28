@@ -4,7 +4,7 @@ import upload from '../../public/images/icon-upload.svg'
 import info from '../../public/images/icon-info.svg'
 import lineBottomMobile from '../../public/images/pattern-squiggly-line-bottom-mobile-tablet.svg'
 
-export default function Form({ setTicketGenerated }) {
+export default function Form({ setTicketGenerated, setUserData }) {
 
     const [preview, setPreview] = useState(null);
 
@@ -14,8 +14,12 @@ export default function Form({ setTicketGenerated }) {
         formState: { errors }
     } = useForm();
 
+    const avatarRegister = register("avatar", {
+    required: "Please upload an avatar"
+});
+
     const onSubmit = (data) => {
-        console.log(data);
+        setUserData(data);
         setTicketGenerated(true);
     };
 
@@ -44,11 +48,19 @@ export default function Form({ setTicketGenerated }) {
                                 <p className="text-neutral-300 text-[18px] mt-4">Drag and drop or click to upload</p>
                             </>
                         )}
-                        <input id="avatar" type="file" accept="image/png, image/jpeg" className="hidden"
-                            {...register("avatar", {
-                                required: "Please upload an avatar"
-                            })}
-                            onChange={handleImagePreview}/>
+                        <input
+                            id="avatar"
+                            type="file"
+                            accept="image/png, image/jpeg"
+                            className="hidden"
+
+                            {...avatarRegister}
+
+                            onChange={(e) => {
+                                avatarRegister.onChange(e);
+                                handleImagePreview(e);
+                            }}
+                        />
                     </label>
                     <div className="flex items-center gap-2">
                         <img src={info} alt="info" />
