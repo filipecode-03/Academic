@@ -10,7 +10,7 @@ function Ticket({ userData }) {
     return (
         <div className="px-8 mt-10 pb-85 text-white">
             <div className="text-center">
-                <h1 className="text-[38px] font-extrabold leading-tight max-w-110 mx-auto">Congrats,{" "} <span className="bg-linear-to-r from-[#F08178] to-[#FAE5E6] bg-clip-text text-transparent">{userData.fullName}</span>! {" "} Your ticket is ready.</h1>
+                <h1 className="text-[38px] font-extrabold leading-tight max-w-105 mx-auto">Congrats,{" "} <span className="bg-linear-to-r from-[#F08178] to-[#FAE5E6] bg-clip-text text-transparent">{userData.fullName}</span>! {" "} Your ticket is ready.</h1>
                 <p className="mt-6 text-neutral-300 text-[25px] max-w-150 lg:w-full mx-auto leading-8">We've emailed your ticket to {" "} <span className="text-orange-400">{userData.email}</span> {" "}and will send updates in the run up to the event.</p>
             </div>
             {/* Ticket */}
