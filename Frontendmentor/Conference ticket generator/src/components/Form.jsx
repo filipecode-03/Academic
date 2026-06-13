@@ -4,6 +4,7 @@ import { useState } from "react";
 import upload from '../../public/images/icon-upload.svg'
 import info from '../../public/images/icon-info.svg'
 import lineBottomMobile from '../../public/images/pattern-squiggly-line-bottom-mobile-tablet.svg'
+import { Info } from 'lucide-react';
 
 export default function Form({ setTicketGenerated, setUserData }) {
 
@@ -52,7 +53,7 @@ export default function Form({ setTicketGenerated, setUserData }) {
                         name="avatar"
                         control={control}
                         rules={{
-                            required: "Please upload an avatar"
+                            required: "File too large. Please upload a photo under 500KB."
                         }}
                         render={({ field: { onChange } }) => {
 
@@ -114,9 +115,12 @@ export default function Form({ setTicketGenerated, setUserData }) {
                             Upload your photo (JPG or PNG, max size: 500KB).
                         </p>
                     </div>
-
                     {errors.avatar && (
-                        <span className="text-red-400 text-sm">
+                        <span className="text-red-400 text-sm flex gap-3">
+                            <Info
+    size={18}
+    color="#D1D5DB"
+/>
                             {errors.avatar.message}
                         </span>
                     )}
