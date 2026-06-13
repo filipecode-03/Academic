@@ -7,6 +7,7 @@ import lineBottomMobile from '../public/images/pattern-squiggly-line-bottom-mobi
 import lineBottomDesktop from '../public/images/pattern-squiggly-line-bottom-desktop.svg'
 import { useState } from "react";
 import logoFull from '../public/images/logo-full.svg'
+import circle from '../public/images/pattern-circle.svg'
 
 function App() {
 
