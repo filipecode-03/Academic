@@ -108,22 +108,21 @@ export default function Form({ setTicketGenerated, setUserData }) {
                             );
                         }}
                     />
-
-                    <div className="flex items-center gap-2">
-                        <img src={info} alt="info" />
-                        <p className="text-neutral-300 text-[13px]">
-                            Upload your photo (JPG or PNG, max size: 500KB).
-                        </p>
-                    </div>
-                    {errors.avatar && (
-                        <span className="text-red-400 text-sm flex gap-3">
-                            <Info
-    size={18}
-    color="#D1D5DB"
-/>
+                    {
+                    errors.avatar ? (
+                        <span className="text-red-400 text-sm flex items-center gap-2">
+                            <Info size={14} className="text-red-400" />
                             {errors.avatar.message}
                         </span>
-                    )}
+                    ) : (
+                        <div className="flex items-center gap-2">
+                            <img src={info} alt="info" />
+                            <p className="text-neutral-300 text-[13px]">
+                                Upload your photo (JPG or PNG, max size: 500KB).
+                            </p>
+                        </div>
+                    )
+                }
                 </div>
                 {/* Full Name */}
                 <div className="flex flex-col gap-2">
@@ -147,7 +146,7 @@ export default function Form({ setTicketGenerated, setUserData }) {
                             required: "Email is required",
                             pattern: {
                                 value: /^\S+@\S+$/i,
-                                message: "Please enter a valid email"
+                                message: "Please enter a valid email address."
                             }
                         })}
                     />
@@ -173,7 +172,7 @@ export default function Form({ setTicketGenerated, setUserData }) {
                     )}
                 </div>
                 {/* Submit Button */}
-                <button type="submit" className="bg-[#D16355] hover:bg-orange-400 text-[18px] text-black font-extrabold py-4 rounded-xl transition mt-2 cursor-pointer">Generate My Ticket</button>
+                <button type="submit" className="bg-[#D16355] hover:bg-[#E16050] text-[18px] text-black font-extrabold py-4 rounded-xl transition mt-2 cursor-pointer">Generate My Ticket</button>
             </form>
         </div>
     );
