@@ -16,20 +16,23 @@ function App() {
 
     return (
         <main className="relative min-h-screen text-white font-['Inconsolata'] overflow-hidden">
-            <img src={lineTop} alt="line-top" className="absolute top-10 right-0 w-40 lg:w-100"/>
+            <img src={lineTop} alt="line-top" className="absolute top-10 right-0 w-40 lg:w-120"/>
             <img src={grade} alt="grade" className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-445 h-auto pointer-events-none"/>            
             <img src={lineBottomMobile} alt="line-bottom" className="block lg:hidden absolute bottom-0 w-90 left-0 z-0"/>
             <img src={lineBottomDesktop} alt="line-bottom" className="hidden lg:block absolute bottom-0 left-0 z-0" />
             <img src={logoFull} alt="logo" className="mx-auto mt-10"/>
+            <img src={circle} alt="circle" className="hidden lg:block absolute -top-20 left-12.5 z-0 pointer-events-none"/>
             {/* Conteúdo */}
             {
                 !ticketGenerated ? (
                     <div className="relative z-10 min-h-screen pb-20">
+                        <img src={circle} alt="circle" className="hidden lg:block absolute top-1/2 right-120 z-[-1] pointer-events-none"/>
                         <Intro />
                         <Form setTicketGenerated={setTicketGenerated} setUserData={setUserData} />
                     </div>
                 ) : (
                     <div className="relative z-10 min-h-screen">
+                        <img src={circle} alt="circle" className="hidden lg:block absolute top-1/2 right-120 z-[-1] pointer-events-none"/>
                         <Ticket userData={userData} />
                     </div>
                 )
