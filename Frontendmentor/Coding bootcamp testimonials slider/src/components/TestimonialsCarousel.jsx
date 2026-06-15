@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react'
 
 import TestimonialCard from './TestimonialCard'
 import TestimonialImage from './TestimonialImage'
-import CarouselControls from './CarouselControls'
 
 import { testimonials } from '../data/testimonials'
 
@@ -47,11 +46,19 @@ function TestimonialsCarousel() {
   }, [])
 
   return (
-    <div className='p-8'>
+    <div className="
+  p-8
+  flex
+  flex-col
+  lg:flex-row-reverse
+  lg:items-center
+  lg:justify-center
+  lg:min-h-screen
+  lg:max-w-6xl
+  lg:mx-auto
+">
       <TestimonialImage
         image={testimonial.image}
-      />
-      <CarouselControls
         onPrev={prevSlide}
         onNext={nextSlide}
       />
