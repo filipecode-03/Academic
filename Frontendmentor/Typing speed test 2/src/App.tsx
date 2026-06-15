@@ -2,7 +2,6 @@ import { texts } from "./data/texts.ts";
 import { TypingInput } from "./components/TypingInput";
 import { TypingStats } from "./components/TypingStats";
 import { TypingText } from "./components/TypingText";
-import { Timer } from "./components/Timer";
 import { useTypingTest } from "./hooks/useTypingTest";
 
 import logoMobile from './assets/images/logo-small.svg'
@@ -10,14 +9,13 @@ import iconRestart from './assets/images/icon-restart.svg'
 
 function App() {
   const text = texts[0];
-
+  
   const {
     input,
     setInput,
     timeLeft,
     wpm,
     accuracy,
-    errors,
     reset
   } = useTypingTest(text);
 
@@ -27,9 +25,10 @@ function App() {
       <TypingStats
         wpm={wpm}
         accuracy={accuracy}
-        errors={errors}
+        timeLeft={timeLeft}
       />
-      <Timer timeLeft={timeLeft} />
+
+      <hr className="text-[#3b3b3b] my-5" />
 
       <TypingText
         text={text}
@@ -41,7 +40,7 @@ function App() {
         setInput={setInput}
       />
 
-      <hr className="text-[#262626] my-5" />
+      <hr className="text-[#3b3b3b] my-5" />
 
       <button
         onClick={reset}
