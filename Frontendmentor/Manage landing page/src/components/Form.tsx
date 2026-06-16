@@ -20,7 +20,7 @@ export default function NewsletterForm() {
       <div className="flex flex-col">
           <input
             type="email"
-            placeholder="Updates in your inbox..."
+            placeholder={errors.email ? "johnmadden/mail" : "Updates in your inbox..."}
             {...register("email", {
               required: "Please insert a valid email",
               pattern: {
@@ -28,7 +28,11 @@ export default function NewsletterForm() {
                 message: "Invalid email address",
               },
             })}
-            className="rounded-full px-8 pr-18 py-3 bg-white text-gray-800"
+            className={`rounded-full px-8 pr-18 py-3 bg-white ${
+                        errors.email
+                        ? "placeholder:text-red-400 font-medium border-2 border-red-500"
+                        : "text-gray-800"
+                    }`}
           />
           {errors.email && (
             <span className="text-sm ml-8 mt-2 text-red-500 italic">
