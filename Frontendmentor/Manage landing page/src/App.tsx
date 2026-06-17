@@ -6,7 +6,7 @@ import bg from './assets/images/bg-tablet-pattern.svg'
 function App() {
 
   return (
-    <div className="relative font-['Be_Vietnam_Pro'] min-h-screen">
+    <div className="relative font-['Be_Vietnam_Pro'] min-h-screen overflow-x-hidden">
       <img src={bg} alt="bg" className="absolute -z-1 -top-20 -right-20" />
       <div className="p-8">
         <Nav />
