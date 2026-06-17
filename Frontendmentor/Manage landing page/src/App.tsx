@@ -3,7 +3,7 @@ import Started from "./components/Started"
 import Nav from './components/Nav'
 import Intro from './components/Intro'
 import About from './components/About'
-import Avatar from "./components/Avatar"
+import Avatar from "./components/avatar/Avatar"
 import bg from './assets/images/bg-tablet-pattern.svg'
 
 function App() {
