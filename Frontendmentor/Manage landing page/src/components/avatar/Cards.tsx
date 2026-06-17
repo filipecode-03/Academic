@@ -51,9 +51,9 @@ function Cards() {
     return (
         <div className="embla">
             <div className="embla__viewport" ref={emblaRef}>
-                <div className="embla__container">
+                <div className="embla__container items-stretch">
                     {testimonials.map((testimonial) => (
-                        <div key={testimonial.name} className="embla__slide">
+                        <div key={testimonial.name} className="embla__slide flex">
                             <div className="mt-10 rounded bg-gray-50 px-6 pb-8 pt-14 text-center relative">
                                 <img src={testimonial.image} alt={testimonial.name} className="absolute left-1/2 top-0 w-18 -translate-x-1/2 -translate-y-1/2"
                                 />
@@ -67,7 +67,7 @@ function Cards() {
                         </div>
                     ))}
                 </div>
-                <div className="flex justify-center gap-2">
+                <div className="flex mt-5 justify-center gap-2">
                     {testimonials.map((_, index) => (
                         <button
                         key={index}
