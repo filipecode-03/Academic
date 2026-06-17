@@ -16,7 +16,7 @@ export default function NewsletterForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="flex gap-4 items-start justify-center mt-5">
+    <form onSubmit={handleSubmit(onSubmit)} className="flex gap-4 lg:gap-2 items-start justify-center lg:justify-normal mt-5 lg:mt-0">
       <div className="flex flex-col">
           <input
             type="email"
@@ -28,7 +28,7 @@ export default function NewsletterForm() {
                 message: "Invalid email address",
               },
             })}
-            className={`rounded-full px-8 pr-18 py-3 bg-white ${
+            className={`rounded-full px-8 lg:px-6 pr-18 lg:pr-14 py-3 bg-white ${
                         errors.email
                         ? "placeholder:text-red-400 font-medium border-2 border-red-500"
                         : "text-gray-800"
@@ -42,7 +42,7 @@ export default function NewsletterForm() {
       </div>
       <button
         type="submit"
-        className="rounded-full bg-[#F2613C] px-10 py-3 font-semibold text-white transition hover:opacity-90">
+        className="rounded-full bg-[#F2613C] px-10 lg:px-7 py-3 font-semibold text-white transition hover:opacity-90">
         GO
       </button>
     </form>

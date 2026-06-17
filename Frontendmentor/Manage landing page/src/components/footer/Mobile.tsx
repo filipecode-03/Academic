@@ -6,12 +6,12 @@ import {
   faInstagram,
 } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import logo from '../assets/images/logoFooter.svg'
-import Form from './Form.tsx'
+import logo from '../../assets/images/logoFooter.svg'
+import Form from '../Form.tsx'
 
-function Footer() {
+function Mobile() {
     return (
-        <footer className="bg-[#1E1E26] text-white p-8">
+        <div>
             <Form />
             <div className="flex gap-20 justify-center mt-10">
                 <ul className="flex flex-col gap-3">
@@ -35,8 +35,8 @@ function Footer() {
             </div>
             <img src={logo} alt="logo" className="mx-auto mt-10" />
             <p className="text-center text-gray-400 mt-10">Copyright 2020. All Rights Reserved</p>
-        </footer>
+        </div>
     )
 }
 
-export default Footer
+export default Mobile

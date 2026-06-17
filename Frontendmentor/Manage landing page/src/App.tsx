@@ -1,4 +1,4 @@
-import Footer from "./components/Footer"
+import Footer from "./components/footer/Footer"
 import Started from "./components/Started"
 import Nav from './components/Nav'
 import Intro from './components/Intro'
