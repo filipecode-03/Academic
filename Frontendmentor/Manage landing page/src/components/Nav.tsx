@@ -16,7 +16,7 @@ function Nav() {
     const Icon = open ? X : Menu;
 
     return (
-        <nav>
+        <nav className="p-8">
             {open && (
             <div
                 className="fixed inset-0 bg-linear-to-b from-black/0 to-black/70 z-10"
@@ -41,7 +41,7 @@ function Nav() {
                     top: y ?? 0,
                     left: x ?? 0,
                 }}
-                className="bg-white text-center shadow-lg p-4 rounded w-113 z-20"
+                className="bg-white text-center shadow-lg p-4 rounded w-md z-20"
                 >
                 <ul className="space-y-5 font-semibold">
                     <li className="hover:text-[#F2613C] w-fit mx-auto cursor-pointer">
