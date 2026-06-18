@@ -11,7 +11,7 @@ import Form from '../Form'
 
 function Desktop() {
     return (
-        <div className='flex items-start justify-between'>
+        <div className='flex items-start justify-between px-8'>
             <div>
                 <img src={logo} alt="logo" className='mx-auto' />
                 <div className="flex items-center justify-center mt-15 gap-3 text-[20px]">
@@ -22,7 +22,7 @@ function Desktop() {
                     <FontAwesomeIcon icon={faInstagram} className="hover:text-[#F3613C] cursor-pointer" />
                 </div>
             </div>
-            <div className='flex gap-50 text-[14px]'>
+            <div className='flex gap-45 text-[14px]'>
                 <ul className="flex flex-col gap-3">
                     <li className="hover:text-[#F3613C] cursor-pointer w-fit">Home</li>
                     <li className="hover:text-[#F3613C] cursor-pointer w-fit">Pricing</li>

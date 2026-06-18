@@ -1,4 +1,4 @@
-
+import CardsDesktop from "./CardsDesktop";
 import Cards from "./Cards";
 
 function Avatar() {
@@ -9,12 +9,12 @@ function Avatar() {
         {/* MOBILE */}
         <div className="lg:hidden mt-10">
             <Cards />
-            <button className='bg-[#F85E3D] mt-15 cursor-pointer text-white rounded-full px-8 py-3 block mx-auto'>Get Started</button>
         </div>
         {/* DESKTOP */}
         <div className="hidden lg:block">
-            {/* Marquee do Kibo UI */}
+          <CardsDesktop />
         </div>
+        <button className='bg-[#F85E3D] mt-15 cursor-pointer text-white rounded-full px-8 py-3 block mx-auto'>Get Started</button>
     </div>
   );
 }
