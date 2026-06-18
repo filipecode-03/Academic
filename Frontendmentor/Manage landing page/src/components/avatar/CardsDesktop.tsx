@@ -2,7 +2,7 @@ import { testimonials } from "../../data/testimonials";
 
 function CardsDesktop() {
   return (
-    <div className="relative mt-10 overflow-hidden">
+    <div className="relative overflow-hidden">
       {/* Fade esquerdo */}
       <div className="absolute left-0 top-0 z-10 h-full w-24 bg-linear-to-r from-white to-transparent" />
 

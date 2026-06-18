@@ -3,7 +3,7 @@ import Desktop from "./Desktop"
 
 function Footer() {
     return (
-        <footer className="bg-[#1E1E26] text-white p-8">
+        <footer className="bg-[#1E1E26] text-white p-8 lg:p-16">
             <div className="lg:hidden mt-10">
                 <Mobile />
             </div>

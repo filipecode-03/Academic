@@ -11,7 +11,7 @@ import Form from '../Form'
 
 function Desktop() {
     return (
-        <div className='flex items-start justify-between px-8'>
+        <div className='flex items-start justify-between'>
             <div>
                 <img src={logo} alt="logo" className='mx-auto' />
                 <div className="flex items-center justify-center mt-15 gap-3 text-[20px]">
@@ -37,7 +37,7 @@ function Desktop() {
             </div>
             <div>
                 <Form />
-                <p className="text-gray-400 text-right mt-10 text-[14px]">Copyright 2020. All Rights Reserved</p>
+                <p className="text-gray-400 text-right mt-15 text-[14px]">Copyright 2020. All Rights Reserved</p>
             </div>
         </div>
     )
