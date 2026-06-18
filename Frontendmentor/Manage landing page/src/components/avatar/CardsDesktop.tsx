@@ -2,7 +2,7 @@ import { testimonials } from "../../data/testimonials";
 
 function CardsDesktop() {
   return (
-    <div className="relative overflow-hidden">
+    <div className="relative mt-10 overflow-hidden">
       {/* Fade esquerdo */}
       <div className="absolute left-0 top-0 z-10 h-full w-24 bg-linear-to-r from-white to-transparent" />
 
@@ -16,7 +16,7 @@ function CardsDesktop() {
               key={`${testimonial.name}-${index}`}
               className="mx-4 w-135"
             >
-              <div className="relative min-h-65 bg-[#FAFAFA] px-8 pb-8 pt-14 text-center">
+              <div className="relative min-h-60 bg-[#FAFAFA] px-8 pb-8 pt-14 text-center">
                 <img
                   src={testimonial.image}
                   alt={testimonial.name}
