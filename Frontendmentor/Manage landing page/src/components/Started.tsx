@@ -1,13 +1,64 @@
 function Started() {
     return (
-        <div className="bg-[#F3613C] py-20 mt-2 lg:mt-30 bg-[url('./assets/images/bg-simplify-section-mobile.svg')] lg:bg-[url('./assets/images/bg-simplify-section-desktop.svg')] bg-no-repeat bg-left lg:bg-right p-8 lg:px-16 flex flex-col lg:flex-row lg:justify-between items-center gap-6">
-            <h2 className="text-white text-center lg:text-left text-[40px] font-semibold leading-12 max-w-85 lg:max-w-120 mx-auto lg:mx-0">
-                Simplify how your team works today.
-            </h2>
-            <button className="bg-white cursor-pointer rounded-full px-6 py-3 font-bold shadow-2xl text-[#F0876D]">
-                Get Started
-            </button>
-        </div>
+        <div
+  className="
+    mt-2 lg:mt-30
+    bg-[#F3613C]
+    bg-[url('./assets/images/bg-simplify-section-mobile.svg')]
+    lg:bg-[url('./assets/images/bg-simplify-section-desktop.svg')]
+    bg-no-repeat
+    bg-left-center
+    lg:bg-right-center
+    py-20
+    px-8
+  "
+>
+  <div
+    className="
+      mx-auto
+      flex
+      max-w-[1120px]
+      flex-col
+      items-center
+      gap-8
+      lg:flex-row
+      lg:justify-between
+    "
+  >
+    <h2
+      className="
+        text-center
+        text-[40px]
+        font-semibold
+        leading-12
+        text-white
+        lg:max-w-[520px]
+        lg:text-left
+        lg:text-[42px]
+        lg:leading-[48px]
+      "
+    >
+      Simplify how your team works today.
+    </h2>
+
+    <button
+      className="
+        cursor-pointer
+        rounded-full
+        bg-white
+        px-8
+        py-3
+        font-bold
+        text-[#F3613C]
+        shadow-lg
+        transition
+        hover:opacity-80
+      "
+    >
+      Get Started
+    </button>
+  </div>
+</div>
     )
 }
 
