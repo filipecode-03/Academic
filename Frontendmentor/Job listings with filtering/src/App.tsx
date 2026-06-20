@@ -21,10 +21,10 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen bg-[#EFFAFA]">
+    <div className="min-h-screen bg-[#EFFAFA] font-['League_Spartan']">
       <Header />
 
-      <main className="-mt-8 pb-12">
+      <main className="-mt-8 px-6 pb-12">
         {filters.length > 0 && (
           <FilterBar
             filters={filters}

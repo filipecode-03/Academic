@@ -24,17 +24,7 @@ function JobList({
   });
 
   return (
-    <section
-      className="
-        max-w-6xl
-        mx-auto
-        px-6
-        flex
-        flex-col
-        gap-12
-        md:gap-6
-      "
-    >
+    <section className="max-w-6xl mx-auto flex mt-25 flex-col gap-14 md:gap-6">
       {filteredJobs.map((job) => (
         <JobCard
           key={job.id}
