@@ -3,7 +3,7 @@
 
 .header-bg {
   background-color: #5da5a4;
-  background-image: url("./assets/images/bg-header-mobile.svg");
+  background-image: url("../public/images/bg-header-mobile.svg");
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
@@ -11,6 +11,6 @@
 
 @media (min-width: 768px) {
   .header-bg {
-    background-image: url("./assets/images/bg-header-desktop.svg");
+    background-image: url("../public/images/bg-header-desktop.svg");
   }
 }
