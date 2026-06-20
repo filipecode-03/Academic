@@ -26,29 +26,48 @@ function Nav() {
         {/* Logo */}
         <img src={logo} alt="Manage Logo" />
         {/* Desktop */}
-        <div className="hidden lg:flex items-center gap-10">
-          <ul className="flex items-center gap-8 text-[14px] font-medium">
-            <li className="cursor-pointer hover:text-gray-400 transition-colors">
-              Pricing
-            </li>
-            <li className="cursor-pointer hover:text-gray-400 transition-colors">
-              Product
-            </li>
-            <li className="cursor-pointer hover:text-gray-400 transition-colors">
-              About Us
-            </li>
-            <li className="cursor-pointer hover:text-gray-400 transition-colors">
-              Careers
-            </li>
-            <li className="cursor-pointer hover:text-gray-400 transition-colors">
-              Community
-            </li>
-          </ul>
-          <button
-            className="cursor-pointer rounded-full bg-[#F3613C] px-8 py-3 text-white font-semibold shadow-lg transition hover:opacity-80">
-            Get Started
-          </button>
-        </div>
+        <div className="hidden lg:flex flex-1 items-center">
+  {/* Navegação */}
+  <ul className="flex flex-1 justify-center items-center gap-8 text-[14px] font-medium">
+    <li className="cursor-pointer hover:text-gray-400 transition-colors">
+      Pricing
+    </li>
+
+    <li className="cursor-pointer hover:text-gray-400 transition-colors">
+      Product
+    </li>
+
+    <li className="cursor-pointer hover:text-gray-400 transition-colors">
+      About Us
+    </li>
+
+    <li className="cursor-pointer hover:text-gray-400 transition-colors">
+      Careers
+    </li>
+
+    <li className="cursor-pointer hover:text-gray-400 transition-colors">
+      Community
+    </li>
+  </ul>
+
+  {/* Botão */}
+  <button
+    className="
+      cursor-pointer
+      rounded-full
+      bg-[#F3613C]
+      px-8
+      py-3
+      text-white
+      font-semibold
+      shadow-lg
+      transition
+      hover:opacity-80
+    "
+  >
+    Get Started
+  </button>
+</div>
         
         {/* Mobile */}
         <div className="lg:hidden">
@@ -58,12 +77,13 @@ function Nav() {
               <div className="fixed inset-0 z-10 bg-linear-to-b from-transparent to-black/70" onClick={() => setOpen(false)}/>
               <div ref={refs.setFloating}
                 style={{
-                  position: strategy,
-                  top: y ?? 0,
-                  left: x ?? 0,
+                    position: "fixed",
+                    top: "90px",
+                    left: "32px",
+                    right: "32px",
                 }}
-                className="z-20 w-113 rounded-md bg-white p-6 text-center shadow-xl">
-                <ul className="space-y-5 font-semibold">
+                className="z-20 rounded-md bg-white p-6 text-center shadow-xl">
+                <ul className="space-y-8 font-semibold">
                   <li className="cursor-pointer hover:text-[#F3613C]">
                     Pricing
                   </li>

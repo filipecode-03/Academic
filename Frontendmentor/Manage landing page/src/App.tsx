@@ -11,7 +11,7 @@ function App() {
   return (
     <div className="relative font-['Be_Vietnam_Pro'] min-h-screen overflow-x-hidden">
       <img src={bg} alt="bg" className="absolute -z-1 -top-20 -right-20" />
-      <img src={bg} alt="bg" className="absolute -z-1 w-90 top-145 -right-40" />
+      <img src={bg} alt="bg" className="absolute -z-1 w-90 lg:w-220 lg:-left-120 lg:top-220 top-145 -right-40" />
       <div>
         <Nav />
         <Intro />

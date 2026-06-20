@@ -19,9 +19,22 @@ function Intro() {
                 keeping the larger team goals in view.
                 </p>
 
-                <button className="mt-8 cursor-pointer rounded-full bg-[#F85E3D] px-8 py-3 text-white shadow-lg hover:opacity-80 transition">
-                Get Started
-                </button>
+                <button
+    className="
+      cursor-pointer
+      rounded-full
+      bg-[#F3613C]
+      px-8
+      py-3 mt-8
+      text-white
+      font-semibold
+      shadow-lg
+      transition
+      hover:opacity-80
+    "
+  >
+    Get Started
+  </button>
             </div>
         </div>
     )

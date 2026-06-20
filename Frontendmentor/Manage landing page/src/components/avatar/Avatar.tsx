@@ -14,7 +14,22 @@ function Avatar() {
         <div className="hidden lg:block mt-10 lg:mt-15">
           <CardsDesktop />
         </div>
-        <button className='bg-[#F85E3D] mt-15 lg:mt-0 cursor-pointer text-white rounded-full px-8 py-3 block mx-auto'>Get Started</button>
+        <button
+            className="
+              cursor-pointer
+              rounded-full
+              bg-[#F3613C]
+              px-8
+              py-3 mt-15 lg:mt-0
+              text-white
+              font-semibold
+              shadow-lg block mx-auto
+              transition
+              hover:opacity-80
+            "
+          >
+            Get Started
+          </button>    
     </div>
   );
 }
