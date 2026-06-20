@@ -2,9 +2,10 @@ import type { Job } from "../types/job";
 
 interface JobCardProps {
   job: Job;
+  addFilter: (tag: string) => void;
 }
 
-function JobCard({ job }: JobCardProps) {
+function JobCard({ job, addFilter }: JobCardProps) {
   const tags = [job.role, job.level, ...job.languages, ...job.tools];
 
   return (
@@ -86,25 +87,26 @@ function JobCard({ job }: JobCardProps) {
 
       {/* Tags */}
       <div className="flex flex-wrap gap-4">
-        {tags.map((tag) => (
-          <button
-            key={tag}
-            className="
-              bg-[#EEF6F6]
-              text-[#5CA5A5]
-              font-bold
-              px-3
-              py-1
-              rounded
-              hover:bg-[#5CA5A5]
-              hover:text-white
-              transition
-            "
-          >
-            {tag}
-          </button>
-        ))}
-      </div>
+  {tags.map((tag) => (
+    <button
+      key={tag}
+      onClick={() => addFilter(tag)}
+      className="
+        bg-[#EEF6F6]
+        text-[#5CA5A5]
+        font-bold
+        px-3
+        py-1
+        rounded
+        hover:bg-[#5CA5A5]
+        hover:text-white
+        transition
+      "
+    >
+      {tag}
+    </button>
+  ))}
+</div>
     </article>
   );
 }
