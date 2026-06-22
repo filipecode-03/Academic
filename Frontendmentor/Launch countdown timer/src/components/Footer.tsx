@@ -8,11 +8,11 @@ import {
 
 function Footer() {
   return (
-    <footer className="relative">
+    <footer className="absolute bottom-0 left-0 w-full">
       <img
         src={hills}
         alt=""
-        className="md:w-full"
+        className="md:w-full md:h-40 h-48"
       />
       <div
         className="

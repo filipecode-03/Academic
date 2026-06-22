@@ -10,7 +10,7 @@ function Timer() {
     useCountdown(targetDate);
 
   return (
-    <section className="flex-1 flex justify-center items-center">
+    <section className="md:mt-28 mt-20 flex justify-center items-center">
       <div className="flex gap-4 md:gap-8">
         <TimerCard value={days} label="Days" />
         <TimerCard value={hours} label="Hours" />

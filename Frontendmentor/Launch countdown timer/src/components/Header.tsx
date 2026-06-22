@@ -3,8 +3,8 @@ function Header() {
     <header className="pt-32 text-center">
       <h1 className="
         text-white
-        text-xl
-        md:text-2xl
+        text-3xl
+        w-100 md:w-full mx-auto
         font-bold
         tracking-[8px]
       ">
