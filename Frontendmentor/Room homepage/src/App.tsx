@@ -8,8 +8,13 @@ function App() {
   const [currentSlide, setCurrentSlide] = useState(0);
 
   return (
-    <div className="font-[League_Spartan]">
-      <main>
+<div
+  className="
+    font-[League_Spartan]
+    min-h-screen
+    overflow-hidden
+  "
+>      <main>
         <Header />
         <Hero
           currentSlide={currentSlide}

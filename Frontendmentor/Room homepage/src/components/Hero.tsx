@@ -26,39 +26,90 @@ function Hero({
   };
 
   return (
-    <section className="flex flex-col">
+    <section
+  className="
+    flex flex-col
+    lg:grid
+    lg:grid-cols-[58%_42%]
+  "
+>
       <div className="relative">
         <picture>
           <source
             media="(min-width:1024px)"
             srcSet={slide.imageDesktop}
           />
-
           <img
-            src={slide.imageMobile}
-            alt={slide.title}
-            className="w-full"
-          />
-        </picture>
-
-        <SliderControls
-          nextSlide={nextSlide}
-          prevSlide={prevSlide}
+          src={slide.imageMobile}
+          alt={slide.title}
+          className="
+            w-full
+            h-full
+            object-cover
+          "
         />
+        </picture>
+        <div
+  className="
+    lg:absolute
+    lg:left-0
+    lg:bottom-0
+  "
+>
+  <SliderControls
+    nextSlide={nextSlide}
+    prevSlide={prevSlide}
+  />
+</div>
       </div>
+      <div
+        className="
+          relative
+          flex
+          flex-col
+          justify-center
 
-      <div className="px-8 py-14">
-        <h1 className="text-4xl font-bold">
+          px-8
+          py-14
+
+          lg:px-20
+          lg:py-0
+        "
+      >
+        <h1
+  className="
+    text-[2.5rem]
+    leading-none
+    font-bold
+
+    lg:text-[3rem]
+  "
+>
           {slide.title}
         </h1>
-
-        <p className="mt-4 text-gray-500">
+       <p
+  className="
+    mt-6
+    text-gray-500
+    leading-7
+  "
+>
           {slide.description}
         </p>
+<button
+  className="
+    mt-8
+    flex
+    items-center
+    gap-6
 
-        <button className="mt-8 flex items-center gap-4 font-semibold uppercase tracking-[10px]">
-          Shop Now
+    uppercase
+    tracking-[12px]
 
+    hover:text-gray-500
+    transition
+  "
+>          Shop Now
           <img
             src={arrow}
             alt=""
