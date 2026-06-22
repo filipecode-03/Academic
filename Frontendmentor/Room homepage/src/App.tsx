@@ -9,8 +9,8 @@ function App() {
 
   return (
     <div className="font-[League_Spartan]">
-      <Header />
       <main>
+        <Header />
         <Hero
           currentSlide={currentSlide}
           setCurrentSlide={setCurrentSlide}
