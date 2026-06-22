@@ -23,7 +23,7 @@ export default function SliderControls({
         onClick={prevSlide}
         className="
         bg-black
-        p-4
+        p-6 cursor-pointer
         hover:bg-zinc-700
       "
       >
@@ -34,7 +34,7 @@ export default function SliderControls({
         onClick={nextSlide}
         className="
         bg-black
-        p-4
+        p-6 cursor-pointer
         hover:bg-zinc-700
       "
       >

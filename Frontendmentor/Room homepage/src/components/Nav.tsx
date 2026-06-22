@@ -8,7 +8,7 @@ function Nav({ mobile = false }: NavProps) {
       <ul
         className={
           mobile
-            ? "flex gap-6 font-semibold"
+            ? "flex gap-12 font-semibold"
             : "flex gap-8 text-white"
         }
       >
