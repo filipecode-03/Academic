@@ -12,7 +12,6 @@ function App() {
         alt=""
         className="absolute inset-0 w-full h-full object-cover"
       />
-
       <div className="relative z-10 flex min-h-screen flex-col">
         <Header />
         <Timer />
