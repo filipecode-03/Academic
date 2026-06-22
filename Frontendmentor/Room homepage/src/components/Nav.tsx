@@ -1,7 +1,17 @@
-function Nav() {
+type NavProps = {
+  mobile?: boolean;
+};
+
+function Nav({ mobile = false }: NavProps) {
   return (
     <nav>
-      <ul>
+      <ul
+        className={
+          mobile
+            ? "flex gap-6 font-semibold"
+            : "flex gap-8 text-white"
+        }
+      >
         <li>
           <a href="#">home</a>
         </li>
