@@ -17,7 +17,7 @@ function App() {
   return (
     <div className="font-['Kumbh_Sans']">
       <Nav isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} />
-      <main className="container mx-auto md:px-4 md:py-8 pb-8 md:flex md:items-center md:justify-center md:space-x-16">
+      <main className="container mx-auto md:max-w-6xl md:px-4 md:py-8 pb-8 md:flex md:items-center md:justify-center md:gap-16">
         <ProductImages />
         <Content />
       </main>

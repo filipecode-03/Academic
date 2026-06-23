@@ -50,7 +50,7 @@ function ProductImages() {
 
     return (
         <>
-            <div className="md:w-1/2 lg:w-2/5">
+            <div className="">
                 {/* MOBILE */}
                 <div className="relative md:hidden">
                     <img
