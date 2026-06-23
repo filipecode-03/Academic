@@ -31,7 +31,7 @@ function Hero({
   className="
     flex flex-col
     lg:grid
-    lg:grid-cols-[61%_42%]
+    lg:grid-cols-[60%_42%]
   "
 >
       <div className="relative">
