@@ -10,7 +10,7 @@ function Header() {
 
   return (
     <>
-      <header className="absolute top-0 left-0 z-50 w-full p-6">
+      <header className="absolute top-0 left-0 z-50 w-full p-6 md:p-12">
         <div className="relative flex items-center">
           {/* botão mobile */}
           <button onClick={() => setIsOpen(true)} className="lg:hidden cursor-pointer"

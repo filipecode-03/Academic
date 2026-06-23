@@ -97,7 +97,7 @@ function Hero({
     flex
     items-center
     gap-6
-
+    cursor-pointer w-fit
     uppercase
     tracking-[12px]
 
