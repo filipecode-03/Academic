@@ -1,6 +1,7 @@
 import SliderControls from "./SliderControls";
 import { slides } from "../data/slides";
 import arrow from "../assets/images/icon-arrow.svg";
+import SliderControlsDesktop from "./SliderControlsDesktop";
 
 type HeroProps = {
   currentSlide: number;
@@ -49,18 +50,12 @@ function Hero({
           "
         />
         </picture>
-        <div
-  className="
-    lg:absolute
-    lg:left-0
-    lg:bottom-0
-  "
->
-  <SliderControls
-    nextSlide={nextSlide}
-    prevSlide={prevSlide}
-  />
-</div>
+  <div className="lg:hidden">
+    <SliderControls
+      nextSlide={nextSlide}
+      prevSlide={prevSlide}
+    />
+  </div>
       </div>
       <div
         className="
@@ -116,6 +111,22 @@ function Hero({
             aria-hidden="true"
           />
         </button>
+        {/* Desktop */}
+  <div
+    className="
+      hidden
+      lg:block
+
+      absolute
+      bottom-0
+      left-0
+    "
+  >
+    <SliderControlsDesktop
+      nextSlide={nextSlide}
+      prevSlide={prevSlide}
+    />
+  </div>
       </div>
     </section>
   );
