@@ -1,7 +1,10 @@
 import { useState } from 'react';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import {
+    ChevronLeft,
+    ChevronRight,
+    X,
+} from 'lucide-react';
 
-// Importe as imagens diretamente para que o Vite as processe
 import imageProduct1 from '../assets/images/image-product-1.jpg';
 import imageProduct2 from '../assets/images/image-product-2.jpg';
 import imageProduct3 from '../assets/images/image-product-3.jpg';
@@ -28,63 +31,183 @@ const thumbnails = [
 
 function ProductImages() {
     const [activeImage, setActiveImage] = useState(0);
+    const [isLightboxOpen, setIsLightboxOpen] = useState(false);
 
     const nextImage = () => {
-        setActiveImage((prev) => (prev + 1) % productImages.length);
+        setActiveImage(
+            (prev) => (prev + 1) % productImages.length
+        );
     };
 
     const prevImage = () => {
-        setActiveImage((prev) =>
-            prev === 0 ? productImages.length - 1 : prev - 1
+        setActiveImage(
+            (prev) =>
+                prev === 0
+                    ? productImages.length - 1
+                    : prev - 1
         );
     };
 
     return (
-        <div className="md:w-1/2 lg:w-2/5">
-            {/* Imagem principal para mobile */}
-            <div className="relative md:hidden">
-                <img
-                    src={productImages[activeImage]}
-                    alt="Product large view"
-                    className="w-full object-cover"
-                />
-                <button
-                    onClick={prevImage}
-                    className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white rounded-full p-2 shadow-md"
-                    aria-label="Previous image"
-                >
-                    <ChevronLeft size={24} />
-                </button>
-                <button
-                    onClick={nextImage}
-                    className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white rounded-full p-2 shadow-md"
-                    aria-label="Next image"
-                >
-                    <ChevronRight size={24} />
-                </button>
-            </div>
-            {/* Imagens para desktop */}
-            <div className="hidden md:block md:p-8">
-                <img
-                    src={productImages[activeImage]}
-                    alt="Product large view"
-                    className="w-full rounded-xl"
-                />
-                <div className="flex justify-between mt-4 space-x-4">
-                    {thumbnails.map((thumbnail, index) => (
+        <>
+            <div className="md:w-1/2 lg:w-2/5">
+                {/* MOBILE */}
+                <div className="relative md:hidden">
+                    <img
+                        src={productImages[activeImage]}
+                        alt={`Product ${activeImage + 1}`}
+                        className="w-full object-cover"
+                    />
+
+                    <button
+                        onClick={prevImage}
+                        className="absolute left-4 top-1/2 -translate-y-1/2 rounded-full bg-white p-2 shadow-md"
+                        aria-label="Previous image"
+                    >
+                        <ChevronLeft />
+                    </button>
+
+                    <button
+                        onClick={nextImage}
+                        className="absolute right-4 top-1/2 -translate-y-1/2 rounded-full bg-white p-2 shadow-md"
+                        aria-label="Next image"
+                    >
+                        <ChevronRight />
+                    </button>
+                </div>
+
+                {/* DESKTOP */}
+                <div className="hidden md:block md:p-8">
+                    <button
+                        type="button"
+                        onClick={() => setIsLightboxOpen(true)}
+                        className="overflow-hidden rounded-2xl"
+                    >
                         <img
-                            key={index}
-                            src={thumbnail}
-                            alt={`Product thumbnail ${index + 1}`}
-                            className={`w-20 h-20 rounded-xl cursor-pointer hover:opacity-75 ${activeImage === index ? 'border-2 border-orange-500 opacity-50' : ''}
-                            `}
-                            onClick={() => setActiveImage(index)}
+                            src={productImages[activeImage]}
+                            alt={`Product ${activeImage + 1}`}
+                            className="w-full rounded-2xl transition-opacity hover:opacity-75"
                         />
-                    ))}
+                    </button>
+
+                    <div className="mt-8 flex justify-between gap-4">
+                        {thumbnails.map((thumbnail, index) => (
+                            <button
+                                key={index}
+                                onClick={() =>
+                                    setActiveImage(index)
+                                }
+                                className={`
+                                    overflow-hidden rounded-xl border-2
+                                    ${
+                                        activeImage === index
+                                            ? 'border-orange-500'
+                                            : 'border-transparent'
+                                    }
+                                `}
+                            >
+                                <img
+                                    src={thumbnail}
+                                    alt={`Thumbnail ${index + 1}`}
+                                    className={`
+                                        w-20 rounded-xl transition-opacity
+                                        hover:opacity-70
+                                        ${
+                                            activeImage === index
+                                                ? 'opacity-40'
+                                                : ''
+                                        }
+                                    `}
+                                />
+                            </button>
+                        ))}
+                    </div>
                 </div>
             </div>
-        </div>
+
+            {/* LIGHTBOX DESKTOP */}
+            {isLightboxOpen && (
+                <div className="fixed inset-0 z-50 hidden items-center justify-center bg-black/75 md:flex">
+                    <div className="relative w-full max-w-xl">
+                        {/* Close */}
+                        <button
+                            onClick={() =>
+                                setIsLightboxOpen(false)
+                            }
+                            className="absolute -top-12 right-0 text-white transition-colors hover:text-orange-500"
+                            aria-label="Close lightbox"
+                        >
+                            <X size={32} />
+                        </button>
+
+                        {/* Previous */}
+                        <button
+                            onClick={prevImage}
+                            className="absolute left-0 top-1/2 z-10 flex h-12 w-12 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-white"
+                            aria-label="Previous image"
+                        >
+                            <ChevronLeft />
+                        </button>
+
+                        {/* Image */}
+                        <img
+                            src={productImages[activeImage]}
+                            alt={`Product ${activeImage + 1}`}
+                            className="rounded-2xl"
+                        />
+
+                        {/* Next */}
+                        <button
+                            onClick={nextImage}
+                            className="absolute right-0 top-1/2 z-10 flex h-12 w-12 translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-white"
+                            aria-label="Next image"
+                        >
+                            <ChevronRight />
+                        </button>
+
+                        {/* Thumbnails */}
+                        <div className="mx-auto mt-8 flex w-[80%] justify-center gap-4">
+                            {thumbnails.map(
+                                (thumbnail, index) => (
+                                    <button
+                                        key={index}
+                                        onClick={() =>
+                                            setActiveImage(index)
+                                        }
+                                        className={`
+                                            overflow-hidden rounded-xl border-2 bg-white
+                                            ${
+                                                activeImage ===
+                                                index
+                                                    ? 'border-orange-500'
+                                                    : 'border-transparent'
+                                            }
+                                        `}
+                                    >
+                                        <img
+                                            src={thumbnail}
+                                            alt={`Thumbnail ${
+                                                index + 1
+                                            }`}
+                                            className={`
+                                                w-20 transition-opacity
+                                                ${
+                                                    activeImage ===
+                                                    index
+                                                        ? 'opacity-40'
+                                                        : 'hover:opacity-75'
+                                                }
+                                            `}
+                                        />
+                                    </button>
+                                )
+                            )}
+                        </div>
+                    </div>
+                </div>
+            )}
+        </>
     );
 }
 
-export default ProductImages
+export default ProductImages;
