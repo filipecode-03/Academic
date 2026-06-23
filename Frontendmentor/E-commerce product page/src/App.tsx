@@ -1,6 +1,7 @@
 import Nav from './components/Nav';
 import Content from './components/Content'
 import { useState, useEffect } from 'react';
+import ProductImages from './components/ProductImages';
 
 function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -16,7 +17,7 @@ function App() {
   return (
     <div className="font-['Kumbh_Sans']">
       <Nav isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} />
-      
+      <ProductImages />
       <Content />
     </div>
   );
