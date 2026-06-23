@@ -16,7 +16,7 @@ export default function SliderControlsDesktop({
         onClick={prevSlide}
         className="
           bg-black
-          p-8 cursor-pointer
+          p-8 px-9 cursor-pointer
           hover:bg-zinc-700
           transition
         "
@@ -28,7 +28,7 @@ export default function SliderControlsDesktop({
         onClick={nextSlide}
         className="
           bg-black
-          p-8 cursor-pointer
+          p-8 px-9 cursor-pointer
           hover:bg-zinc-700
           transition
         "

@@ -31,7 +31,7 @@ function Hero({
   className="
     flex flex-col
     lg:grid
-    lg:grid-cols-[58%_42%]
+    lg:grid-cols-[61%_42%]
   "
 >
       <div className="relative">
@@ -76,8 +76,8 @@ function Hero({
     text-[2.5rem]
     leading-none
     font-bold
-
-    lg:text-[3rem]
+    md:max-w-150
+    lg:text-6xl
   "
 >
           {slide.title}
@@ -85,8 +85,8 @@ function Hero({
        <p
   className="
     mt-6
-    text-gray-500
-    leading-7
+    text-gray-500 text-[18px]
+    leading-7 md:max-w-125
   "
 >
           {slide.description}
