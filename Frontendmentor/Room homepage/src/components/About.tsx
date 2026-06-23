@@ -37,8 +37,8 @@ function About() {
   className="
     font-bold
     uppercase
-    tracking-[6px]
-    text-sm
+    tracking-[8px]
+    text-xl md:text-2xl
   "
 >About our furniture</h2>
 <p
