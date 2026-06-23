@@ -1,4 +1,5 @@
 import Nav from './components/Nav';
+import Content from './components/Content'
 import { useState, useEffect } from 'react';
 
 function App() {
@@ -15,6 +16,8 @@ function App() {
   return (
     <div className="font-['Kumbh_Sans']">
       <Nav isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} />
+      
+      <Content />
     </div>
   );
 }
