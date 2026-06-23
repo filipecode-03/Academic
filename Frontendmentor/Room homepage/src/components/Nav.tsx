@@ -3,6 +3,22 @@ type NavProps = {
 };
 
 function Nav({ mobile = false }: NavProps) {
+  const linkClass = mobile
+    ? ""
+    : `
+      relative
+      after:absolute
+      after:left-1/2
+      after:-translate-x-1/2
+      after:-bottom-2
+      after:h-[2px]
+      after:w-0
+      after:bg-white
+      after:transition-all
+      after:duration-300
+      hover:after:w-6
+    `;
+
   return (
     <nav>
       <ul
@@ -13,19 +29,27 @@ function Nav({ mobile = false }: NavProps) {
         }
       >
         <li>
-          <a href="#">home</a>
+          <a href="#" className={linkClass}>
+            home
+          </a>
         </li>
 
         <li>
-          <a href="#">shop</a>
+          <a href="#" className={linkClass}>
+            shop
+          </a>
         </li>
 
         <li>
-          <a href="#">about</a>
+          <a href="#" className={linkClass}>
+            about
+          </a>
         </li>
 
         <li>
-          <a href="#">contact</a>
+          <a href="#" className={linkClass}>
+            contact
+          </a>
         </li>
       </ul>
     </nav>
