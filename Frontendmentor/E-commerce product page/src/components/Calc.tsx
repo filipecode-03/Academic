@@ -26,7 +26,7 @@ function Calc() {
     };
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)} className="mt-8 md:w-full lg:w-3/4">
+        <form onSubmit={handleSubmit(onSubmit)} className="mt-8 md:w-full">
             <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-5">
                     <p className="font-bold text-4xl">$125.00</p>
