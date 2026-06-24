@@ -27,7 +27,7 @@ function Calc() {
 
     return (
         <form onSubmit={handleSubmit(onSubmit)} className="mt-8 md:w-full">
-            <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center lg:flex-col lg:gap-2 lg:items-start justify-between mb-4">
                 <div className="flex items-center gap-5">
                     <p className="font-bold text-4xl">$125.00</p>
                     <span className="bg-[#1B1F23] text-white font-bold py-1 px-2 rounded-[5px]">50%</span>
