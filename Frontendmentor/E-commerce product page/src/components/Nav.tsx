@@ -1,14 +1,38 @@
-import React from 'react';
+import React, { useState } from 'react';
 import logo from '../assets/images/logo.svg';
 import user from '../assets/images/image-avatar.png';
-import { ShoppingCart, Menu, X } from 'lucide-react';
+
+import {
+    ShoppingCart,
+    Menu,
+    X,
+} from 'lucide-react';
+
+import Cart from './Cart';
+import type { CartItem } from '../types/cart';
 
 interface NavProps {
     isMenuOpen: boolean;
-    setIsMenuOpen: React.Dispatch<React.SetStateAction<boolean>>;
+    setIsMenuOpen: React.Dispatch<
+        React.SetStateAction<boolean>
+    >;
+
+    cartItems: CartItem[];
+
+    setCartItems: React.Dispatch<
+        React.SetStateAction<CartItem[]>
+    >;
 }
 
-function Nav({ isMenuOpen, setIsMenuOpen }: NavProps) {
+function Nav({
+    isMenuOpen,
+    setIsMenuOpen,
+    cartItems,
+    setCartItems,
+}: NavProps) {
+    const [isCartOpen, setIsCartOpen] =
+        useState(false);
+
     const navLinks = [
         'Collections',
         'Men',
@@ -20,6 +44,11 @@ function Nav({ isMenuOpen, setIsMenuOpen }: NavProps) {
     const toggleMenu = () => {
         setIsMenuOpen((prev) => !prev);
     };
+
+    const totalQuantity = cartItems.reduce(
+        (total, item) => total + item.quantity,
+        0
+    );
 
     return (
         <>
@@ -56,14 +85,53 @@ function Nav({ isMenuOpen, setIsMenuOpen }: NavProps) {
 
                 {/* Right Side */}
                 <div className="flex items-center gap-6">
-                    <button
-                        type="button"
-                        aria-label="Shopping cart"
-                        className="text-gray-500 transition-colors hover:text-gray-900"
-                    >
-                        <ShoppingCart className="h-6 w-6" />
-                    </button>
+                    {/* Cart */}
+                    <div className="relative">
+                        <button
+                            type="button"
+                            aria-label="Shopping cart"
+                            onClick={() =>
+                                setIsCartOpen(
+                                    !isCartOpen
+                                )
+                            }
+                            className="text-gray-500 transition-colors hover:text-gray-900"
+                        >
+                            <ShoppingCart className="h-6 w-6" />
+                        </button>
 
+                        {/* Badge */}
+                        {totalQuantity > 0 && (
+                            <span
+                                className="
+                                    absolute
+                                    -right-2
+                                    -top-2
+                                    rounded-full
+                                    bg-orange-500
+                                    px-2
+                                    py-[1px]
+                                    text-[10px]
+                                    font-bold
+                                    text-white
+                                "
+                            >
+                                {totalQuantity}
+                            </span>
+                        )}
+
+                        {/* Cart Dropdown */}
+                        {isCartOpen && (
+                            <Cart
+                                items={cartItems}
+                                setCartItems={
+                                    setCartItems
+                                }
+                            />
+                        )}
+                    </div>
+
+                    {/* Avatar */}
                     <img
                         src={user}
                         alt="User avatar"
@@ -74,8 +142,10 @@ function Nav({ isMenuOpen, setIsMenuOpen }: NavProps) {
 
             {/* Mobile Menu */}
             <div
-                className={`fixed top-0 left-0 z-50 h-full w-62.5 bg-white transition-transform duration-300 ease-in-out md:hidden ${
-                    isMenuOpen ? 'translate-x-0' : '-translate-x-full'
+                className={`fixed top-0 left-0 z-50 h-full w-[250px] bg-white transition-transform duration-300 ease-in-out md:hidden ${
+                    isMenuOpen
+                        ? 'translate-x-0'
+                        : '-translate-x-full'
                 }`}
             >
                 <div className="p-6">
@@ -101,7 +171,7 @@ function Nav({ isMenuOpen, setIsMenuOpen }: NavProps) {
                 </div>
             </div>
 
-            {/* Overlay */}
+            {/* Overlay Mobile */}
             {isMenuOpen && (
                 <div
                     className="fixed inset-0 z-40 bg-black/75 md:hidden"
