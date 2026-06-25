@@ -97,7 +97,7 @@ function Nav({
                             }
                             className="text-gray-500 transition-colors hover:text-gray-900"
                         >
-                            <ShoppingCart className="h-6 w-6" />
+                            <ShoppingCart className="h-6 w-6 cursor-pointer" />
                         </button>
 
                         {/* Badge */}
@@ -110,7 +110,7 @@ function Nav({
                                     rounded-full
                                     bg-orange-500
                                     px-2
-                                    py-[1px]
+                                    py-px
                                     text-[10px]
                                     font-bold
                                     text-white
@@ -142,7 +142,7 @@ function Nav({
 
             {/* Mobile Menu */}
             <div
-                className={`fixed top-0 left-0 z-50 h-full w-[250px] bg-white transition-transform duration-300 ease-in-out md:hidden ${
+                className={`fixed top-0 left-0 z-50 h-full w-62.5 bg-white transition-transform duration-300 ease-in-out md:hidden ${
                     isMenuOpen
                         ? 'translate-x-0'
                         : '-translate-x-full'

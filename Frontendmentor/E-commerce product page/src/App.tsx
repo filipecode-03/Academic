@@ -26,7 +26,7 @@ function App() {
                 setCartItems={setCartItems}
             />
 
-            <main className="container lg:max-w-6xl mx-auto pb-8 md:flex md:items-center md:justify-center md:gap-16 md:px-4 md:py-8">
+            <main className="container lg:max-w-6xl mx-auto pb-8 md:flex md:items-center md:justify-center md:gap-10 md:px-4 md:py-8">
                 <ProductImages />
 
                 <Content

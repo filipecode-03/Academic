@@ -20,7 +20,7 @@ function Cart({
 
     return (
         <div className="absolute right-0 top-16 z-50 w-90 rounded-xl bg-white shadow-2xl">
-            <div className="border-b p-6">
+            <div className="border-b border-gray-200 p-6">
                 <h2 className="font-bold text-black">
                     Cart
                 </h2>
@@ -71,13 +71,13 @@ function Cart({
                             >
                                 <Trash2
                                     size={18}
-                                    className="text-gray-400 hover:text-red-500"
+                                    className="text-gray-400 cursor-pointer hover:text-red-500"
                                 />
                             </button>
                         </div>
                     ))}
 
-                    <button className="w-full rounded-lg bg-orange-500 py-4 font-bold text-white transition hover:bg-orange-600">
+                    <button className="w-full rounded-lg bg-orange-500 py-4 font-bold cursor-pointer transition hover:bg-orange-600">
                         Checkout
                     </button>
                 </div>

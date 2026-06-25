@@ -61,7 +61,7 @@ function ProductImages() {
 
                     <button
                         onClick={prevImage}
-                        className="absolute left-4 top-1/2 -translate-y-1/2 rounded-full bg-white p-2 shadow-md"
+                        className="absolute left-4 top-1/2 cursor-pointer -translate-y-1/2 rounded-full bg-white p-2 shadow-md"
                         aria-label="Previous image"
                     >
                         <ChevronLeft />
@@ -69,7 +69,7 @@ function ProductImages() {
 
                     <button
                         onClick={nextImage}
-                        className="absolute right-4 top-1/2 -translate-y-1/2 rounded-full bg-white p-2 shadow-md"
+                        className="absolute right-4 top-1/2 cursor-pointer -translate-y-1/2 rounded-full bg-white p-2 shadow-md"
                         aria-label="Next image"
                     >
                         <ChevronRight />
@@ -86,7 +86,7 @@ function ProductImages() {
                         <img
                             src={productImages[activeImage]}
                             alt={`Product ${activeImage + 1}`}
-                            className="w-full rounded-2xl transition-opacity hover:opacity-75"
+                            className="w-full rounded-2xl cursor-pointer transition-opacity hover:opacity-75"
                         />
                     </button>
 
@@ -109,7 +109,7 @@ function ProductImages() {
                                 <img
                                     src={thumbnail}
                                     alt={`Thumbnail ${index + 1}`}
-                                    className={`
+                                    className={` cursor-pointer
                                         w-20 rounded-xl transition-opacity
                                         hover:opacity-70
                                         ${
@@ -134,7 +134,7 @@ function ProductImages() {
                             onClick={() =>
                                 setIsLightboxOpen(false)
                             }
-                            className="absolute -top-12 right-0 text-white transition-colors hover:text-orange-500"
+                            className="absolute cursor-pointer -top-12 right-0 text-white transition-colors hover:text-orange-500"
                             aria-label="Close lightbox"
                         >
                             <X size={32} />
@@ -143,7 +143,7 @@ function ProductImages() {
                         {/* Previous */}
                         <button
                             onClick={prevImage}
-                            className="absolute left-0 top-1/2 z-10 flex h-12 w-12 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-white"
+                            className="absolute cursor-pointer left-0 top-1/2 z-10 flex h-12 w-12 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-white"
                             aria-label="Previous image"
                         >
                             <ChevronLeft />
@@ -159,7 +159,7 @@ function ProductImages() {
                         {/* Next */}
                         <button
                             onClick={nextImage}
-                            className="absolute right-0 top-1/2 z-10 flex h-12 w-12 translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-white"
+                            className="absolute cursor-pointer right-0 top-1/2 z-10 flex h-12 w-12 translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-white"
                             aria-label="Next image"
                         >
                             <ChevronRight />
@@ -175,7 +175,7 @@ function ProductImages() {
                                             setActiveImage(index)
                                         }
                                         className={`
-                                            overflow-hidden rounded-xl border-2 bg-white
+                                            overflow-hidden cursor-pointer rounded-xl border-2 bg-white
                                             ${
                                                 activeImage ===
                                                 index

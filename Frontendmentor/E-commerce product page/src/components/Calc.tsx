@@ -88,13 +88,13 @@ function Calc({
 
             {/* Controls */}
             <div className="flex flex-col gap-4 lg:flex-row">
-                <div className="flex items-center justify-between rounded-xl bg-gray-100 px-4 py-3 lg:w-[160px]">
+                <div className="flex items-center justify-between rounded-xl bg-gray-100 px-4 py-3 lg:w-40">
                     <button
                         type="button"
                         onClick={
                             handleDecrement
                         }
-                        className="text-2xl font-bold text-orange-500"
+                        className="text-2xl cursor-pointer font-bold text-orange-500"
                     >
                         -
                     </button>
@@ -123,7 +123,7 @@ function Calc({
                         onClick={
                             handleIncrement
                         }
-                        className="text-2xl font-bold text-orange-500"
+                        className="text-2xl cursor-pointer font-bold text-orange-500"
                     >
                         +
                     </button>
@@ -131,16 +131,8 @@ function Calc({
 
                 <button
                     type="submit"
-                    disabled={
-                        quantity === 0
-                    }
                     className={`
-                        flex flex-1 items-center justify-center gap-3 rounded-xl py-4 font-bold shadow-lg transition-all
-                        ${
-                            quantity === 0
-                                ? 'cursor-not-allowed bg-orange-300 text-white'
-                                : 'bg-orange-500 text-white hover:bg-orange-400'
-                        }
+                        flex flex-1 cursor-pointer items-center bg-orange-500 text-black hover:bg-orange-400 justify-center gap-3 rounded-xl py-4 font-bold shadow-lg transition-all
                     `}
                 >
                     <ShoppingCart

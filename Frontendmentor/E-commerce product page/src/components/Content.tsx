@@ -12,7 +12,7 @@ function Content({
 }: ContentProps) {
     return (
         <div className="p-8">
-            <h2 className="font-semibold tracking-[1px] text-orange-500">
+            <h2 className="font-semibold tracking-[1px] text-gray-500">
                 SNEAKER COMPANY
             </h2>
 
