@@ -140,30 +140,29 @@ function ProductImages() {
                             <X size={32} />
                         </button>
 
-                        {/* Previous */}
-                        <button
-                            onClick={prevImage}
-                            className="absolute cursor-pointer left-0 top-1/2 z-10 flex h-12 w-12 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-white"
-                            aria-label="Previous image"
-                        >
-                            <ChevronLeft />
-                        </button>
+                        <div className="relative">
+                            <img
+                                src={productImages[activeImage]}
+                                alt={`Product ${activeImage + 1}`}
+                                className="w-full rounded-2xl"
+                            />
 
-                        {/* Image */}
-                        <img
-                            src={productImages[activeImage]}
-                            alt={`Product ${activeImage + 1}`}
-                            className="rounded-2xl"
-                        />
+                            <button
+                                onClick={prevImage}
+                                className="absolute cursor-pointer left-0 top-1/2 z-10 flex h-12 w-12 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-white shadow-md"
+                                aria-label="Previous image"
+                            >
+                                <ChevronLeft />
+                            </button>
 
-                        {/* Next */}
-                        <button
-                            onClick={nextImage}
-                            className="absolute cursor-pointer right-0 top-1/2 z-10 flex h-12 w-12 translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-white"
-                            aria-label="Next image"
-                        >
-                            <ChevronRight />
-                        </button>
+                            <button
+                                onClick={nextImage}
+                                className="absolute cursor-pointer right-0 top-1/2 z-10 flex h-12 w-12 translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-white shadow-md"
+                                aria-label="Next image"
+                            >
+                                <ChevronRight />
+                            </button>
+                        </div>
 
                         {/* Thumbnails */}
                         <div className="mx-auto mt-8 flex w-[80%] justify-center gap-4">
