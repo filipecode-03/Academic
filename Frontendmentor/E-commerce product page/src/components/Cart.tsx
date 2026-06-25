@@ -21,7 +21,7 @@ function Cart({
     return (
         <div className="
         fixed
-        top-[76px]
+        top-19
         left-8
         right-8
         z-50
