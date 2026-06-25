@@ -86,7 +86,7 @@ function Nav({
                 {/* Right Side */}
                 <div className="flex items-center gap-6">
                     {/* Cart */}
-                    <div className="relative">
+                    <div className="relative flex items-center">
                         <button
                             type="button"
                             aria-label="Shopping cart"
