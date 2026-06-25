@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
     ChevronLeft,
     ChevronRight,
@@ -47,6 +47,18 @@ function ProductImages() {
                     : prev - 1
         );
     };
+
+    useEffect(() => {
+    if (isLightboxOpen) {
+        document.body.classList.add('no-scroll');
+    } else {
+        document.body.classList.remove('no-scroll');
+    }
+
+    return () => {
+        document.body.classList.remove('no-scroll');
+    };
+}, [isLightboxOpen]);
 
     return (
         <>
@@ -127,14 +139,14 @@ function ProductImages() {
 
             {/* LIGHTBOX DESKTOP */}
             {isLightboxOpen && (
-                <div className="fixed inset-0 z-50 hidden items-center justify-center bg-black/75 md:flex">
-                    <div className="relative w-full max-w-xl">
+                <div className="fixed inset-0 z-50 hidden items-center justify-center overflow-hidden bg-black/75 md:flex">
+                    <div className="relative w-125">
                         {/* Close */}
                         <button
                             onClick={() =>
                                 setIsLightboxOpen(false)
                             }
-                            className="absolute cursor-pointer -top-12 right-0 text-white transition-colors hover:text-orange-500"
+                            className="absolute right-0 -top-10 cursor-pointer text-white transition-colors hover:text-orange-500"
                             aria-label="Close lightbox"
                         >
                             <X size={32} />
