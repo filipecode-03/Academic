@@ -61,7 +61,7 @@ function Nav({
                         aria-label="Open menu"
                         className="mr-4 md:hidden"
                     >
-                        <Menu className="h-6 w-6 text-gray-700" />
+                        <Menu className="text-gray-700" />
                     </button>
 
                     <img
