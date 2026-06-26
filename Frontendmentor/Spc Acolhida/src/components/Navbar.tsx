@@ -6,42 +6,134 @@ import { faEnvelope } from '@fortawesome/free-regular-svg-icons'
 import { faPhone, faChevronDown } from '@fortawesome/free-solid-svg-icons'
 
 export function Navbar() {
-  const linkStyle = ({ isActive }: { isActive: boolean }) =>
-    `transition-colors ${
-      isActive
-        ? "text-[#F1F440]"
-        : "text-white hover:text-[#F1F440]"
-    }`;
 
   return (
-    <nav className="text-white bg-[#003049]">
-      <div className="p-8 flex justify-between items-center">
-        <div className="flex items-center gap-3">
-          <img src={logo} alt="logo" />
-          <h2 className="font-bold w-40 leading-5">OPERAÇÃO ACOLHIDA</h2>
-        </div>
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-2">
-          <FontAwesomeIcon icon={faInstagram} className="hover:text-[#F1F440] cursor-pointer" />
-          <FontAwesomeIcon icon={faFacebookF} className="hover:text-[#F1F440] cursor-pointer" />
-          <FontAwesomeIcon icon={faEnvelope} className="hover:text-[#F1F440] cursor-pointer" />
-          <FontAwesomeIcon icon={faPhone} className="hover:text-[#F1F440] cursor-pointer" />
+    <nav className="bg-[#003049] text-white shadow-lg">
+
+      {/* Barra Superior */}
+      <div className="border-b border-white/10">
+        <div className="max-w-7xl mx-auto px-6 py-5 flex justify-between items-center">
+
+          {/* Logo */}
+          <div className="flex items-center gap-4">
+            <img
+              src={logo}
+              alt="Logo Operação Acolhida"
+              className="w-14 h-14"
+            />
+
+            <div>
+              <h1 className="font-bold text-xl tracking-wide">
+                OPERAÇÃO ACOLHIDA
+              </h1>
+
+              <p className="text-sm text-gray-300">
+                Portal de Compras
+              </p>
+            </div>
+          </div>
+
+          {/* Redes */}
+          <div className="flex gap-3">
+
+            <a
+              href="#"
+              className="w-10 h-10 rounded-full bg-white/10 hover:bg-[#F1F440] hover:text-[#003049] transition flex items-center justify-center"
+            >
+              <FontAwesomeIcon icon={faInstagram} />
+            </a>
+
+            <a
+              href="#"
+              className="w-10 h-10 rounded-full bg-white/10 hover:bg-[#F1F440] hover:text-[#003049] transition flex items-center justify-center"
+            >
+              <FontAwesomeIcon icon={faFacebookF} />
+            </a>
+
+            <a
+              href="#"
+              className="w-10 h-10 rounded-full bg-white/10 hover:bg-[#F1F440] hover:text-[#003049] transition flex items-center justify-center"
+            >
+              <FontAwesomeIcon icon={faEnvelope} />
+            </a>
+
+            <a
+              href="#"
+              className="w-10 h-10 rounded-full bg-white/10 hover:bg-[#F1F440] hover:text-[#003049] transition flex items-center justify-center"
+            >
+              <FontAwesomeIcon icon={faPhone} />
+            </a>
+
+          </div>
+
         </div>
       </div>
-      <div className="font-['Bebas_Neue'] flex justify-center items-center gap-5 text-[25px] md:text-[30px]">
-        <NavLink to="/" end className={linkStyle}>
-          Ínicio
-        </NavLink>
-        <NavLink to="/documentos" className={linkStyle}>
-          Documentos
-        </NavLink>
-        <div className="hover:text-[#F1F440] cursor-pointer">
-          PROCESSOS
-          <FontAwesomeIcon icon={faChevronDown} />
+
+      {/* Menu */}
+      <div className="max-w-7xl mx-auto px-6">
+        <div className="flex justify-center gap-12 font-semibold tracking-wide uppercase">
+
+          <NavLink
+            to="/"
+            end
+            className={({ isActive }) =>
+              `
+              py-5 border-b-4 transition-all duration-300
+              ${
+                isActive
+                  ? "border-[#F1F440] text-[#F1F440]"
+                  : "border-transparent hover:border-[#F1F440] hover:text-[#F1F440]"
+              }
+            `
+            }
+          >
+            Início
+          </NavLink>
+
+          <NavLink
+            to="/documentos"
+            className={({ isActive }) =>
+              `
+              py-5 border-b-4 transition-all duration-300
+              ${
+                isActive
+                  ? "border-[#F1F440] text-[#F1F440]"
+                  : "border-transparent hover:border-[#F1F440] hover:text-[#F1F440]"
+              }
+            `}
+          >
+            Documentos
+          </NavLink>
+
+          <button
+            className="flex items-center gap-2 py-5 border-b-4 border-transparent hover:border-[#F1F440] hover:text-[#F1F440] transition-all"
+          >
+            Processos
+
+            <FontAwesomeIcon
+              icon={faChevronDown}
+              className="text-xs"
+            />
+          </button>
+
+          <NavLink
+            to="/tools"
+            className={({ isActive }) =>
+              `
+              py-5 border-b-4 transition-all duration-300
+              ${
+                isActive
+                  ? "border-[#F1F440] text-[#F1F440]"
+                  : "border-transparent hover:border-[#F1F440] hover:text-[#F1F440]"
+              }
+            `}
+          >
+            Tools
+          </NavLink>
+
         </div>
-        <NavLink to="/tools" className={linkStyle} >
-          Tools
-        </NavLink>
       </div>
+
     </nav>
   );
 }

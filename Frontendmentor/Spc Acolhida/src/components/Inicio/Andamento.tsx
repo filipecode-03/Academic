@@ -29,7 +29,7 @@ function Andamento() {
     <section className="bg-[#F8F8F8] py-14 px-6">
       <div className="max-w-7xl mx-auto">
 
-        <h2 className="text-3xl lg:text-4xl font-bold text-center text-[#003049]">
+        <h2 className="text-3xl lg:text-4xl font-bold text-center">
           Acompanhe o andamento dos processos
         </h2>
 
