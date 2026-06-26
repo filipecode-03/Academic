@@ -2,6 +2,7 @@ import AcessMore from "../components/Inicio/AcessMore";
 import acolhida from '../assets/images/acolhida.png'
 import Welcome from "../components/Inicio/Welcome";
 import Andamento from "../components/Inicio/Andamento";
+import Modelos from "../components/Inicio/Modelos";
 
 export function Inicio() {
   return (
@@ -13,6 +14,7 @@ export function Inicio() {
       <img src={acolhida} alt="acolhida" className="hidden lg:block w-full mt-8" />
       <Welcome />
       <Andamento />
+      <Modelos />
     </div>
   );
 }
