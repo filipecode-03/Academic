@@ -1,8 +1,8 @@
-export function Profile() {
+export function Documentos() {
   return (
     <div>
       <h1 className="text-3xl font-bold">
-        Perfil
+        Sobre
       </h1>
     </div>
   );

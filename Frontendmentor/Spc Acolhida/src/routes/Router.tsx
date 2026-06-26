@@ -1,8 +1,8 @@
 import { Routes, Route } from "react-router-dom";
 
-import { Home } from "../pages/Home";
-import { About } from "../pages/About";
-import { Profile } from "../pages/Profile";
+import { Inicio } from "../pages/Inicio";
+import { Documentos } from "../pages/Documentos";
+import Tools from "../pages/Tools";
 
 export function Router() {
   return (
@@ -10,19 +10,19 @@ export function Router() {
 
       <Route
         path="/"
-        element={<Home />}
+        element={<Inicio />}
       />
 
       <Route
-        path="/about"
-        element={<About />}
+        path="/documentos"
+        element={<Documentos />}
       />
 
-      <Route
-        path="/profile"
-        element={<Profile />}
+      <Route 
+        path="/tools"
+        element={<Tools />}
       />
-
+      
     </Routes>
   );
 }
