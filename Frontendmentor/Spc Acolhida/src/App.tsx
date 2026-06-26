@@ -5,7 +5,7 @@ function App() {
   return (
     <div className="font-['Roboto']">
       <Navbar />
-      <main className="p-4">
+      <main>
         <Router />
       </main>
     </div>
