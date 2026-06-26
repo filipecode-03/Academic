@@ -3,7 +3,7 @@ import { Router } from "./routes/Router";
 
 function App() {
   return (
-    <div>
+    <div className="font-['Roboto']">
       <Navbar />
       <main className="p-4">
         <Router />
