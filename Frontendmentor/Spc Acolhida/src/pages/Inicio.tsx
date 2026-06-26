@@ -1,5 +1,6 @@
 import AcessMore from "../components/Inicio/AcessMore";
 import acolhida from '../assets/images/acolhida.png'
+import Welcome from "../components/Inicio/Welcome";
 
 export function Inicio() {
   return (
@@ -9,6 +10,7 @@ export function Inicio() {
       </h1>
       <AcessMore />
       <img src={acolhida} alt="acolhida" className="hidden lg:block" />
+      <Welcome />
     </div>
   );
 }
