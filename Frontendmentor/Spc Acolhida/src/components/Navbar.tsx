@@ -20,7 +20,7 @@ export function Navbar() {
           <img src={logo} alt="logo" />
           <h2 className="font-bold w-40 leading-5">OPERAÇÃO ACOLHIDA</h2>
         </div>
-        <div className="grid grid-cols-2 gap-2">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-2">
           <FontAwesomeIcon icon={faInstagram} className="hover:text-[#F1F440] cursor-pointer" />
           <FontAwesomeIcon icon={faFacebookF} className="hover:text-[#F1F440] cursor-pointer" />
           <FontAwesomeIcon icon={faEnvelope} className="hover:text-[#F1F440] cursor-pointer" />

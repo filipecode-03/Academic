@@ -1,6 +1,7 @@
 import AcessMore from "../components/Inicio/AcessMore";
 import acolhida from '../assets/images/acolhida.png'
 import Welcome from "../components/Inicio/Welcome";
+import Andamento from "../components/Inicio/Andamento";
 
 export function Inicio() {
   return (
@@ -9,8 +10,9 @@ export function Inicio() {
         Serviços <span className="text-[#00509D]">mais acessados pela equipe da SPC</span>
       </h1>
       <AcessMore />
-      <img src={acolhida} alt="acolhida" className="hidden lg:block" />
+      <img src={acolhida} alt="acolhida" className="hidden lg:block w-full mt-8" />
       <Welcome />
+      <Andamento />
     </div>
   );
 }
