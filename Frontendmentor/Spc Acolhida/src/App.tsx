@@ -1,3 +1,4 @@
+import Footer from "./components/Footer";
 import { Navbar } from "./components/Navbar";
 import { Router } from "./routes/Router";
 
@@ -8,6 +9,7 @@ function App() {
       <main>
         <Router />
       </main>
+      <Footer />
     </div>
   );
 }
