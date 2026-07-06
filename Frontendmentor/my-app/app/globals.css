@@ -1,1 +1,15 @@
 @import "tailwindcss";
+
+.boost-bg {
+  background-color: #3a3053;
+  background-image: url("../public/images/bg-boost-mobile.svg");
+  background-repeat: no-repeat;
+  background-position: top right;
+  background-size: cover;
+}
+
+@media (min-width: 768px) {
+  .boost-bg {
+    background-image: url("../public/images/bg-boost-desktop.svg");
+  }
+}
