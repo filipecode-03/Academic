@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <title>Document</title>
+    <style>
+        @import url("https://fonts.googleapis.com/css2?family=Alice&display=swap");
+    
+        /* Colors 
+        --color-brown-dark: #291B1A;
+        --color-brown: #573824;
+        --color-brown-light: #573A37;
+        --color-cream: #F0E8C2;
+        */
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background: url("./images/main-image.png") no-repeat center / cover;
+            filter: blur(8px);
+            transform: scale(1.05); /* evita bordas brancas causadas pelo blur */
+            z-index: -2;
+        }
+
+        body::after {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background: rgba(87, 56, 36, 0.45);
+            z-index: -1;
+        }
+    </style>
+</head>
+<body class="font-['Alice'] p-[48px]">
+    <main class="bg-[#F0E8C2] p-[24px] flex flex-col gap-[24px] rounded-[24px] w-[800px] mx-auto">
+        <img src="images/main-image.png" alt="image" class="rounded-[16px]">
+        <section class="pb-[24px] px-[24px] flex flex-col gap-[24px]">
+            <div>
+                <h1 class="text-[40px] text-[#291B1A]">Cupcake de café com chantilly</h1>
+                <div class="flex flex-col gap-[12px]">
+                    <p class="text-[#573A37]">O bolinho perfeito para acompanhar o café de todos os dias. É muito fácil e ainda por cima fica maravilhoso, com certeza vai impressionar. Faz e depois me conta o que achou!</p>
+                    <ul class="text-[#573A37]">
+                        <li>Tempo: 1h10</li>
+                        <li>Rendimento: 12 porções</li>
+                        <li>Dificuldade: fácil</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="flex flex-col gap-[4px]">
+                <h2 class="text-[24px] text-[#291B1A]">Ingredientes</h2>
+                <ul class="text-[#573A37] list-disc list-inside">
+                    <li>1 e 1/2 xícara (chá) de água morna</li>
+                    <li>1 colher (sopa) de café solúvel</li>
+                    <li>3 ovos</li>
+                    <li>1/2 xícara (chá) de óleo</li>
+                    <li>2 xícaras (chá) de açúcar</li>
+                    <li>2/3 de xícara (chá) de chocolate em pó</li>
+                    <li>2 e 1/2 xícaras (chá) de farinha de trigo</li>
+                    <li>1 colher (sopa) de fermento em pó químico</li>
+                    <li>2 xícaras (chá) de chantilly pronto</li>
+                    <li>Grãos de café para decorar</li>
+                    <li>1 lata de leite condensado</li>
+                    <li>1 colher (sopa) de café solúvel</li>
+                    <li>1 colher (sopa) de chocolate em pó</li>
+                    <li>2 colheres (sopa) de manteiga</li>
+                </ul>
+            </div>
+            <div>
+                <h2 class="text-[24px]">Modo de preparo</h2>
+                <div class="text-[#573A37] mt-[4px] flex flex-col gap-4">
+                    <p>No liquidificador, bata a água, o café solúvel, os ovos, o óleo, o açúcar e o chocolate em pó até ficar homogêneo. Transfira para uma tigela, adicione a farinha e o fermento e misture com uma colher. Despeje em forminhas para cupcakes forradas com forminhas de papel e coloque em uma fôrma grande, um ao lado do outro. Leve ao forno médio, preaquecido, por 25 minutos ou até assar e dourar. Retire e deixe esfriar. </p>
+                    <p>Para o recheio, leve todos os ingredientes ao fogo médio, mexendo bem até engrossar. Desligue, deixe esfriar e coloque dentro de um saco de confeiteiro com bico perle. Reserve. Coloque o chantilly dentro de um saco de confeiteiro com bico pitanga e reserve.</p>
+                    <p>Para a montagem, faça um furo no centro dos cupcakes e recheie com o brigadeiro de café reservado. Decore as superfícies dos cupcakes com o chantilly reservado, fazendo círculos. Decore com grãos de café e leve à geladeira até o momento de servir.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+    <footer class="flex gap-[4px] text-[#F0E8C2] items-center mt-[28px] justify-center">
+        <p>Feito com</p>
+        <img src="images/ph_heart-fill.svg" alt="heart">
+        <p>pela Rocketseat</p>
+    </footer>
+</body>
+</html>
