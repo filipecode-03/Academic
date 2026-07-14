@@ -1,16 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>    
-    <title>Document</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,100..900;1,100..900&display=swap');
-    </style>
-</head>
-<body class="font-['Archivo'] text-white bg-[#0F172A]">
-    <header>
+
+
+function App() {
+
+  return (
+    <>
+      <header>
         <section class="py-[26px] px-[32px] flex items-center justify-between">
             <div class="flex items-center gap-2">
                 <i class="ph ph-list" style="color: white"></i>
@@ -134,5 +128,8 @@
 
         </section>
     </main>
-</body>
-</html>
+    </>
+  )
+}
+
+export default App
