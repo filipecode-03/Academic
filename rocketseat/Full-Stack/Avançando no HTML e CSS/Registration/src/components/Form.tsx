@@ -40,9 +40,9 @@ function Form() {
       </section>
 
       {/* Formulário */}
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-12">
         <fieldset className="space-y-6">
-          <legend className="mb-4 font-semibold text-stone-800">
+          <legend className="font-semibold text-stone-800">
             Informações da criança
           </legend>
 
@@ -62,7 +62,7 @@ function Form() {
                 ${
                   errors.name
                     ? "border-red-500"
-                    : "border-stone-300 focus:border-[#E43A12]"
+                    : "border-stone-300 focus:border-[#E43A12] focus:shadow-2xs shadow-[#E43A12]"
                 }`}
             />
 
@@ -88,7 +88,7 @@ function Form() {
                 ${
                   errors.birthDate
                     ? "border-red-500"
-                    : "border-stone-300 focus:border-[#E43A12]"
+                    : "border-stone-300 focus:border-[#E43A12] focus:shadow-2xs shadow-[#E43A12]"
                 }`}
             />
 
@@ -113,7 +113,7 @@ function Form() {
                 ${
                   errors.gender
                     ? "border-red-500"
-                    : "border-stone-300 focus:border-[#E43A12]"
+                    : "border-stone-300 focus:border-[#E43A12] focus:shadow-2xs shadow-[#E43A12]"
                 }`}
             >
               <option value="">Selecione</option>
@@ -138,7 +138,7 @@ function Form() {
               rows={5}
               placeholder="Ex.: Ela tem alergia a glúten."
               {...register("medicalInfo")}
-              className="resize-none rounded-lg border border-stone-300 p-4 outline-none transition focus:border-[#E43A12]"
+              className="resize-none rounded-lg border border-stone-300 p-4 outline-none transition focus:border-[#E43A12] focus:shadow-2xs shadow-[#E43A12]"
             />
           </div>
 
@@ -180,6 +180,102 @@ function Form() {
             )}
           </div>
 
+        </fieldset>
+        <fieldset className="mt-10 space-y-6">
+            <legend className="mb-6 text-xl font-semibold text-stone-800">
+              Endereço residencial
+            </legend>
+
+            {/* CEP */}
+            <div className="flex flex-col gap-2">
+              <label className="text-sm font-medium text-stone-600">
+                CEP
+              </label>
+
+              <input
+                type="text"
+                placeholder="00000-000"
+                className="h-12 rounded-lg border border-stone-300 px-4 outline-none transition focus:border-[#E43A12] focus:ring-2 focus:ring-[#F9D2C4]"
+              />
+            </div>
+
+            {/* Rua */}
+            <div className="flex flex-col gap-2">
+              <label className="text-sm font-medium text-stone-600">
+                Rua
+              </label>
+
+              <input
+                type="text"
+                placeholder="Nome da rua"
+                className="h-12 rounded-lg border border-stone-300 px-4 outline-none transition focus:border-[#E43A12] focus:ring-2 focus:ring-[#F9D2C4]"
+              />
+            </div>
+
+            {/* Número */}
+            <div className="flex flex-col gap-2">
+              <label className="text-sm font-medium text-stone-600">
+                Número
+              </label>
+
+              <input
+                type="number"
+                placeholder="123"
+                className="h-12 rounded-lg border border-stone-300 px-4 outline-none transition focus:border-[#E43A12] focus:ring-2 focus:ring-[#F9D2C4]"
+              />
+            </div>
+
+            {/* Cidade */}
+            <div className="flex flex-col gap-2">
+              <label className="text-sm font-medium text-stone-600">
+                Cidade
+              </label>
+
+              <input
+                type="text"
+                placeholder="Sua cidade"
+                className="h-12 rounded-lg border border-stone-300 px-4 outline-none transition focus:border-[#E43A12] focus:ring-2 focus:ring-[#F9D2C4]"
+              />
+            </div>
+
+            {/* Estado */}
+            <div className="flex flex-col gap-2">
+              <label className="text-sm font-medium text-stone-600">
+                Estado
+              </label>
+
+              <select className="h-12 rounded-lg border border-stone-300 bg-white px-4 outline-none transition focus:border-[#E43A12] focus:ring-2 focus:ring-[#F9D2C4]">
+                <option value="">Selecione</option>
+                <option value="AC">Acre</option>
+                <option value="AL">Alagoas</option>
+                <option value="AP">Amapá</option>
+                <option value="AM">Amazonas</option>
+                <option value="BA">Bahia</option>
+                <option value="CE">Ceará</option>
+                <option value="DF">Distrito Federal</option>
+                <option value="ES">Espírito Santo</option>
+                <option value="GO">Goiás</option>
+                <option value="MA">Maranhão</option>
+                <option value="MT">Mato Grosso</option>
+                <option value="MS">Mato Grosso do Sul</option>
+                <option value="MG">Minas Gerais</option>
+                <option value="PA">Pará</option>
+                <option value="PB">Paraíba</option>
+                <option value="PR">Paraná</option>
+                <option value="PE">Pernambuco</option>
+                <option value="PI">Piauí</option>
+                <option value="RJ">Rio de Janeiro</option>
+                <option value="RN">Rio Grande do Norte</option>
+                <option value="RS">Rio Grande do Sul</option>
+                <option value="RO">Rondônia</option>
+                <option value="RR">Roraima</option>
+                <option value="SC">Santa Catarina</option>
+                <option value="SP">São Paulo</option>
+                <option value="SE">Sergipe</option>
+                <option value="TO">Tocantins</option>
+              </select>
+            </div>
+          </fieldset>
           {/* Botão */}
           <button
             type="submit"
@@ -187,7 +283,6 @@ function Form() {
           >
             Enviar matrícula
           </button>
-        </fieldset>
       </form>
     </div>
   );
