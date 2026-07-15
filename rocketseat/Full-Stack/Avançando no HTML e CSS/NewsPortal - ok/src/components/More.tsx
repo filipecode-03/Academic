@@ -1,11 +1,13 @@
+import { ArrowRight } from 'lucide-react';
+
 function More() {
     return (
         <section className="flex flex-col gap-6 border-t border-gray-800">
-              <div className="pt-3 flex items-center text-[14px] justify-between">
+              <div className="pt-3 flex items-center text-[14px] font-semibold justify-between">
                   <p>Mais lidas da semana</p>
                   <div className="flex items-center gap-2">
                       <p>Ver tudo</p>
-                      <i className="ph ph-arrow-right"></i>
+                      <ArrowRight size={16} />
                   </div>
               </div>
               <div className="grid grid-cols-4 gap-5">
