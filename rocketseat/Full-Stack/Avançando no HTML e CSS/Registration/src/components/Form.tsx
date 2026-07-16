@@ -1,13 +1,24 @@
-import { MoveLeft, UploadCloud } from "lucide-react";
+import { MoveLeft, UploadCloud, Check } from "lucide-react";
 import { useForm, type FieldError, type SubmitHandler } from "react-hook-form";
 import type { ChildFormData } from "../types/childForm";
 import { type ChangeEvent, useState } from "react";
+import manha from '../assets/images/sun-cloud-02.png'
+import tarde from '../assets/images/sun-02.png'
+import OptionCard from "./OptionCard";
+import futebol from '../assets/images/football.png'
+import basquete from '../assets/images/basketball-02.png'
+import natacao from '../assets/images/swimming.png'
+import yoga from '../assets/images/yoga-02.png'
+import volley from '../assets/images/volleyball.png'
+import box from '../assets/images/boxing-glove-01.png'
+
 
 function Form() {
 
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors },
   } = useForm<ChildFormData>();
 
@@ -38,6 +49,9 @@ function Form() {
       : "border-stone-300 focus:border-[#E43A12] focus:ring-2 focus:ring-[#F9D2C4]"
   }`;
 
+  const turno = watch("turno");
+  const esporte = watch("esporte");
+  const termos = watch("termos");
 
   return (
     <div className="w-1/2 overflow-y-auto p-16">
@@ -383,13 +397,198 @@ function Form() {
               )}
             </div>
           </fieldset>
-          {/* Botão */}
-          <button
-            type="submit"
-            className="mt-6 h-12 w-full rounded-lg bg-[#E43A12] font-semibold text-white transition hover:bg-[#cf3410]"
-          >
-            Enviar matrícula
-          </button>
+          <fieldset className="space-y-6">
+            <legend className="font-semibold text-stone-800">
+              Opções de matrícula
+            </legend>
+            <div className="space-y-3">
+              <label className="text-sm font-medium text-stone-700">
+                Selecione o turno de estudo
+              </label>
+              <div className="grid grid-cols-2 mt-4 gap-4">
+                {/* Manhã */}
+                <label className="cursor-pointer">
+                  <input
+                    type="radio"
+                    value="manha"
+                    {...register("turno", {
+                      required: "Selecione um turno.",
+                    })}
+                    className="peer sr-only"
+                  />
+                  <div
+                    className={`relative flex flex-col items-center gap-4 rounded-xl border p-6 transition ${
+                      turno === "manha"
+                        ? "border-[#E43A12]"
+                        : "border-stone-300"
+                    }`}
+                  >          
+                    <div
+                      className={`absolute left-3 top-3 flex h-7 w-7 items-center justify-center rounded-full border transition ${
+                        turno === "manha"
+                          ? "border-[#E43A12] bg-[#E43A12]"
+                          : "border-stone-300"
+                      }`}
+                    >
+                      {turno === "manha" && (
+                        <Check size={16} className="text-white" strokeWidth={3} />
+                      )}
+                    </div>
+                    {/* Imagem */}
+                    <img src={manha} alt="manha" />
+                    <span className="font-medium">Manhã</span>
+                  </div>
+                </label>
+
+                {/* Tarde */}
+                <label className="cursor-pointer">
+                  <input
+                    type="radio"
+                    value="tarde"
+                    {...register("turno")}
+                    className="peer sr-only"
+                  />
+
+                  <div
+                    className={`relative flex flex-col items-center gap-4 rounded-xl border p-6 transition ${
+                      turno === "tarde"
+                        ? "border-[#E43A12]"
+                        : "border-stone-300"
+                    }`}
+                  >          
+                    <div
+                      className={`absolute left-3 top-3 flex h-7 w-7 items-center justify-center rounded-full border transition ${
+                        turno === "tarde"
+                          ? "border-[#E43A12] bg-[#E43A12]"
+                          : "border-stone-300"
+                      }`}
+                    >
+                      {turno === "tarde" && (
+                        <Check size={16} className="text-white" strokeWidth={3} />
+                      )}
+                    </div>
+
+                    {/* Imagem */}
+                    <img src={tarde} alt="tarde" />
+
+                    <span className="font-medium">Tarde</span>
+                  </div>
+                </label>
+              </div>
+
+              {errors.turno && (
+                <span className="text-sm font-medium text-red-600">
+                  {errors.turno.message}
+                </span>
+              )}
+            </div>
+            <label className="text-sm font-medium text-stone-700">
+                Em qual esporte você gostaria de inscrever seu filho
+            </label>
+            <div className="grid grid-cols-4 mt-4 gap-4">
+              <OptionCard
+                value="futebol"
+                label="Futebol"
+                image={<img src={futebol} alt="Futebol"/>}
+                register={register("esporte", {
+                  required: "Selecione um esporte.",
+                })}
+                checked={esporte === "futebol"}
+              />
+
+              <OptionCard
+                value="basquete"
+                label="Basquete"
+                image={<img src={basquete} alt="basquete"/>}
+                register={register("esporte")}
+                checked={esporte === "basquete"}
+              />
+
+              <OptionCard
+                value="natacao"
+                label="Natação"
+                image={<img src={natacao} alt="Natação"/>}
+                register={register("esporte")}
+                checked={esporte === "natacao"}
+              />
+
+              <OptionCard
+                value="yoga"
+                label="Yoga"
+                image={<img src={yoga} alt="Yoga"/>}
+                register={register("esporte")}
+                checked={esporte === "yoga"}
+              />
+
+              <OptionCard
+                value="volei"
+                label="Volley"
+                image={<img src={volley} alt="volley"/>}
+                register={register("esporte")}
+                checked={esporte === "volei"}
+              />
+
+              <OptionCard
+                value="box"
+                label="Box"
+                image={<img src={box} alt="box"/>}
+                register={register("esporte")}
+                checked={esporte === "box"}
+              />
+            </div>
+            {errors.esporte && (
+              <span className="text-sm font-medium text-red-600">
+                {errors.esporte.message}
+              </span>
+            )}
+          </fieldset>
+          <fieldset>
+            <label className="flex cursor-pointer items-start gap-4">
+              <input
+                type="checkbox"
+                {...register("termos", {
+                  required: "Você precisa aceitar os termos para continuar.",
+                })}
+                className="peer sr-only"
+              />
+              <div
+                className={`flex h-5 w-7 items-center justify-center rounded-md border-2 ${
+                  termos
+                    ? "border-[#E43A12] bg-[#E43A12]"
+                    : "border-stone-300"
+                }`}
+              >
+                {termos && (
+                  <Check
+                    size={16}
+                    strokeWidth={3}
+                    className="text-white"
+                  />
+                )}
+              </div>
+              <p>Declaro que li e concordo com os <span className="text-[#E43A12] font-medium">Termos e Condições</span> e com a <span className="text-[#E43A12] font-medium">Política de Privacidade</span> da escola Estrela do Amanhã. </p>
+            </label>
+            {errors.termos && (
+              <p className="text-sm font-medium text-red-600">
+                {errors.termos.message}
+              </p>
+            )}
+          </fieldset>
+          <div className="flex justify-end gap-4">
+            <button
+              type="button"
+              className="py-3 px-6 rounded-lg border border-[#E43A12] bg-white font-semibold text-[#E43A12] transition hover:bg-[#FFF6F3]"
+            >
+              Salvar respostas
+            </button>
+
+            <button
+              type="submit"
+              className="py-3 px-6 rounded-lg bg-[#E43A12] font-semibold text-white transition hover:bg-[#cf3410]"
+            >
+              Fazer matrícula
+            </button>
+          </div>
       </form>
     </div>
   );

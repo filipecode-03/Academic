@@ -17,4 +17,16 @@ export interface ChildFormData {
   numero: string;
   cidade: string;
   estado: string;
+
+  turno: "manha" | "tarde";
+
+  esporte:
+  | "futebol"
+  | "basquete"
+  | "natacao"
+  | "yoga"
+  | "volei"
+  | "box";
+
+  termos: boolean;
 }
