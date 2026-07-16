@@ -1,6 +1,8 @@
 import { MoveLeft, UploadCloud } from "lucide-react";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import type { ChildFormData } from "../types/childForm";
+import type { ChangeEvent } from "react";
+import { useState } from "react";
 
 function Form() {
   const {
@@ -16,6 +18,19 @@ function Form() {
       console.log(data.certificate[0]);
     }
   };
+
+  const [cep, setCep] = useState("");
+
+  const handleCepChange = (e: ChangeEvent<HTMLInputElement>) => {
+    let value = e.target.value.replace(/\D/g, "").slice(0, 8);
+
+    if (value.length > 5) {
+      value = value.replace(/(\d{5})(\d{1,3})/, "$1-$2");
+    }
+
+    setCep(value);
+  };
+
 
   return (
     <div className="w-1/2 overflow-y-auto p-16">
@@ -181,8 +196,9 @@ function Form() {
           </div>
 
         </fieldset>
-        <fieldset className="mt-10 space-y-6">
-            <legend className="mb-6 text-xl font-semibold text-stone-800">
+        
+        <fieldset className="space-y-6">
+            <legend className="font-semibold text-stone-800">
               Endereço residencial
             </legend>
 
@@ -195,86 +211,88 @@ function Form() {
               <input
                 type="text"
                 placeholder="00000-000"
+                maxLength={9}
+                value={cep}
+                onChange={handleCepChange}
                 className="h-12 rounded-lg border border-stone-300 px-4 outline-none transition focus:border-[#E43A12] focus:ring-2 focus:ring-[#F9D2C4]"
               />
             </div>
 
-            {/* Rua */}
-            <div className="flex flex-col gap-2">
-              <label className="text-sm font-medium text-stone-600">
-                Rua
-              </label>
-
-              <input
-                type="text"
-                placeholder="Nome da rua"
-                className="h-12 rounded-lg border border-stone-300 px-4 outline-none transition focus:border-[#E43A12] focus:ring-2 focus:ring-[#F9D2C4]"
-              />
+            <div className="grid grid-cols-2 gap-6">
+              {/* Rua */}
+              <div className="flex flex-col gap-2">
+                <label className="text-sm font-medium text-stone-600">
+                  Rua
+                </label>
+                <input
+                  type="text"
+                  placeholder="Nome da rua"
+                  className="h-12 rounded-lg border border-stone-300 px-4 outline-none transition focus:border-[#E43A12] focus:ring-2 focus:ring-[#F9D2C4]"
+                />
+              </div>
+              {/* Número */}
+              <div className="flex flex-col gap-2">
+                <label className="text-sm font-medium text-stone-600">
+                  Número
+                </label>
+                <input
+                  type="number"
+                  placeholder="123"
+                  className="h-12 rounded-lg border border-stone-300 px-4 outline-none transition focus:border-[#E43A12] focus:ring-2 focus:ring-[#F9D2C4]"
+                />
+              </div>
+              {/* Cidade */}
+              <div className="flex flex-col gap-2">
+                <label className="text-sm font-medium text-stone-600">
+                  Cidade
+                </label>
+                <input
+                  type="text"
+                  placeholder="Sua cidade"
+                  className="h-12 rounded-lg border border-stone-300 px-4 outline-none transition focus:border-[#E43A12] focus:ring-2 focus:ring-[#F9D2C4]"
+                />
+              </div>
+              {/* Estado */}
+              <div className="flex flex-col gap-2">
+                <label className="text-sm font-medium text-stone-600">
+                  Estado
+                </label>
+                <select className="h-12 rounded-lg border border-stone-300 bg-white px-4 outline-none transition focus:border-[#E43A12] focus:ring-2 focus:ring-[#F9D2C4]">
+                  <option value="">Selecione</option>
+                  <option value="AC">AC</option>
+                  <option value="AL">AL</option>
+                  <option value="AP">AP</option>
+                  <option value="AM">AM</option>
+                  <option value="BA">BH</option>
+                  <option value="CE">CE</option>
+                  <option value="DF">DF</option>
+                  <option value="ES">ES</option>
+                  <option value="GO">GO</option>
+                  <option value="MA">MA</option>
+                  <option value="MT">MT</option>
+                  <option value="MS">MS</option>
+                  <option value="MG">MG</option>
+                  <option value="PA">PA</option>
+                  <option value="PB">PB</option>
+                  <option value="PR">PR</option>
+                  <option value="PE">PE</option>
+                  <option value="PI">PI</option>
+                  <option value="RJ">RJ</option>
+                  <option value="RN">RN</option>
+                  <option value="RS">RS</option>
+                  <option value="RO">RO</option>
+                  <option value="RR">RR</option>
+                  <option value="SC">SC</option>
+                  <option value="SP">SP</option>
+                  <option value="SE">SE</option>
+                  <option value="TO">TO</option>
+                </select>
+              </div>
             </div>
+          </fieldset>
 
-            {/* Número */}
-            <div className="flex flex-col gap-2">
-              <label className="text-sm font-medium text-stone-600">
-                Número
-              </label>
-
-              <input
-                type="number"
-                placeholder="123"
-                className="h-12 rounded-lg border border-stone-300 px-4 outline-none transition focus:border-[#E43A12] focus:ring-2 focus:ring-[#F9D2C4]"
-              />
-            </div>
-
-            {/* Cidade */}
-            <div className="flex flex-col gap-2">
-              <label className="text-sm font-medium text-stone-600">
-                Cidade
-              </label>
-
-              <input
-                type="text"
-                placeholder="Sua cidade"
-                className="h-12 rounded-lg border border-stone-300 px-4 outline-none transition focus:border-[#E43A12] focus:ring-2 focus:ring-[#F9D2C4]"
-              />
-            </div>
-
-            {/* Estado */}
-            <div className="flex flex-col gap-2">
-              <label className="text-sm font-medium text-stone-600">
-                Estado
-              </label>
-
-              <select className="h-12 rounded-lg border border-stone-300 bg-white px-4 outline-none transition focus:border-[#E43A12] focus:ring-2 focus:ring-[#F9D2C4]">
-                <option value="">Selecione</option>
-                <option value="AC">Acre</option>
-                <option value="AL">Alagoas</option>
-                <option value="AP">Amapá</option>
-                <option value="AM">Amazonas</option>
-                <option value="BA">Bahia</option>
-                <option value="CE">Ceará</option>
-                <option value="DF">Distrito Federal</option>
-                <option value="ES">Espírito Santo</option>
-                <option value="GO">Goiás</option>
-                <option value="MA">Maranhão</option>
-                <option value="MT">Mato Grosso</option>
-                <option value="MS">Mato Grosso do Sul</option>
-                <option value="MG">Minas Gerais</option>
-                <option value="PA">Pará</option>
-                <option value="PB">Paraíba</option>
-                <option value="PR">Paraná</option>
-                <option value="PE">Pernambuco</option>
-                <option value="PI">Piauí</option>
-                <option value="RJ">Rio de Janeiro</option>
-                <option value="RN">Rio Grande do Norte</option>
-                <option value="RS">Rio Grande do Sul</option>
-                <option value="RO">Rondônia</option>
-                <option value="RR">Roraima</option>
-                <option value="SC">Santa Catarina</option>
-                <option value="SP">São Paulo</option>
-                <option value="SE">Sergipe</option>
-                <option value="TO">Tocantins</option>
-              </select>
-            </div>
+          <fieldset>
+            
           </fieldset>
           {/* Botão */}
           <button
