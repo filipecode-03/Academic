@@ -1,21 +1,21 @@
+import { Calendar } from 'lucide-react';
+
 function Form() {
     return (
-        <section className="ml-108">
+        <div className="pl-108 text-white">
+            <section className="rounded-3xl bg-[#212427] p-20">
+                <h2 className='font-["Baloo_2"] text-[28px] font-bold'>Crie seu convite</h2>
+                <section className='mt-10'>
+                    <div className='flex items-center gap-3'>
+                        <Calendar className='text-[#869198]' />
+                        <h3>Sobre o evento</h3>
+                    </div>
+                    <form>
 
-            <div className="rounded-3xl bg-[#212427] px-16 py-12">
-                <div className="space-y-8">
-                <div className="h-32 rounded-xl bg-red-800" />
-                <div className="h-32 rounded-xl bg-red-800" />
-                <div className="h-32 rounded-xl bg-red-800" />
-                <div className="h-32 rounded-xl bg-red-800" />
-                <div className="h-32 rounded-xl bg-red-800" />
-                <div className="h-32 rounded-xl bg-red-800" />
-                <div className="h-32 rounded-xl bg-red-800" />
-                <div className="h-32 rounded-xl bg-red-800" />
-              </div>
-            </div>
-
-        </section>
+                    </form>
+                </section>
+            </section>
+        </div>
     )
 }
 
