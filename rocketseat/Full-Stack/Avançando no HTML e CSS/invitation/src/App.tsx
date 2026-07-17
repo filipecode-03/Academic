@@ -12,7 +12,7 @@ function App() {
           h-[calc(100vh-4rem)]
           w-full
           max-w-7xl
-          rounded-[32px]
+          rounded-4xl
           bg-[#131516]
         "
       />
@@ -51,4 +51,4 @@ function App() {
   );
 }
 
-export
+export default App

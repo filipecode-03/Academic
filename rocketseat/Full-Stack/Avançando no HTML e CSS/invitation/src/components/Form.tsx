@@ -1,6 +1,6 @@
 function Form() {
     return (
-        <section className="ml-[432px]">
+        <section className="ml-108">
 
             <div className="rounded-3xl bg-[#212427] px-16 py-12">
                 <div className="space-y-8">
