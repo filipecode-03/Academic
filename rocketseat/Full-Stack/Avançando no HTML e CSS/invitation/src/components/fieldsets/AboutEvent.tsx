@@ -1,7 +1,7 @@
 import { Calendar, Building2, Video } from "lucide-react";
 import { Input } from "../form/Input";
 import { SegmentedControl } from "../form/SegmentedControl";
-
+import { Textarea } from "../form/Textarea";
 import type { InvitationFormData } from "../../types/invitation";
 
 function AboutEvent() {
@@ -64,6 +64,13 @@ function AboutEvent() {
                     rules={{
                         required: "Informe o título"
                     }}
+                />
+            </div>
+            <div className="mt-4">
+                <Textarea<InvitationFormData>
+                    name="description"
+                    label="Descrição"
+                    placeholder="Escreva sobre os detalhes do evento"
                 />
             </div>
         </fieldset>
