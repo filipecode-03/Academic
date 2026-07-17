@@ -42,6 +42,7 @@ function AboutEvent() {
             <div className="flex items-center gap-5 mt-4">
                 <SegmentedControl<InvitationFormData>
                     name="eventType"
+                    label="Tipo"
                     options={[
                         {
                         value: "presential",
