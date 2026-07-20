@@ -1,19 +1,21 @@
 import Music from '../assets/images/Music-bars.png'
 import eclipse from '../assets/images/Ellipse.png'
+import phones from '../assets/images/App-mockups.png'
 
 function Header() {
     return (
-        <header className="text-center relative overflow-hidden pb-100">
+        <header className="text-center relative overflow-hidden pb-140">
             <div
                 className="
                     absolute
                     -bottom-24
                     left-1/2
-                    h-72
-                    w-225
+                    h-200
+                    w-full
                     -translate-x-1/2
                     rounded-full
                     blur-3xl
+                    z-0
                 "
                 style={{
                     background: `
@@ -28,7 +30,7 @@ function Header() {
                     `,
                 }}
             />
-            <section className="flex pt-16 px-6 flex-col gap-8">
+            <section className="relative z-20 flex pt-16 px-6 flex-col gap-8">
                 <div>
                     <img src={Music} alt="Music bars" className='mx-auto' />
                     <h1 className='mt-4 font-extrabold text-[40px] leading-14'>Quem canta seus males espanta</h1>
@@ -41,7 +43,20 @@ function Header() {
                     </button>
                 </div>
             </section>
-            <img src={eclipse} alt="eclipse" className='absolute' />
+            <img
+                src={eclipse}
+                alt="eclipse"
+                className="
+                absolute
+                left-1/2
+                top-[620px]
+                -translate-x-1/2
+                w-[1400px]
+                max-w-none
+                z-10
+                "
+            />
+            <img src={phones} alt="phones" className='absolute w-[412px] -translate-x-1/2 left-1/2 z-20 top-115' />
         </header>
     )
 }
