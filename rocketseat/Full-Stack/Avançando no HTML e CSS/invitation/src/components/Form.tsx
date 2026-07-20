@@ -3,8 +3,10 @@ import { FormProvider, useForm } from "react-hook-form";
 import AboutEvent from "./fieldsets/AboutEvent";
 import Customization from "./fieldsets/Customization";
 import Contact from "./fieldsets/Contact";
+import Terms from "./fieldsets/Terms";
 
 import type { InvitationFormData } from "../types/invitation";
+import { SubmitButton } from "./form/SubmitButton";
 
 function Form() {
 
@@ -12,11 +14,20 @@ function Form() {
         defaultValues: {
             eventType: "presential",
             isDark: true
-        }
+        },
     });
 
-    function onSubmit(data: InvitationFormData) {
+    const {
+        formState: { isSubmitting },
+    } = methods;
+
+    async function onSubmit(data: InvitationFormData) {
         console.log(data);
+
+        // Simulação de uma requisição
+        await new Promise((resolve) => setTimeout(resolve, 2000));
+
+        console.log("Convite criado!");
     }
 
     return (
@@ -30,6 +41,10 @@ function Form() {
                         <AboutEvent />
                         <Customization />
                         <Contact />
+                        <Terms />
+                        <SubmitButton isLoading={isSubmitting}>
+                            Gerar convite
+                        </SubmitButton>
                     </form>
                 </FormProvider>
             </section>

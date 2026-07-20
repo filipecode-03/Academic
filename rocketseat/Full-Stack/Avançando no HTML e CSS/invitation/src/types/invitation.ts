@@ -1,7 +1,6 @@
-// types/invitation.ts
-
 export interface InvitationFormData {
   title: string;
+
   startsAt: string;
   endsAt: string;
 
@@ -24,4 +23,10 @@ export interface InvitationFormData {
   email: string;
 
   phone: string;
+
+  terms: boolean;
+
+  tEmail: boolean;
+
+  tSms: boolean;
 }

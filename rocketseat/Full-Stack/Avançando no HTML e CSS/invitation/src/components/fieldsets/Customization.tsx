@@ -2,10 +2,20 @@ import { PaintbrushVertical } from 'lucide-react';
 import type { InvitationFormData } from "../../types/invitation";
 import { ColorPicker } from '../form/ColorPicker';
 import { ThemePicker } from '../form/ThemePicker';
+import { ToggleSwitch } from '../form/ToggleSwitch';
 import birthday from '../../assets/images/Image01.png'
 import kids from '../../assets/images/Image02.png'
 import formatura from '../../assets/images/Image03.png'
 import wedding from '../../assets/images/Image04.png'
+import babyShower from '../../assets/images/Image05.png'
+import bridalShower from '../../assets/images/Image06.png'
+import Carnival from '../../assets/images/Image07.png'
+import Easter from '../../assets/images/Image08.png'
+import SaintJohn from '../../assets/images/Image09.png'
+import Halloween from '../../assets/images/Image10.png'
+import Christmas from '../../assets/images/Image11.png'
+import Other from '../../assets/images/Image12.png'
+import { UploadInput } from '../form/UploadInput';
 
 function Customization(){
 
@@ -64,7 +74,62 @@ function Customization(){
                             title: "Casamento",
                             image: wedding,
                         },
+                        {
+                            value: "babyShower",
+                            title: "Chá de bebê",
+                            image: babyShower,
+                        },
+                        {
+                            value: "bridalShower",
+                            title: "Chá de panela",
+                            image: bridalShower,
+                        },
+                        {
+                            value: "Carnival",
+                            title: "Carnaval",
+                            image: Carnival,
+                        },
+                        {
+                            value: "Easter",
+                            title: "Páscoa",
+                            image: Easter,
+                        },
+                        {
+                            value: "SaintJohn",
+                            title: "São joão",
+                            image: SaintJohn,
+                        },
+                        {
+                            value: "Halloween",
+                            title: "Halloween",
+                            image: Halloween,
+                        },
+                        {
+                            value: "Christmas",
+                            title: "Natal",
+                            image: Christmas,
+                        },
+                        {
+                            value: "Other",
+                            title: "Outro",
+                            image: Other,
+                        },
                     ]}
+                />
+            </div>
+            <div className='mt-7 flex'>
+                <ToggleSwitch<InvitationFormData>
+                    name="isDark"
+                    label="Estilo"
+                    activeText="Escuro"
+                    inactiveText="Claro"
+                />
+                <UploadInput<InvitationFormData>
+                    name="cover"
+                    label="Foto de capa"
+                    rules={{
+                        required: "Selecione uma imagem"
+                    }}
                 />
             </div>
         </fieldset>
