@@ -1,6 +1,7 @@
 import {
   type FieldValues,
   type Path,
+  type RegisterOptions,
   useFormContext,
 } from "react-hook-form";
 
@@ -14,16 +15,19 @@ interface ThemePickerProps<T extends FieldValues> {
   name: Path<T>;
   label: string;
   options: ThemeOption[];
+  rules?: RegisterOptions<T>;
 }
 
 export function ThemePicker<T extends FieldValues>({
   name,
   label,
   options,
+  rules,
 }: ThemePickerProps<T>) {
-  const { register, watch } = useFormContext<T>();
+  const { register, watch, formState: { errors } } = useFormContext<T>();
 
   const selected = watch(name);
+  const error = errors[name];
 
   return (
     <div className="w-full">
@@ -43,7 +47,7 @@ export function ThemePicker<T extends FieldValues>({
               <input
                 type="radio"
                 value={value}
-                {...register(name)}
+                {...register(name, rules)}
                 className="hidden"
               />
 
@@ -84,6 +88,11 @@ export function ThemePicker<T extends FieldValues>({
           );
         })}
       </div>
+      {error && (
+        <p className="mt-2 text-sm text-red-400">
+          {String(error.message)}
+        </p>
+      )}
     </div>
   );
 }

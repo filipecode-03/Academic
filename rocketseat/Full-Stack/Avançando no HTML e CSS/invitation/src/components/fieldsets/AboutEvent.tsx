@@ -31,12 +31,18 @@ function AboutEvent() {
                     name="startsAt"
                     type="datetime-local"
                     label="Início"
+                    rules={{
+                        required: "Informe a data"
+                    }}
                 />
 
                 <Input<InvitationFormData>
                     name="endsAt"
                     type="datetime-local"
                     label="Fim"
+                    rules={{
+                        required: "Informe a data"
+                    }}
                 />
             </div>
             <div className="flex items-center gap-5 mt-4">
@@ -62,7 +68,7 @@ function AboutEvent() {
                     label="Local"
                     placeholder="Link ou endereço"
                     rules={{
-                        required: "Informe o título"
+                        required: "Informe o link ou endereço"
                     }}
                 />
             </div>

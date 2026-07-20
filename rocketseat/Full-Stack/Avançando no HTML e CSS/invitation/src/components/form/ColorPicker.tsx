@@ -1,6 +1,7 @@
 import {
   type FieldValues,
   type Path,
+  type RegisterOptions,
   useFormContext,
 } from "react-hook-form";
 
@@ -13,16 +14,19 @@ interface ColorPickerProps<T extends FieldValues> {
   name: Path<T>;
   label: string;
   options: ColorOption[];
+  rules?: RegisterOptions<T>;
 }
 
 export function ColorPicker<T extends FieldValues>({
   name,
   label,
   options,
+  rules,
 }: ColorPickerProps<T>) {
-  const { register, watch } = useFormContext<T>();
+  const { register, watch, formState: { errors } } = useFormContext<T>();
 
   const selected = watch(name);
+  const error = errors[name];
 
   return (
     <div className="w-full">
@@ -42,7 +46,7 @@ export function ColorPicker<T extends FieldValues>({
               <input
                 type="radio"
                 value={value}
-                {...register(name)}
+                {...register(name, rules)}
                 className="hidden"
               />
 
@@ -66,6 +70,11 @@ export function ColorPicker<T extends FieldValues>({
           );
         })}
       </div>
+      {error && (
+        <p className="mt-2 text-sm text-red-400">
+          {String(error.message)}
+        </p>
+      )}
     </div>
   );
 }

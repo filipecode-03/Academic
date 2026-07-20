@@ -34,6 +34,9 @@ function Customization(){
                 <ColorPicker<InvitationFormData>
                     name="primaryColor"
                     label="Cor principal"
+                    rules={{
+                        required: "Selecione uma cor principal."
+                    }}
                     options={[
                         { value: "azulClaro", color: "#59B2FF" },
                         { value: "azulEscuro", color: "#6A59FF" },
@@ -53,6 +56,9 @@ function Customization(){
                 <ThemePicker<InvitationFormData>
                     name="theme"
                     label="Tema do evento"
+                    rules={{
+                        required: "Selecione o tema do evento"
+                    }}
                     options={[
                         {
                             value: "birthday",

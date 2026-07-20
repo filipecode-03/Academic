@@ -37,7 +37,7 @@ export function Input<T extends FieldValues>({
         className="w-full rounded-lg mt-3 border border-zinc-700 bg-zinc-900 p-3"
       />
       {error && (
-        <p className="text-sm text-red-400">
+        <p className="text-sm mt-1.5 ml-3 text-red-400">
           {String(error.message)}
         </p>
       )}

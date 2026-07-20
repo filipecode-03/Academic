@@ -29,8 +29,8 @@ export function ToggleSwitch<T extends FieldValues>({
             relative h-8.5 w-16 border-[#363B40] border rounded-full transition-colors
             ${
               checked
-                ? "bg-blue-500"
-                : "bg-[#1C1F21]"
+                ? "bg-[#1C1F21]"
+                : "bg-blue-500"
             }
           `}
         >
@@ -39,8 +39,8 @@ export function ToggleSwitch<T extends FieldValues>({
               absolute top-1 h-6 w-6 rounded-full bg-[#363B40] transition-all
               ${
                 checked
-                  ? "left-9"
-                  : "left-1"
+                  ? "left-1"
+                  : "left-9"
               }
             `}
           />

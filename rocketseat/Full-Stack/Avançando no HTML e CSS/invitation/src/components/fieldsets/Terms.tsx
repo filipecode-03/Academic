@@ -4,7 +4,7 @@ import { Checkbox } from "../form/Checkbox";
 function Terms() {
     return (
         <fieldset className="border-[#363B40] border-t-3 pt-10 mt-12 flex flex-col gap-3">
-            <Checkbox<InvitationFormData> name="terms">
+            <Checkbox<InvitationFormData> rules={{ required: "Você precisa aceitar os termos." }} name="terms">
                 Li e concordo com os{" "}
                 <span className="text-blue-400 underline">
                     Termos e Condições
