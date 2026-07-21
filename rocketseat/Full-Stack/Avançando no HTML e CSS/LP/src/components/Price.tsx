@@ -4,7 +4,7 @@ import line from '../assets/images/Line-148.png'
 function Price() {
     return (
         <section className="py-12 lg:py-20 lg:px-8 px-6 flex flex-col gap-8">
-            <div className="text-center lg:w-[800px] lg:mx-auto">
+            <div className="text-center lg:w-200 lg:mx-auto">
                 <h3 className="font-meidum text-[14px] text-[#F7B733]">PLANOS E PREÇOS</h3>
                 <h2 className="mt-2 font-extrabold text-[24px] lg:text-[48px] leading-[120%]">Assine e tenha acesso ilimitado a todas as funcionalidades</h2>
             </div>
@@ -32,7 +32,7 @@ function Price() {
                         </div>
                     </div>
                 </div>
-                <div className="rounded-3xl lg:h-[560px] bg-linear-to-r from-[#FC4B1A] to-[#F7B733] p-0.75">
+                <div className="rounded-3xl lg:h-140 bg-linear-to-r from-[#FC4B1A] to-[#F7B733] p-0.75">
                     <div className="rounded-3xl lg:h-full bg-[#18181B]">
                         <div className="inline-flex items-center rounded-br-3xl rounded-tl-3xl bg-linear-to-r from-[#FC4B1A] to-[#F7B733] px-8 py-3 font-semibold tracking-wide text-black">
                             1 MÊS GRÁTIS

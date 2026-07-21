@@ -20,14 +20,14 @@ function Go() {
                         suas performances em experiências inesquecíveis!
                     </p>
                 </div>
-                <div className='w-[220px] flex flex-col gap-3.75 mt-8'>
+                <div className='w-55 flex flex-col gap-3.75 mt-8'>
                     <img src={apple} alt="apple" />
                     <img src={play} alt="play" />
                 </div>
                 <img
                     src={rapaz}
                     alt="Rapaz"
-                    className="absolute -right-14 bottom-0 w-[340px]"
+                    className="absolute -right-14 bottom-0 w-85"
                 />
             </div>
         </section>
