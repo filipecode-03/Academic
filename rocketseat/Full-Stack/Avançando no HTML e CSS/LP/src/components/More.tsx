@@ -6,7 +6,7 @@ import music from '../assets/images/MusicNotes.svg'
 
 function More() {
     return (
-        <section className='py-12 px-6 grid grid-cols-1 gap-6'>
+        <section className='py-12 px-6 grid grid-cols-1 lg:grid-cols-4 gap-6'>
             <div className="rounded-3xl p-6 bg-[#18181B] border border-[#27272A]">
                 <img src={magic} alt="magic" />
                 <h2 className='text-[20px] font-extrabold leading-[120%] mt-4'>A maior biblioteca de músicas de Karaokê!</h2>
