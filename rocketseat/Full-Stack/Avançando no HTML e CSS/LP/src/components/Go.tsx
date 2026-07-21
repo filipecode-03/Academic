@@ -1,0 +1,36 @@
+import rapaz from '../assets/images/rapaz-ouvindo-musica-com-fones-de-ouvido-e-cantando-no-aplicativo-de-karaoke-removebg 1.png'
+import app from '../assets/images/App-store-button.png'
+import play from '../assets/images/Play-Store-button.png'
+
+function Go() {
+    return (
+        <section className="py-12 px-6 overflow-hidden">
+            <div className="relative overflow-visible rounded-3xl border border-[#27272A] bg-[#18181B] px-6 pt-12 pb-60">
+                <div className="flex flex-col gap-2">
+                    <h3 className="text-[14px] font-medium text-[#F7B733]">
+                        DOWNLOAD
+                    </h3>
+                    <h2 className="text-[24px] font-extrabold">
+                        Bora cantar?
+                    </h2>
+                    <p className="leading-[160%] text-[#A1A1AA]">
+                        Desperte seu potencial de estrela, liberte sua voz e faça parte da
+                        comunidade musical mais envolvente. Baixe o Zingen agora e transforme
+                        suas performances em experiências inesquecíveis!
+                    </p>
+                </div>
+                <div className="mt-8 flex w-50 flex-col gap-4">
+                    <img src={app} alt="App Store" />
+                    <img src={play} alt="Play Store" />
+                </div>
+                <img
+                    src={rapaz}
+                    alt="Rapaz"
+                    className="absolute -right-15 bottom-0 w-[290px]"
+                />
+            </div>
+        </section>
+    )
+}
+
+export default Go
