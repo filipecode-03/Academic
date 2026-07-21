@@ -5,8 +5,8 @@ import play from '../assets/images/play.png'
 function Go() {
     
     return (
-        <section className="py-12 px-6 overflow-hidden">
-            <div className="relative overflow-visible rounded-3xl border border-[#27272A] bg-[#18181B] px-6 pt-12 pb-90">
+        <section className="py-12 lg:py-20 lg:px-8 px-6 overflow-hidden">
+            <div className="relative overflow-visible rounded-3xl border border-[#27272A] bg-[#18181B] px-6 lg:px-20 pt-12 lg:py-35 pb-90">
                 <div className="flex flex-col gap-2">
                     <h3 className="text-[14px] font-medium text-[#F7B733]">
                         DOWNLOAD
@@ -27,7 +27,7 @@ function Go() {
                 <img
                     src={rapaz}
                     alt="Rapaz"
-                    className="absolute -right-14 bottom-0 w-85"
+                    className="absolute -right-14 lg:-right-12 bottom-0 w-85 lg:w-110"
                 />
             </div>
         </section>
