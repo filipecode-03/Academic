@@ -1,2 +1,28 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Syne:wght@400..800&display=swap');
 @import "tailwindcss";
+
+.spin-enter {
+  animation: spinEnter 0.6s ease;
+}
+
+.spin-leave {
+  animation: spinLeave 0.6s ease;
+}
+
+@keyframes spinEnter {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes spinLeave {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(-360deg);
+  }
+}
