@@ -12,8 +12,8 @@ import ads from '../assets/images/Ads.png'
 
 function Footer() {
     return (
-        <footer className='flex items-center gap-8'>
-            <section className='border-t border-gray-800 w-380'>
+        <footer className='flex flex-col gap-10 lg:flex-row lg:items-start lg:gap-8'>
+            <section className='w-full border-t border-gray-800 lg:max-w-[760px]'>
                 <div className="pt-3 flex items-center text-[14px] font-semibold justify-between">
                   <p>Destaques da Inteligência Artificial</p>
                   <div className="flex items-center gap-2">

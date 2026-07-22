@@ -8,8 +8,8 @@ function Nav() {
             <img src={logo} alt="logo" />
             <div className='flex items-center text-gray-500 gap-4'>
                 <Search className='text-gray-500' />
-                <p>Explorar</p>
-                <p>Minhas viagens</p>
+                <p className='hidden lg:block'>Explorar</p>
+                <p className='hidden lg:block'>Minhas viagens</p>
                 <img src={profile} alt="profile" />
             </div>
         </nav>
