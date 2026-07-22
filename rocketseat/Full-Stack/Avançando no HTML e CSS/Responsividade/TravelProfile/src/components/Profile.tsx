@@ -5,7 +5,7 @@ import { MapPin, Plane, Image } from 'lucide-react';
 function Profile() {
     return (
         <header className='p-8 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-8'>
-            <div className='flex lg:w-[592px] flex-col lg:flex-row gap-4 items-start lg:items-center'>
+            <div className='flex lg:w-[592px] lg:gap-8 flex-col lg:flex-row gap-4 items-start lg:items-center'>
                 <img src={profile} alt="profile" />
                 <div>
                     <h1 className='text-[24px] font-bold'>Isabela Torres</h1>
