@@ -16,7 +16,11 @@ function Nav() {
                 onMouseLeave={() => setAnimation("spin-leave")}
                 onAnimationEnd={() => setAnimation("")}
             />           
-            <img src={bag} alt="bag" />
+            <img
+  src={bag}
+  alt="bag"
+  className="origin-bottom transition-transform duration-300 ease-in-out hover:-rotate-14"
+/>
         </nav>
     )
 }
