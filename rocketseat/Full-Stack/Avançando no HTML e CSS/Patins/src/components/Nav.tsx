@@ -7,7 +7,7 @@ function Nav() {
     const [animation, setAnimation] = useState("");
 
     return (
-        <nav className="flex py-3 px-6 items-center justify-between">
+        <nav className="flex py-3 px-6 lg:px-8 items-center justify-between">
             <img
                 src={logo}
                 alt="logo"

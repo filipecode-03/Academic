@@ -5,13 +5,13 @@ function Photos() {
     return (
         <section className="p-6">
             <div className='text-center '>
-                <h3 className='font-["Montserrat"] text-[12px]'>GALERIA DE FOTOS</h3>
-                <h2 className='font-["Syne"] text-[24px] font-bold'>#usesnitap por aí</h2>
+                <h3 className='font-["Montserrat"] text-[12px] lg:text-[14px]'>GALERIA DE FOTOS</h3>
+                <h2 className='font-["Syne"] text-[24px] lg:text-[40px] font-bold'>#usesnitap por aí</h2>
             </div>
             <div className='mt-6 flex flex-col gap-6'>
-                <div className='grid grid-cols-1 gap-6'>
+                <div className='flex flex-col lg:mx-auto lg:flex-row lg:items-center gap-6'>
                     <motion.div
-                        className="relative mx-auto h-64 w-78 overflow-hidden rounded-[40px]"
+                        className="relative mx-auto lg:mx-0 h-64 w-78 lg:w-122 lg:h-100 overflow-hidden rounded-[40px]"
                         initial={{
                             opacity: 0,
                             y: 80,
@@ -29,7 +29,7 @@ function Photos() {
                     >
                         {/* Background */}
                         <motion.div
-                            className="absolute inset-0 bg-[url(./assets/images/imageMobile01.png)] bg-cover bg-center"
+                            className="absolute inset-0 bg-[url(./assets/images/imageMobile01.png)] lg:bg-[url(./assets/images/image-01.png)] bg-cover bg-center"
                             variants={{
                                 hover: {
                                     scale: 1.08,
@@ -87,7 +87,7 @@ function Photos() {
                         </motion.div>
                     </motion.div>
                     <motion.div
-                        className="relative mx-auto h-64 w-78 overflow-hidden rounded-[40px]"
+                        className="relative mx-auto lg:mx-0 h-64 lg:w-174 lg:h-100 w-78 overflow-hidden rounded-[40px]"
                         initial={{
                             opacity: 0,
                             y: 80,
@@ -105,7 +105,7 @@ function Photos() {
                     >
                         {/* Background */}
                         <motion.div
-                            className="absolute inset-0 bg-[url(./assets/images/imageMobile02.png)] bg-cover bg-center"
+                            className="absolute inset-0 bg-[url(./assets/images/imageMobile02.png)] lg:bg-[url(./assets/images/image02.png)] bg-cover bg-center"
                             variants={{
                                 hover: {
                                     scale: 1.08,
@@ -162,8 +162,10 @@ function Photos() {
                             </p>
                         </motion.div>
                     </motion.div>
+                </div>
+                <div className='flex lg:mx-auto flex-col lg:flex-row lg:items-center gap-6'>
                     <motion.div
-                        className="relative mx-auto h-64 w-78 overflow-hidden rounded-[40px]"
+                        className="relative mx-auto lg:mx-0 h-64 lg:w-174 lg:h-100 w-78 overflow-hidden rounded-[40px]"
                         initial={{
                             opacity: 0,
                             y: 80,
@@ -181,7 +183,7 @@ function Photos() {
                     >
                         {/* Background */}
                         <motion.div
-                            className="absolute inset-0 bg-[url(./assets/images/imageMobile03.png)] bg-cover bg-center"
+                            className="absolute inset-0 bg-[url(./assets/images/imageMobile03.png)] lg:bg-[url(./assets/images/image03.png)] bg-cover bg-center"
                             variants={{
                                 hover: {
                                     scale: 1.08,
@@ -239,7 +241,7 @@ function Photos() {
                         </motion.div>
                     </motion.div>
                     <motion.div
-                        className="relative mx-auto h-64 w-78 overflow-hidden rounded-[40px]"
+                        className="relative mx-auto lg:mx-0 h-64 lg:w-122 lg:h-100 w-78 overflow-hidden rounded-[40px]"
                         initial={{
                             opacity: 0,
                             y: 80,
@@ -257,7 +259,7 @@ function Photos() {
                     >
                         {/* Background */}
                         <motion.div
-                            className="absolute inset-0 bg-[url(./assets/images/imageMobile04.png)] bg-cover bg-center"
+                            className="absolute inset-0 bg-[url(./assets/images/imageMobile04.png)] lg:bg-[url(./assets/images/image04.png)] bg-cover bg-center"
                             variants={{
                                 hover: {
                                     scale: 1.08,
@@ -314,9 +316,6 @@ function Photos() {
                             </p>
                         </motion.div>
                     </motion.div>
-                </div>
-                <div className='grid grid-cols-1 gap-6'>
-
                 </div>
             </div>
         </section>

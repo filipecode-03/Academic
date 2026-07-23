@@ -4,9 +4,9 @@ import logo from '../assets/images/LogoFooter.png'
 
 function Footer() {
     return (
-        <footer className="py-12 flex flex-col gap-12 items-start px-6">
+        <footer className="py-12 flex flex-col lg:items-center lg:justify-between lg:flex-row gap-12 items-start px-6 lg:px-8">
             <img src={logo} alt="logo" />
-            <div className="flex flex-col font-['Montserrat'] font-medium gap-6">
+            <div className="flex flex-col lg:flex-row lg:items-center font-['Montserrat'] font-medium gap-6">
                 <a href="#">Sobre</a>
                 <a href="#">Nossas lojas</a>
                 <a href="#">Política de privacidade</a>
