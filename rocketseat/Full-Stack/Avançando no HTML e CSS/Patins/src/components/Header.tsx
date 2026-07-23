@@ -9,8 +9,8 @@ import { motion } from "motion/react";
 function Header() {
 
     return (
-        <header className='pt-4 pb-12 px-6 flex flex-col gap-8'>
-            <div className="relative mx-auto flex h-73.75 w-73.75 items-center justify-center">
+        <header className='pt-4 pb-12 px-6 lg:px-8 lg:py-10 flex flex-col lg:flex-row-reverse lg:items-center lg:justify-between gap-8'>
+            <div className="relative mx-auto lg:mx-0 flex h-73.75 lg:h-122 lg:w-122 w-73.75">
                 <img
                     src={eclipse}
                     alt="eclipse"
@@ -20,13 +20,13 @@ function Header() {
                 <img
                     src={patins}
                     alt="patins"
-                    className="absolute animate-patins z-20 w-78 h-73.75"
+                    className="absolute animate-patins z-20 w-78 lg:w-[488px] lg:h-[462px] h-73.75"
                 />
 
                 <img
                     src={star01}
                     alt="star01"
-                    className="absolute animate-star-1 -left-1 top-23 z-30 w-14 h-11.25"
+                    className="absolute animate-star-1 -left-1 top-23 lg:top-40 z-30 w-14 lg:w-[88px] lg:h-[72px] h-11.25"
                 />
 
                 <img
@@ -36,10 +36,10 @@ function Header() {
                 />
             </div>
             <div className='flex flex-col gap-12'>
-                <div className='font-bold text-[32px]'>
-                    <h1>Snitap, sua vida mais <AnimatedWord /></h1>
+                <div className='font-bold text-[32px] lg:text-[64px] lg:leading-[125%]'>
+                    <h1 className='font-["Syne"]'>Snitap, sua vida mais <AnimatedWord /></h1>
                 </div>
-                <div className='flex flex-col gap-6 w-71'>
+                <div className='flex flex-col gap-6 w-71 lg:w-131.25 lg:flex-row-reverse lg:items-center lg:justify-end'>
                     <motion.button
                         whileHover={{
                             scale: 1.10,
