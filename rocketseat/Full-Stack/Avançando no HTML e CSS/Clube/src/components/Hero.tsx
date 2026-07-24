@@ -8,7 +8,7 @@ function Hero() {
     return (
         <header className="text-white text-center h-186.75">
             <Nav />
-            <img src={bookMobile} alt="book" className="absolute top-0 -z-1 w-full" />
+            <img src={bookMobile} alt="book" className="absolute top-0 -z-1 w-full h-[600px]" />
             <section className="flex flex-col gap-4 p-5 mt-12">
                 <h1 className="text-[38px] font-bold leading-12">Desperte a sua imaginação e explore novos mundos</h1>
                 <p className="text-[#E2E7E9] text-[14px] leading-[140%]">Junte-se ao clube de assinatura Encantos Literários e descubra maravilhas e aventuras a cada página </p>
