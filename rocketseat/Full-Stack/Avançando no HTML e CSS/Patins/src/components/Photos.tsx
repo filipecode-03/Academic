@@ -58,7 +58,7 @@ function Photos() {
                         />
                         {/* Perfil */}
                         <motion.div
-                            className="absolute bottom-5 left-37 flex items-center gap-2 "
+                            className="absolute bottom-5 right-10 flex items-center gap-2 "
                             initial={{
                                 opacity: 0,
                                 y: 12,
@@ -134,7 +134,7 @@ function Photos() {
                         />
                         {/* Perfil */}
                         <motion.div
-                            className="absolute bottom-5 left-37 flex items-center gap-2 "
+                            className="absolute bottom-5 right-10 flex items-center gap-2 "
                             initial={{
                                 opacity: 0,
                                 y: 12,
@@ -212,7 +212,7 @@ function Photos() {
                         />
                         {/* Perfil */}
                         <motion.div
-                            className="absolute bottom-5 left-37 flex items-center gap-2 "
+                            className="absolute bottom-5 right-10 flex items-center gap-2 "
                             initial={{
                                 opacity: 0,
                                 y: 12,
@@ -288,7 +288,7 @@ function Photos() {
                         />
                         {/* Perfil */}
                         <motion.div
-                            className="absolute bottom-5 left-37 flex items-center gap-2 "
+                            className="absolute bottom-5 right-10 flex items-center gap-2 "
                             initial={{
                                 opacity: 0,
                                 y: 12,
