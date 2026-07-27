@@ -1,6 +1,7 @@
 export type ConversionResult = {
-    amountBRL: number;
-    convertedAmount: number;
-    exchangeRate: number;
+    amount: number;
     currency: string;
+    currencyName: string;
+    exchangeRate: number;
+    convertedAmount: number;
 };
