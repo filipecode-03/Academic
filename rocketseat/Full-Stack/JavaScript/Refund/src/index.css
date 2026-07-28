@@ -1,0 +1,34 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
+@import "tailwindcss";
+
+body {
+  background-color: #E4ECE9;
+}
+
+/* Remove controles nativos de vídeo e áudio */
+video::-webkit-media-controls,
+audio::-webkit-media-controls {
+    display: none !important;
+}
+
+/* Remove a seta padrão do elemento <select> */
+select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+
+/* Remove as setas (spinners) de <input type="number"> */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Remove o botão de "limpar" (X) de <input type="search"> */
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-decoration,
+input[type="search"]::-webkit-search-results-button,
+input[type="search"]::-webkit-search-results-decoration {
+    -webkit-appearance: none;
+}
