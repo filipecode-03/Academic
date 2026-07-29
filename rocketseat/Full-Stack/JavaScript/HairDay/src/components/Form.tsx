@@ -1,15 +1,83 @@
-function Form() {
-    return(
-        <div className="bg-[#232225] text-white rounded-xl max-w-125 p-20">
-            <h1 className="font-bold text-[24px]">Agende um atendimento</h1>
-            <p className="text-[#98959D] mt-1">Selecione data, horário e informe o nome do cliente para criar o agendamento</p>
-            <form className="mt-6">
-                <button type="submit" className="bg-[#B8952E] rounded-lg py-4 text-black font-bold uppercase w-full">
-                    Agendar
-                </button>
-            </form>
-        </div>
-    )
+import { useForm } from "react-hook-form";
+import { format } from "date-fns";
+
+import CalendarInput from "./CalendarInput";
+import ClientInput from "./ClientInput";
+import TimeInput from "./TimeInput";
+
+import { useSchedule } from "../hooks/useSchedule";
+
+interface FormData {
+  date: Date;
+  time: string;
+  client: string;
 }
 
-export default Form
+function Form() {
+  const {
+    control,
+    watch,
+    handleSubmit,
+    reset,
+  } = useForm<FormData>();
+
+  const { addSchedule, isTimeAvailable } =
+    useSchedule();
+
+  const selectedDate = watch("date");
+
+  function onSubmit(data: FormData) {
+    const success = addSchedule({
+      client: data.client,
+      date: format(data.date, "yyyy-MM-dd"),
+      time: data.time,
+    });
+
+    if (!success) {
+      alert("Horário ocupado.");
+      return;
+    }
+
+    reset();
+  }
+
+  return (
+    <div className="bg-[#232225] text-white rounded-xl max-w-[500px] w-full p-8">
+      <h1 className="text-2xl font-bold">
+        Agende um atendimento
+      </h1>
+
+      <p className="text-[#98959D] mt-2">
+        Selecione data, horário e informe o nome do cliente.
+      </p>
+
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="space-y-6 mt-8"
+      >
+        <CalendarInput control={control} />
+
+        <TimeInput
+          control={control}
+          selectedDate={
+            selectedDate
+              ? format(selectedDate, "yyyy-MM-dd")
+              : undefined
+          }
+          isTimeAvailable={isTimeAvailable}
+        />
+
+        <ClientInput control={control} />
+
+        <button
+          type="submit"
+          className="w-full py-4 rounded-lg bg-[#B8952E] text-black font-bold uppercase"
+        >
+          Agendar
+        </button>
+      </form>
+    </div>
+  );
+}
+
+export default Form;
