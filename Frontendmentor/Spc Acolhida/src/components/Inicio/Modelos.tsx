@@ -22,7 +22,7 @@ function Modelos() {
           Modelos de Solicitação de Demanda
         </h2>
 
-        <p className="text-center text-gray-600 mt-3 max-w-2xl mx-auto">
+        <p className="text-center mt-3 max-w-2xl mx-auto">
           Acesse os documentos padronizados utilizados na formalização
           das demandas da Operação Acolhida.
         </p>

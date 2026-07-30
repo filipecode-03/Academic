@@ -106,7 +106,7 @@ export function Navbar() {
           </NavLink>
 
           <button
-            className="flex items-center gap-2 py-5 border-b-4 border-transparent hover:border-[#F1F440] hover:text-[#F1F440] transition-all"
+            className="flex items-center uppercase gap-2 py-5 border-b-4 border-transparent hover:border-[#F1F440] hover:text-[#F1F440] transition-all"
           >
             Processos
 

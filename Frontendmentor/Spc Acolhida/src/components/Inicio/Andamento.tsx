@@ -33,7 +33,7 @@ function Andamento() {
           Acompanhe o andamento dos processos
         </h2>
 
-        <p className="text-center text-gray-600 mt-3 max-w-2xl mx-auto">
+        <p className="text-center mt-3 max-w-2xl mx-auto">
           Consulte rapidamente o andamento dos principais procedimentos
           administrativos da Operação Acolhida.
         </p>

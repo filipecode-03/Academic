@@ -4,6 +4,7 @@ import Welcome from "../components/Inicio/Welcome";
 import Andamento from "../components/Inicio/Andamento";
 import Modelos from "../components/Inicio/Modelos";
 import Metricas from "../components/Inicio/Métricas";
+import Equipe from "../components/Inicio/Equipe";
 
 export function Inicio() {
   return (
@@ -17,6 +18,7 @@ export function Inicio() {
       <Andamento />
       <Modelos />
       <Metricas />
+      <Equipe />
     </div>
   );
 }
