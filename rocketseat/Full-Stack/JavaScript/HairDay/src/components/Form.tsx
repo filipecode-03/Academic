@@ -50,7 +50,7 @@ function Form() {
   }
 
   return (
-    <div className="bg-[#232225] text-white rounded-xl max-w-[500px] w-full p-8">
+    <div className="bg-[#232225] text-white rounded-xl max-w-125 w-full p-20">
       <h1 className="font-bold text-2xl">
         Agende um atendimento
       </h1>

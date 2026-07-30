@@ -1,25 +1,66 @@
-import { createContext, type ReactNode, useMemo, useState } from "react";
+import {
+  createContext,
+  useEffect,
+  useState,
+  type ReactNode,
+} from "react";
+
 import { type Schedule } from "../types/schedule";
 
 interface ScheduleContextData {
   schedules: Schedule[];
-  addSchedule: (schedule: Omit<Schedule, "id">) => boolean;
+
+  addSchedule: (
+    schedule: Omit<Schedule, "id">
+  ) => boolean;
+
   removeSchedule: (id: string) => void;
-  isTimeAvailable: (date: string, time: string) => boolean;
+
+  isTimeAvailable: (
+    date: string,
+    time: string
+  ) => boolean;
+
+  getSchedulesByDate: (
+    date: string
+  ) => Schedule[];
+
+  getSchedulesByPeriod: (
+    date: string,
+    start: number,
+    end: number
+  ) => Schedule[];
 }
 
 interface ScheduleProviderProps {
   children: ReactNode;
 }
 
-export const ScheduleContext = createContext<ScheduleContextData | null>(null);
+export const ScheduleContext =
+  createContext<ScheduleContextData | null>(null);
+
+const STORAGE_KEY = "@agenda:schedules";
 
 export function ScheduleProvider({
   children,
 }: ScheduleProviderProps) {
-  const [schedules, setSchedules] = useState<Schedule[]>([]);
+  const [schedules, setSchedules] = useState<Schedule[]>(() => {
+    const stored = localStorage.getItem(STORAGE_KEY);
 
-  function isTimeAvailable(date: string, time: string) {
+    return stored ? JSON.parse(stored) : [];
+  });
+
+  useEffect(() => {
+    localStorage.setItem(
+      STORAGE_KEY,
+      JSON.stringify(schedules)
+    );
+  }, [schedules]);
+
+  function isTimeAvailable(
+    date: string,
+    time: string
+  ) {
     return !schedules.some(
       (schedule) =>
         schedule.date === date &&
@@ -27,18 +68,21 @@ export function ScheduleProvider({
     );
   }
 
-  function addSchedule(schedule: Omit<Schedule, "id">) {
+  function addSchedule(
+    schedule: Omit<Schedule, "id">
+  ) {
     if (!isTimeAvailable(schedule.date, schedule.time)) {
       return false;
     }
 
-    setSchedules((prev) => [
-      ...prev,
-      {
-        id: crypto.randomUUID(),
-        ...schedule,
-      },
-    ]);
+    const newSchedule: Schedule = {
+      id: crypto.randomUUID(),
+      client: schedule.client,
+      date: schedule.date,
+      time: schedule.time,
+    };
+
+    setSchedules((prev) => [...prev, newSchedule]);
 
     return true;
   }
@@ -49,15 +93,32 @@ export function ScheduleProvider({
     );
   }
 
-  const value = useMemo(
-    () => ({
-      schedules,
-      addSchedule,
-      removeSchedule,
-      isTimeAvailable,
-    }),
-    [schedules]
-  );
+  function getSchedulesByDate(date: string) {
+    return schedules
+      .filter((schedule) => schedule.date === date)
+      .sort((a, b) => a.time.localeCompare(b.time));
+  }
+
+  function getSchedulesByPeriod(
+    date: string,
+    start: number,
+    end: number
+  ) {
+    return getSchedulesByDate(date).filter((schedule) => {
+      const hour = Number(schedule.time.split(":")[0]);
+
+      return hour >= start && hour <= end;
+    });
+  }
+
+  const value: ScheduleContextData = {
+    schedules,
+    addSchedule,
+    removeSchedule,
+    isTimeAvailable,
+    getSchedulesByDate,
+    getSchedulesByPeriod,
+  };
 
   return (
     <ScheduleContext.Provider value={value}>

@@ -1,6 +1,11 @@
 import { useMemo, useState } from "react";
 import { format } from "date-fns";
-import { ptBR } from "date-fns/locale";
+
+import {
+  Sun,
+  Sunset,
+  Moon,
+} from "lucide-react";
 
 import CalendarInput from "./CalendarInput";
 import ScheduleSection from "./ScheduleSection";
@@ -8,71 +13,111 @@ import ScheduleSection from "./ScheduleSection";
 import { useSchedule } from "../hooks/useSchedule";
 
 function Agenda() {
-  const { getSchedulesByDate } = useSchedule();
+  const { getSchedulesByPeriod } =
+    useSchedule();
 
-  const [selectedDate, setSelectedDate] = useState<Date>(
-    new Date()
+  const [selectedDate, setSelectedDate] =
+    useState(new Date());
+
+  const formattedDate = format(
+    selectedDate,
+    "yyyy-MM-dd"
   );
 
-  const schedules = useMemo(() => {
-    return getSchedulesByDate(
-      format(selectedDate, "yyyy-MM-dd")
-    );
-  }, [selectedDate, getSchedulesByDate]);
-
-  const morning = schedules.filter(item =>
-    Number(item.time.split(":")[0]) < 13
+  const morning = useMemo(
+    () =>
+      getSchedulesByPeriod(
+        formattedDate,
+        9,
+        12
+      ),
+    [formattedDate]
   );
 
-  const afternoon = schedules.filter(item => {
-    const hour = Number(item.time.split(":")[0]);
+  const afternoon = useMemo(
+    () =>
+      getSchedulesByPeriod(
+        formattedDate,
+        13,
+        18
+      ),
+    [formattedDate]
+  );
 
-    return hour >= 13 && hour <= 18;
-  });
-
-  const night = schedules.filter(item =>
-    Number(item.time.split(":")[0]) >= 19
+  const night = useMemo(
+    () =>
+      getSchedulesByPeriod(
+        formattedDate,
+        19,
+        21
+      ),
+    [formattedDate]
   );
 
   return (
-    <div className="flex-1 py-20 px-24 text-white">
+    <div className="flex-1 py-20 px-20 text-white">
 
-      <div className="mb-8">
+      <div className="flex justify-between items-start mb-8">
 
-        <h2 className="text-3xl font-bold">
-          Sua agenda
-        </h2>
+        <div>
 
-        <p className="text-zinc-400 mt-1">
-          Consulte os atendimentos agendados.
-        </p>
+          <h2 className="text-3xl font-bold">
+            Sua agenda
+          </h2>
 
-      </div>
+          <p className="text-zinc-500 mt-1">
+            Consulte seus atendimentos.
+          </p>
 
-      <div className="max-w-xs mb-10">
-        <CalendarInput
-          value={selectedDate}
-          onChange={(date) => {
-            if (date) setSelectedDate(date);
-          }}
-        />
+        </div>
+
+        <div className="w-72">
+
+          <CalendarInput
+            value={selectedDate}
+            onChange={(date) => {
+              if (date) {
+                setSelectedDate(date);
+              }
+            }}
+          />
+
+        </div>
+
       </div>
 
       <ScheduleSection
         title="Manhã"
+        icon={
+          <Sun
+            size={18}
+            className="text-yellow-400"
+          />
+        }
         schedules={morning}
       />
 
       <ScheduleSection
         title="Tarde"
+        icon={
+          <Sunset
+            size={18}
+            className="text-orange-400"
+          />
+        }
         schedules={afternoon}
       />
 
       <ScheduleSection
         title="Noite"
+        icon={
+          <Moon
+            size={18}
+            className="text-blue-400"
+          />
+        }
         schedules={night}
       />
-
     </div>
   );
 }
