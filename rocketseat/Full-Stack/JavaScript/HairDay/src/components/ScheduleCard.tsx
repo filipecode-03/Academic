@@ -1,4 +1,3 @@
-import { User } from "lucide-react";
 import { type Schedule } from "../types/schedule";
 
 interface Props {

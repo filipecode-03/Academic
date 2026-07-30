@@ -1,5 +1,4 @@
 import clsx from "clsx";
-import { Clock3 } from "lucide-react";
 import { timePeriods } from "../utils/timePeriods";
 
 interface Props {
