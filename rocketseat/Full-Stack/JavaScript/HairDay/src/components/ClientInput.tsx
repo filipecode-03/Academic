@@ -1,4 +1,4 @@
-import { User } from "lucide-react";
+import { SquareUserRound } from "lucide-react";
 
 interface ClientInputProps {
   value: string;
@@ -13,14 +13,14 @@ function ClientInput({
 }: ClientInputProps) {
   return (
     <div>
-      <label className="text-sm text-zinc-400 block mb-2">
+      <label className="text-gray-200 text-[18px] block mb-2 font-semibold">
         Cliente
       </label>
 
-      <div className="bg-[#2E2C30] rounded-lg flex items-center px-4">
-        <User
+      <div className="bg-[#232225] border border-gray-600 rounded-lg flex items-center px-4">
+        <SquareUserRound
           size={18}
-          className="text-zinc-500"
+          className="text-[#B8952E]"
         />
 
         <input

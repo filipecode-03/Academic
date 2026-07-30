@@ -54,11 +54,9 @@ function Form() {
       <h1 className="font-bold text-2xl">
         Agende um atendimento
       </h1>
-
       <p className="text-[#98959D] mt-2">
         Selecione uma data, um horário e informe o nome do cliente.
       </p>
-
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="space-y-6 mt-8"

@@ -3,7 +3,7 @@ import { format } from "date-fns";
 
 import {
   Sun,
-  Sunset,
+  CloudSun,
   Moon,
 } from "lucide-react";
 
@@ -56,23 +56,16 @@ function Agenda() {
 
   return (
     <div className="flex-1 py-20 px-20 text-white">
-
       <div className="flex justify-between items-start mb-8">
-
         <div>
-
-          <h2 className="text-3xl font-bold">
+          <h2 className="text-2xl font-bold">
             Sua agenda
           </h2>
-
           <p className="text-zinc-500 mt-1">
-            Consulte seus atendimentos.
+            Consulte os seus cortes de cabelo agendados por dia
           </p>
-
         </div>
-
         <div className="w-72">
-
           <CalendarInput
             value={selectedDate}
             onChange={(date) => {
@@ -81,11 +74,8 @@ function Agenda() {
               }
             }}
           />
-
         </div>
-
       </div>
-
       <ScheduleSection
         title="Manhã"
         icon={
@@ -96,24 +86,22 @@ function Agenda() {
         }
         schedules={morning}
       />
-
       <ScheduleSection
         title="Tarde"
         icon={
-          <Sunset
+          <CloudSun 
             size={18}
-            className="text-orange-400"
+            className="text-yellow-400"
           />
         }
         schedules={afternoon}
       />
-
       <ScheduleSection
         title="Noite"
         icon={
           <Moon
             size={18}
-            className="text-blue-400"
+            className="text-yellow-400"
           />
         }
         schedules={night}

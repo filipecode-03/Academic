@@ -24,8 +24,7 @@ function TimeInput({
 }: Props) {
   return (
     <div>
-      <label className="text-sm text-zinc-400 flex items-center gap-2 mb-4">
-        <Clock3 size={16} />
+      <label className="text-gray-200 text-[18px] block mb-4 font-semibold">
         Horário
       </label>
 
@@ -34,16 +33,15 @@ function TimeInput({
           key={period}
           className="mb-5"
         >
-          <h4 className="font-semibold mb-3">
+          <h4 className="text-gray-300 mb-3">
             {period}
           </h4>
 
-          <div className="grid grid-cols-3 gap-2">
+          <div className="grid grid-cols-4 gap-2">
             {hours.map((hour) => {
               const available = selectedDate
                 ? isTimeAvailable(selectedDate, hour)
                 : true;
-
               return (
                 <button
                   key={hour}
@@ -54,8 +52,8 @@ function TimeInput({
                     "rounded-lg py-3 transition",
 
                     value === hour
-                      ? "bg-[#B8952E] text-black"
-                      : "bg-[#2E2C30] text-white",
+                      ? "bg-[#2E2C30] text-[#B8952E] font-semibold border-2 border-[#B8952E]"
+                      : "bg-[#2E2C30] text-white border border-gray-600",
 
                     !available &&
                       "opacity-40 cursor-not-allowed"

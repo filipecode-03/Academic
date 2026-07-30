@@ -14,7 +14,7 @@ function ScheduleSection({
   schedules,
 }: Props) {
   return (
-    <div className="bg-[#232225] rounded-xl p-6 mb-6">
+    <div className="bg-[#19181B] border border-gray-600 rounded-xl p-6 mb-6">
       <div className="flex items-center gap-3 border-b border-zinc-700 pb-4 mb-4">
         {icon}
 
