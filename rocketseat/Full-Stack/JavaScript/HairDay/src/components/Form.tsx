@@ -1,4 +1,4 @@
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { format } from "date-fns";
 
 import CalendarInput from "./CalendarInput";
@@ -8,7 +8,7 @@ import TimeInput from "./TimeInput";
 import { useSchedule } from "../hooks/useSchedule";
 
 interface FormData {
-  date: Date;
+  date?: Date;
   time: string;
   client: string;
 }
@@ -19,14 +19,22 @@ function Form() {
     watch,
     handleSubmit,
     reset,
-  } = useForm<FormData>();
+    formState: { errors },
+  } = useForm<FormData>({
+    defaultValues: {
+      client: "",
+      time: "",
+      date: undefined,
+    },
+  });
 
-  const { addSchedule, isTimeAvailable } =
-    useSchedule();
+  const { addSchedule, isTimeAvailable } = useSchedule();
 
   const selectedDate = watch("date");
 
   function onSubmit(data: FormData) {
+    if (!data.date) return;
+
     const success = addSchedule({
       client: data.client,
       date: format(data.date, "yyyy-MM-dd"),
@@ -34,7 +42,7 @@ function Form() {
     });
 
     if (!success) {
-      alert("Horário ocupado.");
+      alert("Horário indisponível.");
       return;
     }
 
@@ -43,35 +51,72 @@ function Form() {
 
   return (
     <div className="bg-[#232225] text-white rounded-xl max-w-[500px] w-full p-8">
-      <h1 className="text-2xl font-bold">
+      <h1 className="font-bold text-2xl">
         Agende um atendimento
       </h1>
 
       <p className="text-[#98959D] mt-2">
-        Selecione data, horário e informe o nome do cliente.
+        Selecione uma data, um horário e informe o nome do cliente.
       </p>
 
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="space-y-6 mt-8"
       >
-        <CalendarInput control={control} />
-
-        <TimeInput
+        <Controller
           control={control}
-          selectedDate={
-            selectedDate
-              ? format(selectedDate, "yyyy-MM-dd")
-              : undefined
-          }
-          isTimeAvailable={isTimeAvailable}
+          name="date"
+          rules={{
+            required: "Selecione uma data.",
+          }}
+          render={({ field }) => (
+            <CalendarInput
+              value={field.value}
+              onChange={field.onChange}
+              error={errors.date?.message}
+            />
+          )}
         />
 
-        <ClientInput control={control} />
+        <Controller
+          control={control}
+          name="time"
+          rules={{
+            required: "Selecione um horário.",
+          }}
+          render={({ field }) => (
+            <TimeInput
+              value={field.value}
+              onChange={field.onChange}
+              error={errors.time?.message}
+              selectedDate={
+                selectedDate
+                  ? format(selectedDate, "yyyy-MM-dd")
+                  : undefined
+              }
+              isTimeAvailable={isTimeAvailable}
+            />
+          )}
+        />
+
+        <Controller
+          control={control}
+          name="client"
+          rules={{
+            required: "Informe o nome do cliente.",
+          }}
+          render={({ field }) => (
+            <ClientInput
+              value={field.value}
+              onChange={field.onChange}
+              error={errors.client?.message}
+            />
+          )}
+        />
 
         <button
           type="submit"
-          className="w-full py-4 rounded-lg bg-[#B8952E] text-black font-bold uppercase"
+          className="bg-[#B8952E] rounded-lg py-4 w-full uppercase font-bold text-black hover:brightness-110 transition"
         >
           Agendar
         </button>

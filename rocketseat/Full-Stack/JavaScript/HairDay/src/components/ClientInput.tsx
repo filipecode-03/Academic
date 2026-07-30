@@ -1,39 +1,42 @@
 import { User } from "lucide-react";
-import { Controller, type Control } from "react-hook-form";
 
-interface Props {
-  control: Control<any>;
+interface ClientInputProps {
+  value: string;
+  onChange: (value: string) => void;
+  error?: string;
 }
 
-function ClientInput({ control }: Props) {
+function ClientInput({
+  value,
+  onChange,
+  error,
+}: ClientInputProps) {
   return (
-    <Controller
-      control={control}
-      name="client"
-      rules={{
-        required: "Informe o nome do cliente.",
-      }}
-      render={({ field }) => (
-        <div>
-          <label className="block mb-2 text-sm text-zinc-400">
-            Cliente
-          </label>
+    <div>
+      <label className="text-sm text-zinc-400 block mb-2">
+        Cliente
+      </label>
 
-          <div className="flex items-center bg-[#2E2C30] rounded-lg px-4">
-            <User
-              size={18}
-              className="text-zinc-500"
-            />
+      <div className="bg-[#2E2C30] rounded-lg flex items-center px-4">
+        <User
+          size={18}
+          className="text-zinc-500"
+        />
 
-            <input
-              {...field}
-              placeholder="Nome do cliente"
-              className="w-full bg-transparent outline-none p-3"
-            />
-          </div>
-        </div>
+        <input
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+          placeholder="Nome do cliente"
+          className="bg-transparent w-full outline-none p-3"
+        />
+      </div>
+
+      {error && (
+        <span className="text-red-400 text-sm mt-1 block">
+          {error}
+        </span>
       )}
-    />
+    </div>
   );
 }
 
