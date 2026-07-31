@@ -3,7 +3,6 @@ import acolhida from '../assets/images/acolhida.png'
 import Welcome from "../components/Inicio/Welcome";
 import Andamento from "../components/Inicio/Andamento";
 import Modelos from "../components/Inicio/Modelos";
-import Metricas from "../components/Inicio/Métricas";
 import Equipe from "../components/Inicio/Equipe";
 
 export function Inicio() {
@@ -17,7 +16,6 @@ export function Inicio() {
       <Welcome />
       <Andamento />
       <Modelos />
-      <Metricas />
       <Equipe />
     </div>
   );
