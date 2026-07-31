@@ -6,10 +6,10 @@ const pages = {
     title: "SEÇÃO DE PLANEJAMENTO E CONTRATAÇÕES - SPC/UGE",
   },
   "/documentos": {
-    title: "DOCUMENTOS",
+    title: "DOCUMENTAÇÃO PARA PROCESSOS DE CONTRATAÇÃO",
   },
   "/tools": {
-    title: "FERRAMENTAS",
+    title: "PRINCIPAIS FERRAMENTAS",
   },
 };
 

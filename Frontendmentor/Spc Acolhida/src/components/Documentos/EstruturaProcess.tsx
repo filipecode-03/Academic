@@ -23,51 +23,46 @@ function EstruturaProcess() {
                 <div className="max-w-75">
                     <h1 className="font-bold text-2xl text-center">Dispensa de Licitação</h1>
                     <ul className="flex flex-col gap-2 mt-3.75">
-                        <li>Termo de Abertura do Processo de Licitação - (7979362)</li>
                         <li>DIEx do Demandante</li>
-                        <li>Autorização para Tramitação do Processo de Licitação - (7979416)</li>
+                        <li>Autorização para Tramitação de Dispensa de Licitação - (8518842)</li>
                         <li>DFD (Documento de Formalização de Demanda) - 94/2025</li>
-                        <li>Portaria de Designação da Equipe de Planejamento da Contratação - (8498276)</li>
                         <li>ETP (Estudo Técnico Preliminar)</li>
                         <li>MR (Matriz de Risco) - 69/2025</li>
                         <li>RPP (Relatório de Pesquisa de Preço) - (8520640)</li>
                         <li>Pesquisa de Preço</li>
                         <li>Mapa Comparativo</li>
-                        <li>Termo de Referência</li>
+                        <li>Termo de Justificativa de Dispensa de Licitação - (8542407)</li>
                         <li>Despacho - (8542678)</li>
                     </ul>
                 </div>
                 <div className="max-w-75">
                     <h1 className="font-bold text-2xl text-center">Adesão</h1>
                     <ul className="flex flex-col gap-2 mt-3.75">
-                        <li>Termo de Abertura do Processo de Licitação - (7979362)</li>
                         <li>DIEx do Demandante</li>
-                        <li>Autorização para Tramitação do Processo de Licitação - (7979416)</li>
+                        <li>E-mail de Solicitação para Fornecedor</li>
+                        <li>E-mail de Aceite do Fornecedor</li>
+                        <li>Termo de Aceite do Fornecedor</li>
+                        <li>Declaração de Situação do SICAF</li>
+                        <li>Certidão Consolidada TCU</li>
                         <li>DFD (Documento de Formalização de Demanda) - 94/2025</li>
-                        <li>Portaria de Designação da Equipe de Planejamento da Contratação - (8498276)</li>
-                        <li>ETP (Estudo Técnico Preliminar)</li>
-                        <li>MR (Matriz de Risco) - 69/2025</li>
+                        <li>Edital</li>
+                        <li>Ata SRP</li>
                         <li>RPP (Relatório de Pesquisa de Preço) - (8520640)</li>
                         <li>Pesquisa de Preço</li>
-                        <li>Mapa Comparativo</li>
-                        <li>Termo de Referência</li>
-                        <li>Despacho - (8542678)</li>
+                        <li>Mapa comparativo</li>
+                        <li>Declaração de Aceite da UASG</li>
+                        <li>Termo de Justificativa de Adesão - (8520568)</li>
+                        <li>Despacho - (8547511)</li>
                     </ul>
                 </div>
                 <div className="max-w-75">
                     <h1 className="font-bold text-2xl text-center">IRP</h1>
                     <ul className="flex flex-col gap-2 mt-3.75">
-                        <li>Termo de Abertura do Processo de Licitação - (7979362)</li>
                         <li>DIEx do Demandante</li>
-                        <li>Autorização para Tramitação do Processo de Licitação - (7979416)</li>
                         <li>DFD (Documento de Formalização de Demanda) - 94/2025</li>
-                        <li>Portaria de Designação da Equipe de Planejamento da Contratação - (8498276)</li>
                         <li>ETP (Estudo Técnico Preliminar)</li>
                         <li>MR (Matriz de Risco) - 69/2025</li>
-                        <li>RPP (Relatório de Pesquisa de Preço) - (8520640)</li>
-                        <li>Pesquisa de Preço</li>
-                        <li>Mapa Comparativo</li>
-                        <li>Termo de Referência</li>
+                        <li>Termo de Manifestação</li>
                         <li>Despacho - (8542678)</li>
                     </ul>
                 </div>

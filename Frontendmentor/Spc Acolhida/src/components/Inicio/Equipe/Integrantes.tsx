@@ -26,7 +26,7 @@ export default function Integrantes() {
             className="
             bg-[#06263d]
             py-10
-            px-6 mt-[45px]
+            px-6 mt-12
         "
             onMouseEnter={() => setPaused(true)}
             onMouseLeave={() => setPaused(false)}
