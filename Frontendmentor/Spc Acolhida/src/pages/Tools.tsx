@@ -1,7 +1,9 @@
+import Cards from "../components/Tools/Cards"
+
 function Tools() {
     return(
-        <div>
-tools
+        <div className="my-10">
+            <Cards />
         </div>
     )
 }

@@ -11,7 +11,7 @@ export interface TeamMember {
 export const teamMembers: TeamMember[] = [
     {
         id: 1,
-        name: "Cel Jorge André",
+        name: "JOSE NIAS FERNANDES JUNIOR - CT",
         role: "CHEFE DA SPC",
         description:
             "Responsável pela coordenação geral da Seção, tomada de decisões estratégicas sobre os processos de contratação e assinatura dos despachos destinados às demais seções e ao Núcleo de Licitações.",
@@ -19,7 +19,7 @@ export const teamMembers: TeamMember[] = [
     },
     {
         id: 2,
-        name: "Cap Fulano",
+        name: "CARLOS AUGUSTO MEDEIROS DE ARAÚJO – CT",
         role: "SUBCHEFE",
         description:
             "Atua no controle, padronização e revisão de todos os processos da Seção, garantindo a conformidade documental antes do encaminhamento para assinatura e tramitação.",
@@ -27,7 +27,7 @@ export const teamMembers: TeamMember[] = [
     },
     {
         id: 3,
-        name: "1º Ten Sicrano",
+        name: "ANDRÉ LUIZ FRANCO DE SOUZA FILHO - 1º TEN",
         role: "LICITAÇÕES",
         description:
             "Responsável pela condução dos processos de renovação de contratos e atas, incluindo a coordenação das pesquisas de preços e consultas formais aos contratados.",
