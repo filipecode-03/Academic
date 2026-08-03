@@ -1,3 +1,5 @@
+import ToolCard from "./ToolCard";
+import { tools } from "./data";
 
 function Cards() {
     return (
