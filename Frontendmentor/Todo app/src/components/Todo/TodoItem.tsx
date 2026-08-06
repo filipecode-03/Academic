@@ -9,7 +9,7 @@ export function TodoItem({ todo }: TodoItemProps) {
   const { toggleTodo, removeTodo } = useTodo();
 
   return (
-    <li className="flex items-center justify-between gap-4 p-4 border-b">
+    <li className="flex items-center justify-between gap-4 p-5 border-b border-gray-300">
       <button
         onClick={() => toggleTodo(todo.id)}
         className="flex h-6 w-6 items-center justify-center rounded-full border border-gray-300"
