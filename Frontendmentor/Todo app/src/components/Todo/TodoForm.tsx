@@ -22,7 +22,7 @@ export function TodoForm() {
         type="text"
         placeholder="Create a new todo..."
         value={text}
-        onChange={(event) => setText(event.target.value)}
+        onChange={(event) => setText(event.target.value)} className="w-full"
       />
     </form>
   );
