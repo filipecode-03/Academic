@@ -5,7 +5,7 @@ import { Menu } from 'lucide-react';
 function Nav() {
     return (
         <nav>
-            <div className="flex items-center justify-between p-8">
+            <div className="flex items-center justify-between mx-auto max-w-6xl px-8 pt-8">
                 <Image src={Logo} alt="Logo" className="" />
                 <Menu />
             </div>

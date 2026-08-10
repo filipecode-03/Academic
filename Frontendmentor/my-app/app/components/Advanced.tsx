@@ -6,6 +6,9 @@ import Fully from "@/public/images/icon-fully-customizable.svg";
 function Advanced() {
   return (
     <section className="bg-[#EFF1F7] px-6 py-24">
+      
+      {/* Aqui vão ficar os cards com os links cncurtados */}
+      
       <div className="mx-auto max-w-6xl">
         {/* Cabeçalho */}
         <div className="mx-auto max-w-lg text-center">

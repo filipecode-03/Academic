@@ -13,3 +13,17 @@
     background-image: url("../public/images/bg-boost-desktop.svg");
   }
 }
+
+.shorten-bg {
+  background-color: #3a3053;
+  background-image: url("../public/images/bg-shorten-mobile.svg");
+  background-repeat: no-repeat;
+  background-position: top right;
+  background-size: cover;
+}
+
+@media (min-width: 768px) {
+  .shorten-bg {
+    background-image: url("../public/images/bg-shorten-desktop.svg");
+  }
+}
