@@ -11,8 +11,8 @@ export function TodoFilters() {
           key={value}
           onClick={() => setFilter(value)}
           className={`
-            transition-colors
-            font-bold
+            transition-colors text-[18px]
+            font-bold cursor-pointer
             ${
               filter === value
                 ? "text-blue-500"

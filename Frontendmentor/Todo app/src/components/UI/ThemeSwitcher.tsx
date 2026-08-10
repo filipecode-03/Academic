@@ -8,7 +8,7 @@ export function ThemeSwitcher() {
     <button
       type="button"
       onClick={toggleTheme}
-      className="transition-transform duration-200 hover:scale-110"
+      className="transition-transform cursor-pointer duration-200 hover:scale-110"
       aria-label="Alternar tema"
     >
       {theme === "dark" ? (

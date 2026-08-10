@@ -23,7 +23,7 @@ export function TodoList() {
             />
           ))}
         </ul>
-        <div className="flex items-center justify-between rounded-b-md p-5 text-sm text-gray-500 shadow-md">
+        <div className="flex items-center justify-between rounded-b-md p-5 text-gray-500 shadow-md">
             <span>{itemsLeft} items left</span>
             <button
                 onClick={clearCompleted}

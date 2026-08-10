@@ -6,7 +6,7 @@ import { TodoList } from "../components/Todo/TodoList";
 
 export function Home() {
   return (
-    <main className="relative min-h-screen bg-white transition-colors dark:bg-[#181824]">
+    <main className="relative min-h-screen font-[Josefin_Sans] bg-white transition-colors dark:bg-[#181824]">
       <HeroBackground />
 
       <div
@@ -17,7 +17,7 @@ export function Home() {
           w-full
           max-w-xl
           -translate-x-1/2
-          px-6
+          px-6 pb-10
         "
       >
         <div className="flex flex-col gap-6">
