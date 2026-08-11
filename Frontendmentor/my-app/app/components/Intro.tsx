@@ -17,10 +17,10 @@ function Intro() {
         </div>
         {/* Texto */}
         <div className="max-w-xl text-center lg:text-left">
-          <h1 className="text-4xl font-bold leading-tight text-[#232127] md:text-5xl lg:text-7xl">
+          <h1 className="text-4xl font-bold leading-tight lg:leading-20 text-[#232127] md:text-5xl lg:text-7xl">
             More than just shorter links
           </h1>
-          <p className="mt-6 text-lg leading-8 text-[#9E9AA7]">
+          <p className="mt-6 lg:mt-0 text-lg leading-8 text-[#9E9AA7] lg:font-semibold">
             Build your brand’s recognition and get detailed insights on how
             your links are performing.
           </p>

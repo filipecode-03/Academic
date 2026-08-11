@@ -39,7 +39,7 @@ function Advanced({ links }: AdvancedProps) {
             {links.map((link, index) => (
               <div
                 key={`${link.shortened}-${index}`}
-                className="flex flex-col gap-4 rounded-lg bg-white p-5 shadow-md md:flex-row md:items-center md:justify-between"
+                className="flex flex-col gap-4 rounded-lg font-semibold bg-white p-5 shadow-md md:flex-row md:items-center md:justify-between"
               >
                 {/* Link original */}
                 <p
@@ -50,7 +50,7 @@ function Advanced({ links }: AdvancedProps) {
                 </p>
 
                 {/* Link encurtado + botão */}
-                <div className="flex flex-col gap-4 md:flex-row md:items-center">
+                <div className="flex flex-col border-t border-gray-300 pt-4 lg:pt-0 lg:border-none gap-4 md:flex-row md:items-center">
                   <a
                     href={link.shortened}
                     target="_blank"
@@ -63,7 +63,7 @@ function Advanced({ links }: AdvancedProps) {
                   <button
                     type="button"
                     onClick={() => handleCopy(link.shortened)}
-                    className={`rounded-lg px-6 py-3 font-bold text-white transition ${
+                    className={`rounded-lg px-6 py-3 font-bold cursor-pointer text-white transition ${
                       copiedLink === link.shortened
                         ? "bg-[#3A3053]"
                         : "bg-[#2BD0D0] hover:bg-[#9BE3E2]"
