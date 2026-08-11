@@ -1,4 +1,5 @@
 import { useState } from "react";
+
 import type { Operator } from "../types/calculator";
 
 export function useCalculator() {
@@ -6,6 +7,7 @@ export function useCalculator() {
     const [previousValue, setPreviousValue] = useState<number | null>(null);
     const [operator, setOperator] = useState<Operator | null>(null);
     const [waitingForOperand, setWaitingForOperand] = useState(false);
+    
 
     function inputNumber(number: string) {
         if (waitingForOperand) {
