@@ -16,6 +16,7 @@ export function CalculatorDisplay({
                 items-end
                 justify-center
                 rounded-xl
+                bg-display
                 px-6
                 py-5
             "
@@ -28,7 +29,7 @@ export function CalculatorDisplay({
                     text-right
                     text-sm
                     font-medium
-                    opacity-60
+                    text-secondary
                 "
             >
                 {expression}
@@ -42,6 +43,7 @@ export function CalculatorDisplay({
                     text-4xl
                     font-bold
                     tracking-tight
+                    text-primary
                     sm:text-5xl
                 "
             >

@@ -24,6 +24,7 @@ export function CalculatorKeyboard({
                 grid-cols-4
                 gap-4
                 rounded-xl
+                bg-keyboard
                 p-5
                 sm:gap-5
                 sm:p-6
@@ -41,7 +42,10 @@ export function CalculatorKeyboard({
                 9
             </Button>
 
-            <Button onClick={deleteLast}>
+            <Button
+                onClick={deleteLast}
+                variant="danger"
+            >
                 DEL
             </Button>
 
@@ -95,6 +99,7 @@ export function CalculatorKeyboard({
 
             <Button
                 onClick={reset}
+                variant="danger"
                 className="col-span-2"
             >
                 RESET
@@ -102,6 +107,7 @@ export function CalculatorKeyboard({
 
             <Button
                 onClick={equals}
+                variant="accent"
                 className="col-span-2"
             >
                 =
