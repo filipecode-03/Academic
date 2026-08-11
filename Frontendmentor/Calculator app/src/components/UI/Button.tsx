@@ -37,11 +37,11 @@ export function Button({
                 px-3
                 text-2xl
                 font-bold
-                shadow-[0_3px_0_rgba(0,0,0,0.2)]
+                shadow-[0_3px_0_rgba(0,0,0,0.25)]
                 transition-all
-                duration-150
+                duration-100
                 hover:brightness-110
-                active:translate-y-0.5
+                active:translate-y-[3px]
                 active:shadow-none
                 focus:outline-none
                 focus:ring-2

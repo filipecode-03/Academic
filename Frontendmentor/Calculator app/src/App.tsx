@@ -7,9 +7,28 @@ export function App() {
 
     return (
         <div
-            className={`${theme} min-h-screen bg-background text-primary transition-colors duration-300`}
+            className={`
+                ${theme}
+                min-h-screen
+                bg-background
+                text-primary
+                transition-colors
+                duration-300
+            `}
         >
-            <div className="mx-auto flex min-h-screen w-full max-w-md flex-col px-6 py-8">
+            <div
+                className="
+                    mx-auto
+                    flex
+                    min-h-screen
+                    w-full
+                    max-w-md
+                    flex-col
+                    px-5
+                    py-8
+                    sm:px-6
+                "
+            >
                 <Header />
 
                 <Calculator />

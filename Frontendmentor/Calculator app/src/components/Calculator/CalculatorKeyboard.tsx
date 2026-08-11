@@ -22,12 +22,12 @@ export function CalculatorKeyboard({
             className="
                 grid
                 grid-cols-4
-                gap-4
+                gap-3
                 rounded-xl
                 bg-keyboard
-                p-5
-                sm:gap-5
-                sm:p-6
+                p-4
+                sm:gap-4
+                sm:p-5
             "
         >
             <Button onClick={() => inputNumber("7")}>
@@ -45,6 +45,7 @@ export function CalculatorKeyboard({
             <Button
                 onClick={deleteLast}
                 variant="danger"
+                className="text-lg"
             >
                 DEL
             </Button>
@@ -100,7 +101,7 @@ export function CalculatorKeyboard({
             <Button
                 onClick={reset}
                 variant="danger"
-                className="col-span-2"
+                className="col-span-2 text-lg"
             >
                 RESET
             </Button>

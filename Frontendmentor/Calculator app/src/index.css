@@ -29,9 +29,7 @@ body {
     min-height: 100vh;
 }
 
-/* =========================
-   Theme 1
-   ========================= */
+/* Theme 1 */
 
 .theme-1 {
     --background: #3a4764;
@@ -47,9 +45,7 @@ body {
     --danger-text: #ffffff;
 }
 
-/* =========================
-   Theme 2
-   ========================= */
+/* Theme 2 */
 
 .theme-2 {
     --background: #e6e6e6;
@@ -65,9 +61,7 @@ body {
     --danger-text: #ffffff;
 }
 
-/* =========================
-   Theme 3
-   ========================= */
+/* Theme 3 */
 
 .theme-3 {
     --background: #160628;
