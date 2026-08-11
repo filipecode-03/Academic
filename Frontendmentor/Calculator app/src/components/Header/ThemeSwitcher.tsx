@@ -11,22 +11,28 @@ export function ThemeSwitcher() {
 
     return (
         <div className="flex items-center gap-3">
-            <span className="text-sm font-bold">
+            <span className="text-xs font-bold tracking-widest">
                 THEME
             </span>
 
-            <div className="flex gap-2">
+            <div className="flex gap-1.5">
                 {themes.map((item) => (
                     <button
                         key={item}
                         type="button"
                         onClick={() => setTheme(item)}
                         aria-label={`Selecionar ${item}`}
-                        className={`h-5 w-5 rounded-full border-2 ${
-                            theme === item
-                                ? "border-black"
-                                : "border-transparent"
-                        }`}
+                        className={`
+                            h-5 w-5 rounded-full
+                            border-2
+                            transition-all
+                            duration-200
+                            ${
+                                theme === item
+                                    ? "scale-110 border-current"
+                                    : "border-transparent"
+                            }
+                        `}
                     />
                 ))}
             </div>

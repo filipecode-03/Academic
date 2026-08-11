@@ -1,2 +1,84 @@
 @import url('https://fonts.googleapis.com/css2?family=League+Spartan:wght@100..900&display=swap');
 @import "tailwindcss";
+
+@theme {
+    --color-background: var(--background);
+    --color-display: var(--display);
+    --color-keyboard: var(--keyboard);
+    --color-key: var(--key);
+    --color-key-text: var(--key-text);
+    --color-primary: var(--primary);
+    --color-secondary: var(--secondary);
+    --color-accent: var(--accent);
+    --color-accent-text: var(--accent-text);
+    --color-danger: var(--danger);
+    --color-danger-text: var(--danger-text);
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    min-width: 320px;
+}
+
+body {
+    margin: 0;
+    min-width: 320px;
+    min-height: 100vh;
+}
+
+/* =========================
+   Theme 1
+   ========================= */
+
+.theme-1 {
+    --background: #3a4764;
+    --display: #182034;
+    --keyboard: #232c43;
+    --key: #eae3dc;
+    --key-text: #444b5a;
+    --primary: #ffffff;
+    --secondary: #a2b3e1;
+    --accent: #d03f2f;
+    --accent-text: #ffffff;
+    --danger: #637097;
+    --danger-text: #ffffff;
+}
+
+/* =========================
+   Theme 2
+   ========================= */
+
+.theme-2 {
+    --background: #e6e6e6;
+    --display: #eeeeee;
+    --keyboard: #d1cccc;
+    --key: #e5e4e1;
+    --key-text: #35352c;
+    --primary: #35352c;
+    --secondary: #377f86;
+    --accent: #ca5502;
+    --accent-text: #ffffff;
+    --danger: #377f86;
+    --danger-text: #ffffff;
+}
+
+/* =========================
+   Theme 3
+   ========================= */
+
+.theme-3 {
+    --background: #160628;
+    --display: #1d0934;
+    --keyboard: #1d0934;
+    --key: #341c4f;
+    --key-text: #ffe53d;
+    --primary: #ffe53d;
+    --secondary: #a65af5;
+    --accent: #00e0d1;
+    --accent-text: #1a1a1a;
+    --danger: #58077d;
+    --danger-text: #ffffff;
+}

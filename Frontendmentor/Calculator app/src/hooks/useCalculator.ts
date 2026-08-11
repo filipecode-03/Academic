@@ -4,12 +4,24 @@ import type { Operator } from "../types/calculator";
 
 export function useCalculator() {
     const [display, setDisplay] = useState("0");
-    const [previousValue, setPreviousValue] = useState<number | null>(null);
+    const [expression, setExpression] = useState("");
+
+    const [previousValue, setPreviousValue] = useState<number | null>(
+        null
+    );
+
     const [operator, setOperator] = useState<Operator | null>(null);
+
     const [waitingForOperand, setWaitingForOperand] = useState(false);
-    
 
     function inputNumber(number: string) {
+        if (display === "Error") {
+            setDisplay(number);
+            setExpression("");
+            setWaitingForOperand(false);
+            return;
+        }
+
         if (waitingForOperand) {
             setDisplay(number);
             setWaitingForOperand(false);
@@ -26,6 +38,13 @@ export function useCalculator() {
     }
 
     function inputDecimal() {
+        if (display === "Error") {
+            setDisplay("0.");
+            setExpression("");
+            setWaitingForOperand(false);
+            return;
+        }
+
         if (waitingForOperand) {
             setDisplay("0.");
             setWaitingForOperand(false);
@@ -66,6 +85,7 @@ export function useCalculator() {
 
         if (previousValue === null) {
             setPreviousValue(inputValue);
+            setExpression(`${display} ${nextOperator}`);
         } else if (operator) {
             const result = calculate(
                 previousValue,
@@ -81,6 +101,7 @@ export function useCalculator() {
 
             setDisplay(String(result));
             setPreviousValue(result);
+            setExpression(`${result} ${nextOperator}`);
         }
 
         setOperator(nextOperator);
@@ -106,6 +127,10 @@ export function useCalculator() {
             return;
         }
 
+        setExpression(
+            `${previousValue} ${operator} ${display}`
+        );
+
         setDisplay(String(result));
         setPreviousValue(null);
         setOperator(null);
@@ -129,6 +154,7 @@ export function useCalculator() {
 
     function reset() {
         setDisplay("0");
+        setExpression("");
         setPreviousValue(null);
         setOperator(null);
         setWaitingForOperand(false);
@@ -136,6 +162,7 @@ export function useCalculator() {
 
     return {
         display,
+        expression,
         inputNumber,
         inputDecimal,
         chooseOperator,

@@ -1,15 +1,52 @@
 interface CalculatorDisplayProps {
+    expression: string;
     value: string;
 }
 
 export function CalculatorDisplay({
+    expression,
     value,
 }: CalculatorDisplayProps) {
     return (
-        <div className="flex h-24 items-center justify-end rounded-lg p-6">
-            <span className="text-4xl font-bold">
+        <section
+            className="
+                flex
+                min-h-32
+                flex-col
+                items-end
+                justify-center
+                rounded-xl
+                px-6
+                py-5
+            "
+        >
+            <span
+                className="
+                    min-h-6
+                    max-w-full
+                    overflow-hidden
+                    text-right
+                    text-sm
+                    font-medium
+                    opacity-60
+                "
+            >
+                {expression}
+            </span>
+
+            <span
+                className="
+                    w-full
+                    overflow-hidden
+                    text-right
+                    text-4xl
+                    font-bold
+                    tracking-tight
+                    sm:text-5xl
+                "
+            >
                 {value}
             </span>
-        </div>
+        </section>
     );
 }

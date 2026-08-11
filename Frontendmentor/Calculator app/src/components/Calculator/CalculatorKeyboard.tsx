@@ -18,8 +18,17 @@ export function CalculatorKeyboard({
     reset,
 }: CalculatorKeyboardProps) {
     return (
-        <div className="grid grid-cols-4 gap-4 rounded-lg p-6">
-
+        <section
+            className="
+                grid
+                grid-cols-4
+                gap-4
+                rounded-xl
+                p-5
+                sm:gap-5
+                sm:p-6
+            "
+        >
             <Button onClick={() => inputNumber("7")}>
                 7
             </Button>
@@ -97,7 +106,6 @@ export function CalculatorKeyboard({
             >
                 =
             </Button>
-
-        </div>
+        </section>
     );
 }

@@ -1,5 +1,6 @@
 import { CalculatorDisplay } from "./CalculatorDisplay";
 import { CalculatorKeyboard } from "./CalculatorKeyboard";
+
 import { useCalculator } from "../../hooks/useCalculator";
 import { useCalculatorKeyboard } from "../../hooks/useCalculatorKeyboard";
 
@@ -16,8 +17,9 @@ export function Calculator() {
     });
 
     return (
-        <main className="w-full space-y-4">
+        <main className="flex flex-col gap-6">
             <CalculatorDisplay
+                expression={calculator.expression}
                 value={calculator.display}
             />
 
