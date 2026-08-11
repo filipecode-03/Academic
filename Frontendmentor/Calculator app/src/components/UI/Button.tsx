@@ -35,7 +35,7 @@ export function Button({
                 justify-center
                 rounded-lg
                 px-3
-                text-2xl
+                text-4xl
                 font-bold
                 shadow-[0_3px_0_rgba(0,0,0,0.25)]
                 transition-all

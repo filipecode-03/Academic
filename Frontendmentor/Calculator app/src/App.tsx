@@ -11,7 +11,7 @@ export function App() {
                 ${theme}
                 min-h-screen
                 bg-background
-                text-primary
+                text-primary font-['League_Spartan']
                 transition-colors
                 duration-300
             `}
