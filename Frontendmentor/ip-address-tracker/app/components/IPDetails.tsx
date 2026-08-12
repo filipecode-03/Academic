@@ -10,7 +10,7 @@ function IPDetails({ data }: IPDetailsProps) {
   }
 
   return (
-    <section className="absolute top-[220px] left-1/2 z-10 w-[90%] max-w-[1100px] -translate-x-1/2 rounded-[15px] bg-white px-6 py-7 shadow-lg">
+    <section className="absolute top-55 left-1/2 z-10 w-[90%] max-w-275 -translate-x-1/2 rounded-[15px] bg-white px-6 py-7 shadow-lg">
       <div className="grid grid-cols-1 gap-6 text-center md:grid-cols-4 md:gap-0 md:text-left">
         <div className="flex flex-col gap-2 md:px-8">
           <span className="text-[10px] font-bold tracking-[2px] text-gray-500">
@@ -47,7 +47,7 @@ function IPDetails({ data }: IPDetailsProps) {
             ISP
           </span>
 
-          <strong className="break-words text-[18px] font-medium text-gray-800 md:text-[20px]">
+          <strong className="wrap-break-word text-[18px] font-medium text-gray-800 md:text-[20px]">
             {data.isp}
           </strong>
         </div>

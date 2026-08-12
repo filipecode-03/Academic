@@ -21,7 +21,7 @@ function Map({ latitude, longitude }: MapProps) {
   const position: LatLngExpression = [latitude, longitude];
 
   return (
-    <section className="h-[calc(100vh-280px)] min-h-[500px] w-full">
+    <section className="h-[calc(100vh-280px)] min-h-125 w-full">
       <MapContainer
         center={position}
         zoom={13}

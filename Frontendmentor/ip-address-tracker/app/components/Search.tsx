@@ -49,7 +49,7 @@ function Search({ onSearch }: SearchProps) {
   };
 
   return (
-    <div className="absolute top-[90px] left-1/2 w-[90%] max-w-[555px] -translate-x-1/2">
+    <div className="absolute top-22.5 left-1/2 w-[90%] max-w-138.75 -translate-x-1/2">
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="flex w-full"
@@ -60,13 +60,13 @@ function Search({ onSearch }: SearchProps) {
           })}
           type="text"
           placeholder="Search for any IP address or domain"
-          className="h-[58px] min-w-0 flex-1 rounded-l-[15px] bg-white px-5 text-[16px] text-gray-700 outline-none placeholder:text-gray-400 md:px-6 md:text-[18px]"
+          className="h-14.5 min-w-0 flex-1 rounded-l-[15px] bg-white px-5 text-[16px] text-gray-700 outline-none placeholder:text-gray-400 md:px-6 md:text-[18px]"
         />
 
         <button
           type="submit"
           disabled={isSubmitting}
-          className="flex h-[58px] w-[58px] shrink-0 items-center justify-center rounded-r-[15px] bg-black text-white transition hover:bg-gray-800 disabled:cursor-not-allowed disabled:opacity-50"
+          className="flex h-14.5 w-14.5 shrink-0 items-center justify-center rounded-r-[15px] bg-black text-white transition hover:bg-gray-800 disabled:cursor-not-allowed disabled:opacity-50"
         >
           {isSubmitting ? "..." : "→"}
         </button>

@@ -21,7 +21,7 @@ export default function Home() {
 
   return (
     <main className="relative min-h-screen">
-      <section className="relative h-[280px]">
+      <section className="relative h-70">
         <Image
           src={bgMobile}
           alt=""
