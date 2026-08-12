@@ -1,12 +1,32 @@
+"use client";
+
 import Image from "next/image";
-import bgMobile from '../public/images/pattern-bg-mobile.png'
+import { useState } from "react";
+
+import bgMobile from "../public/images/pattern-bg-mobile.png";
+
 import Info from "./components/Info";
+import Search from "./components/Search";
+import IPDetails from "./components/IPDetails";
+
+import { type IPData } from "./types/ip";
 
 export default function Home() {
+  const [ipData, setIpData] = useState<IPData | null>(null);
+
   return (
-    <div className="relative">
-      <Image src={bgMobile} alt="bg" className="w-full" />
+    <main className="relative min-h-screen">
+      <Image
+        src={bgMobile}
+        alt=""
+        className="h-70 w-full object-cover"
+      />
+
       <Info />
-    </div>
+
+      <Search onSearch={setIpData} />
+
+      <IPDetails data={ipData} />
+    </main>
   );
 }
