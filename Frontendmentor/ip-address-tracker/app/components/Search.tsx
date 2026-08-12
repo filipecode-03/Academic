@@ -1,6 +1,8 @@
 "use client";
 
+import { useState } from "react";
 import { useForm } from "react-hook-form";
+
 import { type IPData } from "../types/ip";
 
 interface SearchFormData {
@@ -12,52 +14,76 @@ interface SearchProps {
 }
 
 function Search({ onSearch }: SearchProps) {
+  const [error, setError] = useState("");
+
   const {
     register,
     handleSubmit,
-    formState: { isSubmitting },
+    formState: { isSubmitting, errors },
   } = useForm<SearchFormData>();
 
   const onSubmit = async (data: SearchFormData) => {
+    setError("");
+
     try {
       const response = await fetch(
         `/api/ip?ip=${encodeURIComponent(data.ip)}`
       );
 
-      if (!response.ok) {
-        throw new Error("Failed to fetch IP information");
-      }
+      const result = await response.json();
 
-      const result: IPData = await response.json();
+      if (!response.ok) {
+        throw new Error(
+          result.error || "Unable to find IP address"
+        );
+      }
 
       onSearch(result);
     } catch (error) {
-      console.error(error);
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError("Something went wrong");
+      }
     }
   };
 
   return (
-    <form
-      onSubmit={handleSubmit(onSubmit)}
-      className="absolute top-21.25 left-1/2 flex w-[90%] max-w-138.75 -translate-x-1/2"
-    >
-      <input
-        {...register("ip", {
-          required: "IP address is required",
-        })}
-        type="text"
-        placeholder="Search for any IP address or domain"
-        className="h-14.5 flex-1 rounded-l-[15px] bg-white px-6 text-[18px] text-gray-700 outline-none placeholder:text-gray-400"
-      />
-
-      <button
-        type="submit"
-        disabled={isSubmitting}
-        className="flex h-14.5 w-14.5 items-center justify-center rounded-r-[15px] bg-black text-white transition hover:bg-gray-800 disabled:cursor-not-allowed disabled:opacity-50"
+    <div className="absolute top-[90px] left-1/2 w-[90%] max-w-[555px] -translate-x-1/2">
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="flex w-full"
       >
-        →
-      </button>
-    </form>
+        <input
+          {...register("ip", {
+            required: "Please enter an IP address or domain",
+          })}
+          type="text"
+          placeholder="Search for any IP address or domain"
+          className="h-[58px] min-w-0 flex-1 rounded-l-[15px] bg-white px-5 text-[16px] text-gray-700 outline-none placeholder:text-gray-400 md:px-6 md:text-[18px]"
+        />
+
+        <button
+          type="submit"
+          disabled={isSubmitting}
+          className="flex h-[58px] w-[58px] shrink-0 items-center justify-center rounded-r-[15px] bg-black text-white transition hover:bg-gray-800 disabled:cursor-not-allowed disabled:opacity-50"
+        >
+          {isSubmitting ? "..." : "→"}
+        </button>
+      </form>
+
+      {errors.ip && (
+        <p className="mt-2 text-center text-sm font-medium text-white">
+          {errors.ip.message}
+        </p>
+      )}
+
+      {error && (
+        <p className="mt-2 text-center text-sm font-medium text-white">
+          {error}
+        </p>
+      )}
+    </div>
   );
 }
 

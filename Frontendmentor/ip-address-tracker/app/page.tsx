@@ -1,5 +1,6 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import Image from "next/image";
 import { useState } from "react";
 
@@ -11,22 +12,36 @@ import IPDetails from "./components/IPDetails";
 
 import { type IPData } from "./types/ip";
 
+const Map = dynamic(() => import("./components/Map"), {
+  ssr: false,
+});
+
 export default function Home() {
   const [ipData, setIpData] = useState<IPData | null>(null);
 
   return (
     <main className="relative min-h-screen">
-      <Image
-        src={bgMobile}
-        alt=""
-        className="h-70 w-full object-cover"
-      />
+      <section className="relative h-[280px]">
+        <Image
+          src={bgMobile}
+          alt=""
+          fill
+          priority
+          className="object-cover"
+        />
 
-      <Info />
-
-      <Search onSearch={setIpData} />
+        <Info />
+        <Search onSearch={setIpData} />
+      </section>
 
       <IPDetails data={ipData} />
+
+      {ipData && (
+        <Map
+          latitude={ipData.location.lat}
+          longitude={ipData.location.lng}
+        />
+      )}
     </main>
   );
 }
