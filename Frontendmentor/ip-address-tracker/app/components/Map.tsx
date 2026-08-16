@@ -6,11 +6,17 @@ import {
   TileLayer,
 } from "react-leaflet";
 
-import { type LatLngExpression } from "leaflet";
+import { Icon, type LatLngExpression } from "leaflet";
 
 import "leaflet/dist/leaflet.css";
 
 import MapController from "./MapController";
+
+const locationIcon = new Icon({
+  iconUrl: "/images/icon-location.svg",
+  iconSize: [46, 56],
+  iconAnchor: [23, 56],
+});
 
 interface MapProps {
   latitude: number;
@@ -35,7 +41,7 @@ function Map({ latitude, longitude }: MapProps) {
 
         <MapController position={position} />
 
-        <Marker position={position} />
+        <Marker position={position} icon={locationIcon} />
       </MapContainer>
     </section>
   );

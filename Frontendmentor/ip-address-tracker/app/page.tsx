@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useState } from "react";
 
 import bgMobile from "../public/images/pattern-bg-mobile.png";
+import bgDesktop from "../public/images/pattern-bg-desktop.png";
 
 import Info from "./components/Info";
 import Search from "./components/Search";
@@ -27,7 +28,15 @@ export default function Home() {
           alt=""
           fill
           priority
-          className="object-cover"
+          className="object-cover md:hidden"
+        />
+
+        <Image
+          src={bgDesktop}
+          alt=""
+          fill
+          priority
+          className="hidden object-cover md:block"
         />
 
         <Info />
