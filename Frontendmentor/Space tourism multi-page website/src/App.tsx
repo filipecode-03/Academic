@@ -1,5 +1,4 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import MainLayout from "./layouts/MainLayout";
 
 import Home from "./pages/Home";
@@ -14,20 +13,19 @@ function App() {
         <Route element={<MainLayout />}>
           <Route path="/" element={<Home />} />
 
+          {/* Redireciona para o destino padrão */}
+          <Route
+            path="/destination"
+            element={<Navigate to="/destination/moon" replace />}
+          />
+
           <Route
             path="/destination/:destination"
             element={<Destination />}
           />
 
-          <Route
-            path="/crew"
-            element={<Crew />}
-          />
-
-          <Route
-            path="/technology"
-            element={<Technology />}
-          />
+          <Route path="/crew" element={<Crew />} />
+          <Route path="/technology" element={<Technology />} />
         </Route>
       </Routes>
     </BrowserRouter>

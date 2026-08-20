@@ -15,14 +15,25 @@ function DestinationNavigation() {
                 to={`/destination/${slug}`}
                 className={({ isActive }) =>
                   `
+                    relative
                     font-['Barlow_Condensed']
                     uppercase
                     tracking-[2px]
                     transition-colors
+
+                    after:absolute
+                    after:-bottom-3
+                    after:left-0
+                    after:h-0.75
+                    after:w-full
+                    after:bg-white
+                    after:transition-all
+                    after:duration-300
+
                     ${
                       isActive
-                        ? "text-white"
-                        : "text-[#D0D6F9]"
+                        ? "text-white after:opacity-100"
+                        : "text-[#D0D6F9] after:opacity-0"
                     }
                   `
                 }
