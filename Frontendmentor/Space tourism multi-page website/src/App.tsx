@@ -13,14 +13,17 @@ function App() {
       <Routes>
         <Route element={<MainLayout />}>
           <Route path="/" element={<Home />} />
+
           <Route
-            path="/destination"
+            path="/destination/:destination"
             element={<Destination />}
           />
+
           <Route
             path="/crew"
             element={<Crew />}
           />
+
           <Route
             path="/technology"
             element={<Technology />}
