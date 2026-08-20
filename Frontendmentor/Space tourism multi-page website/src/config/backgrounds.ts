@@ -10,6 +10,10 @@ import crewMobile from '../assets/crew/background-crew-mobile.jpg'
 import crewTablet from '../assets/crew/background-crew-tablet.jpg'
 import crewDesktop from '../assets/crew/background-crew-desktop.jpg'
 
+import techMobile from '../assets/technology/background-technology-mobile.jpg'
+import techTablet from '../assets/technology/background-technology-tablet.jpg'
+import techDeskttop from '../assets/technology/background-technology-desktop.jpg'
+
 export const backgrounds = {
   home: {
     mobile: homeMobile,
@@ -34,10 +38,10 @@ export const backgrounds = {
 
   technology: {
     mobile:
-      "../assets/technology/background-technology-mobile.jpg",
+      techMobile,
     tablet:
-      "../assets/technology/background-technology-tablet.jpg",
+      techTablet,
     desktop:
-      "../assets/technology/background-technology-desktop.jpg",
+      techDeskttop,
   },
 };

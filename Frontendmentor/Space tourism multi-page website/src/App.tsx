@@ -24,7 +24,15 @@ function App() {
             element={<Destination />}
           />
 
-          <Route path="/crew" element={<Crew />} />
+          <Route
+            path="/crew"
+            element={<Navigate to="/crew/douglas-hurley" replace />}
+          />
+
+          <Route
+            path="/crew/:member"
+            element={<Crew />}
+          />
           <Route path="/technology" element={<Technology />} />
         </Route>
       </Routes>
