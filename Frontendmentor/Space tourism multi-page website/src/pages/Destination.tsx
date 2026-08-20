@@ -50,9 +50,9 @@ function Destination() {
           </div>
           <div>
             <DestinationNavigation />
-            <h1 className="font-['Bellefair'] mt-6 text-[56px] uppercase">
+            <h3 className="font-['Bellefair'] mt-6 text-[56px] uppercase">
               {selectedDestination.name}
-            </h1>
+            </h3>
             <p className="font-['Barlow_Condensed'] text-[#D0D6F9]">
               {selectedDestination.description}
             </p>

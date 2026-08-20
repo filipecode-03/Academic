@@ -6,6 +6,9 @@ import destinationMobile from '../assets/destination/background-destination-mobi
 import destinationTablet from '../assets/destination/background-destination-tablet.jpg'
 import destinationDesktop from '../assets/destination/background-destination-desktop.jpg'
 
+import crewMobile from '../assets/crew/background-crew-mobile.jpg'
+import crewTablet from '../assets/crew/background-crew-tablet.jpg'
+import crewDesktop from '../assets/crew/background-crew-desktop.jpg'
 
 export const backgrounds = {
   home: {
@@ -24,9 +27,9 @@ export const backgrounds = {
   },
 
   crew: {
-    mobile: "../assets/crew/background-crew-mobile.jpg",
-    tablet: "../assets/crew/background-crew-tablet.jpg",
-    desktop: "../assets/crew/background-crew-desktop.jpg",
+    mobile: crewMobile,
+    tablet: crewTablet,
+    desktop: crewDesktop,
   },
 
   technology: {
