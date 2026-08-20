@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 import MainLayout from "./layouts/MainLayout";
 
@@ -13,12 +13,18 @@ function App() {
       <Routes>
         <Route element={<MainLayout />}>
           <Route path="/" element={<Home />} />
-
-          <Route path="/destination" element={<Destination />} />
-
-          <Route path="/crew" element={<Crew />} />
-
-          <Route path="/technology" element={<Technology />} />
+          <Route
+            path="/destination"
+            element={<Destination />}
+          />
+          <Route
+            path="/crew"
+            element={<Crew />}
+          />
+          <Route
+            path="/technology"
+            element={<Technology />}
+          />
         </Route>
       </Routes>
     </BrowserRouter>

@@ -1,5 +1,7 @@
 import type { ReactNode } from "react";
 
+import Header from "./Header";
+
 interface PageBackgroundProps {
   children: ReactNode;
   mobile: string;
@@ -26,6 +28,8 @@ function PageBackground({
           className="h-full w-full object-cover"
         />
       </picture>
+
+      <Header />
 
       {children}
     </main>
