@@ -31,7 +31,7 @@ const navigationItems = [
 function Navigation({ onNavigate }: NavigationProps) {
   return (
     <nav>
-      <ul className="flex flex-col gap-6">
+      <ul className="flex flex-col md:justify-end gap-6 md:flex-row md:gap-8 lg:gap-10">
         {navigationItems.map((item) => (
           <li key={item.path}>
             <NavLink
@@ -39,11 +39,34 @@ function Navigation({ onNavigate }: NavigationProps) {
               end={item.end}
               onClick={onNavigate}
               className={({ isActive }) =>
-                `flex items-center gap-3 uppercase tracking-[2px] ${
-                  isActive
-                    ? "text-white"
-                    : "text-white/75"
-                }`
+                `
+                  relative
+                  flex
+                  items-center
+                  gap-3
+                  py-4
+                  font-['Barlow_Condensed']
+                  uppercase
+                  tracking-[2px]
+                  transition-colors
+
+                  md:py-8
+
+                  after:absolute
+                  after:bottom-0
+                  after:left-0
+                  after:h-0.75
+                  after:w-full
+                  after:bg-white
+                  after:transition-transform
+                  after:duration-300
+
+                  ${
+                    isActive
+                      ? "text-white after:scale-x-100"
+                      : "text-white/75 after:scale-x-0"
+                  }
+                `
               }
             >
               <span className="font-bold">
