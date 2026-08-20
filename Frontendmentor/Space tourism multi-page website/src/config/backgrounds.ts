@@ -1,0 +1,40 @@
+import homeMobile from "../assets/home/background-home-mobile.jpg";
+import homeTablet from "../assets/home/background-home-tablet.jpg";
+import homeDesktop from "../assets/home/background-home-desktop.jpg";
+
+import destinationMobile from '../assets/destination/background-destination-mobile.jpg'
+import destinationTablet from '../assets/destination/background-destination-tablet.jpg'
+import destinationDesktop from '../assets/destination/background-destination-desktop.jpg'
+
+
+export const backgrounds = {
+  home: {
+    mobile: homeMobile,
+    tablet: homeTablet,
+    desktop: homeDesktop,
+  },
+
+  destination: {
+    mobile:
+      destinationMobile,
+    tablet:
+      destinationTablet,
+    desktop:
+      destinationDesktop,
+  },
+
+  crew: {
+    mobile: "../assets/crew/background-crew-mobile.jpg",
+    tablet: "../assets/crew/background-crew-tablet.jpg",
+    desktop: "../assets/crew/background-crew-desktop.jpg",
+  },
+
+  technology: {
+    mobile:
+      "../assets/technology/background-technology-mobile.jpg",
+    tablet:
+      "../assets/technology/background-technology-tablet.jpg",
+    desktop:
+      "../assets/technology/background-technology-desktop.jpg",
+  },
+};
