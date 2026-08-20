@@ -33,7 +33,20 @@ function App() {
             path="/crew/:member"
             element={<Crew />}
           />
-          <Route path="/technology" element={<Technology />} />
+          <Route
+            path="/technology"
+            element={
+              <Navigate
+                to="/technology/launch-vehicle"
+                replace
+              />
+            }
+          />
+
+          <Route
+            path="/technology/:technology"
+            element={<Technology />}
+          />
         </Route>
       </Routes>
     </BrowserRouter>
