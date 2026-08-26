@@ -74,7 +74,7 @@ function Technology() {
                 {selectedTechnology.name}
               </h1>
 
-              <p className="mx-auto mt-4 px-6 font-['Barlow_Condensed'] text-[16px] leading-7 text-[#D0D6F9] md:max-w-lg md:text-[18px] lg:mx-0 lg:max-w-[500px] lg:px-0">
+              <p className="mx-auto mt-4 px-6 font-['Barlow_Condensed'] text-[16px] leading-7 text-[#D0D6F9] md:max-w-lg md:text-[18px] lg:mx-0 lg:max-w-125 lg:px-0">
                 {selectedTechnology.description}
               </p>
             </div>
