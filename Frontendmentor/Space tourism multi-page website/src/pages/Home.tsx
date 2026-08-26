@@ -81,15 +81,15 @@ function Home() {
               mt-4
               max-w-85
               font-['Barlow_Condensed']
-              text-[15px]
               leading-7
               text-[#D0D6F9]
 
               md:max-w-111.25
-              md:text-[16px]
+              md:text-[17px]
 
               lg:mx-0
               lg:max-w-135
+              lg:text-[18px]
             "
           >
             Let’s face it; if you want to go to space, you might as well

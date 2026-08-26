@@ -5,7 +5,7 @@ import data from "../assets/data.json";
 function DestinationNavigation() {
   return (
     <nav>
-      <ul className="flex justify-center gap-6">
+      <ul className="flex justify-center lg:justify-start gap-6">
         {data.destinations.map((destination) => {
           const slug = destination.name.toLowerCase();
 
