@@ -5,7 +5,7 @@ import data from "../assets/data.json";
 function TechnologyNavigation() {
   return (
     <nav>
-      <ul className="flex justify-center gap-4 lg:flex-col">
+      <ul className="flex justify-center gap-4 lg:gap-8 lg:flex-col">
         {data.technology.map((technology, index) => {
           const slug = technology.name
             .toLowerCase()
@@ -18,14 +18,14 @@ function TechnologyNavigation() {
                 className={({ isActive }) =>
                   `
                     flex
-                    h-10
-                    w-10
+                    h-10 lg:h-20
+                    w-10 lg:w-20
                     items-center
                     justify-center
                     rounded-full
                     border
                     font-['Bellefair']
-                    text-[16px]
+                    text-[16px] lg:text-[32px]
                     transition-all
 
                     ${
