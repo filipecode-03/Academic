@@ -1,3 +1,6 @@
+import plus from '../../public/images/icon-plus.svg'
+import minus from '../../public/images/icon-minus.svg'
+
 interface ScoreProps {
     score: number;
 }
@@ -9,22 +12,8 @@ function Score({ score }: ScoreProps) {
             <button
                 type="button"
                 aria-label="Increase score"
-                className="group"
             >
-                <svg
-                    width="11"
-                    height="11"
-                    viewBox="0 0 11 11"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="transition-colors group-hover:stroke-[#5357B6]"
-                >
-                    <path
-                        d="M5.5 0V11M0 5.5H11"
-                        stroke="#C5C6EF"
-                        strokeWidth="2"
-                    />
-                </svg>
+                <img src={plus} alt="plus" />
             </button>
 
             <span className="font-bold text-[#5357B6]">
@@ -34,21 +23,8 @@ function Score({ score }: ScoreProps) {
             <button
                 type="button"
                 aria-label="Decrease score"
-                className="transition-colors group-hover:stroke-[#5357B6]"
             >
-                <svg
-                    width="11"
-                    height="3"
-                    viewBox="0 0 11 3"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                >
-                    <path
-                        d="M0 1.5H11"
-                        stroke="#C5C6EF"
-                        strokeWidth="2"
-                    />
-                </svg>
+                <img src={minus} alt="minus" />
             </button>
 
         </div>

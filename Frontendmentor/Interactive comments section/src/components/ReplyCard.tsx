@@ -55,7 +55,10 @@ function ReplyCard({
 
                             </div>
 
-                            <ReplyButton onClick={handleReply} />
+                            <ReplyButton
+                                onClick={handleReply}
+                                className="hidden md:flex"
+                            />
 
                         </header>
 

@@ -55,7 +55,10 @@ function CommentCard({
 
                             </div>
 
-                            <ReplyButton onClick={handleReply} />
+                            <ReplyButton
+                                onClick={handleReply}
+                                className="hidden md:flex"
+                            />
 
                         </header>
 
@@ -69,7 +72,10 @@ function CommentCard({
 
                             <Score score={comment.score} />
 
-                            <ReplyButton onClick={handleReply} />
+                            <ReplyButton
+                                onClick={handleReply}
+                                className="flex md:hidden"
+                            />
 
                         </div>
 
