@@ -7,7 +7,7 @@ interface ScoreProps {
 
 function Score({ score }: ScoreProps) {
     return (
-        <div className="flex items-center gap-4 rounded-lg bg-[#F5F6FA] px-3 py-2 md:flex-col md:gap-2">
+        <div className="flex items-center gap-4 rounded-lg bg-[#F5F6FA] px-3 py-2 md:flex-col">
 
             <button
                 type="button"
