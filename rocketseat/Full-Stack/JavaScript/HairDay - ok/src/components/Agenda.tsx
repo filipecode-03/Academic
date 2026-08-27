@@ -1,9 +1,8 @@
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { format } from "date-fns";
-
 import {
   Sun,
-  CloudSun,
+  Sunset,
   Moon,
 } from "lucide-react";
 
@@ -13,58 +12,48 @@ import ScheduleSection from "./ScheduleSection";
 import { useSchedule } from "../hooks/useSchedule";
 
 function Agenda() {
-  const { getSchedulesByPeriod } =
-    useSchedule();
+  const { getSchedulesByPeriod } = useSchedule();
 
-  const [selectedDate, setSelectedDate] =
-    useState(new Date());
+  const [selectedDate, setSelectedDate] = useState<Date>(
+    new Date()
+  );
 
   const formattedDate = format(
     selectedDate,
     "yyyy-MM-dd"
   );
 
-  const morning = useMemo(
-    () =>
-      getSchedulesByPeriod(
-        formattedDate,
-        9,
-        12
-      ),
-    [formattedDate]
+  const morning = getSchedulesByPeriod(
+    formattedDate,
+    9,
+    12
   );
 
-  const afternoon = useMemo(
-    () =>
-      getSchedulesByPeriod(
-        formattedDate,
-        13,
-        18
-      ),
-    [formattedDate]
+  const afternoon = getSchedulesByPeriod(
+    formattedDate,
+    13,
+    18
   );
 
-  const night = useMemo(
-    () =>
-      getSchedulesByPeriod(
-        formattedDate,
-        19,
-        21
-      ),
-    [formattedDate]
+  const night = getSchedulesByPeriod(
+    formattedDate,
+    19,
+    21
   );
 
   return (
     <div className="flex-1 py-20 px-20 text-white">
       <div className="flex justify-between items-start mb-8">
         <div>
-          <h2 className="text-2xl font-bold">
+          <h2 className="text-3xl font-bold">
             Sua agenda
           </h2>
+
           <p className="text-zinc-500 mt-1">
-            Consulte os seus cortes de cabelo agendados por dia
+            Consulte os seus atendimentos agendados por dia.
           </p>
         </div>
+
         <div className="w-72">
           <CalendarInput
             value={selectedDate}
@@ -76,34 +65,25 @@ function Agenda() {
           />
         </div>
       </div>
+
       <ScheduleSection
         title="Manhã"
-        icon={
-          <Sun
-            size={18}
-            className="text-yellow-400"
-          />
-        }
+        period="09h-12h"
+        icon={<Sun size={18} className="text-[#B8952E]" />}
         schedules={morning}
       />
+
       <ScheduleSection
         title="Tarde"
-        icon={
-          <CloudSun 
-            size={18}
-            className="text-yellow-400"
-          />
-        }
+        period="13h-18h"
+        icon={<Sunset size={18} className="text-[#B8952E]" />}
         schedules={afternoon}
       />
+
       <ScheduleSection
         title="Noite"
-        icon={
-          <Moon
-            size={18}
-            className="text-yellow-400"
-          />
-        }
+        period="19h-21h"
+        icon={<Moon size={18} className="text-[#B8952E]" />}
         schedules={night}
       />
     </div>
