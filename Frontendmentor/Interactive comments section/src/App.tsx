@@ -7,9 +7,9 @@ function App() {
     const commentsData = data as CommentsData;
 
     return (
-        <main className="min-h-screen px-4 py-8">
+        <main className="min-h-screen px-4 py-8 md:py-16">
 
-            <div className="mx-auto max-w-3xl space-y-6">
+            <div className="mx-auto w-full max-w-182.5 space-y-6">
 
                 <CommentList
                     comments={commentsData.comments}

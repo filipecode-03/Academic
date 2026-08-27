@@ -25,8 +25,15 @@ function CommentList({
                     />
 
                     {comment.replies.length > 0 && (
-                        <div className="ml-10 space-y-4 border-l-2 border-[#E9EBF0] pl-10">
-
+                        <div
+                            className="
+                                space-y-4
+                                border-l-2 border-[#E9EBF0]
+                                pl-4
+                                md:ml-10
+                                md:pl-10
+                            "
+                        >
                             {comment.replies.map((reply) => (
                                 <ReplyCard
                                     key={reply.id}
@@ -34,7 +41,6 @@ function CommentList({
                                     currentUser={currentUser}
                                 />
                             ))}
-
                         </div>
                     )}
 
