@@ -1,12 +1,12 @@
 import { useState } from "react";
-import type { Comment } from "../types/comment";
+import type { Reply } from "../types/comment";
 import CommentForm from "./CommentForm";
 
-interface CommentCardProps {
-    comment: Comment;
+interface ReplyCardProps {
+    reply: Reply;
 }
 
-function CommentCard({ comment }: CommentCardProps) {
+function ReplyCard({ reply }: ReplyCardProps) {
     const [isReplying, setIsReplying] = useState(false);
 
     return (
@@ -23,7 +23,7 @@ function CommentCard({ comment }: CommentCardProps) {
                             </button>
 
                             <span className="font-bold text-[#5357B6]">
-                                {comment.score}
+                                {reply.score}
                             </span>
 
                             <button className="font-bold text-[#C5C6EF]">
@@ -40,17 +40,17 @@ function CommentCard({ comment }: CommentCardProps) {
                             <div className="flex items-center gap-4">
 
                                 <img
-                                    src={comment.user.image.png}
-                                    alt={comment.user.username}
+                                    src={reply.user.image.png}
+                                    alt={reply.user.username}
                                     className="h-8 w-8"
                                 />
 
                                 <span className="font-bold text-[#334253]">
-                                    {comment.user.username}
+                                    {reply.user.username}
                                 </span>
 
                                 <span className="text-[#67727E]">
-                                    {comment.createdAt}
+                                    {reply.createdAt}
                                 </span>
 
                             </div>
@@ -66,7 +66,10 @@ function CommentCard({ comment }: CommentCardProps) {
 
                         {/* Content */}
                         <p className="mt-4 leading-6 text-[#67727E]">
-                            {comment.content}
+                            <span className="font-bold text-[#5357B6]">
+                                @{reply.replyingTo}
+                            </span>{" "}
+                            {reply.content}
                         </p>
 
                     </div>
@@ -81,4 +84,4 @@ function CommentCard({ comment }: CommentCardProps) {
     );
 }
 
-export default CommentCard;
+export default ReplyCard;
