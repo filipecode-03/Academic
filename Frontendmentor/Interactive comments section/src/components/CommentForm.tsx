@@ -1,9 +1,11 @@
 interface CommentFormProps {
-    placeholder?: string;
+    username?: string;
+    isNewComment?: boolean;
 }
 
 function CommentForm({
-    placeholder = "Write a reply..."
+    username,
+    isNewComment = false,
 }: CommentFormProps) {
     function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
@@ -15,8 +17,12 @@ function CommentForm({
             className="flex items-start gap-4 rounded-lg bg-white p-6"
         >
             <textarea
-                placeholder={placeholder}
-                className="min-h-24 flex-1 resize-none rounded-lg border border-[#E9EBF0] p-4 text-[#334253] outline-none focus:border-[#5357B6]"
+                placeholder={
+                    isNewComment
+                        ? "Add a comment..."
+                        : `Reply to @${username}...`
+                }
+                className="min-h-24 flex-1 resize-none rounded-lg border border-[#E9EBF0] p-4 text-[#334253] outline-none placeholder:text-[#67727E] focus:border-[#5357B6]"
             />
 
             <button

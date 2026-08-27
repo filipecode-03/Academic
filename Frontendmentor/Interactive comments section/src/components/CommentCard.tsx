@@ -1,6 +1,7 @@
 import { useState } from "react";
 import type { Comment } from "../types/comment";
 import CommentForm from "./CommentForm";
+import Score from "./Score";
 
 interface CommentCardProps {
     comment: Comment;
@@ -15,30 +16,13 @@ function CommentCard({ comment }: CommentCardProps) {
             <article className="rounded-lg bg-white p-6">
                 <div className="flex gap-6">
 
-                    {/* Score */}
-                    <div>
-                        <div className="flex flex-col items-center gap-2 rounded-lg bg-[#F5F6FA] px-3 py-2">
-                            <button className="font-bold text-[#C5C6EF]">
-                                +
-                            </button>
+                    <Score score={comment.score} />
 
-                            <span className="font-bold text-[#5357B6]">
-                                {comment.score}
-                            </span>
-
-                            <button className="font-bold text-[#C5C6EF]">
-                                -
-                            </button>
-                        </div>
-                    </div>
-
-                    {/* Conteúdo */}
                     <div className="flex-1">
 
-                        {/* Header */}
                         <div className="flex items-center justify-between">
-                            <div className="flex items-center gap-4">
 
+                            <div className="flex items-center gap-4">
                                 <img
                                     src={comment.user.image.png}
                                     alt={comment.user.username}
@@ -52,19 +36,18 @@ function CommentCard({ comment }: CommentCardProps) {
                                 <span className="text-[#67727E]">
                                     {comment.createdAt}
                                 </span>
-
                             </div>
 
                             <button
                                 type="button"
-                                onClick={() => setIsReplying(true)}
-                                className="font-bold text-[#5357B6] hover:opacity-70"
+                                onClick={() => setIsReplying((current) => !current)}
+                                className="font-bold text-[#5357B6] transition-opacity hover:opacity-70"
                             >
                                 Reply
                             </button>
+
                         </div>
 
-                        {/* Content */}
                         <p className="mt-4 leading-6 text-[#67727E]">
                             {comment.content}
                         </p>
@@ -74,7 +57,7 @@ function CommentCard({ comment }: CommentCardProps) {
             </article>
 
             {isReplying && (
-                <CommentForm />
+                <CommentForm username={comment.user.username} />
             )}
 
         </div>

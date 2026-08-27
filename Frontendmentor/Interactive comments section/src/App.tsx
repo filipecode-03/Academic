@@ -1,4 +1,5 @@
 import data from "./data/data.json";
+import CommentForm from "./components/CommentForm";
 import CommentList from "./components/CommentList";
 import type { CommentsData } from "./types/comment";
 
@@ -7,9 +8,19 @@ function App() {
 
     return (
         <main className="min-h-screen px-4 py-8">
-            <div className="mx-auto max-w-3xl">
-                <CommentList comments={commentsData.comments} />
+
+            <div className="mx-auto max-w-3xl space-y-6">
+
+                <CommentList
+                    comments={commentsData.comments}
+                />
+
+                <CommentForm
+                    isNewComment
+                />
+
             </div>
+
         </main>
     );
 }
