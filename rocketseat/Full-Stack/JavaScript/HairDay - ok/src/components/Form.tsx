@@ -55,7 +55,7 @@ function Form() {
         Agende um atendimento
       </h1>
       <p className="text-[#98959D] mt-2">
-        Selecione uma data, um horário e informe o nome do cliente.
+        Selecione data, horário e informe o nome do cliente para criar o agendamento
       </p>
       <form
         onSubmit={handleSubmit(onSubmit)}
@@ -114,7 +114,7 @@ function Form() {
 
         <button
           type="submit"
-          className="bg-[#B8952E] rounded-lg py-4 w-full uppercase font-bold text-black hover:brightness-110 transition"
+          className="bg-[#B8952E] cursor-pointer rounded-lg py-4 w-full uppercase font-bold text-black hover:brightness-110 transition"
         >
           Agendar
         </button>

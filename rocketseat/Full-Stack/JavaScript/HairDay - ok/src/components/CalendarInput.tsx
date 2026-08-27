@@ -19,10 +19,6 @@ function CalendarInput({
 
   return (
     <div className="relative">
-      <label className="text-gray-200 text-[18px] block mb-2 font-semibold">
-        Data
-      </label>
-
       <button
         type="button"
         onClick={() => setOpen(!open)}
