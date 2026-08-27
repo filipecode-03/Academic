@@ -13,9 +13,11 @@ function App() {
 
                 <CommentList
                     comments={commentsData.comments}
+                    currentUser={commentsData.currentUser}
                 />
 
                 <CommentForm
+                    currentUser={commentsData.currentUser}
                     isNewComment
                 />
 

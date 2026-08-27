@@ -1,13 +1,17 @@
 import { useState } from "react";
-import type { Reply } from "../types/comment";
+import type { Reply, User } from "../types/comment";
 import CommentForm from "./CommentForm";
 import Score from "./Score";
 
 interface ReplyCardProps {
     reply: Reply;
+    currentUser: User;
 }
 
-function ReplyCard({ reply }: ReplyCardProps) {
+function ReplyCard({
+    reply,
+    currentUser,
+}: ReplyCardProps) {
     const [isReplying, setIsReplying] = useState(false);
 
     return (
@@ -40,7 +44,9 @@ function ReplyCard({ reply }: ReplyCardProps) {
 
                             <button
                                 type="button"
-                                onClick={() => setIsReplying((current) => !current)}
+                                onClick={() =>
+                                    setIsReplying((current) => !current)
+                                }
                                 className="font-bold text-[#5357B6] transition-opacity hover:opacity-70"
                             >
                                 Reply
@@ -60,7 +66,10 @@ function ReplyCard({ reply }: ReplyCardProps) {
             </article>
 
             {isReplying && (
-                <CommentForm username={reply.user.username} />
+                <CommentForm
+                    currentUser={currentUser}
+                    username={reply.user.username}
+                />
             )}
 
         </div>
