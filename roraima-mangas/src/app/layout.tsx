@@ -29,7 +29,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         nunito.variable
       )}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="">{children}</body>
     </html>
   );
 }
