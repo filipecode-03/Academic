@@ -4,37 +4,39 @@ import {
     AccordionItem,
     AccordionTrigger,
   } from "@/src/components/ui/accordion";
-  
-  const items = [
+
+import Link from "next/link";
+
+const items = [
     {
-      value: "duvidas",
-      trigger: "DÚVIDAS",
-      links: [
+        value: "duvidas",
+        trigger: "DÚVIDAS",
+        links: [
         {
-          label: "Perguntas frequentes",
-          href: "/duvidas",
+            label: "Perguntas frequentes",
+            href: "/duvidas",
         },
         {
-          label: "Formas de pagamento",
-          href: "/pagamentos",
+            label: "Formas de pagamento",
+            href: "/pagamentos",
         },
-      ],
+        ],
     },
     {
-      value: "sobre",
-      trigger: "SOBRE",
-      links: [
+        value: "sobre",
+        trigger: "SOBRE",
+        links: [
         {
-          label: "Quem somos",
-          href: "/sobre",
+            label: "Quem somos",
+            href: "/sobre",
         },
         {
-          label: "Contato",
-          href: "/contato",
+            label: "Contato",
+            href: "/contato",
         },
-      ],
+        ],
     },
-  ];
+    ];
   
   export default function DuvidasAndSobre() {
     return (
@@ -55,7 +57,17 @@ import {
             </AccordionTrigger>
   
             <AccordionContent className="pb-6">
-              {/* Links */}
+            <nav className="flex flex-col gap-3">
+              {item.links.map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+                >
+                  {link.label}
+                </Link>
+              ))}
+            </nav>
             </AccordionContent>
           </AccordionItem>
         ))}
