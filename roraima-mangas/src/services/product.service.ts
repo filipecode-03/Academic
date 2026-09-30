@@ -1,5 +1,8 @@
-import { prisma } from "../lib/prisma";
-import type { CreateProductInput } from "../schemas/product.schema";
+import { prisma } from "@/src/lib/prisma";
+import type {
+  CreateProductInput,
+  UpdateProductInput,
+} from "@/src/schemas/product.schema";
 
 export async function createProduct(data: CreateProductInput) {
   const product = await prisma.product.create({
@@ -22,21 +25,45 @@ export async function createProduct(data: CreateProductInput) {
 }
 
 export async function getProducts() {
-    const products = await prisma.product.findMany({
-      orderBy: {
-        createdAt: "desc",
+  const products = await prisma.product.findMany({
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
+
+  return products;
+}
+
+export async function getProductById(id: string) {
+  const product = await prisma.product.findUnique({
+    where: {
+      id,
+    },
+  });
+
+  return product;
+}
+
+export async function updateProduct(
+  id: string,
+  data: UpdateProductInput
+) {
+  const product = await prisma.product.update({
+    where: {
+      id,
+    },
+    data,
+  });
+
+  return product;
+}
+
+export async function deleteProduct(id: string) {
+    const product = await prisma.product.delete({
+      where: {
+        id,
       },
     });
   
-    return products;
+    return product;
   }
-
-export async function getProductById(id: string) {
-const product = await prisma.product.findUnique({
-    where: {
-    id,
-    },
-});
-
-return product;
-}

@@ -48,3 +48,14 @@ export const createProductSchema = z.object({
 });
 
 export type CreateProductInput = z.infer<typeof createProductSchema>;
+
+export const updateProductSchema = createProductSchema
+  .partial()
+  .refine(
+    (data) => Object.keys(data).length > 0,
+    {
+      message: "Informe pelo menos um campo para atualizar.",
+    }
+  );
+
+export type UpdateProductInput = z.infer<typeof updateProductSchema>;
