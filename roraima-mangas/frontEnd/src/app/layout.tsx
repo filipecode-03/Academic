@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Roboto, Nunito } from "next/font/google";
 import "./globals.css";
-import { cn } from "@/src/lib/utils";
+import { cn } from "@/frontEnd/src/lib/utils";
 import { config } from "@fortawesome/fontawesome-svg-core";
 import "@fortawesome/fontawesome-svg-core/styles.css";
 
