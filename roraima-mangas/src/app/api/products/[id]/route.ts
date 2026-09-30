@@ -5,6 +5,7 @@ import {
   deleteProduct,
 } from "@/src/services/product.service";
 import { updateProductSchema } from "@/src/schemas/product.schema";
+import { isPrismaUniqueConstraintError } from "@/src/lib/prisma-error";
 
 type RouteContext = {
   params: Promise<{
@@ -90,6 +91,16 @@ export async function PATCH(
     });
   } catch (error) {
     console.error("Erro ao atualizar produto:", error);
+
+    if (isPrismaUniqueConstraintError(error)) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: "Slug ou SKU já está sendo utilizado.",
+        },
+        { status: 409 }
+      );
+    }
 
     return NextResponse.json(
       {
