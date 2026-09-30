@@ -2,6 +2,10 @@ import type { Metadata } from "next";
 import { Roboto, Nunito } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/src/lib/utils";
+import { config } from "@fortawesome/fontawesome-svg-core";
+import "@fortawesome/fontawesome-svg-core/styles.css";
+
+config.autoAddCss = false;
 
 const roboto = Roboto({
   subsets: ["latin"],
