@@ -1,5 +1,5 @@
-import { NextResponse } from "next/server";
-
+import { NextRequest, NextResponse } from "next/server";
+import { getAuthenticatedToken } from "@/src/lib/auth-guard";
 import { getCollectionById } from "@/src/services/collection.service";
 import { getProductById } from "@/src/services/product.service";
 import { removeProductFromCollection } from "@/src/services/product-collection.service";
@@ -12,10 +12,23 @@ type RouteContext = {
 };
 
 export async function DELETE(
-  request: Request,
-  context: RouteContext
+    request: NextRequest,
+    context: RouteContext  
 ) {
   try {
+
+    const token = await getAuthenticatedToken(request);
+
+    if (!token?.id) {
+    return NextResponse.json(
+        {
+        success: false,
+        message: "Não autorizado.",
+        },
+        { status: 401 }
+    );
+    }
+    
     const { id: collectionId, productId } = await context.params;
 
     const collection = await getCollectionById(collectionId);
