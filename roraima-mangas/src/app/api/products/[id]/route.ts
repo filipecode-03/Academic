@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import {
   getProductById,
   updateProduct,
@@ -6,6 +6,7 @@ import {
 } from "@/src/services/product.service";
 import { updateProductSchema } from "@/src/schemas/product.schema";
 import { isPrismaUniqueConstraintError } from "@/src/lib/prisma-error";
+import { getAuthenticatedToken } from "@/src/lib/auth-guard";
 
 type RouteContext = {
   params: Promise<{
@@ -50,10 +51,22 @@ export async function GET(
 }
 
 export async function PATCH(
-  request: Request,
+  request: NextRequest,
   context: RouteContext
 ) {
   try {
+    const token = await getAuthenticatedToken(request);
+
+    if (!token?.id) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: "Não autorizado.",
+        },
+        { status: 401 }
+      );
+    }
+
     const { id } = await context.params;
 
     const body = await request.json();
@@ -113,10 +126,22 @@ export async function PATCH(
 }
 
 export async function DELETE(
-  request: Request,
+  request: NextRequest,
   context: RouteContext
 ) {
   try {
+    const token = await getAuthenticatedToken(request);
+
+    if (!token?.id) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: "Não autorizado.",
+        },
+        { status: 401 }
+      );
+    }
+
     const { id } = await context.params;
 
     const existingProduct = await getProductById(id);
