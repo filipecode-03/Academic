@@ -1,3 +1,4 @@
+import { getAuthenticatedSession } from "@/src/lib/auth-guard";
 import { NextResponse } from "next/server";
 import { createProduct, getProducts } from "@/src/services/product.service";
 import { createProductSchema } from "@/src/schemas/product.schema";
@@ -26,6 +27,18 @@ export async function GET() {
 
 export async function POST(request: Request) {
   try {
+    const session = await getAuthenticatedSession();
+
+    if (!session?.user?.id) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: "Não autorizado.",
+        },
+        { status: 401 }
+      );
+    }
+
     const body = await request.json();
 
     const result = createProductSchema.safeParse(body);
