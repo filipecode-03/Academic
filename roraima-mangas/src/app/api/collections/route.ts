@@ -1,4 +1,5 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
+import { getAuthenticatedToken } from "@/src/lib/auth-guard";
 import {
   createCollection,
   getCollections,
@@ -27,51 +28,63 @@ export async function GET() {
   }
 }
 
-export async function POST(request: Request) {
-  try {
-    const body = await request.json();
-
-    const result = createCollectionSchema.safeParse(body);
-
-    if (!result.success) {
+export async function POST(request: NextRequest) {
+    try {
+      const token = await getAuthenticatedToken(request);
+  
+      if (!token?.id) {
+        return NextResponse.json(
+          {
+            success: false,
+            message: "Não autorizado.",
+          },
+          { status: 401 }
+        );
+      }
+  
+      const body = await request.json();
+  
+      const result = createCollectionSchema.safeParse(body);
+  
+      if (!result.success) {
+        return NextResponse.json(
+          {
+            success: false,
+            message: "Dados inválidos.",
+            errors: result.error.flatten().fieldErrors,
+          },
+          { status: 400 }
+        );
+      }
+  
+      const collection = await createCollection(result.data);
+  
+      return NextResponse.json(
+        {
+          success: true,
+          collection,
+        },
+        { status: 201 }
+      );
+    } catch (error) {
+      console.error("Erro ao criar coleção:", error);
+  
+      if (isPrismaUniqueConstraintError(error)) {
+        return NextResponse.json(
+          {
+            success: false,
+            message: "Slug já está sendo utilizado.",
+          },
+          { status: 409 }
+        );
+      }
+  
       return NextResponse.json(
         {
           success: false,
-          message: "Dados inválidos.",
-          errors: result.error.flatten().fieldErrors,
+          message: "Erro ao criar coleção.",
         },
-        { status: 400 }
+        { status: 500 }
       );
     }
-
-    const collection = await createCollection(result.data);
-
-    return NextResponse.json(
-      {
-        success: true,
-        collection,
-      },
-      { status: 201 }
-    );
-  } catch (error) {
-    console.error("Erro ao criar coleção:", error);
-
-    if (isPrismaUniqueConstraintError(error)) {
-      return NextResponse.json(
-        {
-          success: false,
-          message: "Slug já está sendo utilizado.",
-        },
-        { status: 409 }
-      );
-    }
-
-    return NextResponse.json(
-      {
-        success: false,
-        message: "Erro ao criar coleção.",
-      },
-      { status: 500 }
-    );
   }
-}
