@@ -17,62 +17,161 @@ model User {
 }
 
 model Category {
-  id        String    @id @default(cuid())
+  id        String   @id @default(cuid())
   name      String
-  slug      String    @unique
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+  slug      String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  products  Product[]
+  products     Product[]
+  banners      HomeBanner[]
+  homeSections HomeSection[]
 }
 
 model Product {
-  id             String       @id @default(cuid())
+  id             String        @id @default(cuid())
   name           String
-  slug           String       @unique
+  slug           String        @unique
   description    String?
-  price          Decimal      @db.Decimal(10, 2)
-  compareAtPrice Decimal?     @db.Decimal(10, 2)
-  sku            String?      @unique
+  price          Decimal       @db.Decimal(10, 2)
+  compareAtPrice Decimal?      @db.Decimal(10, 2)
+  sku            String?       @unique
   image          String?
   status         ProductStatus @default(ACTIVE)
-  featured       Boolean      @default(false)
-  isNew          Boolean      @default(false)
+  featured       Boolean       @default(false)
+  isNew          Boolean       @default(false)
 
-  categoryId     String?
-  category       Category?    @relation(fields: [categoryId], references: [id])
+  categoryId String?
+  category   Category? @relation(fields: [categoryId], references: [id])
 
-  collections    ProductCollection[]
+  collections  ProductCollection[]
+  homeBanners  HomeBanner[]
+  homeSections HomeSectionProduct[]
 
-  createdAt      DateTime     @default(now())
-  updatedAt      DateTime     @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Collection {
-  id          String              @id @default(cuid())
+  id          String  @id @default(cuid())
   name        String
-  slug        String              @unique
+  slug        String  @unique
   description String?
   image       String?
 
-  products    ProductCollection[]
+  products     ProductCollection[]
+  banners      HomeBanner[]
+  homeSections HomeSection[]
 
-  createdAt   DateTime            @default(now())
-  updatedAt   DateTime            @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model ProductCollection {
   productId    String
   collectionId String
 
-  product      Product    @relation(fields: [productId], references: [id], onDelete: Cascade)
-  collection   Collection @relation(fields: [collectionId], references: [id], onDelete: Cascade)
+  product    Product    @relation(fields: [productId], references: [id], onDelete: Cascade)
+  collection Collection @relation(fields: [collectionId], references: [id], onDelete: Cascade)
 
   @@id([productId, collectionId])
+}
+
+model HomeBanner {
+  id     String  @id @default(cuid())
+  image  String
+  order  Int
+  active Boolean @default(true)
+
+  destinationType BannerDestinationType @default(NONE)
+
+  productId    String?
+  categoryId   String?
+  collectionId String?
+
+  product    Product?    @relation(fields: [productId], references: [id], onDelete: SetNull)
+  category   Category?   @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  collection Collection? @relation(fields: [collectionId], references: [id], onDelete: SetNull)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([order])
+  @@index([active])
+}
+
+model PromoNotice {
+  id       String              @id @default(cuid())
+  content  String
+  position PromoNoticePosition
+  order    Int                 @default(0)
+  active   Boolean             @default(true)
+
+  startAt DateTime
+  endAt   DateTime
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([position])
+  @@index([active])
+  @@index([startAt, endAt])
+}
+
+model HomeSection {
+  id     String          @id @default(cuid())
+  title  String
+  type   HomeSectionType
+  order  Int
+  active Boolean         @default(true)
+
+  categoryId   String?
+  collectionId String?
+
+  category   Category?   @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  collection Collection? @relation(fields: [collectionId], references: [id], onDelete: SetNull)
+
+  products HomeSectionProduct[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([order])
+  @@index([active])
+}
+
+model HomeSectionProduct {
+  homeSectionId String
+  productId     String
+  order         Int
+
+  homeSection HomeSection @relation(fields: [homeSectionId], references: [id], onDelete: Cascade)
+  product     Product     @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@id([homeSectionId, productId])
+  @@index([homeSectionId, order])
 }
 
 enum ProductStatus {
   ACTIVE
   INACTIVE
   OUT_OF_STOCK
+}
+
+enum BannerDestinationType {
+  NONE
+  PRODUCT
+  CATEGORY
+  COLLECTION
+}
+
+enum PromoNoticePosition {
+  TOP
+  BELOW_CAROUSEL
+}
+
+enum HomeSectionType {
+  MANUAL
+  CATEGORY
+  COLLECTION
 }
