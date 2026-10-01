@@ -1,5 +1,6 @@
-import { getAuthenticatedSession } from "@/src/lib/auth-guard";
 import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
+import { getAuthenticatedToken } from "@/src/lib/auth-guard";
 import { createProduct, getProducts } from "@/src/services/product.service";
 import { createProductSchema } from "@/src/schemas/product.schema";
 import { isPrismaUniqueConstraintError } from "@/src/lib/prisma-error";
@@ -25,11 +26,11 @@ export async function GET() {
   }
 }
 
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
   try {
-    const session = await getAuthenticatedSession();
+    const token = await getAuthenticatedToken(request);
 
-    if (!session?.user?.id) {
+    if (!token?.id) {
       return NextResponse.json(
         {
           success: false,
