@@ -1,4 +1,5 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
+import { getAuthenticatedToken } from "@/src/lib/auth-guard";
 import {
   createCategory,
   getCategories,
@@ -27,51 +28,63 @@ export async function GET() {
   }
 }
 
-export async function POST(request: Request) {
-  try {
-    const body = await request.json();
+export async function POST(request: NextRequest) {
+    try {
+        const token = await getAuthenticatedToken(request);
 
-    const result = createCategorySchema.safeParse(body);
+        if (!token?.id) {
+        return NextResponse.json(
+            {
+            success: false,
+            message: "Não autorizado.",
+            },
+            { status: 401 }
+        );
+        }
 
-    if (!result.success) {
-      return NextResponse.json(
+        const body = await request.json();
+
+        const result = createCategorySchema.safeParse(body);
+
+        if (!result.success) {
+        return NextResponse.json(
+            {
+            success: false,
+            message: "Dados inválidos.",
+            errors: result.error.flatten().fieldErrors,
+            },
+            { status: 400 }
+        );
+        }
+
+        const category = await createCategory(result.data);
+
+        return NextResponse.json(
         {
-          success: false,
-          message: "Dados inválidos.",
-          errors: result.error.flatten().fieldErrors,
+            success: true,
+            category,
         },
-        { status: 400 }
-      );
-    }
+        { status: 201 }
+        );
+    } catch (error) {
+        console.error("Erro ao criar categoria:", error);
 
-    const category = await createCategory(result.data);
+        if (isPrismaUniqueConstraintError(error)) {
+        return NextResponse.json(
+            {
+            success: false,
+            message: "Slug já está sendo utilizado.",
+            },
+            { status: 409 }
+        );
+        }
 
-    return NextResponse.json(
-      {
-        success: true,
-        category,
-      },
-      { status: 201 }
-    );
-  } catch (error) {
-    console.error("Erro ao criar categoria:", error);
-
-    if (isPrismaUniqueConstraintError(error)) {
-      return NextResponse.json(
+        return NextResponse.json(
         {
-          success: false,
-          message: "Slug já está sendo utilizado.",
+            success: false,
+            message: "Erro ao criar categoria.",
         },
-        { status: 409 }
-      );
+        { status: 500 }
+        );
     }
-
-    return NextResponse.json(
-      {
-        success: false,
-        message: "Erro ao criar categoria.",
-      },
-      { status: 500 }
-    );
-  }
 }
