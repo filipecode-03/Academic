@@ -1,4 +1,5 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
+import { getAuthenticatedToken } from "@/src/lib/auth-guard";
 import {
   getCategoryById,
   updateCategory,
@@ -50,102 +51,126 @@ export async function GET(
 }
 
 export async function PATCH(
-  request: Request,
-  context: RouteContext
-) {
-  try {
-    const { id } = await context.params;
-
-    const body = await request.json();
-
-    const result = updateCategorySchema.safeParse(body);
-
-    if (!result.success) {
+    request: NextRequest,
+    context: RouteContext
+  ) {
+    try {
+      const token = await getAuthenticatedToken(request);
+  
+      if (!token?.id) {
+        return NextResponse.json(
+          {
+            success: false,
+            message: "Não autorizado.",
+          },
+          { status: 401 }
+        );
+      }
+  
+      const { id } = await context.params;
+  
+      const body = await request.json();
+  
+      const result = updateCategorySchema.safeParse(body);
+  
+      if (!result.success) {
+        return NextResponse.json(
+          {
+            success: false,
+            message: "Dados inválidos.",
+            errors: result.error.flatten().fieldErrors,
+          },
+          { status: 400 }
+        );
+      }
+  
+      const existingCategory = await getCategoryById(id);
+  
+      if (!existingCategory) {
+        return NextResponse.json(
+          {
+            success: false,
+            message: "Categoria não encontrada.",
+          },
+          { status: 404 }
+        );
+      }
+  
+      const category = await updateCategory(id, result.data);
+  
+      return NextResponse.json({
+        success: true,
+        category,
+      });
+    } catch (error) {
+      console.error("Erro ao atualizar categoria:", error);
+  
+      if (isPrismaUniqueConstraintError(error)) {
+        return NextResponse.json(
+          {
+            success: false,
+            message: "Slug já está sendo utilizado.",
+          },
+          { status: 409 }
+        );
+      }
+  
       return NextResponse.json(
         {
           success: false,
-          message: "Dados inválidos.",
-          errors: result.error.flatten().fieldErrors,
+          message: "Erro ao atualizar categoria.",
         },
-        { status: 400 }
+        { status: 500 }
       );
     }
-
-    const existingCategory = await getCategoryById(id);
-
-    if (!existingCategory) {
-      return NextResponse.json(
-        {
-          success: false,
-          message: "Categoria não encontrada.",
-        },
-        { status: 404 }
-      );
-    }
-
-    const category = await updateCategory(id, result.data);
-
-    return NextResponse.json({
-      success: true,
-      category,
-    });
-  } catch (error) {
-    console.error("Erro ao atualizar categoria:", error);
-
-    if (isPrismaUniqueConstraintError(error)) {
-      return NextResponse.json(
-        {
-          success: false,
-          message: "Slug já está sendo utilizado.",
-        },
-        { status: 409 }
-      );
-    }
-
-    return NextResponse.json(
-      {
-        success: false,
-        message: "Erro ao atualizar categoria.",
-      },
-      { status: 500 }
-    );
   }
-}
 
 export async function DELETE(
-  request: Request,
-  context: RouteContext
-) {
-  try {
-    const { id } = await context.params;
+    request: NextRequest,
+    context: RouteContext
+    ) {
+    try {
+        const token = await getAuthenticatedToken(request);
 
-    const existingCategory = await getCategoryById(id);
+        if (!token?.id) {
+        return NextResponse.json(
+            {
+            success: false,
+            message: "Não autorizado.",
+            },
+            { status: 401 }
+        );
+        }
 
-    if (!existingCategory) {
-      return NextResponse.json(
+        const { id } = await context.params;
+
+        const existingCategory = await getCategoryById(id);
+
+        if (!existingCategory) {
+        return NextResponse.json(
+            {
+            success: false,
+            message: "Categoria não encontrada.",
+            },
+            { status: 404 }
+        );
+        }
+
+        await deleteCategory(id);
+
+        return NextResponse.json({
+        success: true,
+        message: "Categoria excluída com sucesso.",
+        });
+    } catch (error) {
+        console.error("Erro ao excluir categoria:", error);
+
+        return NextResponse.json(
         {
-          success: false,
-          message: "Categoria não encontrada.",
+            success: false,
+            message: "Erro ao excluir categoria.",
         },
-        { status: 404 }
-      );
+        { status: 500 }
+        );
     }
-
-    await deleteCategory(id);
-
-    return NextResponse.json({
-      success: true,
-      message: "Categoria excluída com sucesso.",
-    });
-  } catch (error) {
-    console.error("Erro ao excluir categoria:", error);
-
-    return NextResponse.json(
-      {
-        success: false,
-        message: "Erro ao excluir categoria.",
-      },
-      { status: 500 }
-    );
-  }
 }
