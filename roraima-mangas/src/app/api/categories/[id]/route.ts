@@ -165,6 +165,22 @@ export async function DELETE(
     } catch (error) {
         console.error("Erro ao excluir categoria:", error);
 
+        if (
+          typeof error === "object" &&
+          error !== null &&
+          "code" in error &&
+          error.code === "P2003"
+        ) {
+          return NextResponse.json(
+            {
+              success: false,
+              message:
+                "Não é possível excluir esta categoria porque ela está vinculada a produtos ou conteúdos da loja.",
+            },
+            { status: 409 }
+          );
+        }
+
         return NextResponse.json(
         {
             success: false,
