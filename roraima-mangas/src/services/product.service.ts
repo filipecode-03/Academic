@@ -4,6 +4,14 @@ import type {
   UpdateProductInput,
 } from "@/src/schemas/product.schema";
 
+const productInclude = {
+  images: {
+    orderBy: {
+      order: "asc" as const,
+    },
+  },
+};
+
 export async function createProduct(data: CreateProductInput) {
   const product = await prisma.product.create({
     data: {
@@ -18,7 +26,15 @@ export async function createProduct(data: CreateProductInput) {
       featured: data.featured,
       isNew: data.isNew,
       categoryId: data.categoryId,
+
+      images: {
+        create: data.images.map((image) => ({
+          image: image.image,
+          order: image.order,
+        })),
+      },
     },
+    include: productInclude,
   });
 
   return product;
@@ -29,6 +45,7 @@ export async function getProducts() {
     orderBy: {
       createdAt: "desc",
     },
+    include: productInclude,
   });
 
   return products;
@@ -39,6 +56,7 @@ export async function getProductById(id: string) {
     where: {
       id,
     },
+    include: productInclude,
   });
 
   return product;
@@ -48,22 +66,46 @@ export async function updateProduct(
   id: string,
   data: UpdateProductInput
 ) {
-  const product = await prisma.product.update({
-    where: {
-      id,
-    },
-    data,
+  const { images, ...productData } = data;
+
+  const product = await prisma.$transaction(async (tx) => {
+    if (images !== undefined) {
+      await tx.productImage.deleteMany({
+        where: {
+          productId: id,
+        },
+      });
+    }
+
+    return tx.product.update({
+      where: {
+        id,
+      },
+      data: {
+        ...productData,
+
+        ...(images !== undefined && {
+          images: {
+            create: images.map((image) => ({
+              image: image.image,
+              order: image.order,
+            })),
+          },
+        }),
+      },
+      include: productInclude,
+    });
   });
 
   return product;
 }
 
 export async function deleteProduct(id: string) {
-    const product = await prisma.product.delete({
-      where: {
-        id,
-      },
-    });
-  
-    return product;
-  }
+  const product = await prisma.product.delete({
+    where: {
+      id,
+    },
+  });
+
+  return product;
+}
