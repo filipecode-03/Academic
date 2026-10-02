@@ -126,3 +126,15 @@ export const updateHomeSectionSchema = z
 export type UpdateHomeSectionInput = z.infer<
   typeof updateHomeSectionSchema
 >;
+
+export const reorderHomeSectionsSchema = z.object({
+  sectionIds: z.array(z.string().min(1)),
+}).superRefine(({ sectionIds }, ctx) => {
+  if (new Set(sectionIds).size !== sectionIds.length) {
+    ctx.addIssue({
+      code: "custom",
+      path: ["sectionIds"],
+      message: "A lista não pode conter seções duplicadas.",
+    });
+  }
+});
