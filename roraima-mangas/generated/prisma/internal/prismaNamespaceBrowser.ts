@@ -54,8 +54,13 @@ export const ModelName = {
   User: 'User',
   Category: 'Category',
   Product: 'Product',
+  ProductImage: 'ProductImage',
   Collection: 'Collection',
-  ProductCollection: 'ProductCollection'
+  ProductCollection: 'ProductCollection',
+  HomeBanner: 'HomeBanner',
+  PromoNotice: 'PromoNotice',
+  HomeSection: 'HomeSection',
+  HomeSectionProduct: 'HomeSectionProduct'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -117,6 +122,18 @@ export const ProductScalarFieldEnum = {
 export type ProductScalarFieldEnum = (typeof ProductScalarFieldEnum)[keyof typeof ProductScalarFieldEnum]
 
 
+export const ProductImageScalarFieldEnum = {
+  id: 'id',
+  image: 'image',
+  order: 'order',
+  productId: 'productId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ProductImageScalarFieldEnum = (typeof ProductImageScalarFieldEnum)[keyof typeof ProductImageScalarFieldEnum]
+
+
 export const CollectionScalarFieldEnum = {
   id: 'id',
   name: 'name',
@@ -136,6 +153,61 @@ export const ProductCollectionScalarFieldEnum = {
 } as const
 
 export type ProductCollectionScalarFieldEnum = (typeof ProductCollectionScalarFieldEnum)[keyof typeof ProductCollectionScalarFieldEnum]
+
+
+export const HomeBannerScalarFieldEnum = {
+  id: 'id',
+  image: 'image',
+  order: 'order',
+  active: 'active',
+  destinationType: 'destinationType',
+  productId: 'productId',
+  categoryId: 'categoryId',
+  collectionId: 'collectionId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type HomeBannerScalarFieldEnum = (typeof HomeBannerScalarFieldEnum)[keyof typeof HomeBannerScalarFieldEnum]
+
+
+export const PromoNoticeScalarFieldEnum = {
+  id: 'id',
+  content: 'content',
+  position: 'position',
+  order: 'order',
+  active: 'active',
+  startAt: 'startAt',
+  endAt: 'endAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type PromoNoticeScalarFieldEnum = (typeof PromoNoticeScalarFieldEnum)[keyof typeof PromoNoticeScalarFieldEnum]
+
+
+export const HomeSectionScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  type: 'type',
+  order: 'order',
+  active: 'active',
+  categoryId: 'categoryId',
+  collectionId: 'collectionId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type HomeSectionScalarFieldEnum = (typeof HomeSectionScalarFieldEnum)[keyof typeof HomeSectionScalarFieldEnum]
+
+
+export const HomeSectionProductScalarFieldEnum = {
+  homeSectionId: 'homeSectionId',
+  productId: 'productId',
+  order: 'order'
+} as const
+
+export type HomeSectionProductScalarFieldEnum = (typeof HomeSectionProductScalarFieldEnum)[keyof typeof HomeSectionProductScalarFieldEnum]
 
 
 export const SortOrder = {

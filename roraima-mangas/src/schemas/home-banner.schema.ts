@@ -7,18 +7,18 @@ const destinationTypeSchema = z.enum([
   "COLLECTION",
 ]);
 
+const homeBannerFields = {
+  image: z.string().min(1, "A imagem é obrigatória"),
+  order: z.number().int().min(0),
+  active: z.boolean().default(true),
+  destinationType: destinationTypeSchema.default("NONE"),
+  productId: z.string().nullable().optional(),
+  categoryId: z.string().nullable().optional(),
+  collectionId: z.string().nullable().optional(),
+};
+
 export const createHomeBannerSchema = z
-  .object({
-    image: z.string().min(1, "A imagem é obrigatória"),
-    order: z.number().int().min(0),
-    active: z.boolean().default(true),
-
-    destinationType: destinationTypeSchema.default("NONE"),
-
-    productId: z.string().nullable().optional(),
-    categoryId: z.string().nullable().optional(),
-    collectionId: z.string().nullable().optional(),
-  })
+  .object(homeBannerFields)
   .superRefine((data, ctx) => {
     if (data.destinationType === "PRODUCT" && !data.productId) {
       ctx.addIssue({
@@ -92,29 +92,17 @@ export const createHomeBannerSchema = z
     }
   });
 
-export const updateHomeBannerSchema =
-  createHomeBannerSchema.partial().superRefine((data, ctx) => {
-    if (
-      data.destinationType === "PRODUCT" &&
-      data.productId === undefined
-    ) {
-      return;
-    }
-
-    if (
-      data.destinationType === "CATEGORY" &&
-      data.categoryId === undefined
-    ) {
-      return;
-    }
-
-    if (
-      data.destinationType === "COLLECTION" &&
-      data.collectionId === undefined
-    ) {
-      return;
-    }
-
+export const updateHomeBannerSchema = z
+  .object({
+    image: homeBannerFields.image.optional(),
+    order: homeBannerFields.order.optional(),
+    active: homeBannerFields.active.optional(),
+    destinationType: destinationTypeSchema.optional(),
+    productId: homeBannerFields.productId,
+    categoryId: homeBannerFields.categoryId,
+    collectionId: homeBannerFields.collectionId,
+  })
+  .superRefine((data, ctx) => {
     if (data.destinationType === "NONE") {
       if (data.productId || data.categoryId || data.collectionId) {
         ctx.addIssue({
@@ -124,5 +112,41 @@ export const updateHomeBannerSchema =
             "Não devem existir relacionamentos quando o destino é NONE",
         });
       }
+    }
+
+    if (
+      data.destinationType === "PRODUCT" &&
+      (data.categoryId || data.collectionId)
+    ) {
+      ctx.addIssue({
+        code: "custom",
+        path: ["destinationType"],
+        message:
+          "Um banner com destino PRODUCT não pode possuir categoryId ou collectionId",
+      });
+    }
+
+    if (
+      data.destinationType === "CATEGORY" &&
+      (data.productId || data.collectionId)
+    ) {
+      ctx.addIssue({
+        code: "custom",
+        path: ["destinationType"],
+        message:
+          "Um banner com destino CATEGORY não pode possuir productId ou collectionId",
+      });
+    }
+
+    if (
+      data.destinationType === "COLLECTION" &&
+      (data.productId || data.categoryId)
+    ) {
+      ctx.addIssue({
+        code: "custom",
+        path: ["destinationType"],
+        message:
+          "Um banner com destino COLLECTION não pode possuir productId ou categoryId",
+      });
     }
   });

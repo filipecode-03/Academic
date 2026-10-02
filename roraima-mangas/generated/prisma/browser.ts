@@ -33,6 +33,11 @@ export type Category = Prisma.CategoryModel
  */
 export type Product = Prisma.ProductModel
 /**
+ * Model ProductImage
+ * 
+ */
+export type ProductImage = Prisma.ProductImageModel
+/**
  * Model Collection
  * 
  */
@@ -42,3 +47,23 @@ export type Collection = Prisma.CollectionModel
  * 
  */
 export type ProductCollection = Prisma.ProductCollectionModel
+/**
+ * Model HomeBanner
+ * 
+ */
+export type HomeBanner = Prisma.HomeBannerModel
+/**
+ * Model PromoNotice
+ * 
+ */
+export type PromoNotice = Prisma.PromoNoticeModel
+/**
+ * Model HomeSection
+ * 
+ */
+export type HomeSection = Prisma.HomeSectionModel
+/**
+ * Model HomeSectionProduct
+ * 
+ */
+export type HomeSectionProduct = Prisma.HomeSectionProductModel

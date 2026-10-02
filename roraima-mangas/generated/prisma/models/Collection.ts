@@ -199,6 +199,8 @@ export type CollectionWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"Collection"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Collection"> | Date | string
   products?: Prisma.ProductCollectionListRelationFilter
+  banners?: Prisma.HomeBannerListRelationFilter
+  homeSections?: Prisma.HomeSectionListRelationFilter
 }
 
 export type CollectionOrderByWithRelationInput = {
@@ -210,6 +212,8 @@ export type CollectionOrderByWithRelationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   products?: Prisma.ProductCollectionOrderByRelationAggregateInput
+  banners?: Prisma.HomeBannerOrderByRelationAggregateInput
+  homeSections?: Prisma.HomeSectionOrderByRelationAggregateInput
 }
 
 export type CollectionWhereUniqueInput = Prisma.AtLeast<{
@@ -224,6 +228,8 @@ export type CollectionWhereUniqueInput = Prisma.AtLeast<{
   createdAt?: Prisma.DateTimeFilter<"Collection"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Collection"> | Date | string
   products?: Prisma.ProductCollectionListRelationFilter
+  banners?: Prisma.HomeBannerListRelationFilter
+  homeSections?: Prisma.HomeSectionListRelationFilter
 }, "id" | "slug">
 
 export type CollectionOrderByWithAggregationInput = {
@@ -261,6 +267,8 @@ export type CollectionCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   products?: Prisma.ProductCollectionCreateNestedManyWithoutCollectionInput
+  banners?: Prisma.HomeBannerCreateNestedManyWithoutCollectionInput
+  homeSections?: Prisma.HomeSectionCreateNestedManyWithoutCollectionInput
 }
 
 export type CollectionUncheckedCreateInput = {
@@ -272,6 +280,8 @@ export type CollectionUncheckedCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   products?: Prisma.ProductCollectionUncheckedCreateNestedManyWithoutCollectionInput
+  banners?: Prisma.HomeBannerUncheckedCreateNestedManyWithoutCollectionInput
+  homeSections?: Prisma.HomeSectionUncheckedCreateNestedManyWithoutCollectionInput
 }
 
 export type CollectionUpdateInput = {
@@ -283,6 +293,8 @@ export type CollectionUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   products?: Prisma.ProductCollectionUpdateManyWithoutCollectionNestedInput
+  banners?: Prisma.HomeBannerUpdateManyWithoutCollectionNestedInput
+  homeSections?: Prisma.HomeSectionUpdateManyWithoutCollectionNestedInput
 }
 
 export type CollectionUncheckedUpdateInput = {
@@ -294,6 +306,8 @@ export type CollectionUncheckedUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   products?: Prisma.ProductCollectionUncheckedUpdateManyWithoutCollectionNestedInput
+  banners?: Prisma.HomeBannerUncheckedUpdateManyWithoutCollectionNestedInput
+  homeSections?: Prisma.HomeSectionUncheckedUpdateManyWithoutCollectionNestedInput
 }
 
 export type CollectionCreateManyInput = {
@@ -361,6 +375,11 @@ export type CollectionScalarRelationFilter = {
   isNot?: Prisma.CollectionWhereInput
 }
 
+export type CollectionNullableScalarRelationFilter = {
+  is?: Prisma.CollectionWhereInput | null
+  isNot?: Prisma.CollectionWhereInput | null
+}
+
 export type CollectionCreateNestedOneWithoutProductsInput = {
   create?: Prisma.XOR<Prisma.CollectionCreateWithoutProductsInput, Prisma.CollectionUncheckedCreateWithoutProductsInput>
   connectOrCreate?: Prisma.CollectionCreateOrConnectWithoutProductsInput
@@ -375,6 +394,38 @@ export type CollectionUpdateOneRequiredWithoutProductsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.CollectionUpdateToOneWithWhereWithoutProductsInput, Prisma.CollectionUpdateWithoutProductsInput>, Prisma.CollectionUncheckedUpdateWithoutProductsInput>
 }
 
+export type CollectionCreateNestedOneWithoutBannersInput = {
+  create?: Prisma.XOR<Prisma.CollectionCreateWithoutBannersInput, Prisma.CollectionUncheckedCreateWithoutBannersInput>
+  connectOrCreate?: Prisma.CollectionCreateOrConnectWithoutBannersInput
+  connect?: Prisma.CollectionWhereUniqueInput
+}
+
+export type CollectionUpdateOneWithoutBannersNestedInput = {
+  create?: Prisma.XOR<Prisma.CollectionCreateWithoutBannersInput, Prisma.CollectionUncheckedCreateWithoutBannersInput>
+  connectOrCreate?: Prisma.CollectionCreateOrConnectWithoutBannersInput
+  upsert?: Prisma.CollectionUpsertWithoutBannersInput
+  disconnect?: Prisma.CollectionWhereInput | boolean
+  delete?: Prisma.CollectionWhereInput | boolean
+  connect?: Prisma.CollectionWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.CollectionUpdateToOneWithWhereWithoutBannersInput, Prisma.CollectionUpdateWithoutBannersInput>, Prisma.CollectionUncheckedUpdateWithoutBannersInput>
+}
+
+export type CollectionCreateNestedOneWithoutHomeSectionsInput = {
+  create?: Prisma.XOR<Prisma.CollectionCreateWithoutHomeSectionsInput, Prisma.CollectionUncheckedCreateWithoutHomeSectionsInput>
+  connectOrCreate?: Prisma.CollectionCreateOrConnectWithoutHomeSectionsInput
+  connect?: Prisma.CollectionWhereUniqueInput
+}
+
+export type CollectionUpdateOneWithoutHomeSectionsNestedInput = {
+  create?: Prisma.XOR<Prisma.CollectionCreateWithoutHomeSectionsInput, Prisma.CollectionUncheckedCreateWithoutHomeSectionsInput>
+  connectOrCreate?: Prisma.CollectionCreateOrConnectWithoutHomeSectionsInput
+  upsert?: Prisma.CollectionUpsertWithoutHomeSectionsInput
+  disconnect?: Prisma.CollectionWhereInput | boolean
+  delete?: Prisma.CollectionWhereInput | boolean
+  connect?: Prisma.CollectionWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.CollectionUpdateToOneWithWhereWithoutHomeSectionsInput, Prisma.CollectionUpdateWithoutHomeSectionsInput>, Prisma.CollectionUncheckedUpdateWithoutHomeSectionsInput>
+}
+
 export type CollectionCreateWithoutProductsInput = {
   id?: string
   name: string
@@ -383,6 +434,8 @@ export type CollectionCreateWithoutProductsInput = {
   image?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  banners?: Prisma.HomeBannerCreateNestedManyWithoutCollectionInput
+  homeSections?: Prisma.HomeSectionCreateNestedManyWithoutCollectionInput
 }
 
 export type CollectionUncheckedCreateWithoutProductsInput = {
@@ -393,6 +446,8 @@ export type CollectionUncheckedCreateWithoutProductsInput = {
   image?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  banners?: Prisma.HomeBannerUncheckedCreateNestedManyWithoutCollectionInput
+  homeSections?: Prisma.HomeSectionUncheckedCreateNestedManyWithoutCollectionInput
 }
 
 export type CollectionCreateOrConnectWithoutProductsInput = {
@@ -419,6 +474,8 @@ export type CollectionUpdateWithoutProductsInput = {
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  banners?: Prisma.HomeBannerUpdateManyWithoutCollectionNestedInput
+  homeSections?: Prisma.HomeSectionUpdateManyWithoutCollectionNestedInput
 }
 
 export type CollectionUncheckedUpdateWithoutProductsInput = {
@@ -429,6 +486,136 @@ export type CollectionUncheckedUpdateWithoutProductsInput = {
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  banners?: Prisma.HomeBannerUncheckedUpdateManyWithoutCollectionNestedInput
+  homeSections?: Prisma.HomeSectionUncheckedUpdateManyWithoutCollectionNestedInput
+}
+
+export type CollectionCreateWithoutBannersInput = {
+  id?: string
+  name: string
+  slug: string
+  description?: string | null
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  products?: Prisma.ProductCollectionCreateNestedManyWithoutCollectionInput
+  homeSections?: Prisma.HomeSectionCreateNestedManyWithoutCollectionInput
+}
+
+export type CollectionUncheckedCreateWithoutBannersInput = {
+  id?: string
+  name: string
+  slug: string
+  description?: string | null
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  products?: Prisma.ProductCollectionUncheckedCreateNestedManyWithoutCollectionInput
+  homeSections?: Prisma.HomeSectionUncheckedCreateNestedManyWithoutCollectionInput
+}
+
+export type CollectionCreateOrConnectWithoutBannersInput = {
+  where: Prisma.CollectionWhereUniqueInput
+  create: Prisma.XOR<Prisma.CollectionCreateWithoutBannersInput, Prisma.CollectionUncheckedCreateWithoutBannersInput>
+}
+
+export type CollectionUpsertWithoutBannersInput = {
+  update: Prisma.XOR<Prisma.CollectionUpdateWithoutBannersInput, Prisma.CollectionUncheckedUpdateWithoutBannersInput>
+  create: Prisma.XOR<Prisma.CollectionCreateWithoutBannersInput, Prisma.CollectionUncheckedCreateWithoutBannersInput>
+  where?: Prisma.CollectionWhereInput
+}
+
+export type CollectionUpdateToOneWithWhereWithoutBannersInput = {
+  where?: Prisma.CollectionWhereInput
+  data: Prisma.XOR<Prisma.CollectionUpdateWithoutBannersInput, Prisma.CollectionUncheckedUpdateWithoutBannersInput>
+}
+
+export type CollectionUpdateWithoutBannersInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  products?: Prisma.ProductCollectionUpdateManyWithoutCollectionNestedInput
+  homeSections?: Prisma.HomeSectionUpdateManyWithoutCollectionNestedInput
+}
+
+export type CollectionUncheckedUpdateWithoutBannersInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  products?: Prisma.ProductCollectionUncheckedUpdateManyWithoutCollectionNestedInput
+  homeSections?: Prisma.HomeSectionUncheckedUpdateManyWithoutCollectionNestedInput
+}
+
+export type CollectionCreateWithoutHomeSectionsInput = {
+  id?: string
+  name: string
+  slug: string
+  description?: string | null
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  products?: Prisma.ProductCollectionCreateNestedManyWithoutCollectionInput
+  banners?: Prisma.HomeBannerCreateNestedManyWithoutCollectionInput
+}
+
+export type CollectionUncheckedCreateWithoutHomeSectionsInput = {
+  id?: string
+  name: string
+  slug: string
+  description?: string | null
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  products?: Prisma.ProductCollectionUncheckedCreateNestedManyWithoutCollectionInput
+  banners?: Prisma.HomeBannerUncheckedCreateNestedManyWithoutCollectionInput
+}
+
+export type CollectionCreateOrConnectWithoutHomeSectionsInput = {
+  where: Prisma.CollectionWhereUniqueInput
+  create: Prisma.XOR<Prisma.CollectionCreateWithoutHomeSectionsInput, Prisma.CollectionUncheckedCreateWithoutHomeSectionsInput>
+}
+
+export type CollectionUpsertWithoutHomeSectionsInput = {
+  update: Prisma.XOR<Prisma.CollectionUpdateWithoutHomeSectionsInput, Prisma.CollectionUncheckedUpdateWithoutHomeSectionsInput>
+  create: Prisma.XOR<Prisma.CollectionCreateWithoutHomeSectionsInput, Prisma.CollectionUncheckedCreateWithoutHomeSectionsInput>
+  where?: Prisma.CollectionWhereInput
+}
+
+export type CollectionUpdateToOneWithWhereWithoutHomeSectionsInput = {
+  where?: Prisma.CollectionWhereInput
+  data: Prisma.XOR<Prisma.CollectionUpdateWithoutHomeSectionsInput, Prisma.CollectionUncheckedUpdateWithoutHomeSectionsInput>
+}
+
+export type CollectionUpdateWithoutHomeSectionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  products?: Prisma.ProductCollectionUpdateManyWithoutCollectionNestedInput
+  banners?: Prisma.HomeBannerUpdateManyWithoutCollectionNestedInput
+}
+
+export type CollectionUncheckedUpdateWithoutHomeSectionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  products?: Prisma.ProductCollectionUncheckedUpdateManyWithoutCollectionNestedInput
+  banners?: Prisma.HomeBannerUncheckedUpdateManyWithoutCollectionNestedInput
 }
 
 
@@ -438,10 +625,14 @@ export type CollectionUncheckedUpdateWithoutProductsInput = {
 
 export type CollectionCountOutputType = {
   products: number
+  banners: number
+  homeSections: number
 }
 
 export type CollectionCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   products?: boolean | CollectionCountOutputTypeCountProductsArgs
+  banners?: boolean | CollectionCountOutputTypeCountBannersArgs
+  homeSections?: boolean | CollectionCountOutputTypeCountHomeSectionsArgs
 }
 
 /**
@@ -461,6 +652,20 @@ export type CollectionCountOutputTypeCountProductsArgs<ExtArgs extends runtime.T
   where?: Prisma.ProductCollectionWhereInput
 }
 
+/**
+ * CollectionCountOutputType without action
+ */
+export type CollectionCountOutputTypeCountBannersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.HomeBannerWhereInput
+}
+
+/**
+ * CollectionCountOutputType without action
+ */
+export type CollectionCountOutputTypeCountHomeSectionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.HomeSectionWhereInput
+}
+
 
 export type CollectionSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -471,6 +676,8 @@ export type CollectionSelect<ExtArgs extends runtime.Types.Extensions.InternalAr
   createdAt?: boolean
   updatedAt?: boolean
   products?: boolean | Prisma.Collection$productsArgs<ExtArgs>
+  banners?: boolean | Prisma.Collection$bannersArgs<ExtArgs>
+  homeSections?: boolean | Prisma.Collection$homeSectionsArgs<ExtArgs>
   _count?: boolean | Prisma.CollectionCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["collection"]>
 
@@ -507,6 +714,8 @@ export type CollectionSelectScalar = {
 export type CollectionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "slug" | "description" | "image" | "createdAt" | "updatedAt", ExtArgs["result"]["collection"]>
 export type CollectionInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   products?: boolean | Prisma.Collection$productsArgs<ExtArgs>
+  banners?: boolean | Prisma.Collection$bannersArgs<ExtArgs>
+  homeSections?: boolean | Prisma.Collection$homeSectionsArgs<ExtArgs>
   _count?: boolean | Prisma.CollectionCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type CollectionIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -516,6 +725,8 @@ export type $CollectionPayload<ExtArgs extends runtime.Types.Extensions.Internal
   name: "Collection"
   objects: {
     products: Prisma.$ProductCollectionPayload<ExtArgs>[]
+    banners: Prisma.$HomeBannerPayload<ExtArgs>[]
+    homeSections: Prisma.$HomeSectionPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -920,6 +1131,8 @@ readonly fields: CollectionFieldRefs;
 export interface Prisma__CollectionClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   products<T extends Prisma.Collection$productsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Collection$productsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ProductCollectionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  banners<T extends Prisma.Collection$bannersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Collection$bannersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$HomeBannerPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  homeSections<T extends Prisma.Collection$homeSectionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Collection$homeSectionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$HomeSectionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1370,6 +1583,54 @@ export type Collection$productsArgs<ExtArgs extends runtime.Types.Extensions.Int
   take?: number
   skip?: number
   distinct?: Prisma.ProductCollectionScalarFieldEnum | Prisma.ProductCollectionScalarFieldEnum[]
+}
+
+/**
+ * Collection.banners
+ */
+export type Collection$bannersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the HomeBanner
+   */
+  select?: Prisma.HomeBannerSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the HomeBanner
+   */
+  omit?: Prisma.HomeBannerOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.HomeBannerInclude<ExtArgs> | null
+  where?: Prisma.HomeBannerWhereInput
+  orderBy?: Prisma.HomeBannerOrderByWithRelationInput | Prisma.HomeBannerOrderByWithRelationInput[]
+  cursor?: Prisma.HomeBannerWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.HomeBannerScalarFieldEnum | Prisma.HomeBannerScalarFieldEnum[]
+}
+
+/**
+ * Collection.homeSections
+ */
+export type Collection$homeSectionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the HomeSection
+   */
+  select?: Prisma.HomeSectionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the HomeSection
+   */
+  omit?: Prisma.HomeSectionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.HomeSectionInclude<ExtArgs> | null
+  where?: Prisma.HomeSectionWhereInput
+  orderBy?: Prisma.HomeSectionOrderByWithRelationInput | Prisma.HomeSectionOrderByWithRelationInput[]
+  cursor?: Prisma.HomeSectionWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.HomeSectionScalarFieldEnum | Prisma.HomeSectionScalarFieldEnum[]
 }
 
 /**

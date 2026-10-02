@@ -16,3 +16,30 @@ export const ProductStatus = {
 } as const
 
 export type ProductStatus = (typeof ProductStatus)[keyof typeof ProductStatus]
+
+
+export const BannerDestinationType = {
+  NONE: 'NONE',
+  PRODUCT: 'PRODUCT',
+  CATEGORY: 'CATEGORY',
+  COLLECTION: 'COLLECTION'
+} as const
+
+export type BannerDestinationType = (typeof BannerDestinationType)[keyof typeof BannerDestinationType]
+
+
+export const PromoNoticePosition = {
+  TOP: 'TOP',
+  BELOW_CAROUSEL: 'BELOW_CAROUSEL'
+} as const
+
+export type PromoNoticePosition = (typeof PromoNoticePosition)[keyof typeof PromoNoticePosition]
+
+
+export const HomeSectionType = {
+  MANUAL: 'MANUAL',
+  CATEGORY: 'CATEGORY',
+  COLLECTION: 'COLLECTION'
+} as const
+
+export type HomeSectionType = (typeof HomeSectionType)[keyof typeof HomeSectionType]
