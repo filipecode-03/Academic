@@ -41,13 +41,30 @@ const productFormSchema = z.object({
     .boolean(),
 
   images: z
-    .array(z.instanceof(File))
-    .min(1, "Adicione pelo menos uma imagem."),
+    .array(z.instanceof(File)),
 });
 
 type ProductFormData = z.infer<typeof productFormSchema>;
 
+export type ProductFormInitialData = {
+  id: string;
+  name: string;
+  slug: string;
+  description?: string | null;
+  price: number;
+  compareAtPrice?: number | null;
+  sku?: string | null;
+  status: "ACTIVE" | "INACTIVE" | "OUT_OF_STOCK";
+  featured: boolean;
+  isNew: boolean;
+  images: {
+    image: string;
+    order: number;
+  }[];
+};
+
 type ProductFormProps = {
+  product?: ProductFormInitialData;
   onSuccess?: () => void;
 };
 
@@ -63,9 +80,19 @@ function generateSlug(value: string) {
 }
 
 export default function ProductForm({
+  product,
   onSuccess,
 }: ProductFormProps) {
+  const isEditing = Boolean(product);
+
   const [previews, setPreviews] = useState<string[]>([]);
+
+  const [existingImages, setExistingImages] = useState<string[]>(
+    product?.images
+      .sort((a, b) => a.order - b.order)
+      .map((image) => image.image) ?? []
+  );
+
   const [submitError, setSubmitError] = useState("");
 
   const {
@@ -79,14 +106,25 @@ export default function ProductForm({
     },
   } = useForm<ProductFormData>({
     resolver: zodResolver(productFormSchema),
+
     defaultValues: {
-      name: "",
-      slug: "",
-      description: "",
-      sku: "",
-      status: "ACTIVE",
-      featured: false,
-      isNew: false,
+      name: product?.name ?? "",
+      slug: product?.slug ?? "",
+      description: product?.description ?? "",
+
+      price: product
+        ? Number(product.price)
+        : undefined,
+
+      compareAtPrice:
+        product?.compareAtPrice != null
+          ? Number(product.compareAtPrice)
+          : undefined,
+
+      sku: product?.sku ?? "",
+      status: product?.status ?? "ACTIVE",
+      featured: product?.featured ?? false,
+      isNew: product?.isNew ?? false,
       images: [],
     },
   });
@@ -110,14 +148,18 @@ export default function ProductForm({
     setPreviews(urls);
 
     return () => {
-      urls.forEach((url) => URL.revokeObjectURL(url));
+      urls.forEach((url) =>
+        URL.revokeObjectURL(url)
+      );
     };
   }, [images]);
 
   function handleImagesChange(
     event: React.ChangeEvent<HTMLInputElement>
   ) {
-    const files = Array.from(event.target.files ?? []);
+    const files = Array.from(
+      event.target.files ?? []
+    );
 
     if (files.length === 0) {
       return;
@@ -126,6 +168,14 @@ export default function ProductForm({
     setValue("images", files, {
       shouldValidate: true,
     });
+  }
+
+  function removeExistingImage(index: number) {
+    setExistingImages((current) =>
+      current.filter(
+        (_, imageIndex) => imageIndex !== index
+      )
+    );
   }
 
   async function uploadImage(file: File) {
@@ -177,39 +227,65 @@ export default function ProductForm({
     try {
       setSubmitError("");
 
-      const imageUrls = await Promise.all(
-        data.images.map((file) => uploadImage(file))
-      );
+      let imageUrls = existingImages;
 
-      const response = await fetch("/api/products", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name: data.name,
-          slug: data.slug,
-          description: data.description || undefined,
-          price: data.price,
-          compareAtPrice:
-            data.compareAtPrice || undefined,
-          sku: data.sku || undefined,
-          status: data.status,
-          featured: data.featured,
-          isNew: data.isNew,
-          images: imageUrls.map((image, index) => ({
+      if (data.images.length > 0) {
+        imageUrls = await Promise.all(
+          data.images.map((file) =>
+            uploadImage(file)
+          )
+        );
+      }
+
+      if (imageUrls.length === 0) {
+        throw new Error(
+          "O produto deve possuir pelo menos uma imagem."
+        );
+      }
+
+      const payload = {
+        name: data.name,
+        slug: data.slug,
+        description:
+          data.description || undefined,
+        price: data.price,
+        compareAtPrice:
+          data.compareAtPrice || undefined,
+        sku: data.sku || undefined,
+        status: data.status,
+        featured: data.featured,
+        isNew: data.isNew,
+        images: imageUrls.map(
+          (image, index) => ({
             image,
             order: index,
-          })),
-        }),
-      });
+          })
+        ),
+      };
+
+      const response = await fetch(
+        isEditing
+          ? `/api/products/${product!.id}`
+          : "/api/products",
+        {
+          method: isEditing ? "PATCH" : "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(payload),
+        }
+      );
 
       const result = await response.json();
 
       if (!response.ok) {
         throw new Error(
           result.message ??
-            "Não foi possível criar o produto."
+            (
+              isEditing
+                ? "Não foi possível atualizar o produto."
+                : "Não foi possível criar o produto."
+            )
         );
       }
 
@@ -218,7 +294,11 @@ export default function ProductForm({
       setSubmitError(
         error instanceof Error
           ? error.message
-          : "Ocorreu um erro ao criar o produto."
+          : (
+              isEditing
+                ? "Ocorreu um erro ao atualizar o produto."
+                : "Ocorreu um erro ao criar o produto."
+            )
       );
     }
   }
@@ -301,12 +381,16 @@ export default function ProductForm({
           step="0.01"
           {...register("compareAtPrice", {
             setValueAs: (value) =>
-              value === "" ? undefined : Number(value),
+              value === ""
+                ? undefined
+                : Number(value),
           })}
         />
 
         {errors.compareAtPrice && (
-          <p>{errors.compareAtPrice.message}</p>
+          <p>
+            {errors.compareAtPrice.message}
+          </p>
         )}
       </div>
 
@@ -371,9 +455,41 @@ export default function ProductForm({
         </label>
       </div>
 
+      {isEditing &&
+        existingImages.length > 0 && (
+          <div>
+            <p>Imagens atuais:</p>
+
+            <div className="flex gap-4 flex-wrap">
+              {existingImages.map(
+                (image, index) => (
+                  <div key={image}>
+                    <img
+                      src={image}
+                      alt={`Imagem atual ${index + 1}`}
+                      className="w-32 h-32 object-cover"
+                    />
+
+                    <button
+                      type="button"
+                      onClick={() =>
+                        removeExistingImage(index)
+                      }
+                    >
+                      Remover
+                    </button>
+                  </div>
+                )
+              )}
+            </div>
+          </div>
+        )}
+
       <div>
         <label htmlFor="images">
-          Imagens
+          {isEditing
+            ? "Substituir imagens"
+            : "Imagens"}
         </label>
 
         <input
@@ -384,24 +500,29 @@ export default function ProductForm({
           onChange={handleImagesChange}
         />
 
-        {errors.images && (
-          <p>{errors.images.message}</p>
-        )}
+        {!isEditing &&
+          errors.images && (
+            <p>
+              {errors.images.message}
+            </p>
+          )}
       </div>
 
       {previews.length > 0 && (
         <div>
-          <p>Imagens selecionadas:</p>
+          <p>Novas imagens:</p>
 
           <div className="flex gap-4 flex-wrap">
-            {previews.map((preview, index) => (
-              <img
-                key={preview}
-                src={preview}
-                alt={`Imagem ${index + 1}`}
-                className="w-32 h-32 object-cover"
-              />
-            ))}
+            {previews.map(
+              (preview, index) => (
+                <img
+                  key={preview}
+                  src={preview}
+                  alt={`Nova imagem ${index + 1}`}
+                  className="w-32 h-32 object-cover"
+                />
+              )
+            )}
           </div>
         </div>
       )}
@@ -415,8 +536,12 @@ export default function ProductForm({
         disabled={isSubmitting}
       >
         {isSubmitting
-          ? "Cadastrando..."
-          : "Cadastrar produto"}
+          ? isEditing
+            ? "Salvando..."
+            : "Cadastrando..."
+          : isEditing
+            ? "Salvar alterações"
+            : "Cadastrar produto"}
       </button>
     </form>
   );

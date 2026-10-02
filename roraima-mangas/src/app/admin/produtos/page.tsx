@@ -11,14 +11,14 @@ type ProductImage = {
 };
 
 type Product = {
-  id: string;
-  name: string;
-  slug: string;
-  price: number;
-  status: "ACTIVE" | "INACTIVE" | "OUT_OF_STOCK";
-  featured: boolean;
-  isNew: boolean;
-  images: ProductImage[];
+    id: string;
+    name: string;
+    slug: string;
+    price: number | string;
+    status: "ACTIVE" | "INACTIVE" | "OUT_OF_STOCK";
+    featured: boolean;
+    isNew: boolean;
+    images: ProductImage[];
 };
 
 export default function ProductsPage() {
@@ -177,7 +177,7 @@ export default function ProductsPage() {
                       </h3>
 
                       <p>
-                        R$ {product.price.toFixed(2)}
+                        R$ {Number(product.price).toFixed(2)}
                       </p>
 
                       <p>
