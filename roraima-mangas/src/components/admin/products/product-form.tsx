@@ -179,22 +179,44 @@ export default function ProductForm({
   }
 
   async function uploadImage(file: File) {
-    const uploadResponse = await fetch(
-      "/api/uploads/image",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          fileName: file.name,
-          contentType: file.type,
-          folder: "products",
-        }),
-      }
-    );
+    let uploadResponse: Response;
 
-    const uploadData = await uploadResponse.json();
+    try {
+      uploadResponse = await fetch(
+        "/api/uploads/image",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            fileName: file.name,
+            contentType: file.type,
+            folder: "products",
+          }),
+        }
+      );
+    } catch (error) {
+      console.error("Falha ao solicitar URL de upload:", error);
+      throw new Error(
+        "Não foi possível preparar o envio da imagem. Verifique a conexão e tente novamente."
+      );
+    }
+
+    let uploadData: {
+      message?: string;
+      uploadUrl?: string;
+      publicUrl?: string;
+    };
+
+    try {
+      uploadData = await uploadResponse.json();
+    } catch (error) {
+      console.error("Resposta inválida ao solicitar URL de upload:", error);
+      throw new Error(
+        "Não foi possível preparar o envio da imagem. Tente novamente."
+      );
+    }
 
     if (!uploadResponse.ok) {
       throw new Error(
@@ -203,24 +225,41 @@ export default function ProductForm({
       );
     }
 
-    const r2Response = await fetch(
-      uploadData.uploadUrl,
-      {
+    if (!uploadData.uploadUrl || !uploadData.publicUrl) {
+      console.error("A API de upload retornou URLs incompletas.");
+      throw new Error(
+        "Não foi possível preparar o envio da imagem. Tente novamente."
+      );
+    }
+
+    let r2Response: Response;
+
+    try {
+      r2Response = await fetch(uploadData.uploadUrl, {
         method: "PUT",
         headers: {
           "Content-Type": file.type,
         },
         body: file,
-      }
-    );
-
-    if (!r2Response.ok) {
+      });
+    } catch (error) {
+      // A URL assinada contém credenciais temporárias; não a inclua no log.
+      console.error("Falha de rede/CORS durante o PUT para o R2:", error);
       throw new Error(
-        "Não foi possível enviar a imagem."
+        "Não foi possível enviar a imagem. Verifique a conexão e a configuração de CORS do armazenamento, depois tente novamente."
       );
     }
 
-    return uploadData.publicUrl as string;
+    if (!r2Response.ok) {
+      console.error(
+        "O R2 recusou o upload da imagem:",
+        r2Response.status,
+        r2Response.statusText
+      );
+      throw new Error("Não foi possível enviar a imagem. Tente novamente.");
+    }
+
+    return uploadData.publicUrl;
   }
 
   async function onSubmit(data: ProductFormData) {
