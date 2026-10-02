@@ -1,0 +1,55 @@
+"use client";
+
+import { useMemo, useState } from "react";
+import ProductCard from "@/src/components/products/product-card";
+import type { PublicProduct } from "@/src/types/storefront";
+
+type ProductSort = "SECTION" | "FEATURED" | "RECENT" | "PRICE_ASC" | "PRICE_DESC" | "NAME";
+
+export default function ProductListing({
+  products,
+  initialSort = "FEATURED",
+  emptyMessage = "Nenhum produto encontrado.",
+}: {
+  products: PublicProduct[];
+  initialSort?: ProductSort;
+  emptyMessage?: string;
+}) {
+  const [sort, setSort] = useState<ProductSort>(initialSort);
+  const sortedProducts = useMemo(() => {
+    if (sort === "SECTION") return products;
+    return [...products].sort((a, b) => {
+      if (sort === "FEATURED") return Number(b.featured) - Number(a.featured) || Date.parse(b.createdAt) - Date.parse(a.createdAt);
+      if (sort === "RECENT") return Date.parse(b.createdAt) - Date.parse(a.createdAt);
+      if (sort === "PRICE_ASC") return Number(a.price) - Number(b.price);
+      if (sort === "PRICE_DESC") return Number(b.price) - Number(a.price);
+      return a.name.localeCompare(b.name, "pt-BR");
+    });
+  }, [products, sort]);
+
+  return (
+    <section className="space-y-5">
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <p>{products.length} {products.length === 1 ? "produto" : "produtos"}</p>
+        <label className="flex items-center gap-2">
+          <span>Ordenar por</span>
+          <select className="rounded border px-3 py-2" value={sort} onChange={(event) => setSort(event.target.value as ProductSort)}>
+            {initialSort === "SECTION" && <option value="SECTION">Ordem da seção</option>}
+            <option value="FEATURED">Em destaque</option>
+            <option value="RECENT">Mais recentes</option>
+            <option value="PRICE_ASC">Menor preço</option>
+            <option value="PRICE_DESC">Maior preço</option>
+            <option value="NAME">Nome</option>
+          </select>
+        </label>
+      </div>
+      {products.length === 0 ? (
+        <p className="rounded border p-8 text-center text-neutral-600">{emptyMessage}</p>
+      ) : (
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-5 lg:grid-cols-4">
+          {sortedProducts.map((product) => <ProductCard key={product.id} product={product} />)}
+        </div>
+      )}
+    </section>
+  );
+}
