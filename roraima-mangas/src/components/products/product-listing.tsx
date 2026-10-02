@@ -28,12 +28,12 @@ export default function ProductListing({
   }, [products, sort]);
 
   return (
-    <section className="space-y-5">
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <p>{products.length} {products.length === 1 ? "produto" : "produtos"}</p>
-        <label className="flex items-center gap-2">
-          <span>Ordenar por</span>
-          <select className="rounded border px-3 py-2" value={sort} onChange={(event) => setSort(event.target.value as ProductSort)}>
+    <section className="space-y-5 sm:space-y-6">
+      <div className="flex flex-wrap items-center justify-between gap-3 rounded-lg border bg-white px-4 py-3 shadow-sm">
+        <p className="text-sm text-neutral-600"><span className="font-semibold text-neutral-950">{products.length}</span> {products.length === 1 ? "produto" : "produtos"}</p>
+        <label className="flex items-center gap-2 text-sm">
+          <span className="whitespace-nowrap text-neutral-600">Ordenar por</span>
+          <select className="max-w-[11rem] rounded-md border border-neutral-300 bg-white px-3 py-2 font-medium outline-none transition focus:border-neutral-900 focus:ring-2 focus:ring-neutral-900/15" value={sort} onChange={(event) => setSort(event.target.value as ProductSort)}>
             {initialSort === "SECTION" && <option value="SECTION">Ordem da seção</option>}
             <option value="FEATURED">Em destaque</option>
             <option value="RECENT">Mais recentes</option>
@@ -44,7 +44,7 @@ export default function ProductListing({
         </label>
       </div>
       {products.length === 0 ? (
-        <p className="rounded border p-8 text-center text-neutral-600">{emptyMessage}</p>
+        <p className="rounded-xl border bg-white p-10 text-center text-neutral-600 shadow-sm">{emptyMessage}</p>
       ) : (
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-5 lg:grid-cols-4">
           {sortedProducts.map((product) => <ProductCard key={product.id} product={product} />)}

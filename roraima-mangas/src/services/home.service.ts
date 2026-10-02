@@ -91,15 +91,17 @@ export const getPublicHomeSectionById = cache(async (id: string) => {
 });
 
 export async function getPublicProductBySlug(slug: string) {
+  const decodedSlug = decodePathSegment(slug);
   return prisma.product.findFirst({
-    where: { slug, status: { not: "INACTIVE" } },
+    where: { slug: decodedSlug, status: { not: "INACTIVE" } },
     include: publicProductInclude,
   });
 }
 
 export async function getPublicCategoryBySlug(slug: string) {
+  const decodedSlug = decodePathSegment(slug);
   return prisma.category.findUnique({
-    where: { slug },
+    where: { slug: decodedSlug },
     include: {
       products: {
         where: { status: { not: "INACTIVE" } },
@@ -111,8 +113,9 @@ export async function getPublicCategoryBySlug(slug: string) {
 }
 
 export async function getPublicCollectionBySlug(slug: string) {
+  const decodedSlug = decodePathSegment(slug);
   return prisma.collection.findUnique({
-    where: { slug },
+    where: { slug: decodedSlug },
     include: {
       products: {
         where: { product: { status: { not: "INACTIVE" } } },
@@ -124,6 +127,14 @@ export async function getPublicCollectionBySlug(slug: string) {
       },
     },
   });
+}
+
+function decodePathSegment(value: string) {
+  try {
+    return decodeURIComponent(value);
+  } catch {
+    return value;
+  }
 }
 
 export async function getHomeData() {

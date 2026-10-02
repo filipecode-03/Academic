@@ -21,18 +21,14 @@ const paymentMethods = [
 
 export default function Cnpj() {
   return (
-    <div className="border-t border-yellow-400">
+    <div className="border-t border-yellow-400/60 bg-neutral-950">
       <div className="mx-auto max-w-7xl px-6 py-6 sm:px-8 lg:px-10 lg:py-8">
         {/* Informações + pagamentos */}
         <div className="flex flex-col items-center gap-6 lg:flex-row lg:items-center lg:justify-between lg:gap-10">
           {/* Copyright / CNPJ */}
           <div className="text-center lg:text-left">
-            <p className="text-[14px] text-gray-400">
+            <p className="text-sm text-neutral-400">
               &copy; Roraima Mangas
-            </p>
-
-            <p className="text-[14px]">
-              CNPJ -
             </p>
           </div>
 

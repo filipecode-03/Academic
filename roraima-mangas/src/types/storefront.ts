@@ -5,6 +5,7 @@ export type PublicProduct = {
   description?: string | null;
   price: number | string;
   compareAtPrice?: number | string | null;
+  sku?: string | null;
   featured: boolean;
   isNew: boolean;
   status: string;

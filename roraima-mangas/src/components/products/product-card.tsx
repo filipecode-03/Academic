@@ -14,13 +14,13 @@ export default function ProductCard({ product }: { product: PublicProduct }) {
   const hasDiscount = compareAtPrice !== null && compareAtPrice > Number(product.price);
 
   return (
-    <article className="min-w-0 overflow-hidden rounded-lg border bg-white">
-      <Link href={`/produtos/${product.slug}`} className="block">
-        <div className="relative aspect-[3/4] bg-neutral-100">
+    <article className="group min-w-0 overflow-hidden rounded-xl border border-neutral-200 bg-white shadow-sm transition duration-200 hover:-translate-y-0.5 hover:shadow-md">
+      <Link href={`/produtos/${product.slug}`} className="block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-neutral-900">
+        <div className="relative aspect-[3/4] overflow-hidden bg-neutral-50 p-2 sm:p-3">
           {image ? (
             // Product images are stored on the configured object storage host.
             // eslint-disable-next-line @next/next/no-img-element
-            <img src={image} alt={product.name} className="h-full w-full object-cover" loading="lazy" />
+            <img src={image} alt={product.name} className="h-full w-full object-contain transition-transform duration-300 group-hover:scale-[1.03]" loading="lazy" />
           ) : (
             <div className="flex h-full items-center justify-center px-4 text-center text-sm text-neutral-500">
               Imagem indisponível
@@ -34,8 +34,8 @@ export default function ProductCard({ product }: { product: PublicProduct }) {
             </div>
           )}
         </div>
-        <div className="space-y-1 p-3">
-          <h3 className="line-clamp-2 min-h-10 font-medium">{product.name}</h3>
+        <div className="space-y-1.5 p-3 sm:p-4">
+          <h3 className="line-clamp-2 min-h-10 text-sm font-medium leading-5 transition-colors group-hover:text-neutral-600 sm:text-base">{product.name}</h3>
           {hasDiscount && <p className="text-sm text-neutral-500 line-through">{formatPrice(compareAtPrice)}</p>}
           <p className="font-semibold">{formatPrice(product.price)}</p>
         </div>
