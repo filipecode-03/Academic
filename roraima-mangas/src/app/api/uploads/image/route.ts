@@ -73,6 +73,7 @@ export async function POST(
     const allowedFolders = [
       "products",
       "banners",
+      "collections",
     ];
 
     if (!allowedFolders.includes(folder)) {

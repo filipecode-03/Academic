@@ -34,11 +34,14 @@ type ApiResult = {
 
 type CollectionFormProps = {
   collection?: Collection;
-  onSave: (values: CreateCollectionInput) => Promise<void>;
+  onSave: (values: CreateCollectionInput, imageFile?: File) => Promise<void>;
   onCancel: () => void;
 };
 
 function CollectionForm({ collection, onSave, onCancel }: CollectionFormProps) {
+  const [imageFile, setImageFile] = useState<File>();
+  const [previewUrl, setPreviewUrl] = useState("");
+
   const {
     register,
     handleSubmit,
@@ -49,12 +52,26 @@ function CollectionForm({ collection, onSave, onCancel }: CollectionFormProps) {
       name: collection?.name ?? "",
       slug: collection?.slug ?? "",
       description: collection?.description ?? "",
-      image: collection?.image ?? "",
     },
   });
 
+  useEffect(() => {
+    if (!imageFile) {
+      setPreviewUrl("");
+      return;
+    }
+
+    const objectUrl = URL.createObjectURL(imageFile);
+    setPreviewUrl(objectUrl);
+
+    return () => URL.revokeObjectURL(objectUrl);
+  }, [imageFile]);
+
   return (
-    <form className="space-y-4 border p-4" onSubmit={handleSubmit(onSave)}>
+    <form
+      className="space-y-4 border p-4"
+      onSubmit={handleSubmit((values) => onSave(values, imageFile))}
+    >
       <h2 className="text-xl font-semibold">
         {collection ? "Editar coleção" : "Nova coleção"}
       </h2>
@@ -81,19 +98,42 @@ function CollectionForm({ collection, onSave, onCancel }: CollectionFormProps) {
         {errors.description && <p role="alert">{errors.description.message}</p>}
       </div>
 
-      <div>
-        <label className="block" htmlFor="collection-image">URL da imagem</label>
+      <div className="space-y-2">
+        <label className="block" htmlFor="collection-image">Imagem da coleção</label>
+        {collection?.image && (
+          <div>
+            <p>Imagem atual:</p>
+            <img
+              src={collection.image}
+              alt={`Imagem atual da coleção ${collection.name}`}
+              className="h-32 w-32 object-cover"
+            />
+          </div>
+        )}
         <input
           id="collection-image"
-          className="w-full border p-2"
-          type="url"
-          {...register("image")}
+          className="block"
+          type="file"
+          accept="image/jpeg,image/png,image/webp,image/avif"
+          onChange={(event) => setImageFile(event.target.files?.[0])}
         />
-        {errors.image && <p role="alert">{errors.image.message}</p>}
+        {previewUrl && (
+          <div>
+            <p>Prévia da nova imagem:</p>
+            <img
+              src={previewUrl}
+              alt="Prévia da nova imagem da coleção"
+              className="h-32 w-32 object-cover"
+            />
+          </div>
+        )}
       </div>
 
       <div className="flex gap-3">
-        <button type="submit" disabled={isSubmitting}>
+        <button
+          type="submit"
+          disabled={isSubmitting}
+        >
           {isSubmitting ? "Salvando..." : "Salvar coleção"}
         </button>
         <button type="button" onClick={onCancel}>Cancelar</button>
@@ -116,6 +156,66 @@ function getErrorMessage(cause: unknown, fallback: string) {
     return fallback;
   }
   return cause.message;
+}
+
+async function uploadCollectionImage(file: File) {
+  let uploadResponse: Response;
+
+  try {
+    uploadResponse = await fetch("/api/uploads/image", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        fileName: file.name,
+        contentType: file.type,
+        folder: "collections",
+      }),
+    });
+  } catch (cause) {
+    console.error("Falha ao solicitar URL para imagem da coleção:", cause);
+    throw new Error("Não foi possível preparar o envio da imagem.");
+  }
+
+  let uploadData: { message?: string; uploadUrl?: string; publicUrl?: string };
+  try {
+    uploadData = await uploadResponse.json();
+  } catch (cause) {
+    console.error("Resposta inválida ao preparar imagem da coleção:", cause);
+    throw new Error("Não foi possível preparar o envio da imagem.");
+  }
+
+  if (!uploadResponse.ok) {
+    throw new Error(uploadData.message ?? "Não foi possível preparar o envio da imagem.");
+  }
+
+  if (!uploadData.uploadUrl || !uploadData.publicUrl) {
+    console.error("A API retornou dados incompletos para a imagem da coleção.");
+    throw new Error("Não foi possível preparar o envio da imagem.");
+  }
+
+  let r2Response: Response;
+  try {
+    r2Response = await fetch(uploadData.uploadUrl, {
+      method: "PUT",
+      headers: { "Content-Type": file.type },
+      body: file,
+    });
+  } catch (cause) {
+    // A URL assinada contém credenciais temporárias; não a inclua no log.
+    console.error("Falha de rede/CORS no upload da imagem da coleção:", cause);
+    throw new Error("Não foi possível enviar a imagem. Verifique a conexão e tente novamente.");
+  }
+
+  if (!r2Response.ok) {
+    console.error(
+      "O R2 recusou a imagem da coleção:",
+      r2Response.status,
+      r2Response.statusText
+    );
+    throw new Error("Não foi possível enviar a imagem. Verifique a conexão e tente novamente.");
+  }
+
+  return uploadData.publicUrl;
 }
 
 export default function CollectionsPage() {
@@ -169,15 +269,18 @@ export default function CollectionsPage() {
     }
   }
 
-  async function saveCollection(values: CreateCollectionInput) {
+  async function saveCollection(values: CreateCollectionInput, imageFile?: File) {
     try {
       setError("");
+      const uploadedImageUrl = imageFile
+        ? await uploadCollectionImage(imageFile)
+        : editingCollection?.image ?? undefined;
       const response = await fetch(
         editingCollection ? `/api/collections/${editingCollection.id}` : "/api/collections",
         {
           method: editingCollection ? "PATCH" : "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(values),
+          body: JSON.stringify({ ...values, image: uploadedImageUrl }),
         }
       );
       await readApiResponse(response);
