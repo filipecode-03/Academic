@@ -2,7 +2,9 @@
 
 import { useEffect, useState } from "react";
 
-import ProductForm from "@/src/components/admin/products/product-form";
+import ProductForm, {
+  type ProductFormInitialData,
+} from "@/src/components/admin/products/product-form";
 
 type ProductImage = {
   id: string;
@@ -11,19 +13,24 @@ type ProductImage = {
 };
 
 type Product = {
-    id: string;
-    name: string;
-    slug: string;
-    price: number | string;
-    status: "ACTIVE" | "INACTIVE" | "OUT_OF_STOCK";
-    featured: boolean;
-    isNew: boolean;
-    images: ProductImage[];
+  id: string;
+  name: string;
+  slug: string;
+  price: number | string;
+  status: "ACTIVE" | "INACTIVE" | "OUT_OF_STOCK";
+  featured: boolean;
+  isNew: boolean;
+  images: ProductImage[];
 };
 
 export default function ProductsPage() {
   const [products, setProducts] = useState<Product[]>([]);
+
   const [showForm, setShowForm] = useState(false);
+
+  const [editingProduct, setEditingProduct] =
+    useState<ProductFormInitialData | null>(null);
+
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
@@ -32,9 +39,7 @@ export default function ProductsPage() {
       setLoading(true);
       setError("");
 
-      const response = await fetch(
-        "/api/products"
-      );
+      const response = await fetch("/api/products");
 
       const data = await response.json();
 
@@ -61,6 +66,34 @@ export default function ProductsPage() {
     loadProducts();
   }, []);
 
+  async function handleEdit(id: string) {
+    try {
+      setError("");
+
+      const response = await fetch(
+        `/api/products/${id}`
+      );
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(
+          data.message ??
+            "Não foi possível carregar o produto."
+        );
+      }
+
+      setEditingProduct(data.product);
+      setShowForm(true);
+    } catch (error) {
+      setError(
+        error instanceof Error
+          ? error.message
+          : "Não foi possível carregar o produto."
+      );
+    }
+  }
+
   async function handleDelete(id: string) {
     const confirmed = window.confirm(
       "Deseja realmente excluir este produto?"
@@ -70,28 +103,45 @@ export default function ProductsPage() {
       return;
     }
 
-    const response = await fetch(
-      `/api/products/${id}`,
-      {
-        method: "DELETE",
-      }
-    );
-
-    const data = await response.json();
-
-    if (!response.ok) {
-      window.alert(
-        data.message ??
-          "Não foi possível excluir o produto."
+    try {
+      const response = await fetch(
+        `/api/products/${id}`,
+        {
+          method: "DELETE",
+        }
       );
 
-      return;
-    }
+      const data = await response.json();
 
-    await loadProducts();
+      if (!response.ok) {
+        window.alert(
+          data.message ??
+            "Não foi possível excluir o produto."
+        );
+
+        return;
+      }
+
+      await loadProducts();
+    } catch {
+      window.alert(
+        "Não foi possível excluir o produto."
+      );
+    }
   }
 
-  function handleProductCreated() {
+  function handleNewProduct() {
+    setEditingProduct(null);
+    setShowForm(true);
+  }
+
+  function handleCancelForm() {
+    setEditingProduct(null);
+    setShowForm(false);
+  }
+
+  function handleProductSaved() {
+    setEditingProduct(null);
     setShowForm(false);
     loadProducts();
   }
@@ -111,8 +161,10 @@ export default function ProductsPage() {
 
         <button
           type="button"
-          onClick={() =>
-            setShowForm((current) => !current)
+          onClick={
+            showForm
+              ? handleCancelForm
+              : handleNewProduct
           }
         >
           {showForm
@@ -124,11 +176,14 @@ export default function ProductsPage() {
       {showForm && (
         <section>
           <h2 className="text-xl font-semibold">
-            Novo produto
+            {editingProduct
+              ? "Editar produto"
+              : "Novo produto"}
           </h2>
 
           <ProductForm
-            onSuccess={handleProductCreated}
+            product={editingProduct ?? undefined}
+            onSuccess={handleProductSaved}
           />
         </section>
       )}
@@ -177,7 +232,8 @@ export default function ProductsPage() {
                       </h3>
 
                       <p>
-                        R$ {Number(product.price).toFixed(2)}
+                        R${" "}
+                        {Number(product.price).toFixed(2)}
                       </p>
 
                       <p>
@@ -191,7 +247,16 @@ export default function ProductsPage() {
                     </div>
                   </div>
 
-                  <div className="mt-4">
+                  <div className="mt-4 flex gap-4">
+                    <button
+                      type="button"
+                      onClick={() =>
+                        handleEdit(product.id)
+                      }
+                    >
+                      Editar
+                    </button>
+
                     <button
                       type="button"
                       onClick={() =>
