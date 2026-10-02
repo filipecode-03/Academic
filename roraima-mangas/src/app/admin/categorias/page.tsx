@@ -110,6 +110,7 @@ export default function CategoriesPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [notice, setNotice] = useState("");
+  const [search, setSearch] = useState("");
 
   async function loadCategories() {
     try {
@@ -131,6 +132,11 @@ export default function CategoriesPage() {
   useEffect(() => {
     void loadCategories();
   }, []);
+
+  const normalizedSearch = search.trim().toLocaleLowerCase();
+  const filteredCategories = categories.filter((category) =>
+    `${category.name} ${category.slug}`.toLocaleLowerCase().includes(normalizedSearch)
+  );
 
   function startCreate() {
     setEditingCategory(undefined);
@@ -232,11 +238,25 @@ export default function CategoriesPage() {
 
       <section className="space-y-3">
         <h2 className="text-xl font-semibold">Categorias cadastradas</h2>
+        <div className="flex flex-wrap items-center gap-2">
+          <input
+            type="search"
+            className="w-full max-w-md border p-2"
+            placeholder="Pesquisar categorias..."
+            aria-label="Pesquisar categorias por nome ou slug"
+            value={search}
+            onChange={(event) => setSearch(event.target.value)}
+          />
+          {search && <button type="button" onClick={() => setSearch("")}>Limpar pesquisa</button>}
+        </div>
         {loading && <p>Carregando categorias...</p>}
         {!loading && categories.length === 0 && !error && (
           <p>Nenhuma categoria cadastrada.</p>
         )}
-        {!loading && categories.map((category) => (
+        {!loading && categories.length > 0 && filteredCategories.length === 0 && (
+          <p>Nenhuma categoria encontrada para “{search}”.</p>
+        )}
+        {!loading && filteredCategories.map((category) => (
           <article
             key={category.id}
             className="flex flex-wrap items-center justify-between gap-3 border p-4"

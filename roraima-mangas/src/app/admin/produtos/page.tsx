@@ -16,6 +16,7 @@ type Product = {
   id: string;
   name: string;
   slug: string;
+  sku?: string | null;
   price: number | string;
   status: "ACTIVE" | "INACTIVE" | "OUT_OF_STOCK";
   featured: boolean;
@@ -33,6 +34,7 @@ export default function ProductsPage() {
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [search, setSearch] = useState("");
 
   async function loadProducts() {
     try {
@@ -65,6 +67,14 @@ export default function ProductsPage() {
   useEffect(() => {
     loadProducts();
   }, []);
+
+  const normalizedSearch = search.trim().toLocaleLowerCase();
+  const filteredProducts = products.filter((product) =>
+    [product.name, product.slug, product.sku ?? ""]
+      .join(" ")
+      .toLocaleLowerCase()
+      .includes(normalizedSearch)
+  );
 
   async function handleEdit(id: string) {
     try {
@@ -193,6 +203,18 @@ export default function ProductsPage() {
           Produtos cadastrados
         </h2>
 
+        <div className="flex flex-wrap items-center gap-2">
+          <input
+            type="search"
+            className="w-full max-w-md border p-2"
+            placeholder="Pesquisar produtos..."
+            aria-label="Pesquisar produtos por nome, slug ou SKU"
+            value={search}
+            onChange={(event) => setSearch(event.target.value)}
+          />
+          {search && <button type="button" onClick={() => setSearch("")}>Limpar pesquisa</button>}
+        </div>
+
         {loading && (
           <p>Carregando produtos...</p>
         )}
@@ -209,10 +231,14 @@ export default function ProductsPage() {
             </p>
           )}
 
+        {!loading && !error && products.length > 0 && filteredProducts.length === 0 && (
+          <p>Nenhum produto encontrado para “{search}”.</p>
+        )}
+
         {!loading &&
-          products.length > 0 && (
+          filteredProducts.length > 0 && (
             <div className="space-y-4">
-              {products.map((product) => (
+              {filteredProducts.map((product) => (
                 <article
                   key={product.id}
                   className="border p-4"

@@ -230,6 +230,7 @@ export default function CollectionsPage() {
   const [savingAssociation, setSavingAssociation] = useState(false);
   const [error, setError] = useState("");
   const [notice, setNotice] = useState("");
+  const [search, setSearch] = useState("");
 
   async function loadCollections() {
     try {
@@ -354,6 +355,10 @@ export default function CollectionsPage() {
   const availableProducts = products.filter(
     (product) => !associatedProducts.some((associated) => associated.id === product.id)
   );
+  const normalizedSearch = search.trim().toLocaleLowerCase();
+  const filteredCollections = collections.filter((collection) =>
+    `${collection.name} ${collection.slug}`.toLocaleLowerCase().includes(normalizedSearch)
+  );
 
   return (
     <div className="space-y-6">
@@ -430,9 +435,23 @@ export default function CollectionsPage() {
 
       <section className="space-y-3">
         <h2 className="text-xl font-semibold">Coleções cadastradas</h2>
+        <div className="flex flex-wrap items-center gap-2">
+          <input
+            type="search"
+            className="w-full max-w-md border p-2"
+            placeholder="Pesquisar coleções..."
+            aria-label="Pesquisar coleções por nome ou slug"
+            value={search}
+            onChange={(event) => setSearch(event.target.value)}
+          />
+          {search && <button type="button" onClick={() => setSearch("")}>Limpar pesquisa</button>}
+        </div>
         {loading && <p>Carregando coleções...</p>}
         {!loading && collections.length === 0 && !error && <p>Nenhuma coleção cadastrada.</p>}
-        {!loading && collections.map((collection) => (
+        {!loading && collections.length > 0 && filteredCollections.length === 0 && (
+          <p>Nenhuma coleção encontrada para “{search}”.</p>
+        )}
+        {!loading && filteredCollections.map((collection) => (
           <article key={collection.id} className="flex flex-wrap items-center justify-between gap-3 border p-4">
             <div>
               <h3 className="font-semibold">{collection.name}</h3>

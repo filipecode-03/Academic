@@ -6,12 +6,15 @@ const destinationTypeSchema = z.enum([
   "CATEGORY",
   "COLLECTION",
 ]);
+const bannerPositionSchema = z.enum(["FIRST", "LAST"]);
 
 const homeBannerFields = {
+  title: z.string().trim().min(1, "O título do banner é obrigatório."),
+  description: z.string().optional(),
   image: z.string().min(1, "A imagem é obrigatória"),
-  order: z.number().int().min(0),
   active: z.boolean().default(true),
   destinationType: destinationTypeSchema.default("NONE"),
+  position: bannerPositionSchema.optional(),
   productId: z.string().nullable().optional(),
   categoryId: z.string().nullable().optional(),
   collectionId: z.string().nullable().optional(),
@@ -94,13 +97,18 @@ export const createHomeBannerSchema = z
 
 export const updateHomeBannerSchema = z
   .object({
+    title: homeBannerFields.title.optional(),
+    description: homeBannerFields.description,
     image: homeBannerFields.image.optional(),
-    order: homeBannerFields.order.optional(),
     active: homeBannerFields.active.optional(),
     destinationType: destinationTypeSchema.optional(),
+    position: bannerPositionSchema.optional(),
     productId: homeBannerFields.productId,
     categoryId: homeBannerFields.categoryId,
     collectionId: homeBannerFields.collectionId,
+  })
+  .refine((data) => Object.keys(data).length > 0, {
+    message: "Informe pelo menos um campo para atualizar.",
   })
   .superRefine((data, ctx) => {
     if (data.destinationType === "NONE") {
@@ -150,3 +158,10 @@ export const updateHomeBannerSchema = z
       });
     }
   });
+
+export const reorderHomeBannersSchema = z.object({
+  bannerIds: z.array(z.string().min(1, "ID de banner inválido.")),
+}).refine(
+  ({ bannerIds }) => new Set(bannerIds).size === bannerIds.length,
+  { path: ["bannerIds"], message: "A lista não pode conter banners duplicados." },
+);

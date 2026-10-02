@@ -37,7 +37,7 @@ export async function getHomeData() {
           category: true,
           collection: true,
         },
-      }),
+      }).then((banners) => banners.map(({ title, description, ...banner }) => banner)),
 
       prisma.homeSection.findMany({
         where: {

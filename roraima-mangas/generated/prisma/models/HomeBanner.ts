@@ -36,6 +36,8 @@ export type HomeBannerSumAggregateOutputType = {
 
 export type HomeBannerMinAggregateOutputType = {
   id: string | null
+  title: string | null
+  description: string | null
   image: string | null
   order: number | null
   active: boolean | null
@@ -49,6 +51,8 @@ export type HomeBannerMinAggregateOutputType = {
 
 export type HomeBannerMaxAggregateOutputType = {
   id: string | null
+  title: string | null
+  description: string | null
   image: string | null
   order: number | null
   active: boolean | null
@@ -62,6 +66,8 @@ export type HomeBannerMaxAggregateOutputType = {
 
 export type HomeBannerCountAggregateOutputType = {
   id: number
+  title: number
+  description: number
   image: number
   order: number
   active: number
@@ -85,6 +91,8 @@ export type HomeBannerSumAggregateInputType = {
 
 export type HomeBannerMinAggregateInputType = {
   id?: true
+  title?: true
+  description?: true
   image?: true
   order?: true
   active?: true
@@ -98,6 +106,8 @@ export type HomeBannerMinAggregateInputType = {
 
 export type HomeBannerMaxAggregateInputType = {
   id?: true
+  title?: true
+  description?: true
   image?: true
   order?: true
   active?: true
@@ -111,6 +121,8 @@ export type HomeBannerMaxAggregateInputType = {
 
 export type HomeBannerCountAggregateInputType = {
   id?: true
+  title?: true
+  description?: true
   image?: true
   order?: true
   active?: true
@@ -211,6 +223,8 @@ export type HomeBannerGroupByArgs<ExtArgs extends runtime.Types.Extensions.Inter
 
 export type HomeBannerGroupByOutputType = {
   id: string
+  title: string
+  description: string | null
   image: string
   order: number
   active: boolean
@@ -247,6 +261,8 @@ export type HomeBannerWhereInput = {
   OR?: Prisma.HomeBannerWhereInput[]
   NOT?: Prisma.HomeBannerWhereInput | Prisma.HomeBannerWhereInput[]
   id?: Prisma.StringFilter<"HomeBanner"> | string
+  title?: Prisma.StringFilter<"HomeBanner"> | string
+  description?: Prisma.StringNullableFilter<"HomeBanner"> | string | null
   image?: Prisma.StringFilter<"HomeBanner"> | string
   order?: Prisma.IntFilter<"HomeBanner"> | number
   active?: Prisma.BoolFilter<"HomeBanner"> | boolean
@@ -263,6 +279,8 @@ export type HomeBannerWhereInput = {
 
 export type HomeBannerOrderByWithRelationInput = {
   id?: Prisma.SortOrder
+  title?: Prisma.SortOrder
+  description?: Prisma.SortOrderInput | Prisma.SortOrder
   image?: Prisma.SortOrder
   order?: Prisma.SortOrder
   active?: Prisma.SortOrder
@@ -282,6 +300,8 @@ export type HomeBannerWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.HomeBannerWhereInput | Prisma.HomeBannerWhereInput[]
   OR?: Prisma.HomeBannerWhereInput[]
   NOT?: Prisma.HomeBannerWhereInput | Prisma.HomeBannerWhereInput[]
+  title?: Prisma.StringFilter<"HomeBanner"> | string
+  description?: Prisma.StringNullableFilter<"HomeBanner"> | string | null
   image?: Prisma.StringFilter<"HomeBanner"> | string
   order?: Prisma.IntFilter<"HomeBanner"> | number
   active?: Prisma.BoolFilter<"HomeBanner"> | boolean
@@ -298,6 +318,8 @@ export type HomeBannerWhereUniqueInput = Prisma.AtLeast<{
 
 export type HomeBannerOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
+  title?: Prisma.SortOrder
+  description?: Prisma.SortOrderInput | Prisma.SortOrder
   image?: Prisma.SortOrder
   order?: Prisma.SortOrder
   active?: Prisma.SortOrder
@@ -319,6 +341,8 @@ export type HomeBannerScalarWhereWithAggregatesInput = {
   OR?: Prisma.HomeBannerScalarWhereWithAggregatesInput[]
   NOT?: Prisma.HomeBannerScalarWhereWithAggregatesInput | Prisma.HomeBannerScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"HomeBanner"> | string
+  title?: Prisma.StringWithAggregatesFilter<"HomeBanner"> | string
+  description?: Prisma.StringNullableWithAggregatesFilter<"HomeBanner"> | string | null
   image?: Prisma.StringWithAggregatesFilter<"HomeBanner"> | string
   order?: Prisma.IntWithAggregatesFilter<"HomeBanner"> | number
   active?: Prisma.BoolWithAggregatesFilter<"HomeBanner"> | boolean
@@ -332,6 +356,8 @@ export type HomeBannerScalarWhereWithAggregatesInput = {
 
 export type HomeBannerCreateInput = {
   id?: string
+  title: string
+  description?: string | null
   image: string
   order: number
   active?: boolean
@@ -345,6 +371,8 @@ export type HomeBannerCreateInput = {
 
 export type HomeBannerUncheckedCreateInput = {
   id?: string
+  title: string
+  description?: string | null
   image: string
   order: number
   active?: boolean
@@ -358,6 +386,8 @@ export type HomeBannerUncheckedCreateInput = {
 
 export type HomeBannerUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   image?: Prisma.StringFieldUpdateOperationsInput | string
   order?: Prisma.IntFieldUpdateOperationsInput | number
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -371,6 +401,8 @@ export type HomeBannerUpdateInput = {
 
 export type HomeBannerUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   image?: Prisma.StringFieldUpdateOperationsInput | string
   order?: Prisma.IntFieldUpdateOperationsInput | number
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -384,6 +416,8 @@ export type HomeBannerUncheckedUpdateInput = {
 
 export type HomeBannerCreateManyInput = {
   id?: string
+  title: string
+  description?: string | null
   image: string
   order: number
   active?: boolean
@@ -397,6 +431,8 @@ export type HomeBannerCreateManyInput = {
 
 export type HomeBannerUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   image?: Prisma.StringFieldUpdateOperationsInput | string
   order?: Prisma.IntFieldUpdateOperationsInput | number
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -407,6 +443,8 @@ export type HomeBannerUpdateManyMutationInput = {
 
 export type HomeBannerUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   image?: Prisma.StringFieldUpdateOperationsInput | string
   order?: Prisma.IntFieldUpdateOperationsInput | number
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -430,6 +468,8 @@ export type HomeBannerOrderByRelationAggregateInput = {
 
 export type HomeBannerCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  title?: Prisma.SortOrder
+  description?: Prisma.SortOrder
   image?: Prisma.SortOrder
   order?: Prisma.SortOrder
   active?: Prisma.SortOrder
@@ -447,6 +487,8 @@ export type HomeBannerAvgOrderByAggregateInput = {
 
 export type HomeBannerMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  title?: Prisma.SortOrder
+  description?: Prisma.SortOrder
   image?: Prisma.SortOrder
   order?: Prisma.SortOrder
   active?: Prisma.SortOrder
@@ -460,6 +502,8 @@ export type HomeBannerMaxOrderByAggregateInput = {
 
 export type HomeBannerMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  title?: Prisma.SortOrder
+  description?: Prisma.SortOrder
   image?: Prisma.SortOrder
   order?: Prisma.SortOrder
   active?: Prisma.SortOrder
@@ -607,6 +651,8 @@ export type EnumBannerDestinationTypeFieldUpdateOperationsInput = {
 
 export type HomeBannerCreateWithoutCategoryInput = {
   id?: string
+  title: string
+  description?: string | null
   image: string
   order: number
   active?: boolean
@@ -619,6 +665,8 @@ export type HomeBannerCreateWithoutCategoryInput = {
 
 export type HomeBannerUncheckedCreateWithoutCategoryInput = {
   id?: string
+  title: string
+  description?: string | null
   image: string
   order: number
   active?: boolean
@@ -660,6 +708,8 @@ export type HomeBannerScalarWhereInput = {
   OR?: Prisma.HomeBannerScalarWhereInput[]
   NOT?: Prisma.HomeBannerScalarWhereInput | Prisma.HomeBannerScalarWhereInput[]
   id?: Prisma.StringFilter<"HomeBanner"> | string
+  title?: Prisma.StringFilter<"HomeBanner"> | string
+  description?: Prisma.StringNullableFilter<"HomeBanner"> | string | null
   image?: Prisma.StringFilter<"HomeBanner"> | string
   order?: Prisma.IntFilter<"HomeBanner"> | number
   active?: Prisma.BoolFilter<"HomeBanner"> | boolean
@@ -673,6 +723,8 @@ export type HomeBannerScalarWhereInput = {
 
 export type HomeBannerCreateWithoutProductInput = {
   id?: string
+  title: string
+  description?: string | null
   image: string
   order: number
   active?: boolean
@@ -685,6 +737,8 @@ export type HomeBannerCreateWithoutProductInput = {
 
 export type HomeBannerUncheckedCreateWithoutProductInput = {
   id?: string
+  title: string
+  description?: string | null
   image: string
   order: number
   active?: boolean
@@ -723,6 +777,8 @@ export type HomeBannerUpdateManyWithWhereWithoutProductInput = {
 
 export type HomeBannerCreateWithoutCollectionInput = {
   id?: string
+  title: string
+  description?: string | null
   image: string
   order: number
   active?: boolean
@@ -735,6 +791,8 @@ export type HomeBannerCreateWithoutCollectionInput = {
 
 export type HomeBannerUncheckedCreateWithoutCollectionInput = {
   id?: string
+  title: string
+  description?: string | null
   image: string
   order: number
   active?: boolean
@@ -773,6 +831,8 @@ export type HomeBannerUpdateManyWithWhereWithoutCollectionInput = {
 
 export type HomeBannerCreateManyCategoryInput = {
   id?: string
+  title: string
+  description?: string | null
   image: string
   order: number
   active?: boolean
@@ -785,6 +845,8 @@ export type HomeBannerCreateManyCategoryInput = {
 
 export type HomeBannerUpdateWithoutCategoryInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   image?: Prisma.StringFieldUpdateOperationsInput | string
   order?: Prisma.IntFieldUpdateOperationsInput | number
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -797,6 +859,8 @@ export type HomeBannerUpdateWithoutCategoryInput = {
 
 export type HomeBannerUncheckedUpdateWithoutCategoryInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   image?: Prisma.StringFieldUpdateOperationsInput | string
   order?: Prisma.IntFieldUpdateOperationsInput | number
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -809,6 +873,8 @@ export type HomeBannerUncheckedUpdateWithoutCategoryInput = {
 
 export type HomeBannerUncheckedUpdateManyWithoutCategoryInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   image?: Prisma.StringFieldUpdateOperationsInput | string
   order?: Prisma.IntFieldUpdateOperationsInput | number
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -821,6 +887,8 @@ export type HomeBannerUncheckedUpdateManyWithoutCategoryInput = {
 
 export type HomeBannerCreateManyProductInput = {
   id?: string
+  title: string
+  description?: string | null
   image: string
   order: number
   active?: boolean
@@ -833,6 +901,8 @@ export type HomeBannerCreateManyProductInput = {
 
 export type HomeBannerUpdateWithoutProductInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   image?: Prisma.StringFieldUpdateOperationsInput | string
   order?: Prisma.IntFieldUpdateOperationsInput | number
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -845,6 +915,8 @@ export type HomeBannerUpdateWithoutProductInput = {
 
 export type HomeBannerUncheckedUpdateWithoutProductInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   image?: Prisma.StringFieldUpdateOperationsInput | string
   order?: Prisma.IntFieldUpdateOperationsInput | number
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -857,6 +929,8 @@ export type HomeBannerUncheckedUpdateWithoutProductInput = {
 
 export type HomeBannerUncheckedUpdateManyWithoutProductInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   image?: Prisma.StringFieldUpdateOperationsInput | string
   order?: Prisma.IntFieldUpdateOperationsInput | number
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -869,6 +943,8 @@ export type HomeBannerUncheckedUpdateManyWithoutProductInput = {
 
 export type HomeBannerCreateManyCollectionInput = {
   id?: string
+  title: string
+  description?: string | null
   image: string
   order: number
   active?: boolean
@@ -881,6 +957,8 @@ export type HomeBannerCreateManyCollectionInput = {
 
 export type HomeBannerUpdateWithoutCollectionInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   image?: Prisma.StringFieldUpdateOperationsInput | string
   order?: Prisma.IntFieldUpdateOperationsInput | number
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -893,6 +971,8 @@ export type HomeBannerUpdateWithoutCollectionInput = {
 
 export type HomeBannerUncheckedUpdateWithoutCollectionInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   image?: Prisma.StringFieldUpdateOperationsInput | string
   order?: Prisma.IntFieldUpdateOperationsInput | number
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -905,6 +985,8 @@ export type HomeBannerUncheckedUpdateWithoutCollectionInput = {
 
 export type HomeBannerUncheckedUpdateManyWithoutCollectionInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   image?: Prisma.StringFieldUpdateOperationsInput | string
   order?: Prisma.IntFieldUpdateOperationsInput | number
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -919,6 +1001,8 @@ export type HomeBannerUncheckedUpdateManyWithoutCollectionInput = {
 
 export type HomeBannerSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  title?: boolean
+  description?: boolean
   image?: boolean
   order?: boolean
   active?: boolean
@@ -935,6 +1019,8 @@ export type HomeBannerSelect<ExtArgs extends runtime.Types.Extensions.InternalAr
 
 export type HomeBannerSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  title?: boolean
+  description?: boolean
   image?: boolean
   order?: boolean
   active?: boolean
@@ -951,6 +1037,8 @@ export type HomeBannerSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Ex
 
 export type HomeBannerSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  title?: boolean
+  description?: boolean
   image?: boolean
   order?: boolean
   active?: boolean
@@ -967,6 +1055,8 @@ export type HomeBannerSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Ex
 
 export type HomeBannerSelectScalar = {
   id?: boolean
+  title?: boolean
+  description?: boolean
   image?: boolean
   order?: boolean
   active?: boolean
@@ -978,7 +1068,7 @@ export type HomeBannerSelectScalar = {
   updatedAt?: boolean
 }
 
-export type HomeBannerOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "image" | "order" | "active" | "destinationType" | "productId" | "categoryId" | "collectionId" | "createdAt" | "updatedAt", ExtArgs["result"]["homeBanner"]>
+export type HomeBannerOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "description" | "image" | "order" | "active" | "destinationType" | "productId" | "categoryId" | "collectionId" | "createdAt" | "updatedAt", ExtArgs["result"]["homeBanner"]>
 export type HomeBannerInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   product?: boolean | Prisma.HomeBanner$productArgs<ExtArgs>
   category?: boolean | Prisma.HomeBanner$categoryArgs<ExtArgs>
@@ -1004,6 +1094,8 @@ export type $HomeBannerPayload<ExtArgs extends runtime.Types.Extensions.Internal
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
+    title: string
+    description: string | null
     image: string
     order: number
     active: boolean
@@ -1440,6 +1532,8 @@ export interface Prisma__HomeBannerClient<T, Null = never, ExtArgs extends runti
  */
 export interface HomeBannerFieldRefs {
   readonly id: Prisma.FieldRef<"HomeBanner", 'String'>
+  readonly title: Prisma.FieldRef<"HomeBanner", 'String'>
+  readonly description: Prisma.FieldRef<"HomeBanner", 'String'>
   readonly image: Prisma.FieldRef<"HomeBanner", 'String'>
   readonly order: Prisma.FieldRef<"HomeBanner", 'Int'>
   readonly active: Prisma.FieldRef<"HomeBanner", 'Boolean'>

@@ -157,6 +157,8 @@ export type ProductCollectionScalarFieldEnum = (typeof ProductCollectionScalarFi
 
 export const HomeBannerScalarFieldEnum = {
   id: 'id',
+  title: 'title',
+  description: 'description',
   image: 'image',
   order: 'order',
   active: 'active',

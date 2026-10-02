@@ -93,10 +93,12 @@ model ProductCollection {
 }
 
 model HomeBanner {
-  id     String  @id @default(cuid())
-  image  String
-  order  Int
-  active Boolean @default(true)
+  id          String  @id @default(cuid())
+  title       String
+  description String?
+  image       String
+  order       Int
+  active      Boolean @default(true)
 
   destinationType BannerDestinationType @default(NONE)
 
