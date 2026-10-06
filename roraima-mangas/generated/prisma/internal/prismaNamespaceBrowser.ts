@@ -157,8 +157,6 @@ export type ProductCollectionScalarFieldEnum = (typeof ProductCollectionScalarFi
 
 export const HomeBannerScalarFieldEnum = {
   id: 'id',
-  title: 'title',
-  description: 'description',
   image: 'image',
   order: 'order',
   active: 'active',
@@ -167,7 +165,9 @@ export const HomeBannerScalarFieldEnum = {
   categoryId: 'categoryId',
   collectionId: 'collectionId',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  title: 'title',
+  description: 'description'
 } as const
 
 export type HomeBannerScalarFieldEnum = (typeof HomeBannerScalarFieldEnum)[keyof typeof HomeBannerScalarFieldEnum]
