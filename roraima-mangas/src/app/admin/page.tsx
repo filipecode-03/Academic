@@ -6,9 +6,9 @@ import { authOptions } from "@/src/lib/auth";
 
 const adminLinks = [
   ["Produtos", "/admin/produtos", "Cadastre, ajuste preços e controle o estoque."],
-  ["Categorias", "/admin/categorias", "Organize os produtos da loja."],
   ["Coleções", "/admin/colecoes", "Monte vitrines temáticas para os clientes."],
   ["Conteúdo da Home", "/admin/secoes", "Atualize seções, banners e avisos promocionais."],
+  ["Atalhos da Home", "/admin/blocos-home", "Crie destaques visuais para as coleções."],
 ];
 
 export default async function AdminPage() {

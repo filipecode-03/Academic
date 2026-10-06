@@ -1,6 +1,6 @@
 import { prisma } from "@/src/lib/prisma";
 
-type SlugModel = "product" | "category" | "collection";
+type SlugModel = "product" | "collection";
 
 export async function createUniqueSlug(
   model: SlugModel,
@@ -16,9 +16,7 @@ export async function createUniqueSlug(
   while (true) {
     const existing = model === "product"
       ? await prisma.product.findUnique({ select: { id: true }, where: { slug } })
-      : model === "category"
-        ? await prisma.category.findUnique({ select: { id: true }, where: { slug } })
-        : await prisma.collection.findUnique({ select: { id: true }, where: { slug } });
+      : await prisma.collection.findUnique({ select: { id: true }, where: { slug } });
     if (!existing || existing.id === excludeId) return slug;
     slug = `${base}-${suffix++}`;
   }

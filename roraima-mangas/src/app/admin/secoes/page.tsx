@@ -3,18 +3,15 @@
 import { useEffect, useMemo, useState } from "react";
 
 type Product = { id: string; name: string; slug: string };
-type Category = { id: string; name: string };
 type Collection = { id: string; name: string };
 type SectionProduct = { productId: string; order: number; product: Product };
 type Section = {
   id: string;
   title: string;
-  type: "MANUAL" | "CATEGORY" | "COLLECTION";
+  type: "MANUAL" | "COLLECTION";
   order: number;
   active: boolean;
-  categoryId: string | null;
   collectionId: string | null;
-  category: Category | null;
   collection: Collection | null;
   products: SectionProduct[];
 };
@@ -23,14 +20,12 @@ type ApiData = {
   homeSections?: Section[];
   homeSection?: Section;
   products?: Product[];
-  categories?: Category[];
   collections?: Collection[];
   homeSectionProduct?: SectionProduct;
 };
 type SectionDraft = {
   title: string;
   type: Section["type"];
-  categoryId: string;
   collectionId: string;
   active: boolean;
 };
@@ -48,13 +43,12 @@ function getErrorMessage(cause: unknown, fallback: string) {
 }
 
 function emptyDraft(): SectionDraft {
-  return { title: "", type: "MANUAL", categoryId: "", collectionId: "", active: true };
+  return { title: "", type: "MANUAL", collectionId: "", active: true };
 }
 
 export default function HomeSectionsPage() {
   const [sections, setSections] = useState<Section[]>([]);
   const [products, setProducts] = useState<Product[]>([]);
-  const [categories, setCategories] = useState<Category[]>([]);
   const [collections, setCollections] = useState<Collection[]>([]);
   const [editing, setEditing] = useState<Section | null>(null);
   const [draft, setDraft] = useState<SectionDraft>(emptyDraft());
@@ -73,18 +67,16 @@ export default function HomeSectionsPage() {
     try {
       setLoading(true);
       setError("");
-      const [sectionResponse, productResponse, categoryResponse, collectionResponse] = await Promise.all([
+      const [sectionResponse, productResponse, collectionResponse] = await Promise.all([
         fetch("/api/home-sections"),
         fetch("/api/products"),
-        fetch("/api/categories"),
         fetch("/api/collections"),
       ]);
-      const [sectionData, productData, categoryData, collectionData] = await Promise.all([
-        readApi(sectionResponse), readApi(productResponse), readApi(categoryResponse), readApi(collectionResponse),
+      const [sectionData, productData, collectionData] = await Promise.all([
+        readApi(sectionResponse), readApi(productResponse), readApi(collectionResponse),
       ]);
       setSections(sectionData.homeSections ?? []);
       setProducts(productData.products ?? []);
-      setCategories(categoryData.categories ?? []);
       setCollections(collectionData.collections ?? []);
     } catch (cause) {
       console.error("Erro ao carregar seções da Home:", cause);
@@ -102,7 +94,7 @@ export default function HomeSectionsPage() {
       : sections;
     const query = search.trim().toLocaleLowerCase();
     return ordered.filter((section) =>
-      `${section.title} ${section.type} ${section.category?.name ?? ""} ${section.collection?.name ?? ""}`
+      `${section.title} ${section.type} ${section.collection?.name ?? ""}`
         .toLocaleLowerCase().includes(query)
     );
   }, [isOrdering, orderedIds, sections, search]);
@@ -139,7 +131,6 @@ export default function HomeSectionsPage() {
     setDraft({
       title: section.title,
       type: section.type,
-      categoryId: section.categoryId ?? "",
       collectionId: section.collectionId ?? "",
       active: section.active,
     });
@@ -154,7 +145,6 @@ export default function HomeSectionsPage() {
     setDraft((current) => ({
       ...current,
       type,
-      categoryId: type === "CATEGORY" ? current.categoryId : "",
       collectionId: type === "COLLECTION" ? current.collectionId : "",
     }));
     if (type !== "MANUAL") setSelectedProductIds([]);
@@ -163,7 +153,7 @@ export default function HomeSectionsPage() {
   function toggleProduct(productId: string) {
     setSelectedProductIds((current) => current.includes(productId)
       ? current.filter((id) => id !== productId)
-      : [...current, productId]);
+      : current.length >= 10 ? current : [...current, productId]);
   }
 
   async function saveSection(event: React.FormEvent<HTMLFormElement>) {
@@ -173,10 +163,7 @@ export default function HomeSectionsPage() {
       setError("O título da seção é obrigatório.");
       return;
     }
-    if (draft.type === "CATEGORY" && !draft.categoryId) {
-      setError("Selecione uma categoria para esta seção.");
-      return;
-    }
+    if (draft.type === "MANUAL" && selectedProductIds.length > 10) { setError("Uma seção pode ter no máximo 10 produtos."); return; }
     if (draft.type === "COLLECTION" && !draft.collectionId) {
       setError("Selecione uma coleção para esta seção.");
       return;
@@ -190,7 +177,6 @@ export default function HomeSectionsPage() {
         type: draft.type,
         active: draft.active,
         order: editing?.order ?? sections.length,
-        categoryId: draft.type === "CATEGORY" ? draft.categoryId : null,
         collectionId: draft.type === "COLLECTION" ? draft.collectionId : null,
       };
       const response = await fetch(editing ? `/api/home-sections/${editing.id}` : "/api/home-sections", {
@@ -343,15 +329,9 @@ export default function HomeSectionsPage() {
         <div>
           <label className="mb-1 block" htmlFor="section-type">Tipo da seção</label>
           <select id="section-type" className="border p-2" value={draft.type} onChange={(event) => changeType(event.target.value as Section["type"])}>
-            <option value="MANUAL">Manual</option><option value="CATEGORY">Categoria</option><option value="COLLECTION">Coleção</option>
+            <option value="MANUAL">Manual</option><option value="COLLECTION">Coleção</option>
           </select>
         </div>
-        {draft.type === "CATEGORY" && <div>
-          <label className="mb-1 block" htmlFor="section-category">Categoria</label>
-          <select id="section-category" className="w-full max-w-xl border p-2" required value={draft.categoryId} onChange={(event) => setDraft({ ...draft, categoryId: event.target.value })}>
-            <option value="">Selecione uma categoria</option>{categories.map((category) => <option key={category.id} value={category.id}>{category.name}</option>)}
-          </select>
-        </div>}
         {draft.type === "COLLECTION" && <div>
           <label className="mb-1 block" htmlFor="section-collection">Coleção</label>
           <select id="section-collection" className="w-full max-w-xl border p-2" required value={draft.collectionId} onChange={(event) => setDraft({ ...draft, collectionId: event.target.value })}>
@@ -360,11 +340,11 @@ export default function HomeSectionsPage() {
         </div>}
         {draft.type === "MANUAL" && <fieldset className="space-y-3">
           <legend className="font-semibold">Produtos da seção</legend>
-          <p className="text-sm">Selecionados: {selectedProductIds.length}. Produtos existentes mantêm a ordem salva; novas seleções são adicionadas ao final.</p>
+          <p className="text-sm">Selecionados: {selectedProductIds.length}/10. Produtos existentes mantêm a ordem salva; novas seleções são adicionadas ao final.</p>
           <input type="search" className="w-full max-w-md border p-2" placeholder="Pesquisar produto..." aria-label="Pesquisar produtos" value={productSearch} onChange={(event) => setProductSearch(event.target.value)} />
           <div className="max-h-64 space-y-1 overflow-auto border p-3">
             {visibleProducts.length === 0 ? <p>Nenhum produto encontrado.</p> : visibleProducts.map((product) => <label key={product.id} className="flex items-center gap-2">
-              <input type="checkbox" checked={selectedProductIds.includes(product.id)} onChange={() => toggleProduct(product.id)} />
+              <input type="checkbox" checked={selectedProductIds.includes(product.id)} disabled={selectedProductIds.length >= 10 && !selectedProductIds.includes(product.id)} onChange={() => toggleProduct(product.id)} />
               <span>{product.name}</span>
             </label>)}
           </div>
@@ -387,8 +367,8 @@ export default function HomeSectionsPage() {
         {!loading && sections.length > 0 && displayedSections.length === 0 && <p>Nenhuma seção encontrada para “{search}”.</p>}
         {!loading && displayedSections.map((section) => {
           const sectionIndex = isOrdering ? orderedIds.indexOf(section.id) : sections.findIndex((item) => item.id === section.id);
-          const typeLabel = section.type === "MANUAL" ? "Manual" : section.type === "CATEGORY" ? "Categoria" : "Coleção";
-          const source = section.type === "CATEGORY" ? section.category?.name ?? "Categoria indisponível" : section.type === "COLLECTION" ? section.collection?.name ?? "Coleção indisponível" : `${section.products.length} produto(s)`;
+          const typeLabel = section.type === "MANUAL" ? "Manual" : "Coleção";
+          const source = section.type === "COLLECTION" ? section.collection?.name ?? "Coleção indisponível" : `${section.products.length} produto(s)`;
           return <article key={section.id} className="flex flex-wrap items-center justify-between gap-4 border p-4">
             <div>
               <h3 className="font-semibold">{section.title}</h3>

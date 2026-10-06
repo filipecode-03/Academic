@@ -30,7 +30,6 @@ export type OrderStatus = (typeof OrderStatus)[keyof typeof OrderStatus]
 export const BannerDestinationType = {
   NONE: 'NONE',
   PRODUCT: 'PRODUCT',
-  CATEGORY: 'CATEGORY',
   COLLECTION: 'COLLECTION'
 } as const
 
@@ -47,7 +46,6 @@ export type PromoNoticePosition = (typeof PromoNoticePosition)[keyof typeof Prom
 
 export const HomeSectionType = {
   MANUAL: 'MANUAL',
-  CATEGORY: 'CATEGORY',
   COLLECTION: 'COLLECTION'
 } as const
 

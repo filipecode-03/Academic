@@ -26,10 +26,10 @@ export default async function ProductPage({ params }: PageProps<"/produtos/[slug
   return (
     <main className="mx-auto min-h-[50vh] max-w-7xl px-4 py-7 sm:px-6 sm:py-10 lg:px-8">
       <Breadcrumb current={product.name} />
-      <article className="grid gap-7 lg:grid-cols-[minmax(0,1fr)_minmax(20rem,0.9fr)] lg:gap-12">
+      <article className="grid gap-7 lg:grid-cols-[minmax(0,0.85fr)_minmax(20rem,1fr)] lg:gap-12">
         <ProductGallery name={product.name} images={product.images} />
         <div className="flex flex-col items-start gap-5 rounded-xl border bg-white p-5 shadow-sm sm:p-7">
-          {product.category && <Link className="rounded-full bg-yellow-100 px-3 py-1 text-sm font-semibold text-neutral-800 transition hover:bg-yellow-200" href={`/categorias/${product.category.slug}`}>{product.category.name}</Link>}
+          {product.collections?.map(({ collection }) => <Link key={collection.id} className="rounded-full bg-yellow-100 px-3 py-1 text-sm font-semibold text-neutral-800 transition hover:bg-yellow-200" href={`/colecoes/${collection.slug}`}>{collection.name}</Link>)}
           <div className="space-y-3">
             <h1 className="text-2xl font-bold leading-tight sm:text-3xl">{product.name}</h1>
             {product.description && <p className="whitespace-pre-wrap leading-7 text-neutral-600">{product.description}</p>}
@@ -49,7 +49,6 @@ export default async function ProductPage({ params }: PageProps<"/produtos/[slug
             <AccordionContent className="pb-5">
               <dl className="grid gap-x-8 gap-y-3 text-sm sm:grid-cols-2">
                 {product.details?.map((detail, index) => <div key={`${detail.title}-${index}`} className="flex justify-between gap-4 border-b py-2"><dt className="text-neutral-500">{detail.title}</dt><dd className="text-right font-medium">{detail.value}</dd></div>)}
-                {product.category && <div className="flex justify-between gap-4 border-b py-2"><dt className="text-neutral-500">Categoria</dt><dd><Link href={`/categorias/${product.category.slug}`} className="font-medium underline underline-offset-4">{product.category.name}</Link></dd></div>}
                 <div className="flex justify-between gap-4 border-b py-2"><dt className="text-neutral-500">Disponibilidade</dt><dd className="font-medium">{available ? "Disponível" : "Indisponível"}</dd></div>
                 {product.isNew && <div className="flex justify-between gap-4 border-b py-2"><dt className="text-neutral-500">Novidade</dt><dd className="font-medium">Sim</dd></div>}
                 {product.featured && <div className="flex justify-between gap-4 border-b py-2"><dt className="text-neutral-500">Destaque</dt><dd className="font-medium">Sim</dd></div>}

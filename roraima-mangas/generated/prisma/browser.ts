@@ -23,11 +23,6 @@ export * from './enums';
  */
 export type User = Prisma.UserModel
 /**
- * Model Category
- * 
- */
-export type Category = Prisma.CategoryModel
-/**
  * Model Product
  * 
  */
@@ -72,6 +67,11 @@ export type PromoNotice = Prisma.PromoNoticeModel
  * 
  */
 export type HomeSection = Prisma.HomeSectionModel
+/**
+ * Model HomeCollectionBlock
+ * 
+ */
+export type HomeCollectionBlock = Prisma.HomeCollectionBlockModel
 /**
  * Model HomeSectionProduct
  * 

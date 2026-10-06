@@ -4,164 +4,59 @@ import { cache } from "react";
 
 const publicProductInclude = {
   images: { orderBy: { order: "asc" as const } },
-  category: true,
   collections: { include: { collection: true } },
 };
-
-type HomeSectionRecord = Prisma.HomeSectionGetPayload<{
-  include: typeof homeSectionInclude;
-}>;
+const homeSectionInclude = {
+  collection: { include: { products: { orderBy: [{ product: { featured: "desc" as const } }, { product: { createdAt: "desc" as const } }], take: 10, include: { product: { include: publicProductInclude } } } } },
+  products: { orderBy: { order: "asc" as const }, take: 10, include: { product: { include: publicProductInclude } } },
+};
+type HomeSectionRecord = Prisma.HomeSectionGetPayload<{ include: typeof homeSectionInclude }>;
 
 function toPublicHomeSection(section: HomeSectionRecord) {
   const displayProducts = section.type === "MANUAL"
     ? section.products.map(({ product }) => product)
-    : section.type === "CATEGORY"
-      ? section.category?.products ?? []
-      : section.collection?.products.map(({ product }) => product) ?? [];
-
+    : section.collection?.products.map(({ product }) => product) ?? [];
   return {
     ...section,
-    category: section.category
-      ? {
-          id: section.category.id,
-          name: section.category.name,
-          slug: section.category.slug,
-        }
-      : null,
-    collection: section.collection
-      ? {
-          id: section.collection.id,
-          name: section.collection.name,
-          slug: section.collection.slug,
-          description: section.collection.description,
-          image: section.collection.image,
-        }
-      : null,
+    collection: section.collection ? { id: section.collection.id, name: section.collection.name, slug: section.collection.slug, description: section.collection.description, image: section.collection.image } : null,
     displayProducts,
   };
 }
 
-const homeSectionInclude = {
-  category: {
-    include: {
-      products: {
-        orderBy: [{ featured: "desc" as const }, { createdAt: "desc" as const }],
-        include: publicProductInclude,
-      },
-    },
-  },
-  collection: {
-    include: {
-      products: {
-        orderBy: [
-          { product: { featured: "desc" as const } },
-          { product: { createdAt: "desc" as const } },
-        ],
-        include: { product: { include: publicProductInclude } },
-      },
-    },
-  },
-  products: {
-    orderBy: { order: "asc" as const },
-    include: {
-      product: { include: publicProductInclude },
-    },
-  },
-};
-
 export async function getActiveHomeSections() {
-  const sections = await prisma.homeSection.findMany({
-    where: { active: true },
-    orderBy: { order: "asc" },
-    include: homeSectionInclude,
-  });
-
+  const sections = await prisma.homeSection.findMany({ where: { active: true }, orderBy: { order: "asc" }, include: homeSectionInclude });
   return sections.map(toPublicHomeSection);
 }
-
 export const getPublicHomeSectionById = cache(async (id: string) => {
-  const section = await prisma.homeSection.findFirst({
-    where: { id, active: true },
-    include: homeSectionInclude,
-  });
+  const section = await prisma.homeSection.findFirst({ where: { id, active: true }, include: homeSectionInclude });
   return section ? toPublicHomeSection(section) : null;
 });
-
 export async function getPublicProductBySlug(slug: string) {
-  const decodedSlug = decodePathSegment(slug);
-  return prisma.product.findFirst({
-    where: { slug: decodedSlug },
-    include: publicProductInclude,
-  });
+  return prisma.product.findFirst({ where: { slug: decodePathSegment(slug) }, include: publicProductInclude });
 }
-
-export async function getPublicCategoryBySlug(slug: string) {
-  const decodedSlug = decodePathSegment(slug);
-  return prisma.category.findUnique({
-    where: { slug: decodedSlug },
-    include: {
-      products: {
-        orderBy: [{ featured: "desc" }, { createdAt: "desc" }],
-        include: publicProductInclude,
-      },
-    },
-  });
-}
-
 export async function getPublicCollectionBySlug(slug: string) {
-  const decodedSlug = decodePathSegment(slug);
-  return prisma.collection.findUnique({
-    where: { slug: decodedSlug },
-    include: {
-      products: {
-        orderBy: [
-          { product: { featured: "desc" } },
-          { product: { createdAt: "desc" } },
-        ],
-        include: { product: { include: publicProductInclude } },
-      },
-    },
-  });
+  return prisma.collection.findUnique({ where: { slug: decodePathSegment(slug) }, include: {
+    products: { orderBy: [{ product: { featured: "desc" } }, { product: { createdAt: "desc" } }], include: { product: { include: publicProductInclude } } },
+  } });
 }
-
 export async function searchCatalog(query: string) {
   const term = query.trim();
-  if (term.length < 2) return { products: [], categories: [], collections: [] };
-  const [products, categories, collections] = await Promise.all([
+  if (term.length < 2) return { products: [], collections: [] };
+  const [products, collections] = await Promise.all([
     prisma.product.findMany({ where: { name: { contains: term, mode: "insensitive" } }, take: 48, orderBy: [{ featured: "desc" }, { createdAt: "desc" }], include: publicProductInclude }),
-    prisma.category.findMany({ where: { name: { contains: term, mode: "insensitive" } }, take: 12, orderBy: { name: "asc" } }),
     prisma.collection.findMany({ where: { name: { contains: term, mode: "insensitive" } }, take: 12, orderBy: { name: "asc" } }),
   ]);
-  return { products, categories, collections };
+  return { products, collections };
 }
-
-function decodePathSegment(value: string) {
-  try {
-    return decodeURIComponent(value);
-  } catch {
-    return value;
-  }
-}
+function decodePathSegment(value: string) { try { return decodeURIComponent(value); } catch { return value; } }
 
 export async function getHomeData() {
   const now = new Date();
-
-  const [promoNotices, banners, sections] = await Promise.all([
-    prisma.promoNotice.findMany({
-      where: {
-        active: true,
-        startAt: { lte: now },
-        endAt: { gte: now },
-      },
-      orderBy: [{ position: "asc" }, { order: "asc" }],
-    }),
-    prisma.homeBanner.findMany({
-      where: { active: true },
-      orderBy: { order: "asc" },
-      include: { product: true, category: true, collection: true },
-    }).then((items) => items.map(({ title, description, ...banner }) => banner)),
+  const [promoNotices, banners, sections, collectionBlocks] = await Promise.all([
+    prisma.promoNotice.findMany({ where: { active: true, startAt: { lte: now }, endAt: { gte: now } }, orderBy: [{ position: "asc" }, { order: "asc" }] }),
+    prisma.homeBanner.findMany({ where: { active: true }, orderBy: { order: "asc" }, include: { product: true, collection: true } }).then((items) => items.map(({ title, description, ...banner }) => banner)),
     getActiveHomeSections(),
+    prisma.homeCollectionBlock.findMany({ where: { active: true }, orderBy: { order: "asc" }, include: { collection: { select: { slug: true } } } }),
   ]);
-
-  return { promoNotices, banners, sections };
+  return { promoNotices, banners, sections, collectionBlocks };
 }

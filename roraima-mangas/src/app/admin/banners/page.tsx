@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { createHomeBannerSchema } from "@/src/schemas/home-banner.schema";
 
-type DestinationType = "NONE" | "PRODUCT" | "CATEGORY" | "COLLECTION";
+type DestinationType = "NONE" | "PRODUCT" | "COLLECTION";
 type BannerPosition = "FIRST" | "LAST";
 type BannerFormData = z.infer<typeof createHomeBannerSchema>;
 
@@ -20,17 +20,14 @@ type Banner = {
   active: boolean;
   destinationType: DestinationType;
   productId: string | null;
-  categoryId: string | null;
   collectionId: string | null;
   product: DestinationOption | null;
-  category: DestinationOption | null;
   collection: DestinationOption | null;
 };
 
 type BannerFormProps = {
   banner?: Banner;
   products: DestinationOption[];
-  categories: DestinationOption[];
   collections: DestinationOption[];
   canChoosePosition: boolean;
   currentPosition?: number;
@@ -43,7 +40,6 @@ type ApiError = { error?: string; message?: string };
 function BannerForm({
   banner,
   products,
-  categories,
   collections,
   canChoosePosition,
   currentPosition,
@@ -68,7 +64,6 @@ function BannerForm({
       active: banner?.active ?? true,
       destinationType: banner?.destinationType ?? "NONE",
       productId: banner?.productId ?? null,
-      categoryId: banner?.categoryId ?? null,
       collectionId: banner?.collectionId ?? null,
     },
   });
@@ -99,7 +94,6 @@ function BannerForm({
     const nextType = event.target.value as DestinationType;
     setValue("destinationType", nextType, { shouldValidate: true });
     setValue("productId", null, { shouldValidate: true });
-    setValue("categoryId", null, { shouldValidate: true });
     setValue("collectionId", null, { shouldValidate: true });
   }
 
@@ -148,6 +142,7 @@ function BannerForm({
           accept="image/jpeg,image/png,image/webp,image/avif"
           onChange={handleImageChange}
         />
+        <p className="text-sm text-neutral-600">Dimensão recomendada: 1920 × 640 px (proporção 3:1); o mobile aplica um recorte mais fechado. Formatos: JPG, PNG, WebP ou AVIF.</p>
         <input type="hidden" {...register("image")} />
         {previewUrl && (
           <div className="my-2">
@@ -187,7 +182,6 @@ function BannerForm({
         >
           <option value="NONE">Sem destino</option>
           <option value="PRODUCT">Produto</option>
-          <option value="CATEGORY">Categoria</option>
           <option value="COLLECTION">Coleção</option>
         </select>
         {errors.destinationType && <p role="alert">{errors.destinationType.message}</p>}
@@ -204,16 +198,6 @@ function BannerForm({
         </div>
       )}
 
-      {destinationType === "CATEGORY" && (
-        <div>
-          <label className="block" htmlFor="banner-category">Categoria</label>
-          <select id="banner-category" {...register("categoryId")}>
-            <option value="">Selecione uma categoria</option>
-            {categories.map((category) => <option key={category.id} value={category.id}>{category.name}</option>)}
-          </select>
-          {errors.categoryId && <p role="alert">{errors.categoryId.message}</p>}
-        </div>
-      )}
 
       {destinationType === "COLLECTION" && (
         <div>
@@ -290,7 +274,6 @@ async function uploadBannerImage(file: File) {
 function getBannerDestination(banner: Banner) {
   switch (banner.destinationType) {
     case "PRODUCT": return `Produto: ${banner.product?.name ?? "não encontrado"}`;
-    case "CATEGORY": return `Categoria: ${banner.category?.name ?? "não encontrada"}`;
     case "COLLECTION": return `Coleção: ${banner.collection?.name ?? "não encontrada"}`;
     default: return "Sem destino";
   }
@@ -299,7 +282,6 @@ function getBannerDestination(banner: Banner) {
 export default function BannersPage() {
   const [banners, setBanners] = useState<Banner[]>([]);
   const [products, setProducts] = useState<DestinationOption[]>([]);
-  const [categories, setCategories] = useState<DestinationOption[]>([]);
   const [collections, setCollections] = useState<DestinationOption[]>([]);
   const [editingBanner, setEditingBanner] = useState<Banner>();
   const [showForm, setShowForm] = useState(false);
@@ -315,21 +297,18 @@ export default function BannersPage() {
     try {
       setLoading(true);
       setError("");
-      const [bannerResponse, productResponse, categoryResponse, collectionResponse] = await Promise.all([
+      const [bannerResponse, productResponse, collectionResponse] = await Promise.all([
         fetch("/api/banners"),
         fetch("/api/products"),
-        fetch("/api/categories"),
         fetch("/api/collections"),
       ]);
-      const [bannerData, productData, categoryData, collectionData] = await Promise.all([
+      const [bannerData, productData, collectionData] = await Promise.all([
         readJson<Banner[]>(bannerResponse),
         readJson<{ products: DestinationOption[] }>(productResponse),
-        readJson<{ categories: DestinationOption[] }>(categoryResponse),
         readJson<{ collections: DestinationOption[] }>(collectionResponse),
       ]);
       setBanners(bannerData);
       setProducts(productData.products);
-      setCategories(categoryData.categories);
       setCollections(collectionData.collections);
     } catch (cause) {
       console.error("Erro ao carregar dados dos banners:", cause);
@@ -414,7 +393,6 @@ export default function BannersPage() {
         ...(position && { position }),
         image: image ?? values.image,
         productId: values.destinationType === "PRODUCT" ? values.productId : null,
-        categoryId: values.destinationType === "CATEGORY" ? values.categoryId : null,
         collectionId: values.destinationType === "COLLECTION" ? values.collectionId : null,
       };
       const response = await fetch(
@@ -528,7 +506,6 @@ export default function BannersPage() {
           key={editingBanner?.id ?? "new"}
           banner={editingBanner}
           products={products}
-          categories={categories}
           collections={collections}
           canChoosePosition={Boolean(editingBanner) || banners.length > 0}
           currentPosition={editingBanner?.order}

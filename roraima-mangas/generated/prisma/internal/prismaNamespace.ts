@@ -398,7 +398,6 @@ type FieldRefInputType<Model, FieldType> = Model extends never ? never : FieldRe
 
 export const ModelName = {
   User: 'User',
-  Category: 'Category',
   Product: 'Product',
   Order: 'Order',
   OrderItem: 'OrderItem',
@@ -408,6 +407,7 @@ export const ModelName = {
   HomeBanner: 'HomeBanner',
   PromoNotice: 'PromoNotice',
   HomeSection: 'HomeSection',
+  HomeCollectionBlock: 'HomeCollectionBlock',
   HomeSectionProduct: 'HomeSectionProduct'
 } as const
 
@@ -424,7 +424,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "category" | "product" | "order" | "orderItem" | "productImage" | "collection" | "productCollection" | "homeBanner" | "promoNotice" | "homeSection" | "homeSectionProduct"
+    modelProps: "user" | "product" | "order" | "orderItem" | "productImage" | "collection" | "productCollection" | "homeBanner" | "promoNotice" | "homeSection" | "homeCollectionBlock" | "homeSectionProduct"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -499,80 +499,6 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.UserCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.UserCountAggregateOutputType> | number
-        }
-      }
-    }
-    Category: {
-      payload: Prisma.$CategoryPayload<ExtArgs>
-      fields: Prisma.CategoryFieldRefs
-      operations: {
-        findUnique: {
-          args: Prisma.CategoryFindUniqueArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$CategoryPayload> | null
-        }
-        findUniqueOrThrow: {
-          args: Prisma.CategoryFindUniqueOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$CategoryPayload>
-        }
-        findFirst: {
-          args: Prisma.CategoryFindFirstArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$CategoryPayload> | null
-        }
-        findFirstOrThrow: {
-          args: Prisma.CategoryFindFirstOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$CategoryPayload>
-        }
-        findMany: {
-          args: Prisma.CategoryFindManyArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$CategoryPayload>[]
-        }
-        create: {
-          args: Prisma.CategoryCreateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$CategoryPayload>
-        }
-        createMany: {
-          args: Prisma.CategoryCreateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        createManyAndReturn: {
-          args: Prisma.CategoryCreateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$CategoryPayload>[]
-        }
-        delete: {
-          args: Prisma.CategoryDeleteArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$CategoryPayload>
-        }
-        update: {
-          args: Prisma.CategoryUpdateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$CategoryPayload>
-        }
-        deleteMany: {
-          args: Prisma.CategoryDeleteManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateMany: {
-          args: Prisma.CategoryUpdateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateManyAndReturn: {
-          args: Prisma.CategoryUpdateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$CategoryPayload>[]
-        }
-        upsert: {
-          args: Prisma.CategoryUpsertArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$CategoryPayload>
-        }
-        aggregate: {
-          args: Prisma.CategoryAggregateArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AggregateCategory>
-        }
-        groupBy: {
-          args: Prisma.CategoryGroupByArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.CategoryGroupByOutputType>[]
-        }
-        count: {
-          args: Prisma.CategoryCountArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.CategoryCountAggregateOutputType> | number
         }
       }
     }
@@ -1242,6 +1168,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    HomeCollectionBlock: {
+      payload: Prisma.$HomeCollectionBlockPayload<ExtArgs>
+      fields: Prisma.HomeCollectionBlockFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.HomeCollectionBlockFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$HomeCollectionBlockPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.HomeCollectionBlockFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$HomeCollectionBlockPayload>
+        }
+        findFirst: {
+          args: Prisma.HomeCollectionBlockFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$HomeCollectionBlockPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.HomeCollectionBlockFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$HomeCollectionBlockPayload>
+        }
+        findMany: {
+          args: Prisma.HomeCollectionBlockFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$HomeCollectionBlockPayload>[]
+        }
+        create: {
+          args: Prisma.HomeCollectionBlockCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$HomeCollectionBlockPayload>
+        }
+        createMany: {
+          args: Prisma.HomeCollectionBlockCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.HomeCollectionBlockCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$HomeCollectionBlockPayload>[]
+        }
+        delete: {
+          args: Prisma.HomeCollectionBlockDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$HomeCollectionBlockPayload>
+        }
+        update: {
+          args: Prisma.HomeCollectionBlockUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$HomeCollectionBlockPayload>
+        }
+        deleteMany: {
+          args: Prisma.HomeCollectionBlockDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.HomeCollectionBlockUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.HomeCollectionBlockUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$HomeCollectionBlockPayload>[]
+        }
+        upsert: {
+          args: Prisma.HomeCollectionBlockUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$HomeCollectionBlockPayload>
+        }
+        aggregate: {
+          args: Prisma.HomeCollectionBlockAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateHomeCollectionBlock>
+        }
+        groupBy: {
+          args: Prisma.HomeCollectionBlockGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.HomeCollectionBlockGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.HomeCollectionBlockCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.HomeCollectionBlockCountAggregateOutputType> | number
+        }
+      }
+    }
     HomeSectionProduct: {
       payload: Prisma.$HomeSectionProductPayload<ExtArgs>
       fields: Prisma.HomeSectionProductFieldRefs
@@ -1367,17 +1367,6 @@ export const UserScalarFieldEnum = {
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
 
 
-export const CategoryScalarFieldEnum = {
-  id: 'id',
-  name: 'name',
-  slug: 'slug',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-} as const
-
-export type CategoryScalarFieldEnum = (typeof CategoryScalarFieldEnum)[keyof typeof CategoryScalarFieldEnum]
-
-
 export const ProductScalarFieldEnum = {
   id: 'id',
   name: 'name',
@@ -1390,7 +1379,6 @@ export const ProductScalarFieldEnum = {
   status: 'status',
   featured: 'featured',
   isNew: 'isNew',
-  categoryId: 'categoryId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -1462,7 +1450,6 @@ export const HomeBannerScalarFieldEnum = {
   active: 'active',
   destinationType: 'destinationType',
   productId: 'productId',
-  categoryId: 'categoryId',
   collectionId: 'collectionId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
@@ -1494,13 +1481,26 @@ export const HomeSectionScalarFieldEnum = {
   type: 'type',
   order: 'order',
   active: 'active',
-  categoryId: 'categoryId',
   collectionId: 'collectionId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
 
 export type HomeSectionScalarFieldEnum = (typeof HomeSectionScalarFieldEnum)[keyof typeof HomeSectionScalarFieldEnum]
+
+
+export const HomeCollectionBlockScalarFieldEnum = {
+  id: 'id',
+  image: 'image',
+  title: 'title',
+  collectionId: 'collectionId',
+  order: 'order',
+  active: 'active',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type HomeCollectionBlockScalarFieldEnum = (typeof HomeCollectionBlockScalarFieldEnum)[keyof typeof HomeCollectionBlockScalarFieldEnum]
 
 
 export const HomeSectionProductScalarFieldEnum = {
@@ -1870,7 +1870,6 @@ export interface PrismaClientOptionsWithAdapter extends PrismaClientBaseOptions 
 export type PrismaClientOptions = PrismaClientOptionsWithAccelerateUrl | PrismaClientOptionsWithAdapter
 export type GlobalOmitConfig = {
   user?: Prisma.UserOmit
-  category?: Prisma.CategoryOmit
   product?: Prisma.ProductOmit
   order?: Prisma.OrderOmit
   orderItem?: Prisma.OrderItemOmit
@@ -1880,6 +1879,7 @@ export type GlobalOmitConfig = {
   homeBanner?: Prisma.HomeBannerOmit
   promoNotice?: Prisma.PromoNoticeOmit
   homeSection?: Prisma.HomeSectionOmit
+  homeCollectionBlock?: Prisma.HomeCollectionBlockOmit
   homeSectionProduct?: Prisma.HomeSectionProductOmit
 }
 

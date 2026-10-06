@@ -52,7 +52,6 @@ export const AnyNull = runtime.AnyNull
 
 export const ModelName = {
   User: 'User',
-  Category: 'Category',
   Product: 'Product',
   Order: 'Order',
   OrderItem: 'OrderItem',
@@ -62,6 +61,7 @@ export const ModelName = {
   HomeBanner: 'HomeBanner',
   PromoNotice: 'PromoNotice',
   HomeSection: 'HomeSection',
+  HomeCollectionBlock: 'HomeCollectionBlock',
   HomeSectionProduct: 'HomeSectionProduct'
 } as const
 
@@ -93,17 +93,6 @@ export const UserScalarFieldEnum = {
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
 
 
-export const CategoryScalarFieldEnum = {
-  id: 'id',
-  name: 'name',
-  slug: 'slug',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-} as const
-
-export type CategoryScalarFieldEnum = (typeof CategoryScalarFieldEnum)[keyof typeof CategoryScalarFieldEnum]
-
-
 export const ProductScalarFieldEnum = {
   id: 'id',
   name: 'name',
@@ -116,7 +105,6 @@ export const ProductScalarFieldEnum = {
   status: 'status',
   featured: 'featured',
   isNew: 'isNew',
-  categoryId: 'categoryId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -188,7 +176,6 @@ export const HomeBannerScalarFieldEnum = {
   active: 'active',
   destinationType: 'destinationType',
   productId: 'productId',
-  categoryId: 'categoryId',
   collectionId: 'collectionId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
@@ -220,13 +207,26 @@ export const HomeSectionScalarFieldEnum = {
   type: 'type',
   order: 'order',
   active: 'active',
-  categoryId: 'categoryId',
   collectionId: 'collectionId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
 
 export type HomeSectionScalarFieldEnum = (typeof HomeSectionScalarFieldEnum)[keyof typeof HomeSectionScalarFieldEnum]
+
+
+export const HomeCollectionBlockScalarFieldEnum = {
+  id: 'id',
+  image: 'image',
+  title: 'title',
+  collectionId: 'collectionId',
+  order: 'order',
+  active: 'active',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type HomeCollectionBlockScalarFieldEnum = (typeof HomeCollectionBlockScalarFieldEnum)[keyof typeof HomeCollectionBlockScalarFieldEnum]
 
 
 export const HomeSectionProductScalarFieldEnum = {

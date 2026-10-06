@@ -13,7 +13,6 @@ type BannerTransaction = Prisma.TransactionClient;
 
 const bannerInclude = {
   product: true,
-  category: true,
   collection: true,
 } as const;
 
@@ -39,7 +38,6 @@ export async function createHomeBanner(data: CreateHomeBannerInput) {
   return withSerializableTransaction(async (tx) => {
     await validateDestination(tx, data.destinationType, {
       productId: data.productId,
-      categoryId: data.categoryId,
       collectionId: data.collectionId,
     });
 
@@ -67,7 +65,6 @@ export async function createHomeBanner(data: CreateHomeBannerInput) {
         active: data.active,
         destinationType: data.destinationType,
         productId: data.productId ?? null,
-        categoryId: data.categoryId ?? null,
         collectionId: data.collectionId ?? null,
       },
       include: bannerInclude,
@@ -85,22 +82,18 @@ export async function updateHomeBanner(
 
     const destinationType = data.destinationType ?? existingBanner.destinationType;
     const productId = data.productId !== undefined ? data.productId : existingBanner.productId;
-    const categoryId = data.categoryId !== undefined ? data.categoryId : existingBanner.categoryId;
     const collectionId = data.collectionId !== undefined ? data.collectionId : existingBanner.collectionId;
 
     await validateDestination(tx, destinationType, {
       productId,
-      categoryId,
       collectionId,
     });
 
     const destinationData = destinationType === "PRODUCT"
-      ? { productId, categoryId: null, collectionId: null }
-      : destinationType === "CATEGORY"
-        ? { productId: null, categoryId, collectionId: null }
-        : destinationType === "COLLECTION"
-          ? { productId: null, categoryId: null, collectionId }
-          : { productId: null, categoryId: null, collectionId: null };
+      ? { productId, collectionId: null }
+      : destinationType === "COLLECTION"
+        ? { productId: null, collectionId }
+        : { productId: null, collectionId: null };
 
     const orderedBanners = await normalizeBannerOrders(tx);
     if (data.position) {
@@ -212,16 +205,15 @@ async function withSerializableTransaction<T>(
 }
 
 async function validateDestination(
-  db: Pick<BannerTransaction, "product" | "category" | "collection">,
+  db: Pick<BannerTransaction, "product" | "collection">,
   destinationType: CreateHomeBannerInput["destinationType"],
   ids: {
     productId?: string | null;
-    categoryId?: string | null;
     collectionId?: string | null;
   },
 ) {
   if (destinationType === "NONE") {
-    if (ids.productId || ids.categoryId || ids.collectionId) {
+    if (ids.productId || ids.collectionId) {
       throw new Error("Um banner sem destino não pode possuir relacionamento.");
     }
     return;
@@ -234,16 +226,6 @@ async function validateDestination(
       select: { id: true },
     });
     if (!product) throw new Error("Produto não encontrado.");
-    return;
-  }
-
-  if (destinationType === "CATEGORY") {
-    if (!ids.categoryId) throw new Error("categoryId é obrigatório.");
-    const category = await db.category.findUnique({
-      where: { id: ids.categoryId },
-      select: { id: true },
-    });
-    if (!category) throw new Error("Categoria não encontrada.");
     return;
   }
 

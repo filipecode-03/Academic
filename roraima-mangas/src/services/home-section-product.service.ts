@@ -26,45 +26,21 @@ export async function addProductToHomeSection(
   homeSectionId: string,
   data: CreateHomeSectionProductInput
 ) {
-  const homeSection = await prisma.homeSection.findUnique({
-    where: {
-      id: homeSectionId,
-    },
-  });
-
-  if (!homeSection) {
-    throw new Error("Seção da Home não encontrada.");
-  }
-
-  if (homeSection.type !== "MANUAL") {
-    throw new Error(
-      "Produtos só podem ser adicionados manualmente em seções do tipo MANUAL."
-    );
-  }
-
-  const product = await prisma.product.findUnique({
-    where: {
-      id: data.productId,
-    },
-  });
-
-  if (!product) {
-    throw new Error("Produto não encontrado.");
-  }
-
-  const homeSectionProduct =
-    await prisma.homeSectionProduct.create({
-      data: {
-        homeSectionId,
-        productId: data.productId,
-        order: data.order,
-      },
-      include: {
-        product: true,
-      },
+  return prisma.$transaction(async (tx) => {
+    const homeSection = await tx.homeSection.findUnique({ where: { id: homeSectionId } });
+    if (!homeSection) throw new Error("Seção da Home não encontrada.");
+    if (homeSection.type !== "MANUAL") throw new Error("Produtos só podem ser adicionados manualmente em seções do tipo MANUAL.");
+    const product = await tx.product.findUnique({ where: { id: data.productId } });
+    if (!product) throw new Error("Produto não encontrado.");
+    const existing = await tx.homeSectionProduct.findUnique({ where: { homeSectionId_productId: { homeSectionId, productId: data.productId } } });
+    if (!existing && await tx.homeSectionProduct.count({ where: { homeSectionId } }) >= 10) throw new Error("Cada seção pode ter no máximo 10 produtos.");
+    return tx.homeSectionProduct.upsert({
+      where: { homeSectionId_productId: { homeSectionId, productId: data.productId } },
+      create: { homeSectionId, productId: data.productId, order: data.order },
+      update: { order: data.order },
+      include: { product: true },
     });
-
-  return homeSectionProduct;
+  }, { isolationLevel: "Serializable" });
 }
 
 export async function removeProductFromHomeSection(

@@ -9,7 +9,6 @@
  * 🟢 You can import this file directly.
  */
 export type * from './models/User'
-export type * from './models/Category'
 export type * from './models/Product'
 export type * from './models/Order'
 export type * from './models/OrderItem'
@@ -19,5 +18,6 @@ export type * from './models/ProductCollection'
 export type * from './models/HomeBanner'
 export type * from './models/PromoNotice'
 export type * from './models/HomeSection'
+export type * from './models/HomeCollectionBlock'
 export type * from './models/HomeSectionProduct'
 export type * from './commonInputTypes'

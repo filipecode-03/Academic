@@ -12,7 +12,6 @@ const productInclude = {
       order: "asc" as const,
     },
   },
-  category: true,
   collections: { include: { collection: true } },
 };
 

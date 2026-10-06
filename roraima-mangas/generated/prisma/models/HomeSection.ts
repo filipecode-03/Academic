@@ -40,7 +40,6 @@ export type HomeSectionMinAggregateOutputType = {
   type: $Enums.HomeSectionType | null
   order: number | null
   active: boolean | null
-  categoryId: string | null
   collectionId: string | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -52,7 +51,6 @@ export type HomeSectionMaxAggregateOutputType = {
   type: $Enums.HomeSectionType | null
   order: number | null
   active: boolean | null
-  categoryId: string | null
   collectionId: string | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -64,7 +62,6 @@ export type HomeSectionCountAggregateOutputType = {
   type: number
   order: number
   active: number
-  categoryId: number
   collectionId: number
   createdAt: number
   updatedAt: number
@@ -86,7 +83,6 @@ export type HomeSectionMinAggregateInputType = {
   type?: true
   order?: true
   active?: true
-  categoryId?: true
   collectionId?: true
   createdAt?: true
   updatedAt?: true
@@ -98,7 +94,6 @@ export type HomeSectionMaxAggregateInputType = {
   type?: true
   order?: true
   active?: true
-  categoryId?: true
   collectionId?: true
   createdAt?: true
   updatedAt?: true
@@ -110,7 +105,6 @@ export type HomeSectionCountAggregateInputType = {
   type?: true
   order?: true
   active?: true
-  categoryId?: true
   collectionId?: true
   createdAt?: true
   updatedAt?: true
@@ -209,7 +203,6 @@ export type HomeSectionGroupByOutputType = {
   type: $Enums.HomeSectionType
   order: number
   active: boolean
-  categoryId: string | null
   collectionId: string | null
   createdAt: Date
   updatedAt: Date
@@ -244,11 +237,9 @@ export type HomeSectionWhereInput = {
   type?: Prisma.EnumHomeSectionTypeFilter<"HomeSection"> | $Enums.HomeSectionType
   order?: Prisma.IntFilter<"HomeSection"> | number
   active?: Prisma.BoolFilter<"HomeSection"> | boolean
-  categoryId?: Prisma.StringNullableFilter<"HomeSection"> | string | null
   collectionId?: Prisma.StringNullableFilter<"HomeSection"> | string | null
   createdAt?: Prisma.DateTimeFilter<"HomeSection"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"HomeSection"> | Date | string
-  category?: Prisma.XOR<Prisma.CategoryNullableScalarRelationFilter, Prisma.CategoryWhereInput> | null
   collection?: Prisma.XOR<Prisma.CollectionNullableScalarRelationFilter, Prisma.CollectionWhereInput> | null
   products?: Prisma.HomeSectionProductListRelationFilter
 }
@@ -259,11 +250,9 @@ export type HomeSectionOrderByWithRelationInput = {
   type?: Prisma.SortOrder
   order?: Prisma.SortOrder
   active?: Prisma.SortOrder
-  categoryId?: Prisma.SortOrderInput | Prisma.SortOrder
   collectionId?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
-  category?: Prisma.CategoryOrderByWithRelationInput
   collection?: Prisma.CollectionOrderByWithRelationInput
   products?: Prisma.HomeSectionProductOrderByRelationAggregateInput
 }
@@ -277,11 +266,9 @@ export type HomeSectionWhereUniqueInput = Prisma.AtLeast<{
   type?: Prisma.EnumHomeSectionTypeFilter<"HomeSection"> | $Enums.HomeSectionType
   order?: Prisma.IntFilter<"HomeSection"> | number
   active?: Prisma.BoolFilter<"HomeSection"> | boolean
-  categoryId?: Prisma.StringNullableFilter<"HomeSection"> | string | null
   collectionId?: Prisma.StringNullableFilter<"HomeSection"> | string | null
   createdAt?: Prisma.DateTimeFilter<"HomeSection"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"HomeSection"> | Date | string
-  category?: Prisma.XOR<Prisma.CategoryNullableScalarRelationFilter, Prisma.CategoryWhereInput> | null
   collection?: Prisma.XOR<Prisma.CollectionNullableScalarRelationFilter, Prisma.CollectionWhereInput> | null
   products?: Prisma.HomeSectionProductListRelationFilter
 }, "id">
@@ -292,7 +279,6 @@ export type HomeSectionOrderByWithAggregationInput = {
   type?: Prisma.SortOrder
   order?: Prisma.SortOrder
   active?: Prisma.SortOrder
-  categoryId?: Prisma.SortOrderInput | Prisma.SortOrder
   collectionId?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -312,7 +298,6 @@ export type HomeSectionScalarWhereWithAggregatesInput = {
   type?: Prisma.EnumHomeSectionTypeWithAggregatesFilter<"HomeSection"> | $Enums.HomeSectionType
   order?: Prisma.IntWithAggregatesFilter<"HomeSection"> | number
   active?: Prisma.BoolWithAggregatesFilter<"HomeSection"> | boolean
-  categoryId?: Prisma.StringNullableWithAggregatesFilter<"HomeSection"> | string | null
   collectionId?: Prisma.StringNullableWithAggregatesFilter<"HomeSection"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"HomeSection"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"HomeSection"> | Date | string
@@ -326,7 +311,6 @@ export type HomeSectionCreateInput = {
   active?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
-  category?: Prisma.CategoryCreateNestedOneWithoutHomeSectionsInput
   collection?: Prisma.CollectionCreateNestedOneWithoutHomeSectionsInput
   products?: Prisma.HomeSectionProductCreateNestedManyWithoutHomeSectionInput
 }
@@ -337,7 +321,6 @@ export type HomeSectionUncheckedCreateInput = {
   type: $Enums.HomeSectionType
   order: number
   active?: boolean
-  categoryId?: string | null
   collectionId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -352,7 +335,6 @@ export type HomeSectionUpdateInput = {
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  category?: Prisma.CategoryUpdateOneWithoutHomeSectionsNestedInput
   collection?: Prisma.CollectionUpdateOneWithoutHomeSectionsNestedInput
   products?: Prisma.HomeSectionProductUpdateManyWithoutHomeSectionNestedInput
 }
@@ -363,7 +345,6 @@ export type HomeSectionUncheckedUpdateInput = {
   type?: Prisma.EnumHomeSectionTypeFieldUpdateOperationsInput | $Enums.HomeSectionType
   order?: Prisma.IntFieldUpdateOperationsInput | number
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  categoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   collectionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -376,7 +357,6 @@ export type HomeSectionCreateManyInput = {
   type: $Enums.HomeSectionType
   order: number
   active?: boolean
-  categoryId?: string | null
   collectionId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -398,7 +378,6 @@ export type HomeSectionUncheckedUpdateManyInput = {
   type?: Prisma.EnumHomeSectionTypeFieldUpdateOperationsInput | $Enums.HomeSectionType
   order?: Prisma.IntFieldUpdateOperationsInput | number
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  categoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   collectionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -420,7 +399,6 @@ export type HomeSectionCountOrderByAggregateInput = {
   type?: Prisma.SortOrder
   order?: Prisma.SortOrder
   active?: Prisma.SortOrder
-  categoryId?: Prisma.SortOrder
   collectionId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -436,7 +414,6 @@ export type HomeSectionMaxOrderByAggregateInput = {
   type?: Prisma.SortOrder
   order?: Prisma.SortOrder
   active?: Prisma.SortOrder
-  categoryId?: Prisma.SortOrder
   collectionId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -448,7 +425,6 @@ export type HomeSectionMinOrderByAggregateInput = {
   type?: Prisma.SortOrder
   order?: Prisma.SortOrder
   active?: Prisma.SortOrder
-  categoryId?: Prisma.SortOrder
   collectionId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -461,48 +437,6 @@ export type HomeSectionSumOrderByAggregateInput = {
 export type HomeSectionScalarRelationFilter = {
   is?: Prisma.HomeSectionWhereInput
   isNot?: Prisma.HomeSectionWhereInput
-}
-
-export type HomeSectionCreateNestedManyWithoutCategoryInput = {
-  create?: Prisma.XOR<Prisma.HomeSectionCreateWithoutCategoryInput, Prisma.HomeSectionUncheckedCreateWithoutCategoryInput> | Prisma.HomeSectionCreateWithoutCategoryInput[] | Prisma.HomeSectionUncheckedCreateWithoutCategoryInput[]
-  connectOrCreate?: Prisma.HomeSectionCreateOrConnectWithoutCategoryInput | Prisma.HomeSectionCreateOrConnectWithoutCategoryInput[]
-  createMany?: Prisma.HomeSectionCreateManyCategoryInputEnvelope
-  connect?: Prisma.HomeSectionWhereUniqueInput | Prisma.HomeSectionWhereUniqueInput[]
-}
-
-export type HomeSectionUncheckedCreateNestedManyWithoutCategoryInput = {
-  create?: Prisma.XOR<Prisma.HomeSectionCreateWithoutCategoryInput, Prisma.HomeSectionUncheckedCreateWithoutCategoryInput> | Prisma.HomeSectionCreateWithoutCategoryInput[] | Prisma.HomeSectionUncheckedCreateWithoutCategoryInput[]
-  connectOrCreate?: Prisma.HomeSectionCreateOrConnectWithoutCategoryInput | Prisma.HomeSectionCreateOrConnectWithoutCategoryInput[]
-  createMany?: Prisma.HomeSectionCreateManyCategoryInputEnvelope
-  connect?: Prisma.HomeSectionWhereUniqueInput | Prisma.HomeSectionWhereUniqueInput[]
-}
-
-export type HomeSectionUpdateManyWithoutCategoryNestedInput = {
-  create?: Prisma.XOR<Prisma.HomeSectionCreateWithoutCategoryInput, Prisma.HomeSectionUncheckedCreateWithoutCategoryInput> | Prisma.HomeSectionCreateWithoutCategoryInput[] | Prisma.HomeSectionUncheckedCreateWithoutCategoryInput[]
-  connectOrCreate?: Prisma.HomeSectionCreateOrConnectWithoutCategoryInput | Prisma.HomeSectionCreateOrConnectWithoutCategoryInput[]
-  upsert?: Prisma.HomeSectionUpsertWithWhereUniqueWithoutCategoryInput | Prisma.HomeSectionUpsertWithWhereUniqueWithoutCategoryInput[]
-  createMany?: Prisma.HomeSectionCreateManyCategoryInputEnvelope
-  set?: Prisma.HomeSectionWhereUniqueInput | Prisma.HomeSectionWhereUniqueInput[]
-  disconnect?: Prisma.HomeSectionWhereUniqueInput | Prisma.HomeSectionWhereUniqueInput[]
-  delete?: Prisma.HomeSectionWhereUniqueInput | Prisma.HomeSectionWhereUniqueInput[]
-  connect?: Prisma.HomeSectionWhereUniqueInput | Prisma.HomeSectionWhereUniqueInput[]
-  update?: Prisma.HomeSectionUpdateWithWhereUniqueWithoutCategoryInput | Prisma.HomeSectionUpdateWithWhereUniqueWithoutCategoryInput[]
-  updateMany?: Prisma.HomeSectionUpdateManyWithWhereWithoutCategoryInput | Prisma.HomeSectionUpdateManyWithWhereWithoutCategoryInput[]
-  deleteMany?: Prisma.HomeSectionScalarWhereInput | Prisma.HomeSectionScalarWhereInput[]
-}
-
-export type HomeSectionUncheckedUpdateManyWithoutCategoryNestedInput = {
-  create?: Prisma.XOR<Prisma.HomeSectionCreateWithoutCategoryInput, Prisma.HomeSectionUncheckedCreateWithoutCategoryInput> | Prisma.HomeSectionCreateWithoutCategoryInput[] | Prisma.HomeSectionUncheckedCreateWithoutCategoryInput[]
-  connectOrCreate?: Prisma.HomeSectionCreateOrConnectWithoutCategoryInput | Prisma.HomeSectionCreateOrConnectWithoutCategoryInput[]
-  upsert?: Prisma.HomeSectionUpsertWithWhereUniqueWithoutCategoryInput | Prisma.HomeSectionUpsertWithWhereUniqueWithoutCategoryInput[]
-  createMany?: Prisma.HomeSectionCreateManyCategoryInputEnvelope
-  set?: Prisma.HomeSectionWhereUniqueInput | Prisma.HomeSectionWhereUniqueInput[]
-  disconnect?: Prisma.HomeSectionWhereUniqueInput | Prisma.HomeSectionWhereUniqueInput[]
-  delete?: Prisma.HomeSectionWhereUniqueInput | Prisma.HomeSectionWhereUniqueInput[]
-  connect?: Prisma.HomeSectionWhereUniqueInput | Prisma.HomeSectionWhereUniqueInput[]
-  update?: Prisma.HomeSectionUpdateWithWhereUniqueWithoutCategoryInput | Prisma.HomeSectionUpdateWithWhereUniqueWithoutCategoryInput[]
-  updateMany?: Prisma.HomeSectionUpdateManyWithWhereWithoutCategoryInput | Prisma.HomeSectionUpdateManyWithWhereWithoutCategoryInput[]
-  deleteMany?: Prisma.HomeSectionScalarWhereInput | Prisma.HomeSectionScalarWhereInput[]
 }
 
 export type HomeSectionCreateNestedManyWithoutCollectionInput = {
@@ -565,71 +499,6 @@ export type HomeSectionUpdateOneRequiredWithoutProductsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.HomeSectionUpdateToOneWithWhereWithoutProductsInput, Prisma.HomeSectionUpdateWithoutProductsInput>, Prisma.HomeSectionUncheckedUpdateWithoutProductsInput>
 }
 
-export type HomeSectionCreateWithoutCategoryInput = {
-  id?: string
-  title: string
-  type: $Enums.HomeSectionType
-  order: number
-  active?: boolean
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  collection?: Prisma.CollectionCreateNestedOneWithoutHomeSectionsInput
-  products?: Prisma.HomeSectionProductCreateNestedManyWithoutHomeSectionInput
-}
-
-export type HomeSectionUncheckedCreateWithoutCategoryInput = {
-  id?: string
-  title: string
-  type: $Enums.HomeSectionType
-  order: number
-  active?: boolean
-  collectionId?: string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  products?: Prisma.HomeSectionProductUncheckedCreateNestedManyWithoutHomeSectionInput
-}
-
-export type HomeSectionCreateOrConnectWithoutCategoryInput = {
-  where: Prisma.HomeSectionWhereUniqueInput
-  create: Prisma.XOR<Prisma.HomeSectionCreateWithoutCategoryInput, Prisma.HomeSectionUncheckedCreateWithoutCategoryInput>
-}
-
-export type HomeSectionCreateManyCategoryInputEnvelope = {
-  data: Prisma.HomeSectionCreateManyCategoryInput | Prisma.HomeSectionCreateManyCategoryInput[]
-  skipDuplicates?: boolean
-}
-
-export type HomeSectionUpsertWithWhereUniqueWithoutCategoryInput = {
-  where: Prisma.HomeSectionWhereUniqueInput
-  update: Prisma.XOR<Prisma.HomeSectionUpdateWithoutCategoryInput, Prisma.HomeSectionUncheckedUpdateWithoutCategoryInput>
-  create: Prisma.XOR<Prisma.HomeSectionCreateWithoutCategoryInput, Prisma.HomeSectionUncheckedCreateWithoutCategoryInput>
-}
-
-export type HomeSectionUpdateWithWhereUniqueWithoutCategoryInput = {
-  where: Prisma.HomeSectionWhereUniqueInput
-  data: Prisma.XOR<Prisma.HomeSectionUpdateWithoutCategoryInput, Prisma.HomeSectionUncheckedUpdateWithoutCategoryInput>
-}
-
-export type HomeSectionUpdateManyWithWhereWithoutCategoryInput = {
-  where: Prisma.HomeSectionScalarWhereInput
-  data: Prisma.XOR<Prisma.HomeSectionUpdateManyMutationInput, Prisma.HomeSectionUncheckedUpdateManyWithoutCategoryInput>
-}
-
-export type HomeSectionScalarWhereInput = {
-  AND?: Prisma.HomeSectionScalarWhereInput | Prisma.HomeSectionScalarWhereInput[]
-  OR?: Prisma.HomeSectionScalarWhereInput[]
-  NOT?: Prisma.HomeSectionScalarWhereInput | Prisma.HomeSectionScalarWhereInput[]
-  id?: Prisma.StringFilter<"HomeSection"> | string
-  title?: Prisma.StringFilter<"HomeSection"> | string
-  type?: Prisma.EnumHomeSectionTypeFilter<"HomeSection"> | $Enums.HomeSectionType
-  order?: Prisma.IntFilter<"HomeSection"> | number
-  active?: Prisma.BoolFilter<"HomeSection"> | boolean
-  categoryId?: Prisma.StringNullableFilter<"HomeSection"> | string | null
-  collectionId?: Prisma.StringNullableFilter<"HomeSection"> | string | null
-  createdAt?: Prisma.DateTimeFilter<"HomeSection"> | Date | string
-  updatedAt?: Prisma.DateTimeFilter<"HomeSection"> | Date | string
-}
-
 export type HomeSectionCreateWithoutCollectionInput = {
   id?: string
   title: string
@@ -638,7 +507,6 @@ export type HomeSectionCreateWithoutCollectionInput = {
   active?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
-  category?: Prisma.CategoryCreateNestedOneWithoutHomeSectionsInput
   products?: Prisma.HomeSectionProductCreateNestedManyWithoutHomeSectionInput
 }
 
@@ -648,7 +516,6 @@ export type HomeSectionUncheckedCreateWithoutCollectionInput = {
   type: $Enums.HomeSectionType
   order: number
   active?: boolean
-  categoryId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   products?: Prisma.HomeSectionProductUncheckedCreateNestedManyWithoutHomeSectionInput
@@ -680,6 +547,20 @@ export type HomeSectionUpdateManyWithWhereWithoutCollectionInput = {
   data: Prisma.XOR<Prisma.HomeSectionUpdateManyMutationInput, Prisma.HomeSectionUncheckedUpdateManyWithoutCollectionInput>
 }
 
+export type HomeSectionScalarWhereInput = {
+  AND?: Prisma.HomeSectionScalarWhereInput | Prisma.HomeSectionScalarWhereInput[]
+  OR?: Prisma.HomeSectionScalarWhereInput[]
+  NOT?: Prisma.HomeSectionScalarWhereInput | Prisma.HomeSectionScalarWhereInput[]
+  id?: Prisma.StringFilter<"HomeSection"> | string
+  title?: Prisma.StringFilter<"HomeSection"> | string
+  type?: Prisma.EnumHomeSectionTypeFilter<"HomeSection"> | $Enums.HomeSectionType
+  order?: Prisma.IntFilter<"HomeSection"> | number
+  active?: Prisma.BoolFilter<"HomeSection"> | boolean
+  collectionId?: Prisma.StringNullableFilter<"HomeSection"> | string | null
+  createdAt?: Prisma.DateTimeFilter<"HomeSection"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"HomeSection"> | Date | string
+}
+
 export type HomeSectionCreateWithoutProductsInput = {
   id?: string
   title: string
@@ -688,7 +569,6 @@ export type HomeSectionCreateWithoutProductsInput = {
   active?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
-  category?: Prisma.CategoryCreateNestedOneWithoutHomeSectionsInput
   collection?: Prisma.CollectionCreateNestedOneWithoutHomeSectionsInput
 }
 
@@ -698,7 +578,6 @@ export type HomeSectionUncheckedCreateWithoutProductsInput = {
   type: $Enums.HomeSectionType
   order: number
   active?: boolean
-  categoryId?: string | null
   collectionId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -728,58 +607,10 @@ export type HomeSectionUpdateWithoutProductsInput = {
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  category?: Prisma.CategoryUpdateOneWithoutHomeSectionsNestedInput
   collection?: Prisma.CollectionUpdateOneWithoutHomeSectionsNestedInput
 }
 
 export type HomeSectionUncheckedUpdateWithoutProductsInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  title?: Prisma.StringFieldUpdateOperationsInput | string
-  type?: Prisma.EnumHomeSectionTypeFieldUpdateOperationsInput | $Enums.HomeSectionType
-  order?: Prisma.IntFieldUpdateOperationsInput | number
-  active?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  categoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  collectionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-}
-
-export type HomeSectionCreateManyCategoryInput = {
-  id?: string
-  title: string
-  type: $Enums.HomeSectionType
-  order: number
-  active?: boolean
-  collectionId?: string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
-}
-
-export type HomeSectionUpdateWithoutCategoryInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  title?: Prisma.StringFieldUpdateOperationsInput | string
-  type?: Prisma.EnumHomeSectionTypeFieldUpdateOperationsInput | $Enums.HomeSectionType
-  order?: Prisma.IntFieldUpdateOperationsInput | number
-  active?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  collection?: Prisma.CollectionUpdateOneWithoutHomeSectionsNestedInput
-  products?: Prisma.HomeSectionProductUpdateManyWithoutHomeSectionNestedInput
-}
-
-export type HomeSectionUncheckedUpdateWithoutCategoryInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  title?: Prisma.StringFieldUpdateOperationsInput | string
-  type?: Prisma.EnumHomeSectionTypeFieldUpdateOperationsInput | $Enums.HomeSectionType
-  order?: Prisma.IntFieldUpdateOperationsInput | number
-  active?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  collectionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  products?: Prisma.HomeSectionProductUncheckedUpdateManyWithoutHomeSectionNestedInput
-}
-
-export type HomeSectionUncheckedUpdateManyWithoutCategoryInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumHomeSectionTypeFieldUpdateOperationsInput | $Enums.HomeSectionType
@@ -796,7 +627,6 @@ export type HomeSectionCreateManyCollectionInput = {
   type: $Enums.HomeSectionType
   order: number
   active?: boolean
-  categoryId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -809,7 +639,6 @@ export type HomeSectionUpdateWithoutCollectionInput = {
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  category?: Prisma.CategoryUpdateOneWithoutHomeSectionsNestedInput
   products?: Prisma.HomeSectionProductUpdateManyWithoutHomeSectionNestedInput
 }
 
@@ -819,7 +648,6 @@ export type HomeSectionUncheckedUpdateWithoutCollectionInput = {
   type?: Prisma.EnumHomeSectionTypeFieldUpdateOperationsInput | $Enums.HomeSectionType
   order?: Prisma.IntFieldUpdateOperationsInput | number
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  categoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   products?: Prisma.HomeSectionProductUncheckedUpdateManyWithoutHomeSectionNestedInput
@@ -831,7 +659,6 @@ export type HomeSectionUncheckedUpdateManyWithoutCollectionInput = {
   type?: Prisma.EnumHomeSectionTypeFieldUpdateOperationsInput | $Enums.HomeSectionType
   order?: Prisma.IntFieldUpdateOperationsInput | number
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  categoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -873,11 +700,9 @@ export type HomeSectionSelect<ExtArgs extends runtime.Types.Extensions.InternalA
   type?: boolean
   order?: boolean
   active?: boolean
-  categoryId?: boolean
   collectionId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  category?: boolean | Prisma.HomeSection$categoryArgs<ExtArgs>
   collection?: boolean | Prisma.HomeSection$collectionArgs<ExtArgs>
   products?: boolean | Prisma.HomeSection$productsArgs<ExtArgs>
   _count?: boolean | Prisma.HomeSectionCountOutputTypeDefaultArgs<ExtArgs>
@@ -889,11 +714,9 @@ export type HomeSectionSelectCreateManyAndReturn<ExtArgs extends runtime.Types.E
   type?: boolean
   order?: boolean
   active?: boolean
-  categoryId?: boolean
   collectionId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  category?: boolean | Prisma.HomeSection$categoryArgs<ExtArgs>
   collection?: boolean | Prisma.HomeSection$collectionArgs<ExtArgs>
 }, ExtArgs["result"]["homeSection"]>
 
@@ -903,11 +726,9 @@ export type HomeSectionSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.E
   type?: boolean
   order?: boolean
   active?: boolean
-  categoryId?: boolean
   collectionId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  category?: boolean | Prisma.HomeSection$categoryArgs<ExtArgs>
   collection?: boolean | Prisma.HomeSection$collectionArgs<ExtArgs>
 }, ExtArgs["result"]["homeSection"]>
 
@@ -917,32 +738,27 @@ export type HomeSectionSelectScalar = {
   type?: boolean
   order?: boolean
   active?: boolean
-  categoryId?: boolean
   collectionId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type HomeSectionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "type" | "order" | "active" | "categoryId" | "collectionId" | "createdAt" | "updatedAt", ExtArgs["result"]["homeSection"]>
+export type HomeSectionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "type" | "order" | "active" | "collectionId" | "createdAt" | "updatedAt", ExtArgs["result"]["homeSection"]>
 export type HomeSectionInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  category?: boolean | Prisma.HomeSection$categoryArgs<ExtArgs>
   collection?: boolean | Prisma.HomeSection$collectionArgs<ExtArgs>
   products?: boolean | Prisma.HomeSection$productsArgs<ExtArgs>
   _count?: boolean | Prisma.HomeSectionCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type HomeSectionIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  category?: boolean | Prisma.HomeSection$categoryArgs<ExtArgs>
   collection?: boolean | Prisma.HomeSection$collectionArgs<ExtArgs>
 }
 export type HomeSectionIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  category?: boolean | Prisma.HomeSection$categoryArgs<ExtArgs>
   collection?: boolean | Prisma.HomeSection$collectionArgs<ExtArgs>
 }
 
 export type $HomeSectionPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "HomeSection"
   objects: {
-    category: Prisma.$CategoryPayload<ExtArgs> | null
     collection: Prisma.$CollectionPayload<ExtArgs> | null
     products: Prisma.$HomeSectionProductPayload<ExtArgs>[]
   }
@@ -952,7 +768,6 @@ export type $HomeSectionPayload<ExtArgs extends runtime.Types.Extensions.Interna
     type: $Enums.HomeSectionType
     order: number
     active: boolean
-    categoryId: string | null
     collectionId: string | null
     createdAt: Date
     updatedAt: Date
@@ -1350,7 +1165,6 @@ readonly fields: HomeSectionFieldRefs;
  */
 export interface Prisma__HomeSectionClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  category<T extends Prisma.HomeSection$categoryArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.HomeSection$categoryArgs<ExtArgs>>): Prisma.Prisma__CategoryClient<runtime.Types.Result.GetResult<Prisma.$CategoryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   collection<T extends Prisma.HomeSection$collectionArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.HomeSection$collectionArgs<ExtArgs>>): Prisma.Prisma__CollectionClient<runtime.Types.Result.GetResult<Prisma.$CollectionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   products<T extends Prisma.HomeSection$productsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.HomeSection$productsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$HomeSectionProductPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
@@ -1387,7 +1201,6 @@ export interface HomeSectionFieldRefs {
   readonly type: Prisma.FieldRef<"HomeSection", 'HomeSectionType'>
   readonly order: Prisma.FieldRef<"HomeSection", 'Int'>
   readonly active: Prisma.FieldRef<"HomeSection", 'Boolean'>
-  readonly categoryId: Prisma.FieldRef<"HomeSection", 'String'>
   readonly collectionId: Prisma.FieldRef<"HomeSection", 'String'>
   readonly createdAt: Prisma.FieldRef<"HomeSection", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"HomeSection", 'DateTime'>
@@ -1789,25 +1602,6 @@ export type HomeSectionDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.I
    * Limit how many HomeSections to delete.
    */
   limit?: number
-}
-
-/**
- * HomeSection.category
- */
-export type HomeSection$categoryArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the Category
-   */
-  select?: Prisma.CategorySelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the Category
-   */
-  omit?: Prisma.CategoryOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.CategoryInclude<ExtArgs> | null
-  where?: Prisma.CategoryWhereInput
 }
 
 /**

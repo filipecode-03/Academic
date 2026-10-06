@@ -110,6 +110,7 @@ function CollectionForm({ collection, onSave, onCancel }: CollectionFormProps) {
           accept="image/jpeg,image/png,image/webp,image/avif"
           onChange={(event) => setImageFile(event.target.files?.[0])}
         />
+        <p className="text-sm text-neutral-600">Dimensão recomendada: 1600 × 600 px (proporção 8:3), para o banner responsivo da coleção. Formatos: JPG, PNG, WebP ou AVIF.</p>
         {previewUrl && (
           <div>
             <p>Prévia da nova imagem:</p>

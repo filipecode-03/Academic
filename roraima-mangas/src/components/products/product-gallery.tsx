@@ -8,13 +8,13 @@ type ProductImage = { id: string; image: string };
 export default function ProductGallery({ name, images }: { name: string; images: ProductImage[] }) {
   const [activeImage, setActiveImage] = useState(0);
   if (images.length === 0) {
-    return <div className="flex aspect-[4/5] items-center justify-center rounded-xl border bg-white text-sm text-neutral-500">Imagem indisponível</div>;
+    return <div className="mx-auto flex aspect-[4/5] w-full max-w-[24rem] items-center justify-center rounded-xl border bg-white text-sm text-neutral-500">Imagem indisponível</div>;
   }
   const current = images[activeImage] ?? images[0];
 
   return (
-    <div className="space-y-3">
-      <div className="flex aspect-[4/5] items-center justify-center overflow-hidden rounded-xl border bg-white p-5 shadow-sm sm:p-8">
+    <div className="mx-auto w-full max-w-[24rem] space-y-3 lg:mx-0 lg:max-w-[26rem]">
+      <div className="flex aspect-[4/5] items-center justify-center overflow-hidden rounded-xl border bg-white p-3 shadow-sm sm:p-5">
         {/* Product images are stored on the configured object storage host. */}
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src={current.image} alt={name} className="h-full w-full object-contain" fetchPriority="high" />

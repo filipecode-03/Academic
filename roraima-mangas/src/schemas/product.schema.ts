@@ -13,7 +13,6 @@ const productFields = {
   status: z.enum(["ACTIVE", "INACTIVE"]).default("ACTIVE"),
   featured: z.boolean().default(false),
   isNew: z.boolean().default(false),
-  categoryId: z.string().optional(),
   collectionIds: z.array(z.string()).default([]),
 };
 
@@ -26,6 +25,6 @@ export const updateProductSchema = z.object({
   details: detailsSchema.optional(), image: productFields.image,
   images: productFields.images.optional(), status: productFields.status.optional(),
   featured: z.boolean().optional(), isNew: z.boolean().optional(),
-  categoryId: z.string().nullable().optional(), collectionIds: z.array(z.string()).optional(),
+  collectionIds: z.array(z.string()).optional(),
 }).refine((data) => Object.keys(data).length > 0, { message: "Informe pelo menos um campo para atualizar." });
 export type UpdateProductInput = z.infer<typeof updateProductSchema>;

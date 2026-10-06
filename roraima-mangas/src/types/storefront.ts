@@ -11,7 +11,6 @@ export type PublicProduct = {
   details: { title: string; value: string }[];
   createdAt: string;
   images: { id: string; image: string; order: number }[];
-  category?: { id: string; name: string; slug: string } | null;
   collections?: { collection: { id: string; name: string; slug: string } }[];
 };
 

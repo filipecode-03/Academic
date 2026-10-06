@@ -3,6 +3,8 @@
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useFieldArray } from "react-hook-form";
+import { Plus, X } from "lucide-react";
+import { Button } from "@/src/components/ui/button";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -18,7 +20,6 @@ const productFormSchema = z.object({
   price: z
     .number()
     .positive("O preço deve ser maior que zero."),
-  categoryId: z.string().optional(),
   collectionIds: z.array(z.string()),
 
   stock: z.number().int().min(0, "O estoque não pode ser negativo."),
@@ -46,7 +47,6 @@ export type ProductFormInitialData = {
   price: number;
   stock: number;
   details: { title: string; value: string }[];
-  categoryId?: string | null;
   collections?: { collection: { id: string } }[];
   status: "ACTIVE" | "INACTIVE";
   featured: boolean;
@@ -70,8 +70,11 @@ export default function ProductForm({
 
   const [previews, setPreviews] = useState<string[]>([]);
   const [priceText, setPriceText] = useState(product ? Number(product.price).toLocaleString("pt-BR", { style: "currency", currency: "BRL" }) : "");
-  const [categories, setCategories] = useState<{ id: string; name: string }[]>([]);
   const [collections, setCollections] = useState<{ id: string; name: string }[]>([]);
+  const [createCollectionOpen, setCreateCollectionOpen] = useState(false);
+  const [newCollectionName, setNewCollectionName] = useState("");
+  const [collectionError, setCollectionError] = useState("");
+  const [creatingCollection, setCreatingCollection] = useState(false);
 
   const [existingImages, setExistingImages] = useState<string[]>(
     product?.images
@@ -104,7 +107,6 @@ export default function ProductForm({
 
       stock: product?.stock ?? 0,
       details: product?.details ?? [],
-      categoryId: product?.categoryId ?? "",
       collectionIds: product?.collections?.map(({ collection }) => collection.id) ?? [],
       status: product?.status ?? "ACTIVE",
       featured: product?.featured ?? false,
@@ -118,11 +120,11 @@ export default function ProductForm({
   const { fields: detailFields, append, remove } = useFieldArray({ control, name: "details" });
 
   useEffect(() => {
-    void Promise.all([fetch("/api/categories"), fetch("/api/collections")]).then(async ([categoryResponse, collectionResponse]) => {
-      const [categoryData, collectionData] = await Promise.all([categoryResponse.json(), collectionResponse.json()]);
-      setCategories(categoryData.categories ?? []);
+    void fetch("/api/collections").then(async (collectionResponse) => {
+      if (!collectionResponse.ok) throw new Error("Não foi possível carregar coleções.");
+      const collectionData = await collectionResponse.json();
       setCollections(collectionData.collections ?? []);
-    }).catch((error) => console.error("Não foi possível carregar categorias e coleções do formulário:", error));
+    }).catch((error) => console.error("Não foi possível carregar coleções do formulário:", error));
   }, []);
 
   useEffect(() => {
@@ -161,6 +163,21 @@ export default function ProductForm({
         (_, imageIndex) => imageIndex !== index
       )
     );
+  }
+
+  async function createCollectionFromProduct() {
+    const collectionName = newCollectionName.trim();
+    if (!collectionName) { setCollectionError("Informe o nome da coleção."); return; }
+    try {
+      setCreatingCollection(true); setCollectionError("");
+      const response = await fetch("/api/collections", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ name: collectionName }) });
+      const result = await response.json() as { message?: string; collection?: { id: string; name: string } };
+      if (!response.ok || !result.collection) throw new Error(result.message ?? "Não foi possível criar a coleção.");
+      setCollections((current) => [...current, result.collection!]);
+      setValue("collectionIds", [...selectedCollections, result.collection.id], { shouldDirty: true, shouldValidate: true });
+      setNewCollectionName(""); setCreateCollectionOpen(false);
+    } catch (cause) { setCollectionError(cause instanceof Error ? cause.message : "Não foi possível criar a coleção."); }
+    finally { setCreatingCollection(false); }
   }
 
   async function uploadImage(file: File) {
@@ -274,7 +291,6 @@ export default function ProductForm({
         price: data.price,
         stock: data.stock,
         details: data.details,
-        categoryId: data.categoryId || undefined,
         collectionIds: data.collectionIds,
         status: data.status,
         featured: data.featured,
@@ -410,10 +426,9 @@ export default function ProductForm({
         </select>
       </div>
 
-      <div className="grid gap-4 sm:grid-cols-2">
-        <label className="space-y-1">Categoria<select className="w-full border p-2" {...register("categoryId")}><option value="">Sem categoria</option>{categories.map((category) => <option key={category.id} value={category.id}>{category.name}</option>)}</select></label>
-        <fieldset className="space-y-2"><legend className="font-medium">Coleções</legend>{collections.map((collection) => <label key={collection.id} className="flex items-center gap-2"><input type="checkbox" checked={selectedCollections.includes(collection.id)} onChange={(event) => setValue("collectionIds", event.target.checked ? [...selectedCollections, collection.id] : selectedCollections.filter((id) => id !== collection.id))} />{collection.name}</label>)}</fieldset>
-      </div>
+      <fieldset className="space-y-3"><legend className="font-medium">Coleções</legend><div className="flex flex-wrap gap-2"><select aria-label="Selecionar coleção" className="min-w-56" value="" onChange={(event) => { const id = event.target.value; if (id && !selectedCollections.includes(id)) setValue("collectionIds", [...selectedCollections, id], { shouldDirty: true }); }}><option value="">Selecionar coleção…</option>{collections.filter((collection) => !selectedCollections.includes(collection.id)).map((collection) => <option key={collection.id} value={collection.id}>{collection.name}</option>)}</select><Button type="button" variant="outline" onClick={() => { setCollectionError(""); setCreateCollectionOpen(true); }}><Plus className="mr-1 size-4" />Criar coleção</Button></div>{selectedCollections.length > 0 && <div className="flex flex-wrap gap-2">{collections.filter((collection) => selectedCollections.includes(collection.id)).map((collection) => <span key={collection.id} className="inline-flex items-center gap-1 rounded-full bg-neutral-100 px-3 py-1 text-sm">{collection.name}<button type="button" aria-label={`Remover ${collection.name}`} onClick={() => setValue("collectionIds", selectedCollections.filter((id) => id !== collection.id), { shouldDirty: true })}><X className="size-3.5" /></button></span>)}</div>}</fieldset>
+
+      {createCollectionOpen && <div className="fixed inset-0 z-[70] flex items-center justify-center bg-black/45 p-4" onMouseDown={(event) => { if (event.target === event.currentTarget && !creatingCollection) setCreateCollectionOpen(false); }}><section role="dialog" aria-modal="true" aria-labelledby="quick-collection-title" className="w-full max-w-md rounded-xl border bg-white p-5 shadow-2xl"><h2 id="quick-collection-title" className="text-lg font-semibold">Criar coleção</h2><p className="mt-1 text-sm text-neutral-600">A coleção será adicionada a este produto e você continuará preenchendo o formulário.</p><label className="mt-4 block space-y-1 text-sm font-medium">Nome<input autoFocus className="w-full" value={newCollectionName} onChange={(event) => setNewCollectionName(event.target.value)} onKeyDown={(event) => { if (event.key === "Enter") { event.preventDefault(); void createCollectionFromProduct(); } }} /></label>{collectionError && <p role="alert" className="mt-2 text-sm text-red-700">{collectionError}</p>}<div className="mt-5 flex justify-end gap-2"><Button type="button" variant="outline" disabled={creatingCollection} onClick={() => setCreateCollectionOpen(false)}>Cancelar</Button><Button type="button" disabled={creatingCollection} onClick={() => void createCollectionFromProduct()}>{creatingCollection ? "Criando…" : "Criar e selecionar"}</Button></div></section></div>}
 
       <fieldset className="space-y-3 rounded-lg border p-4"><legend className="px-1 font-semibold">Detalhes do produto</legend>
         {detailFields.map((field, index) => <div key={field.id} className="grid gap-2 sm:grid-cols-[1fr_2fr_auto]">
@@ -490,6 +505,7 @@ export default function ProductForm({
           multiple
           onChange={handleImagesChange}
         />
+        <p className="text-sm text-neutral-600">Dimensão recomendada: 1000 × 1250 px (proporção 4:5), para capa principal e imagens adicionais. Formatos: JPG, PNG, WebP ou AVIF.</p>
 
         {!isEditing &&
           errors.images && (

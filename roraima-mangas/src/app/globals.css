@@ -168,3 +168,8 @@
     padding: 0.5rem 0.75rem;
   }
 }
+
+@keyframes heroFade {
+  from { opacity: 0.55; }
+  to { opacity: 1; }
+}

@@ -16,17 +16,6 @@ model User {
   updatedAt DateTime @updatedAt
 }
 
-model Category {
-  id           String        @id @default(cuid())
-  name         String
-  slug         String        @unique
-  createdAt    DateTime      @default(now())
-  updatedAt    DateTime      @updatedAt
-  banners      HomeBanner[]
-  homeSections HomeSection[]
-  products     Product[]
-}
-
 model Product {
   id             String               @id @default(cuid())
   name           String
@@ -39,12 +28,10 @@ model Product {
   status         ProductStatus        @default(ACTIVE)
   featured       Boolean              @default(false)
   isNew          Boolean              @default(false)
-  categoryId     String?
   createdAt      DateTime             @default(now())
   updatedAt      DateTime             @updatedAt
   homeBanners    HomeBanner[]
   homeSections   HomeSectionProduct[]
-  category       Category?            @relation(fields: [categoryId], references: [id])
   collections    ProductCollection[]
   images         ProductImage[]
   orderItems     OrderItem[]
@@ -97,6 +84,7 @@ model Collection {
   banners      HomeBanner[]
   homeSections HomeSection[]
   products     ProductCollection[]
+  homeBlocks   HomeCollectionBlock[]
 }
 
 model ProductCollection {
@@ -115,13 +103,11 @@ model HomeBanner {
   active          Boolean               @default(true)
   destinationType BannerDestinationType @default(NONE)
   productId       String?
-  categoryId      String?
   collectionId    String?
   createdAt       DateTime              @default(now())
   updatedAt       DateTime              @updatedAt
   title           String
   description     String?
-  category        Category?             @relation(fields: [categoryId], references: [id])
   collection      Collection?           @relation(fields: [collectionId], references: [id])
   product         Product?              @relation(fields: [productId], references: [id])
 
@@ -151,16 +137,30 @@ model HomeSection {
   type         HomeSectionType
   order        Int
   active       Boolean              @default(true)
-  categoryId   String?
   collectionId String?
   createdAt    DateTime             @default(now())
   updatedAt    DateTime             @updatedAt
-  category     Category?            @relation(fields: [categoryId], references: [id])
   collection   Collection?          @relation(fields: [collectionId], references: [id])
   products     HomeSectionProduct[]
 
   @@index([order])
   @@index([active])
+}
+
+model HomeCollectionBlock {
+  id           String     @id @default(cuid())
+  image        String
+  title        String
+  collectionId String
+  order        Int        @default(0)
+  active       Boolean    @default(true)
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+  collection   Collection @relation(fields: [collectionId], references: [id], onDelete: Cascade)
+
+  @@index([order])
+  @@index([active])
+  @@index([collectionId])
 }
 
 model HomeSectionProduct {
@@ -189,7 +189,6 @@ enum OrderStatus {
 enum BannerDestinationType {
   NONE
   PRODUCT
-  CATEGORY
   COLLECTION
 }
 
@@ -200,6 +199,5 @@ enum PromoNoticePosition {
 
 enum HomeSectionType {
   MANUAL
-  CATEGORY
   COLLECTION
 }

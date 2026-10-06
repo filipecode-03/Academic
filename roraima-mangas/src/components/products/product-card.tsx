@@ -15,7 +15,7 @@ export default function ProductCard({ product }: { product: PublicProduct }) {
   return (
     <article className="group min-w-0 overflow-hidden rounded-xl border border-neutral-200 bg-white shadow-sm transition duration-200 hover:-translate-y-0.5 hover:shadow-md">
       <Link href={`/produtos/${product.slug}`} className="block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-neutral-900">
-        <div className="relative aspect-[3/4] overflow-hidden bg-neutral-50 p-2 sm:p-3">
+        <div className="relative aspect-[4/5] overflow-hidden bg-neutral-50 p-1.5 sm:p-2.5">
           {image ? (
             // Product images are stored on the configured object storage host.
             // eslint-disable-next-line @next/next/no-img-element
@@ -33,9 +33,9 @@ export default function ProductCard({ product }: { product: PublicProduct }) {
             </div>
           )}
         </div>
-        <div className="space-y-1.5 p-3 sm:p-4">
-          <h3 className="line-clamp-2 min-h-10 text-sm font-medium leading-5 transition-colors group-hover:text-neutral-600 sm:text-base">{product.name}</h3>
-          <p className="font-semibold">{formatPrice(product.price)}</p>
+        <div className="space-y-1 p-2.5 sm:p-3">
+          <h3 className="line-clamp-2 min-h-9 text-[0.8rem] font-medium leading-4 transition-colors group-hover:text-neutral-600 sm:text-sm sm:leading-5">{product.name}</h3>
+          <p className="text-sm font-semibold sm:text-base">{formatPrice(product.price)}</p>
         </div>
       </Link>
     </article>
