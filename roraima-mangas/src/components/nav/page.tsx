@@ -78,7 +78,9 @@ export default function Nav() {
       <div className="mx-auto flex min-h-16 max-w-7xl flex-wrap items-center gap-3 px-4 py-2 sm:px-6 lg:flex-nowrap lg:px-8">
         <div className="flex flex-1 items-center gap-2 lg:flex-none">
           <Button type="button" variant="ghost" size="icon" className="md:hidden" aria-label={mobileOpen ? "Fechar menu" : "Abrir menu"} onClick={() => setMobileOpen((open) => !open)}>{mobileOpen ? <X /> : <Menu />}</Button>
-          <Link href="/" aria-label="Roraima Mangas, início" className="shrink-0"><Image src={logo} alt="Roraima Mangas" priority className="size-11 rounded-full object-cover" /></Link>
+          <Link href="/" aria-label="Roraima Mangas, início" className="shrink-0">
+            <Image src={logo} alt="Roraima Mangas" priority className="size-11 rounded-full object-cover" />
+          </Link>
         </div>
         <form onSubmit={submitSearch} role="search" className="order-3 relative flex w-full lg:order-none lg:min-w-56 lg:flex-1 lg:max-w-2xl">
           <input type="search" aria-label="Pesquisar produtos e coleções" aria-expanded={normalizedQuery.length >= 2} placeholder="O que você está procurando?" value={query} onChange={(event) => { setQuery(event.target.value); setSearchError(""); }} className="h-10 min-w-0 flex-1 rounded-l-md border border-r-0 border-neutral-300 bg-white px-3 text-sm outline-none transition focus:border-neutral-800 focus:ring-2 focus:ring-neutral-800/15" />
