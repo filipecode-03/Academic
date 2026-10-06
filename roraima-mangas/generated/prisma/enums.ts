@@ -50,3 +50,22 @@ export const HomeSectionType = {
 } as const
 
 export type HomeSectionType = (typeof HomeSectionType)[keyof typeof HomeSectionType]
+
+
+export const NavbarItemType = {
+  LINK: 'LINK',
+  DROPDOWN: 'DROPDOWN'
+} as const
+
+export type NavbarItemType = (typeof NavbarItemType)[keyof typeof NavbarItemType]
+
+
+export const NavbarDestinationType = {
+  COLLECTION: 'COLLECTION',
+  ALL_PRODUCTS: 'ALL_PRODUCTS',
+  NEW_PRODUCTS: 'NEW_PRODUCTS',
+  FEATURED_PRODUCTS: 'FEATURED_PRODUCTS',
+  EXTERNAL: 'EXTERNAL'
+} as const
+
+export type NavbarDestinationType = (typeof NavbarDestinationType)[keyof typeof NavbarDestinationType]

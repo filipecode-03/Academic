@@ -403,6 +403,7 @@ export const ModelName = {
   OrderItem: 'OrderItem',
   ProductImage: 'ProductImage',
   Collection: 'Collection',
+  NavbarItem: 'NavbarItem',
   ProductCollection: 'ProductCollection',
   HomeBanner: 'HomeBanner',
   PromoNotice: 'PromoNotice',
@@ -424,7 +425,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "product" | "order" | "orderItem" | "productImage" | "collection" | "productCollection" | "homeBanner" | "promoNotice" | "homeSection" | "homeCollectionBlock" | "homeSectionProduct"
+    modelProps: "user" | "product" | "order" | "orderItem" | "productImage" | "collection" | "navbarItem" | "productCollection" | "homeBanner" | "promoNotice" | "homeSection" | "homeCollectionBlock" | "homeSectionProduct"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -869,6 +870,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.CollectionCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.CollectionCountAggregateOutputType> | number
+        }
+      }
+    }
+    NavbarItem: {
+      payload: Prisma.$NavbarItemPayload<ExtArgs>
+      fields: Prisma.NavbarItemFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.NavbarItemFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NavbarItemPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.NavbarItemFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NavbarItemPayload>
+        }
+        findFirst: {
+          args: Prisma.NavbarItemFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NavbarItemPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.NavbarItemFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NavbarItemPayload>
+        }
+        findMany: {
+          args: Prisma.NavbarItemFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NavbarItemPayload>[]
+        }
+        create: {
+          args: Prisma.NavbarItemCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NavbarItemPayload>
+        }
+        createMany: {
+          args: Prisma.NavbarItemCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.NavbarItemCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NavbarItemPayload>[]
+        }
+        delete: {
+          args: Prisma.NavbarItemDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NavbarItemPayload>
+        }
+        update: {
+          args: Prisma.NavbarItemUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NavbarItemPayload>
+        }
+        deleteMany: {
+          args: Prisma.NavbarItemDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.NavbarItemUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.NavbarItemUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NavbarItemPayload>[]
+        }
+        upsert: {
+          args: Prisma.NavbarItemUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NavbarItemPayload>
+        }
+        aggregate: {
+          args: Prisma.NavbarItemAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateNavbarItem>
+        }
+        groupBy: {
+          args: Prisma.NavbarItemGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.NavbarItemGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.NavbarItemCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.NavbarItemCountAggregateOutputType> | number
         }
       }
     }
@@ -1378,7 +1453,9 @@ export const ProductScalarFieldEnum = {
   image: 'image',
   status: 'status',
   featured: 'featured',
-  isNew: 'isNew',
+  newUntil: 'newUntil',
+  featuredStartAt: 'featuredStartAt',
+  featuredEndAt: 'featuredEndAt',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -1433,6 +1510,23 @@ export const CollectionScalarFieldEnum = {
 } as const
 
 export type CollectionScalarFieldEnum = (typeof CollectionScalarFieldEnum)[keyof typeof CollectionScalarFieldEnum]
+
+
+export const NavbarItemScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  type: 'type',
+  destinationType: 'destinationType',
+  collectionId: 'collectionId',
+  externalUrl: 'externalUrl',
+  parentId: 'parentId',
+  order: 'order',
+  active: 'active',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type NavbarItemScalarFieldEnum = (typeof NavbarItemScalarFieldEnum)[keyof typeof NavbarItemScalarFieldEnum]
 
 
 export const ProductCollectionScalarFieldEnum = {
@@ -1664,6 +1758,34 @@ export type ListEnumOrderStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$
 
 
 /**
+ * Reference to a field of type 'NavbarItemType'
+ */
+export type EnumNavbarItemTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'NavbarItemType'>
+    
+
+
+/**
+ * Reference to a field of type 'NavbarItemType[]'
+ */
+export type ListEnumNavbarItemTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'NavbarItemType[]'>
+    
+
+
+/**
+ * Reference to a field of type 'NavbarDestinationType'
+ */
+export type EnumNavbarDestinationTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'NavbarDestinationType'>
+    
+
+
+/**
+ * Reference to a field of type 'NavbarDestinationType[]'
+ */
+export type ListEnumNavbarDestinationTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'NavbarDestinationType[]'>
+    
+
+
+/**
  * Reference to a field of type 'BannerDestinationType'
  */
 export type EnumBannerDestinationTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BannerDestinationType'>
@@ -1875,6 +1997,7 @@ export type GlobalOmitConfig = {
   orderItem?: Prisma.OrderItemOmit
   productImage?: Prisma.ProductImageOmit
   collection?: Prisma.CollectionOmit
+  navbarItem?: Prisma.NavbarItemOmit
   productCollection?: Prisma.ProductCollectionOmit
   homeBanner?: Prisma.HomeBannerOmit
   promoNotice?: Prisma.PromoNoticeOmit

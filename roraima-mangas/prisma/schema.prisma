@@ -27,7 +27,9 @@ model Product {
   image          String?
   status         ProductStatus        @default(ACTIVE)
   featured       Boolean              @default(false)
-  isNew          Boolean              @default(false)
+  newUntil       DateTime?
+  featuredStartAt DateTime?
+  featuredEndAt   DateTime?
   createdAt      DateTime             @default(now())
   updatedAt      DateTime             @updatedAt
   homeBanners    HomeBanner[]
@@ -35,6 +37,9 @@ model Product {
   collections    ProductCollection[]
   images         ProductImage[]
   orderItems     OrderItem[]
+
+  @@index([newUntil])
+  @@index([featured, featuredStartAt, featuredEndAt])
 }
 
 model Order {
@@ -85,6 +90,28 @@ model Collection {
   homeSections HomeSection[]
   products     ProductCollection[]
   homeBlocks   HomeCollectionBlock[]
+  navbarItems  NavbarItem[]
+}
+
+model NavbarItem {
+  id              String                 @id @default(cuid())
+  title           String
+  type            NavbarItemType
+  destinationType NavbarDestinationType?
+  collectionId    String?
+  externalUrl     String?
+  parentId        String?
+  order           Int                    @default(0)
+  active          Boolean                @default(true)
+  createdAt       DateTime               @default(now())
+  updatedAt       DateTime               @updatedAt
+  collection      Collection?            @relation(fields: [collectionId], references: [id], onDelete: SetNull)
+  parent          NavbarItem?            @relation("NavbarItemHierarchy", fields: [parentId], references: [id], onDelete: Cascade)
+  children        NavbarItem[]           @relation("NavbarItemHierarchy")
+
+  @@index([parentId, order])
+  @@index([active, order])
+  @@index([collectionId])
 }
 
 model ProductCollection {
@@ -200,4 +227,17 @@ enum PromoNoticePosition {
 enum HomeSectionType {
   MANUAL
   COLLECTION
+}
+
+enum NavbarItemType {
+  LINK
+  DROPDOWN
+}
+
+enum NavbarDestinationType {
+  COLLECTION
+  ALL_PRODUCTS
+  NEW_PRODUCTS
+  FEATURED_PRODUCTS
+  EXTERNAL
 }

@@ -72,6 +72,11 @@ export type ProductImage = Prisma.ProductImageModel
  */
 export type Collection = Prisma.CollectionModel
 /**
+ * Model NavbarItem
+ * 
+ */
+export type NavbarItem = Prisma.NavbarItemModel
+/**
  * Model ProductCollection
  * 
  */

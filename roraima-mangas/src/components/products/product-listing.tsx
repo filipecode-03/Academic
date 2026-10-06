@@ -46,7 +46,7 @@ export default function ProductListing({
       {products.length === 0 ? (
         <p className="rounded-xl border bg-white p-10 text-center text-neutral-600 shadow-sm">{emptyMessage}</p>
       ) : (
-        <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3 sm:gap-3 lg:grid-cols-4 xl:grid-cols-5">
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:grid-cols-4 lg:gap-5">
           {sortedProducts.map((product) => <ProductCard key={product.id} product={product} />)}
         </div>
       )}

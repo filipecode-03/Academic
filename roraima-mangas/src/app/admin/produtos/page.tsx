@@ -20,7 +20,9 @@ type Product = {
   status: "ACTIVE" | "INACTIVE";
   stock: number;
   featured: boolean;
-  isNew: boolean;
+  newUntil?: string | null;
+  featuredStartAt?: string | null;
+  featuredEndAt?: string | null;
   images: ProductImage[];
 };
 

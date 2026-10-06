@@ -96,7 +96,7 @@ function HomeProductCarousel({ products }: { products: PublicProduct[] }) {
       <button type="button" aria-label="Próximos produtos" onClick={() => move(1)} className="rounded-full border bg-white p-2 shadow-sm hover:bg-neutral-100"><ChevronRight className="size-4" /></button>
     </div>
     <div ref={track} className="flex snap-x snap-mandatory gap-3 overflow-x-auto scroll-smooth pb-3 sm:gap-4">
-      {products.map((product) => <div key={product.id} className="w-[calc((100%_-_0.75rem)/2)] shrink-0 snap-start sm:w-[calc((100%_-_2rem)/3)] lg:w-[calc((100%_-_4rem)/5)]"><ProductCard product={product} /></div>)}
+      {products.map((product) => <div key={product.id} className="w-[calc((100%_-_0.75rem)/2)] shrink-0 snap-start sm:w-[calc((100%_-_2rem)/3)] lg:w-[calc((100%_-_3rem)/4)]"><ProductCard product={product} /></div>)}
     </div>
   </div>;
 }

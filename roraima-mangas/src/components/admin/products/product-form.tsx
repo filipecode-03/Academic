@@ -31,11 +31,21 @@ const productFormSchema = z.object({
   featured: z
     .boolean(),
 
-  isNew: z
-    .boolean(),
+  newEnabled: z.boolean(),
+  newDurationDays: z.enum(["7", "14", "30", "60"]),
+  newUntil: z.string(),
+  featuredExpiry: z.enum(["NEVER", "7", "14", "30", "60", "CUSTOM"]),
+  featuredStart: z.string(),
+  featuredEnd: z.string(),
 
   images: z
     .array(z.instanceof(File)),
+}).refine((data) => !data.featured || data.featuredExpiry === "NEVER" || Boolean(data.featuredEnd), {
+  path: ["featuredEnd"],
+  message: "Informe a data final do período de destaque.",
+}).refine((data) => !data.newEnabled || Boolean(data.newUntil), {
+  path: ["newUntil"],
+  message: "Informe a data até a qual o produto será considerado novo.",
 });
 
 type ProductFormData = z.infer<typeof productFormSchema>;
@@ -50,7 +60,9 @@ export type ProductFormInitialData = {
   collections?: { collection: { id: string } }[];
   status: "ACTIVE" | "INACTIVE";
   featured: boolean;
-  isNew: boolean;
+  newUntil?: string | null;
+  featuredStartAt?: string | null;
+  featuredEndAt?: string | null;
   images: {
     image: string;
     order: number;
@@ -61,6 +73,32 @@ type ProductFormProps = {
   product?: ProductFormInitialData;
   onSuccess?: () => void;
 };
+
+function toDateInput(value?: string | null) {
+  if (!value) return "";
+  const date = new Date(value);
+  if (!Number.isFinite(date.getTime())) return "";
+  const localDate = new Date(date.getTime() - date.getTimezoneOffset() * 60_000);
+  return localDate.toISOString().slice(0, 10);
+}
+
+function dateAtLocalEndOfDay(value: string) {
+  if (!value) return null;
+  const date = new Date(`${value}T23:59:59.999`);
+  return Number.isFinite(date.getTime()) ? date.toISOString() : null;
+}
+
+function dateAtLocalStartOfDay(value: string) {
+  if (!value) return null;
+  const date = new Date(`${value}T00:00:00`);
+  return Number.isFinite(date.getTime()) ? date.toISOString() : null;
+}
+
+function dateAfterDays(days: number) {
+  const date = new Date();
+  date.setDate(date.getDate() + days);
+  return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
+}
 
 export default function ProductForm({
   product,
@@ -110,13 +148,22 @@ export default function ProductForm({
       collectionIds: product?.collections?.map(({ collection }) => collection.id) ?? [],
       status: product?.status ?? "ACTIVE",
       featured: product?.featured ?? false,
-      isNew: product?.isNew ?? false,
+      newEnabled: Boolean(product?.newUntil && new Date(product.newUntil).getTime() > Date.now()),
+      newDurationDays: "14",
+      newUntil: toDateInput(product?.newUntil),
+      featuredExpiry: product?.featuredEndAt ? "CUSTOM" : "NEVER",
+      featuredStart: toDateInput(product?.featuredStartAt),
+      featuredEnd: toDateInput(product?.featuredEndAt),
       images: [],
     },
   });
 
   const images = watch("images");
   const selectedCollections = watch("collectionIds");
+  const newEnabled = watch("newEnabled");
+  const newDurationDays = watch("newDurationDays");
+  const featuredExpiry = watch("featuredExpiry");
+  const featured = watch("featured");
   const { fields: detailFields, append, remove } = useFieldArray({ control, name: "details" });
 
   useEffect(() => {
@@ -294,7 +341,9 @@ export default function ProductForm({
         collectionIds: data.collectionIds,
         status: data.status,
         featured: data.featured,
-        isNew: data.isNew,
+        newUntil: data.newEnabled ? dateAtLocalEndOfDay(data.newUntil) : null,
+        featuredStartAt: dateAtLocalStartOfDay(data.featuredStart),
+        featuredEndAt: data.featuredExpiry === "NEVER" ? null : dateAtLocalEndOfDay(data.featuredEnd),
         images: imageUrls.map(
           (image, index) => ({
             image,
@@ -439,27 +488,40 @@ export default function ProductForm({
         <button type="button" onClick={() => append({ title: "", value: "" })}>+ Adicionar detalhe</button>
       </fieldset>
 
-      <div>
-        <label>
-          <input
-            type="checkbox"
-            {...register("featured")}
-          />
+      <fieldset className="space-y-4 rounded-xl border border-neutral-200 p-4 sm:p-5">
+        <legend className="px-1 font-semibold">Lançamento</legend>
+        <label className="flex items-center gap-2 text-sm font-medium"><input type="checkbox" checked={newEnabled} onChange={(event) => {
+          const enabled = event.target.checked;
+          setValue("newEnabled", enabled, { shouldDirty: true });
+          if (enabled) setValue("newUntil", dateAfterDays(Number(newDurationDays)), { shouldDirty: true, shouldValidate: true });
+        }} />Marcar como novo</label>
+        <div className="grid gap-3 sm:grid-cols-2">
+          <label className="space-y-1 text-sm font-medium">Duração<select className="w-full" disabled={!newEnabled} value={newDurationDays} onChange={(event) => {
+            const duration = event.target.value as ProductFormData["newDurationDays"];
+            setValue("newDurationDays", duration, { shouldDirty: true });
+            if (newEnabled) setValue("newUntil", dateAfterDays(Number(duration)), { shouldDirty: true, shouldValidate: true });
+          }}><option value="7">7 dias</option><option value="14">14 dias</option><option value="30">30 dias</option><option value="60">60 dias</option></select></label>
+          <label className="space-y-1 text-sm font-medium">Válido até<input className="w-full" type="date" disabled={!newEnabled} {...register("newUntil")} /></label>
+        </div>
+        <p className="text-xs text-neutral-500">A novidade termina automaticamente ao fim da data selecionada. A duração pode ser escolhida ou ajustada pela data.</p>
+      </fieldset>
 
-          Destaque
-        </label>
-      </div>
-
-      <div>
-        <label>
-          <input
-            type="checkbox"
-            {...register("isNew")}
-          />
-
-          Produto novo
-        </label>
-      </div>
+      <fieldset className="space-y-4 rounded-xl border border-neutral-200 p-4 sm:p-5">
+        <legend className="px-1 font-semibold">Destaque editorial</legend>
+        <label className="flex items-center gap-2 text-sm font-medium"><input type="checkbox" {...register("featured")} />Ativar destaque</label>
+        <div className="grid gap-3 sm:grid-cols-2">
+          <label className="space-y-1 text-sm font-medium">Período<select className="w-full" disabled={!featured} value={featuredExpiry} onChange={(event) => {
+            const expiry = event.target.value as ProductFormData["featuredExpiry"];
+            setValue("featuredExpiry", expiry, { shouldDirty: true, shouldValidate: true });
+            if (expiry === "NEVER") setValue("featuredEnd", "", { shouldDirty: true });
+            else if (expiry !== "CUSTOM") setValue("featuredEnd", dateAfterDays(Number(expiry)), { shouldDirty: true, shouldValidate: true });
+            else if (!watch("featuredEnd")) setValue("featuredEnd", dateAfterDays(14), { shouldDirty: true, shouldValidate: true });
+          }}><option value="NEVER">Sem expiração</option><option value="7">7 dias</option><option value="14">14 dias</option><option value="30">30 dias</option><option value="60">60 dias</option><option value="CUSTOM">Personalizado</option></select></label>
+          <label className="space-y-1 text-sm font-medium">Início<input className="w-full" type="date" disabled={!featured} {...register("featuredStart")} /></label>
+          {featuredExpiry !== "NEVER" && <label className="space-y-1 text-sm font-medium">Fim<input className="w-full" type="date" disabled={!featured} {...register("featuredEnd")} />{errors.featuredEnd && <span role="alert" className="block text-xs text-red-700">{errors.featuredEnd.message}</span>}</label>}
+        </div>
+        <p className="text-xs text-neutral-500">Sem expiração mantém o destaque até desativá-lo. Com período, ele termina automaticamente após a data final.</p>
+      </fieldset>
 
       {isEditing &&
         existingImages.length > 0 && (

@@ -7,6 +7,7 @@ import { authOptions } from "@/src/lib/auth";
 const adminLinks = [
   ["Produtos", "/admin/produtos", "Cadastre, ajuste preços e controle o estoque."],
   ["Coleções", "/admin/colecoes", "Monte vitrines temáticas para os clientes."],
+  ["Links da Navbar", "/admin/navbar", "Configure os links, dropdowns e destinos exibidos na loja."],
   ["Conteúdo da Home", "/admin/secoes", "Atualize seções, banners e avisos promocionais."],
   ["Atalhos da Home", "/admin/blocos-home", "Crie destaques visuais para as coleções."],
 ];

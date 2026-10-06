@@ -57,6 +57,7 @@ export const ModelName = {
   OrderItem: 'OrderItem',
   ProductImage: 'ProductImage',
   Collection: 'Collection',
+  NavbarItem: 'NavbarItem',
   ProductCollection: 'ProductCollection',
   HomeBanner: 'HomeBanner',
   PromoNotice: 'PromoNotice',
@@ -104,7 +105,9 @@ export const ProductScalarFieldEnum = {
   image: 'image',
   status: 'status',
   featured: 'featured',
-  isNew: 'isNew',
+  newUntil: 'newUntil',
+  featuredStartAt: 'featuredStartAt',
+  featuredEndAt: 'featuredEndAt',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -159,6 +162,23 @@ export const CollectionScalarFieldEnum = {
 } as const
 
 export type CollectionScalarFieldEnum = (typeof CollectionScalarFieldEnum)[keyof typeof CollectionScalarFieldEnum]
+
+
+export const NavbarItemScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  type: 'type',
+  destinationType: 'destinationType',
+  collectionId: 'collectionId',
+  externalUrl: 'externalUrl',
+  parentId: 'parentId',
+  order: 'order',
+  active: 'active',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type NavbarItemScalarFieldEnum = (typeof NavbarItemScalarFieldEnum)[keyof typeof NavbarItemScalarFieldEnum]
 
 
 export const ProductCollectionScalarFieldEnum = {

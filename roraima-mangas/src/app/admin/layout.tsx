@@ -28,6 +28,10 @@ export default function AdminLayout({
             Coleções
           </Link>
 
+          <Link className="rounded-md px-3 py-2 text-sm hover:bg-neutral-100" href="/admin/navbar">
+            Navbar
+          </Link>
+
           <Link className="rounded-md px-3 py-2 text-sm hover:bg-neutral-100" href="/admin/banners">
             Banners
           </Link>
