@@ -4,6 +4,7 @@ import Link from "next/link";
 import { Minus, Plus, ShoppingBag, Trash2, X } from "lucide-react";
 import { Button } from "@/src/components/ui/button";
 import { useCart } from "@/src/components/cart/cart-context";
+import { useState } from "react";
 
 function formatPrice(value: number) {
   return new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" }).format(value);
@@ -11,7 +12,24 @@ function formatPrice(value: number) {
 
 export default function CartPanel({ open, onClose }: { open: boolean; onClose: () => void }) {
   const { items, itemCount, subtotal, setQuantity, removeProduct } = useCart();
+  const [checkout, setCheckout] = useState(false);
+  const [checkoutError, setCheckoutError] = useState("");
   if (!open) return null;
+
+  async function confirmOrder() {
+    setCheckout(true);
+    setCheckoutError("");
+    try {
+      const response = await fetch("/api/orders", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ items: items.map(({ productId, quantity }) => ({ productId, quantity })) }) });
+      const result = await response.json();
+      if (!response.ok) throw new Error(result.message ?? "Não foi possível confirmar o pedido.");
+      window.location.assign(result.whatsappUrl);
+    } catch (error) {
+      setCheckoutError(error instanceof Error ? error.message : "Não foi possível confirmar o pedido.");
+    } finally {
+      setCheckout(false);
+    }
+  }
 
   return (
     <div className="fixed inset-0 z-50 bg-black/50" onMouseDown={(event) => { if (event.target === event.currentTarget) onClose(); }}>
@@ -44,15 +62,15 @@ export default function CartPanel({ open, onClose }: { open: boolean; onClose: (
                 <div className="mt-2 flex items-center gap-2">
                   <Button variant="outline" size="icon-sm" aria-label={`Diminuir quantidade de ${item.name}`} disabled={item.quantity <= 1} onClick={() => setQuantity(item.productId, item.quantity - 1)}><Minus /></Button>
                   <span className="min-w-6 text-center" aria-label={`Quantidade: ${item.quantity}`}>{item.quantity}</span>
-                  <Button variant="outline" size="icon-sm" aria-label={`Aumentar quantidade de ${item.name}`} onClick={() => setQuantity(item.productId, item.quantity + 1)}><Plus /></Button>
+                  <Button variant="outline" size="icon-sm" aria-label={`Aumentar quantidade de ${item.name}`} disabled={item.quantity >= item.stock} onClick={() => setQuantity(item.productId, item.quantity + 1)}><Plus /></Button>
                 </div>
               </div>
             </li>)}
           </ul>
           <footer className="space-y-4 border-t p-5">
             <div className="flex justify-between text-lg font-semibold"><span>Subtotal</span><span>{formatPrice(subtotal)}</span></div>
-            <p className="text-xs text-neutral-500">Frete e checkout serão definidos em uma próxima etapa.</p>
-            <Button className="w-full" variant="default" onClick={onClose}>Continuar comprando</Button>
+            {checkoutError && <p role="alert" className="text-sm text-red-700">{checkoutError}</p>}
+            <Button className="w-full" variant="default" disabled={checkout} onClick={() => void confirmOrder()}>{checkout ? "Confirmando pedido..." : "Confirmar e continuar no WhatsApp"}</Button>
           </footer>
         </>}
       </section>

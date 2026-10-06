@@ -29,7 +29,6 @@ function CategoryForm({ category, onSave, onCancel }: CategoryFormProps) {
     resolver: zodResolver(createCategorySchema),
     defaultValues: {
       name: category?.name ?? "",
-      slug: category?.slug ?? "",
     },
   });
 
@@ -50,16 +49,6 @@ function CategoryForm({ category, onSave, onCancel }: CategoryFormProps) {
           {...register("name")}
         />
         {errors.name && <p role="alert">{errors.name.message}</p>}
-      </div>
-
-      <div>
-        <label className="block" htmlFor="category-slug">Slug</label>
-        <input
-          id="category-slug"
-          className="w-full border p-2"
-          {...register("slug")}
-        />
-        {errors.slug && <p role="alert">{errors.slug.message}</p>}
       </div>
 
       <div className="flex gap-3">
@@ -135,7 +124,7 @@ export default function CategoriesPage() {
 
   const normalizedSearch = search.trim().toLocaleLowerCase();
   const filteredCategories = categories.filter((category) =>
-    `${category.name} ${category.slug}`.toLocaleLowerCase().includes(normalizedSearch)
+    category.name.toLocaleLowerCase().includes(normalizedSearch)
   );
 
   function startCreate() {
@@ -243,7 +232,7 @@ export default function CategoriesPage() {
             type="search"
             className="w-full max-w-md border p-2"
             placeholder="Pesquisar categorias..."
-            aria-label="Pesquisar categorias por nome ou slug"
+            aria-label="Pesquisar categorias pelo nome"
             value={search}
             onChange={(event) => setSearch(event.target.value)}
           />
@@ -263,7 +252,6 @@ export default function CategoriesPage() {
           >
             <div>
               <h3 className="font-semibold">{category.name}</h3>
-              <p className="text-sm">Slug: {category.slug}</p>
             </div>
             <div className="flex gap-3">
               <button type="button" onClick={() => startEdit(category)}>

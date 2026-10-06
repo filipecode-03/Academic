@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import { useFieldArray } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -10,10 +11,6 @@ const productFormSchema = z.object({
     .string()
     .min(1, "O nome do produto é obrigatório."),
 
-  slug: z
-    .string()
-    .min(1, "O slug do produto é obrigatório."),
-
   description: z
     .string()
     .optional(),
@@ -21,18 +18,14 @@ const productFormSchema = z.object({
   price: z
     .number()
     .positive("O preço deve ser maior que zero."),
+  categoryId: z.string().optional(),
+  collectionIds: z.array(z.string()),
 
-  compareAtPrice: z
-    .number()
-    .positive("O preço anterior deve ser maior que zero.")
-    .optional(),
-
-  sku: z
-    .string()
-    .optional(),
+  stock: z.number().int().min(0, "O estoque não pode ser negativo."),
+  details: z.array(z.object({ title: z.string().min(1), value: z.string().min(1) })),
 
   status: z
-    .enum(["ACTIVE", "INACTIVE", "OUT_OF_STOCK"]),
+    .enum(["ACTIVE", "INACTIVE"]),
 
   featured: z
     .boolean(),
@@ -49,12 +42,13 @@ type ProductFormData = z.infer<typeof productFormSchema>;
 export type ProductFormInitialData = {
   id: string;
   name: string;
-  slug: string;
   description?: string | null;
   price: number;
-  compareAtPrice?: number | null;
-  sku?: string | null;
-  status: "ACTIVE" | "INACTIVE" | "OUT_OF_STOCK";
+  stock: number;
+  details: { title: string; value: string }[];
+  categoryId?: string | null;
+  collections?: { collection: { id: string } }[];
+  status: "ACTIVE" | "INACTIVE";
   featured: boolean;
   isNew: boolean;
   images: {
@@ -68,17 +62,6 @@ type ProductFormProps = {
   onSuccess?: () => void;
 };
 
-function generateSlug(value: string) {
-  return value
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .toLowerCase()
-    .trim()
-    .replace(/[^a-z0-9\s-]/g, "")
-    .replace(/\s+/g, "-")
-    .replace(/-+/g, "-");
-}
-
 export default function ProductForm({
   product,
   onSuccess,
@@ -86,6 +69,9 @@ export default function ProductForm({
   const isEditing = Boolean(product);
 
   const [previews, setPreviews] = useState<string[]>([]);
+  const [priceText, setPriceText] = useState(product ? Number(product.price).toLocaleString("pt-BR", { style: "currency", currency: "BRL" }) : "");
+  const [categories, setCategories] = useState<{ id: string; name: string }[]>([]);
+  const [collections, setCollections] = useState<{ id: string; name: string }[]>([]);
 
   const [existingImages, setExistingImages] = useState<string[]>(
     product?.images
@@ -100,6 +86,7 @@ export default function ProductForm({
     handleSubmit,
     setValue,
     watch,
+    control,
     formState: {
       errors,
       isSubmitting,
@@ -109,19 +96,16 @@ export default function ProductForm({
 
     defaultValues: {
       name: product?.name ?? "",
-      slug: product?.slug ?? "",
       description: product?.description ?? "",
 
       price: product
         ? Number(product.price)
         : undefined,
 
-      compareAtPrice:
-        product?.compareAtPrice != null
-          ? Number(product.compareAtPrice)
-          : undefined,
-
-      sku: product?.sku ?? "",
+      stock: product?.stock ?? 0,
+      details: product?.details ?? [],
+      categoryId: product?.categoryId ?? "",
+      collectionIds: product?.collections?.map(({ collection }) => collection.id) ?? [],
       status: product?.status ?? "ACTIVE",
       featured: product?.featured ?? false,
       isNew: product?.isNew ?? false,
@@ -129,16 +113,17 @@ export default function ProductForm({
     },
   });
 
-  const name = watch("name");
   const images = watch("images");
+  const selectedCollections = watch("collectionIds");
+  const { fields: detailFields, append, remove } = useFieldArray({ control, name: "details" });
 
   useEffect(() => {
-    if (!name) {
-      return;
-    }
-
-    setValue("slug", generateSlug(name));
-  }, [name, setValue]);
+    void Promise.all([fetch("/api/categories"), fetch("/api/collections")]).then(async ([categoryResponse, collectionResponse]) => {
+      const [categoryData, collectionData] = await Promise.all([categoryResponse.json(), collectionResponse.json()]);
+      setCategories(categoryData.categories ?? []);
+      setCollections(collectionData.collections ?? []);
+    }).catch((error) => console.error("Não foi possível carregar categorias e coleções do formulário:", error));
+  }, []);
 
   useEffect(() => {
     const urls = images.map((file) =>
@@ -284,13 +269,13 @@ export default function ProductForm({
 
       const payload = {
         name: data.name,
-        slug: data.slug,
         description:
           data.description || undefined,
         price: data.price,
-        compareAtPrice:
-          data.compareAtPrice || undefined,
-        sku: data.sku || undefined,
+        stock: data.stock,
+        details: data.details,
+        categoryId: data.categoryId || undefined,
+        collectionIds: data.collectionIds,
         status: data.status,
         featured: data.featured,
         isNew: data.isNew,
@@ -364,22 +349,6 @@ export default function ProductForm({
       </div>
 
       <div>
-        <label htmlFor="slug">
-          Slug
-        </label>
-
-        <input
-          id="slug"
-          type="text"
-          {...register("slug")}
-        />
-
-        {errors.slug && (
-          <p>{errors.slug.message}</p>
-        )}
-      </div>
-
-      <div>
         <label htmlFor="description">
           Descrição
         </label>
@@ -397,11 +366,21 @@ export default function ProductForm({
 
         <input
           id="price"
-          type="number"
-          step="0.01"
-          {...register("price", {
-            valueAsNumber: true,
-          })}
+          type="text"
+          inputMode="decimal"
+          value={priceText}
+          onChange={(event) => {
+            const text = event.target.value;
+            setPriceText(text);
+            const raw = text.replace(/R\$\s?/g, "").trim();
+            const normalized = (raw.includes(",") ? raw.replace(/\./g, "").replace(",", ".") : raw).replace(/[^0-9.]/g, "");
+            const value = Number(normalized);
+            setValue("price", value, { shouldValidate: true });
+          }}
+          onBlur={() => {
+            const value = watch("price");
+            if (Number.isFinite(value) && value > 0) setPriceText(value.toLocaleString("pt-BR", { style: "currency", currency: "BRL" }));
+          }}
         />
 
         {errors.price && (
@@ -409,45 +388,7 @@ export default function ProductForm({
         )}
       </div>
 
-      <div>
-        <label htmlFor="compareAtPrice">
-          Preço anterior
-        </label>
-
-        <input
-          id="compareAtPrice"
-          type="number"
-          step="0.01"
-          {...register("compareAtPrice", {
-            setValueAs: (value) =>
-              value === ""
-                ? undefined
-                : Number(value),
-          })}
-        />
-
-        {errors.compareAtPrice && (
-          <p>
-            {errors.compareAtPrice.message}
-          </p>
-        )}
-      </div>
-
-      <div>
-        <label htmlFor="sku">
-          SKU
-        </label>
-
-        <input
-          id="sku"
-          type="text"
-          {...register("sku")}
-        />
-
-        {errors.sku && (
-          <p>{errors.sku.message}</p>
-        )}
-      </div>
+      <div><label htmlFor="stock">Estoque</label><input id="stock" type="number" min="0" step="1" {...register("stock", { valueAsNumber: true })} />{errors.stock && <p role="alert">{errors.stock.message}</p>}</div>
 
       <div>
         <label htmlFor="status">
@@ -466,11 +407,22 @@ export default function ProductForm({
             Inativo
           </option>
 
-          <option value="OUT_OF_STOCK">
-            Sem estoque
-          </option>
         </select>
       </div>
+
+      <div className="grid gap-4 sm:grid-cols-2">
+        <label className="space-y-1">Categoria<select className="w-full border p-2" {...register("categoryId")}><option value="">Sem categoria</option>{categories.map((category) => <option key={category.id} value={category.id}>{category.name}</option>)}</select></label>
+        <fieldset className="space-y-2"><legend className="font-medium">Coleções</legend>{collections.map((collection) => <label key={collection.id} className="flex items-center gap-2"><input type="checkbox" checked={selectedCollections.includes(collection.id)} onChange={(event) => setValue("collectionIds", event.target.checked ? [...selectedCollections, collection.id] : selectedCollections.filter((id) => id !== collection.id))} />{collection.name}</label>)}</fieldset>
+      </div>
+
+      <fieldset className="space-y-3 rounded-lg border p-4"><legend className="px-1 font-semibold">Detalhes do produto</legend>
+        {detailFields.map((field, index) => <div key={field.id} className="grid gap-2 sm:grid-cols-[1fr_2fr_auto]">
+          <input aria-label="Título do detalhe" placeholder="Título" {...register(`details.${index}.title`)} />
+          <input aria-label="Valor do detalhe" placeholder="Valor" {...register(`details.${index}.value`)} />
+          <button type="button" onClick={() => remove(index)}>Remover</button>
+        </div>)}
+        <button type="button" onClick={() => append({ title: "", value: "" })}>+ Adicionar detalhe</button>
+      </fieldset>
 
       <div>
         <label>

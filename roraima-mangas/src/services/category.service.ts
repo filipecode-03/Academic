@@ -3,12 +3,13 @@ import type {
   CreateCategoryInput,
   UpdateCategoryInput,
 } from "@/src/schemas/category.schema";
+import { createUniqueSlug } from "@/src/lib/slug";
 
 export async function createCategory(data: CreateCategoryInput) {
   const category = await prisma.category.create({
     data: {
       name: data.name,
-      slug: data.slug,
+      slug: await createUniqueSlug("category", data.name),
     },
   });
 
@@ -39,11 +40,12 @@ export async function updateCategory(
   id: string,
   data: UpdateCategoryInput
 ) {
+  const { name, ...rest } = data;
   const category = await prisma.category.update({
     where: {
       id,
     },
-    data,
+    data: { ...rest, ...(name !== undefined && { name }) },
   });
 
   return category;

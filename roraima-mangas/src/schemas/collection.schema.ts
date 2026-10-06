@@ -5,10 +5,6 @@ export const createCollectionSchema = z.object({
     .string()
     .min(1, "O nome da coleção é obrigatório."),
 
-  slug: z
-    .string()
-    .min(1, "O slug da coleção é obrigatório."),
-
   description: z
     .string()
     .optional(),

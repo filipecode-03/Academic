@@ -11,7 +11,7 @@ export default function ProductPurchaseControls({ product }: { product: PublicPr
   const [added, setAdded] = useState(false);
   const [error, setError] = useState("");
   const { addProduct } = useCart();
-  const outOfStock = product.status === "OUT_OF_STOCK";
+  const available = product.status === "ACTIVE" && product.stock > 0;
 
   function addToCart() {
     setError("");
@@ -26,10 +26,10 @@ export default function ProductPurchaseControls({ product }: { product: PublicPr
 
   return (
     <div className="space-y-4">
-      {outOfStock ? <>
-        <p className="font-semibold text-red-700">Produto esgotado</p>
+      {!available ? <>
+        <p className="font-semibold text-red-700">Produto indisponível</p>
         <Button type="button" size="lg" disabled className="h-12 w-full gap-2 sm:w-auto sm:min-w-64">
-          <ShoppingBag className="size-5" /> Esgotado
+          <ShoppingBag className="size-5" /> Indisponível
         </Button>
       </> : <>
         <div className="flex items-center gap-3">
@@ -37,7 +37,7 @@ export default function ProductPurchaseControls({ product }: { product: PublicPr
           <div className="flex items-center rounded-md border bg-white">
             <Button type="button" variant="ghost" size="icon" aria-label="Diminuir quantidade" disabled={quantity <= 1} onClick={() => setQuantity((current) => Math.max(1, current - 1))}><Minus /></Button>
             <span className="min-w-10 text-center font-medium" aria-live="polite">{quantity}</span>
-            <Button type="button" variant="ghost" size="icon" aria-label="Aumentar quantidade" onClick={() => setQuantity((current) => current + 1)}><Plus /></Button>
+            <Button type="button" variant="ghost" size="icon" aria-label="Aumentar quantidade" disabled={quantity >= product.stock} onClick={() => setQuantity((current) => Math.min(product.stock, current + 1))}><Plus /></Button>
           </div>
         </div>
         <Button type="button" size="lg" className="h-12 w-full gap-2 bg-neutral-900 text-white hover:bg-neutral-700 sm:w-auto sm:min-w-64" onClick={addToCart}>

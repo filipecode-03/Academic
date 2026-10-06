@@ -5,9 +5,6 @@ export const createCategorySchema = z.object({
     .string()
     .min(1, "O nome da categoria é obrigatório."),
 
-  slug: z
-    .string()
-    .min(1, "O slug da categoria é obrigatório."),
 });
 
 export type CreateCategoryInput = z.infer<

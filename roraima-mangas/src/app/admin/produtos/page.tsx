@@ -16,9 +16,9 @@ type Product = {
   id: string;
   name: string;
   slug: string;
-  sku?: string | null;
   price: number | string;
-  status: "ACTIVE" | "INACTIVE" | "OUT_OF_STOCK";
+  status: "ACTIVE" | "INACTIVE";
+  stock: number;
   featured: boolean;
   isNew: boolean;
   images: ProductImage[];
@@ -70,7 +70,7 @@ export default function ProductsPage() {
 
   const normalizedSearch = search.trim().toLocaleLowerCase();
   const filteredProducts = products.filter((product) =>
-    [product.name, product.slug, product.sku ?? ""]
+    [product.name]
       .join(" ")
       .toLocaleLowerCase()
       .includes(normalizedSearch)
@@ -265,6 +265,7 @@ export default function ProductsPage() {
                       <p>
                         Status: {product.status}
                       </p>
+                      <p>Estoque: {product.stock}</p>
 
                       <p>
                         {product.images.length}{" "}

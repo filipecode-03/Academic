@@ -45,7 +45,6 @@ const homeSectionInclude = {
   category: {
     include: {
       products: {
-        where: { status: { not: "INACTIVE" as const } },
         orderBy: [{ featured: "desc" as const }, { createdAt: "desc" as const }],
         include: publicProductInclude,
       },
@@ -54,7 +53,6 @@ const homeSectionInclude = {
   collection: {
     include: {
       products: {
-        where: { product: { status: { not: "INACTIVE" as const } } },
         orderBy: [
           { product: { featured: "desc" as const } },
           { product: { createdAt: "desc" as const } },
@@ -64,7 +62,6 @@ const homeSectionInclude = {
     },
   },
   products: {
-    where: { product: { status: { not: "INACTIVE" as const } } },
     orderBy: { order: "asc" as const },
     include: {
       product: { include: publicProductInclude },
@@ -93,7 +90,7 @@ export const getPublicHomeSectionById = cache(async (id: string) => {
 export async function getPublicProductBySlug(slug: string) {
   const decodedSlug = decodePathSegment(slug);
   return prisma.product.findFirst({
-    where: { slug: decodedSlug, status: { not: "INACTIVE" } },
+    where: { slug: decodedSlug },
     include: publicProductInclude,
   });
 }
@@ -104,7 +101,6 @@ export async function getPublicCategoryBySlug(slug: string) {
     where: { slug: decodedSlug },
     include: {
       products: {
-        where: { status: { not: "INACTIVE" } },
         orderBy: [{ featured: "desc" }, { createdAt: "desc" }],
         include: publicProductInclude,
       },
@@ -118,7 +114,6 @@ export async function getPublicCollectionBySlug(slug: string) {
     where: { slug: decodedSlug },
     include: {
       products: {
-        where: { product: { status: { not: "INACTIVE" } } },
         orderBy: [
           { product: { featured: "desc" } },
           { product: { createdAt: "desc" } },
@@ -127,6 +122,17 @@ export async function getPublicCollectionBySlug(slug: string) {
       },
     },
   });
+}
+
+export async function searchCatalog(query: string) {
+  const term = query.trim();
+  if (term.length < 2) return { products: [], categories: [], collections: [] };
+  const [products, categories, collections] = await Promise.all([
+    prisma.product.findMany({ where: { name: { contains: term, mode: "insensitive" } }, take: 48, orderBy: [{ featured: "desc" }, { createdAt: "desc" }], include: publicProductInclude }),
+    prisma.category.findMany({ where: { name: { contains: term, mode: "insensitive" } }, take: 12, orderBy: { name: "asc" } }),
+    prisma.collection.findMany({ where: { name: { contains: term, mode: "insensitive" } }, take: 12, orderBy: { name: "asc" } }),
+  ]);
+  return { products, categories, collections };
 }
 
 function decodePathSegment(value: string) {

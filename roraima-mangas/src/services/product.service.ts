@@ -3,6 +3,8 @@ import type {
   CreateProductInput,
   UpdateProductInput,
 } from "@/src/schemas/product.schema";
+import { createUniqueSlug } from "@/src/lib/slug";
+import type { Prisma } from "@/generated/prisma/client";
 
 const productInclude = {
   images: {
@@ -10,25 +12,22 @@ const productInclude = {
       order: "asc" as const,
     },
   },
+  category: true,
+  collections: { include: { collection: true } },
 };
 
 export async function createProduct(data: CreateProductInput) {
+  const { collectionIds, images, details, ...fields } = data;
+  const slug = await createUniqueSlug("product", data.name);
   const product = await prisma.product.create({
     data: {
-      name: data.name,
-      slug: data.slug,
-      description: data.description,
-      price: data.price,
-      compareAtPrice: data.compareAtPrice,
-      sku: data.sku,
-      image: data.image,
-      status: data.status,
-      featured: data.featured,
-      isNew: data.isNew,
-      categoryId: data.categoryId,
+      ...fields,
+      slug,
+      details: details as Prisma.InputJsonValue,
+      collections: { create: collectionIds.map((collectionId) => ({ collectionId })) },
 
       images: {
-        create: data.images.map((image) => ({
+        create: images.map((image) => ({
           image: image.image,
           order: image.order,
         })),
@@ -66,7 +65,7 @@ export async function updateProduct(
   id: string,
   data: UpdateProductInput
 ) {
-  const { images, ...productData } = data;
+  const { images, collectionIds, details, ...productData } = data;
 
   const product = await prisma.$transaction(async (tx) => {
     if (images !== undefined) {
@@ -76,6 +75,9 @@ export async function updateProduct(
         },
       });
     }
+    if (collectionIds !== undefined) {
+      await tx.productCollection.deleteMany({ where: { productId: id } });
+    }
 
     return tx.product.update({
       where: {
@@ -83,6 +85,8 @@ export async function updateProduct(
       },
       data: {
         ...productData,
+        ...(details !== undefined && { details: details as Prisma.InputJsonValue }),
+        ...(collectionIds !== undefined && { collections: { create: collectionIds.map((collectionId) => ({ collectionId })) } }),
 
         ...(images !== undefined && {
           images: {

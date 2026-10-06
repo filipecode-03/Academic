@@ -71,7 +71,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json(
         {
           success: false,
-          message: "Slug ou SKU já está sendo utilizado.",
+          message: "Não foi possível reservar um endereço único para o produto. Tente novamente.",
         },
         { status: 409 }
       );

@@ -54,6 +54,8 @@ export const ModelName = {
   User: 'User',
   Category: 'Category',
   Product: 'Product',
+  Order: 'Order',
+  OrderItem: 'OrderItem',
   ProductImage: 'ProductImage',
   Collection: 'Collection',
   ProductCollection: 'ProductCollection',
@@ -108,8 +110,8 @@ export const ProductScalarFieldEnum = {
   slug: 'slug',
   description: 'description',
   price: 'price',
-  compareAtPrice: 'compareAtPrice',
-  sku: 'sku',
+  stock: 'stock',
+  details: 'details',
   image: 'image',
   status: 'status',
   featured: 'featured',
@@ -120,6 +122,30 @@ export const ProductScalarFieldEnum = {
 } as const
 
 export type ProductScalarFieldEnum = (typeof ProductScalarFieldEnum)[keyof typeof ProductScalarFieldEnum]
+
+
+export const OrderScalarFieldEnum = {
+  id: 'id',
+  status: 'status',
+  total: 'total',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type OrderScalarFieldEnum = (typeof OrderScalarFieldEnum)[keyof typeof OrderScalarFieldEnum]
+
+
+export const OrderItemScalarFieldEnum = {
+  id: 'id',
+  orderId: 'orderId',
+  productId: 'productId',
+  productName: 'productName',
+  unitPrice: 'unitPrice',
+  quantity: 'quantity',
+  subtotal: 'subtotal'
+} as const
+
+export type OrderItemScalarFieldEnum = (typeof OrderItemScalarFieldEnum)[keyof typeof OrderItemScalarFieldEnum]
 
 
 export const ProductImageScalarFieldEnum = {
@@ -220,6 +246,13 @@ export const SortOrder = {
 export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
 
 
+export const JsonNullValueInput = {
+  JsonNull: JsonNull
+} as const
+
+export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
+
+
 export const QueryMode = {
   default: 'default',
   insensitive: 'insensitive'
@@ -234,4 +267,13 @@ export const NullsOrder = {
 } as const
 
 export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
+
+
+export const JsonNullValueFilter = {
+  DbNull: DbNull,
+  JsonNull: JsonNull,
+  AnyNull: AnyNull
+} as const
+
+export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
 

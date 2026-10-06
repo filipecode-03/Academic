@@ -11,6 +11,7 @@ export type CartItem = {
   price: number;
   image: string | null;
   status: string;
+  stock: number;
   quantity: number;
 };
 
@@ -42,7 +43,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
             typeof item?.name === "string" &&
             Number.isFinite(item?.price) &&
             Number.isInteger(item?.quantity) && item.quantity > 0 &&
-            item.status !== "INACTIVE" && item.status !== "OUT_OF_STOCK"
+            Number.isInteger(item.stock) && item.stock >= 0 && item.status === "ACTIVE" && item.quantity <= item.stock
           ));
         }
       }
@@ -63,7 +64,8 @@ export function CartProvider({ children }: { children: ReactNode }) {
     itemCount: items.reduce((total, item) => total + item.quantity, 0),
     subtotal: items.reduce((total, item) => total + item.price * item.quantity, 0),
     addProduct(product, quantity) {
-      if (product.status !== "ACTIVE" || quantity < 1) return false;
+      const existing = items.find((entry) => entry.productId === product.id);
+      if (product.status !== "ACTIVE" || product.stock < 1 || !Number.isInteger(quantity) || quantity < 1 || quantity > product.stock || (existing?.quantity ?? 0) + quantity > product.stock) return false;
       const item: CartItem = {
         productId: product.id,
         slug: product.slug,
@@ -71,13 +73,14 @@ export function CartProvider({ children }: { children: ReactNode }) {
         price: Number(product.price),
         image: product.images[0]?.image ?? null,
         status: product.status,
+        stock: product.stock,
         quantity: Math.floor(quantity),
       };
       setItems((current) => {
         const existing = current.find((entry) => entry.productId === product.id);
         return existing
           ? current.map((entry) => entry.productId === product.id
-              ? { ...entry, quantity: entry.quantity + item.quantity }
+              ? { ...entry, quantity: entry.quantity + item.quantity, stock: product.stock, status: product.status }
               : entry)
           : [...current, item];
       });
@@ -86,7 +89,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
     setQuantity(productId, quantity) {
       if (!Number.isFinite(quantity) || quantity < 1) return;
       setItems((current) => current.map((item) => item.productId === productId
-        ? { ...item, quantity: Math.floor(quantity) }
+        ? { ...item, quantity: Math.min(item.stock, Math.floor(quantity)) }
         : item));
     },
     removeProduct(productId) {

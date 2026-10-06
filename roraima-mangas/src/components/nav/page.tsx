@@ -82,9 +82,9 @@ export default function Nav() {
         .then(async (response) => {
           if (!response.ok) throw new Error("Não foi possível pesquisar produtos.");
           const data = await response.json() as ApiResponse;
-          const available = (data.products ?? []).filter((product) => product.status !== "INACTIVE");
-          setCatalog(available);
-          return available;
+          const catalogProducts = data.products ?? [];
+          setCatalog(catalogProducts);
+          return catalogProducts;
         })
         .catch((cause: unknown) => {
           catalogRequest.current = null;
@@ -99,6 +99,8 @@ export default function Nav() {
     if (!normalizedQuery || !catalog) return [];
     return catalog.filter((product) => product.name.toLocaleLowerCase().includes(normalizedQuery)).slice(0, 6);
   }, [catalog, normalizedQuery]);
+  const categoryResults = useMemo(() => categories.filter((item) => item.name.toLocaleLowerCase().includes(normalizedQuery)).slice(0, 3), [categories, normalizedQuery]);
+  const collectionResults = useMemo(() => collections.filter((item) => item.name.toLocaleLowerCase().includes(normalizedQuery)).slice(0, 3), [collections, normalizedQuery]);
 
   useEffect(() => {
     if (normalizedQuery.length < 2 || catalog) return;
@@ -119,22 +121,8 @@ export default function Nav() {
   async function submitSearch(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (normalizedQuery.length < 2) return;
-    try {
-      setSearching(true);
-      setSearchError("");
-      const products = await loadProductCatalog();
-      const match = products.find((product) => product.name.toLocaleLowerCase().includes(normalizedQuery));
-      if (match) {
-        setQuery("");
-        router.push(`/produtos/${match.slug}`);
-      }
-      else setSearchError(`Nenhum produto encontrado para “${query.trim()}”.`);
-    } catch (cause) {
-      console.error("Erro ao pesquisar produtos:", cause);
-      setSearchError("Não foi possível realizar a busca agora.");
-    } finally {
-      setSearching(false);
-    }
+    router.push(`/busca?q=${encodeURIComponent(query.trim())}`);
+    setQuery("");
   }
 
   return (
@@ -172,11 +160,15 @@ export default function Nav() {
             <Button type="submit" aria-label="Buscar" disabled={normalizedQuery.length < 2 || searching} className="h-10 rounded-l-none rounded-r-md bg-neutral-900 px-3 text-white hover:bg-neutral-700">
               <Search className="size-4" />
             </Button>
-            {normalizedQuery.length >= 2 && (results.length > 0 || searching || searchError || catalog) && <div className="absolute left-0 right-0 top-full z-40 mt-1 overflow-hidden rounded-lg border bg-white shadow-xl">
+            {normalizedQuery.length >= 2 && (results.length > 0 || categoryResults.length > 0 || collectionResults.length > 0 || searching || searchError || catalog) && <div className="absolute left-0 right-0 top-full z-40 mt-1 max-h-96 overflow-y-auto rounded-lg border bg-white shadow-xl">
               {searching && <p className="px-4 py-3 text-sm text-neutral-500">Buscando produtos...</p>}
               {!searching && searchError && <p className="px-4 py-3 text-sm text-neutral-600">{searchError}</p>}
-              {!searching && !searchError && results.length === 0 && <p className="px-4 py-3 text-sm text-neutral-600">Nenhum produto encontrado.</p>}
-              {!searching && results.map((product) => <Link key={product.id} href={`/produtos/${product.slug}`} onClick={() => setQuery("")} className="block border-b px-4 py-3 text-sm last:border-0 hover:bg-neutral-50">{product.name}</Link>)}
+              {!searching && !searchError && results.length + categoryResults.length + collectionResults.length === 0 && <p className="px-4 py-3 text-sm text-neutral-600">Nenhum resultado encontrado.</p>}
+              {!searching && results.length > 0 && <p className="px-4 pb-1 pt-3 text-xs font-semibold uppercase tracking-wide text-neutral-500">Produtos</p>}
+              {!searching && results.map((product) => <Link key={product.id} href={`/produtos/${product.slug}`} onClick={() => setQuery("")} className="block border-b px-4 py-2 text-sm last:border-0 hover:bg-neutral-50">{product.name}</Link>)}
+              {!searching && categoryResults.length > 0 && <><p className="px-4 pb-1 pt-3 text-xs font-semibold uppercase tracking-wide text-neutral-500">Categorias</p>{categoryResults.map((item) => <Link key={item.id} href={`/categorias/${item.slug}`} onClick={() => setQuery("")} className="block border-b px-4 py-2 text-sm hover:bg-neutral-50">{item.name}</Link>)}</>}
+              {!searching && collectionResults.length > 0 && <><p className="px-4 pb-1 pt-3 text-xs font-semibold uppercase tracking-wide text-neutral-500">Coleções</p>{collectionResults.map((item) => <Link key={item.id} href={`/colecoes/${item.slug}`} onClick={() => setQuery("")} className="block border-b px-4 py-2 text-sm hover:bg-neutral-50">{item.name}</Link>)}</>}
+              {!searching && <Link href={`/busca?q=${encodeURIComponent(query.trim())}`} onClick={() => setQuery("")} className="block border-t bg-neutral-50 px-4 py-3 text-sm font-medium hover:bg-neutral-100">Ver todos os resultados</Link>}
             </div>}
           </form>
 

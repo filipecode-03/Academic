@@ -21,8 +21,7 @@ export default async function ProductPage({ params }: PageProps<"/produtos/[slug
   const result = await getPublicProductBySlug(slug);
   if (!result) notFound();
   const product = serializePublicProduct(result);
-  const compareAtPrice = product.compareAtPrice == null ? null : Number(product.compareAtPrice);
-  const hasComparePrice = compareAtPrice !== null && compareAtPrice > product.price;
+  const available = product.status === "ACTIVE" && product.stock > 0;
 
   return (
     <main className="mx-auto min-h-[50vh] max-w-7xl px-4 py-7 sm:px-6 sm:py-10 lg:px-8">
@@ -36,8 +35,8 @@ export default async function ProductPage({ params }: PageProps<"/produtos/[slug
             {product.description && <p className="whitespace-pre-wrap leading-7 text-neutral-600">{product.description}</p>}
           </div>
           <div className="space-y-1">
-            {hasComparePrice && <p className="text-sm text-neutral-500 line-through">{formatPrice(compareAtPrice)}</p>}
             <p className="text-3xl font-bold">{formatPrice(product.price)}</p>
+            {!available && <p className="font-semibold text-red-700">Produto indisponível</p>}
           </div>
           <ProductPurchaseControls product={product} />
         </div>
@@ -49,9 +48,9 @@ export default async function ProductPage({ params }: PageProps<"/produtos/[slug
             <AccordionTrigger className="py-4 text-base font-semibold hover:no-underline">Detalhes do Produto</AccordionTrigger>
             <AccordionContent className="pb-5">
               <dl className="grid gap-x-8 gap-y-3 text-sm sm:grid-cols-2">
-                {product.sku && <div className="flex justify-between gap-4 border-b py-2"><dt className="text-neutral-500">SKU</dt><dd className="font-medium">{product.sku}</dd></div>}
+                {product.details?.map((detail, index) => <div key={`${detail.title}-${index}`} className="flex justify-between gap-4 border-b py-2"><dt className="text-neutral-500">{detail.title}</dt><dd className="text-right font-medium">{detail.value}</dd></div>)}
                 {product.category && <div className="flex justify-between gap-4 border-b py-2"><dt className="text-neutral-500">Categoria</dt><dd><Link href={`/categorias/${product.category.slug}`} className="font-medium underline underline-offset-4">{product.category.name}</Link></dd></div>}
-                <div className="flex justify-between gap-4 border-b py-2"><dt className="text-neutral-500">Disponibilidade</dt><dd className="font-medium">{product.status === "OUT_OF_STOCK" ? "Sem estoque" : "Disponível"}</dd></div>
+                <div className="flex justify-between gap-4 border-b py-2"><dt className="text-neutral-500">Disponibilidade</dt><dd className="font-medium">{available ? "Disponível" : "Indisponível"}</dd></div>
                 {product.isNew && <div className="flex justify-between gap-4 border-b py-2"><dt className="text-neutral-500">Novidade</dt><dd className="font-medium">Sim</dd></div>}
                 {product.featured && <div className="flex justify-between gap-4 border-b py-2"><dt className="text-neutral-500">Destaque</dt><dd className="font-medium">Sim</dd></div>}
               </dl>
