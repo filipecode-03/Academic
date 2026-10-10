@@ -74,6 +74,7 @@ export async function POST(
       "products",
       "banners",
       "collections",
+      "home-collection-blocks",
     ];
 
     if (!allowedFolders.includes(folder)) {

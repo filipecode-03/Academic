@@ -2,6 +2,9 @@
 
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import { useFieldArray } from "react-hook-form";
+import { Plus, X } from "lucide-react";
+import { Button } from "@/src/components/ui/button";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -10,10 +13,6 @@ const productFormSchema = z.object({
     .string()
     .min(1, "O nome do produto é obrigatório."),
 
-  slug: z
-    .string()
-    .min(1, "O slug do produto é obrigatório."),
-
   description: z
     .string()
     .optional(),
@@ -21,27 +20,32 @@ const productFormSchema = z.object({
   price: z
     .number()
     .positive("O preço deve ser maior que zero."),
+  collectionIds: z.array(z.string()),
 
-  compareAtPrice: z
-    .number()
-    .positive("O preço anterior deve ser maior que zero.")
-    .optional(),
-
-  sku: z
-    .string()
-    .optional(),
+  stock: z.number().int().min(0, "O estoque não pode ser negativo."),
+  details: z.array(z.object({ title: z.string().min(1), value: z.string().min(1) })),
 
   status: z
-    .enum(["ACTIVE", "INACTIVE", "OUT_OF_STOCK"]),
+    .enum(["ACTIVE", "INACTIVE"]),
 
   featured: z
     .boolean(),
 
-  isNew: z
-    .boolean(),
+  newEnabled: z.boolean(),
+  newDurationDays: z.enum(["7", "14", "30", "60"]),
+  newUntil: z.string(),
+  featuredExpiry: z.enum(["NEVER", "7", "14", "30", "60", "CUSTOM"]),
+  featuredStart: z.string(),
+  featuredEnd: z.string(),
 
   images: z
     .array(z.instanceof(File)),
+}).refine((data) => !data.featured || data.featuredExpiry === "NEVER" || Boolean(data.featuredEnd), {
+  path: ["featuredEnd"],
+  message: "Informe a data final do período de destaque.",
+}).refine((data) => !data.newEnabled || Boolean(data.newUntil), {
+  path: ["newUntil"],
+  message: "Informe a data até a qual o produto será considerado novo.",
 });
 
 type ProductFormData = z.infer<typeof productFormSchema>;
@@ -49,14 +53,16 @@ type ProductFormData = z.infer<typeof productFormSchema>;
 export type ProductFormInitialData = {
   id: string;
   name: string;
-  slug: string;
   description?: string | null;
   price: number;
-  compareAtPrice?: number | null;
-  sku?: string | null;
-  status: "ACTIVE" | "INACTIVE" | "OUT_OF_STOCK";
+  stock: number;
+  details: { title: string; value: string }[];
+  collections?: { collection: { id: string } }[];
+  status: "ACTIVE" | "INACTIVE";
   featured: boolean;
-  isNew: boolean;
+  newUntil?: string | null;
+  featuredStartAt?: string | null;
+  featuredEndAt?: string | null;
   images: {
     image: string;
     order: number;
@@ -68,15 +74,30 @@ type ProductFormProps = {
   onSuccess?: () => void;
 };
 
-function generateSlug(value: string) {
-  return value
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .toLowerCase()
-    .trim()
-    .replace(/[^a-z0-9\s-]/g, "")
-    .replace(/\s+/g, "-")
-    .replace(/-+/g, "-");
+function toDateInput(value?: string | null) {
+  if (!value) return "";
+  const date = new Date(value);
+  if (!Number.isFinite(date.getTime())) return "";
+  const localDate = new Date(date.getTime() - date.getTimezoneOffset() * 60_000);
+  return localDate.toISOString().slice(0, 10);
+}
+
+function dateAtLocalEndOfDay(value: string) {
+  if (!value) return null;
+  const date = new Date(`${value}T23:59:59.999`);
+  return Number.isFinite(date.getTime()) ? date.toISOString() : null;
+}
+
+function dateAtLocalStartOfDay(value: string) {
+  if (!value) return null;
+  const date = new Date(`${value}T00:00:00`);
+  return Number.isFinite(date.getTime()) ? date.toISOString() : null;
+}
+
+function dateAfterDays(days: number) {
+  const date = new Date();
+  date.setDate(date.getDate() + days);
+  return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
 }
 
 export default function ProductForm({
@@ -86,6 +107,12 @@ export default function ProductForm({
   const isEditing = Boolean(product);
 
   const [previews, setPreviews] = useState<string[]>([]);
+  const [priceText, setPriceText] = useState(product ? Number(product.price).toLocaleString("pt-BR", { style: "currency", currency: "BRL" }) : "");
+  const [collections, setCollections] = useState<{ id: string; name: string }[]>([]);
+  const [createCollectionOpen, setCreateCollectionOpen] = useState(false);
+  const [newCollectionName, setNewCollectionName] = useState("");
+  const [collectionError, setCollectionError] = useState("");
+  const [creatingCollection, setCreatingCollection] = useState(false);
 
   const [existingImages, setExistingImages] = useState<string[]>(
     product?.images
@@ -100,6 +127,7 @@ export default function ProductForm({
     handleSubmit,
     setValue,
     watch,
+    control,
     formState: {
       errors,
       isSubmitting,
@@ -109,36 +137,42 @@ export default function ProductForm({
 
     defaultValues: {
       name: product?.name ?? "",
-      slug: product?.slug ?? "",
       description: product?.description ?? "",
 
       price: product
         ? Number(product.price)
         : undefined,
 
-      compareAtPrice:
-        product?.compareAtPrice != null
-          ? Number(product.compareAtPrice)
-          : undefined,
-
-      sku: product?.sku ?? "",
+      stock: product?.stock ?? 0,
+      details: product?.details ?? [],
+      collectionIds: product?.collections?.map(({ collection }) => collection.id) ?? [],
       status: product?.status ?? "ACTIVE",
       featured: product?.featured ?? false,
-      isNew: product?.isNew ?? false,
+      newEnabled: Boolean(product?.newUntil && new Date(product.newUntil).getTime() > Date.now()),
+      newDurationDays: "14",
+      newUntil: toDateInput(product?.newUntil),
+      featuredExpiry: product?.featuredEndAt ? "CUSTOM" : "NEVER",
+      featuredStart: toDateInput(product?.featuredStartAt),
+      featuredEnd: toDateInput(product?.featuredEndAt),
       images: [],
     },
   });
 
-  const name = watch("name");
   const images = watch("images");
+  const selectedCollections = watch("collectionIds");
+  const newEnabled = watch("newEnabled");
+  const newDurationDays = watch("newDurationDays");
+  const featuredExpiry = watch("featuredExpiry");
+  const featured = watch("featured");
+  const { fields: detailFields, append, remove } = useFieldArray({ control, name: "details" });
 
   useEffect(() => {
-    if (!name) {
-      return;
-    }
-
-    setValue("slug", generateSlug(name));
-  }, [name, setValue]);
+    void fetch("/api/collections").then(async (collectionResponse) => {
+      if (!collectionResponse.ok) throw new Error("Não foi possível carregar coleções.");
+      const collectionData = await collectionResponse.json();
+      setCollections(collectionData.collections ?? []);
+    }).catch((error) => console.error("Não foi possível carregar coleções do formulário:", error));
+  }, []);
 
   useEffect(() => {
     const urls = images.map((file) =>
@@ -176,6 +210,21 @@ export default function ProductForm({
         (_, imageIndex) => imageIndex !== index
       )
     );
+  }
+
+  async function createCollectionFromProduct() {
+    const collectionName = newCollectionName.trim();
+    if (!collectionName) { setCollectionError("Informe o nome da coleção."); return; }
+    try {
+      setCreatingCollection(true); setCollectionError("");
+      const response = await fetch("/api/collections", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ name: collectionName }) });
+      const result = await response.json() as { message?: string; collection?: { id: string; name: string } };
+      if (!response.ok || !result.collection) throw new Error(result.message ?? "Não foi possível criar a coleção.");
+      setCollections((current) => [...current, result.collection!]);
+      setValue("collectionIds", [...selectedCollections, result.collection.id], { shouldDirty: true, shouldValidate: true });
+      setNewCollectionName(""); setCreateCollectionOpen(false);
+    } catch (cause) { setCollectionError(cause instanceof Error ? cause.message : "Não foi possível criar a coleção."); }
+    finally { setCreatingCollection(false); }
   }
 
   async function uploadImage(file: File) {
@@ -284,16 +333,17 @@ export default function ProductForm({
 
       const payload = {
         name: data.name,
-        slug: data.slug,
         description:
           data.description || undefined,
         price: data.price,
-        compareAtPrice:
-          data.compareAtPrice || undefined,
-        sku: data.sku || undefined,
+        stock: data.stock,
+        details: data.details,
+        collectionIds: data.collectionIds,
         status: data.status,
         featured: data.featured,
-        isNew: data.isNew,
+        newUntil: data.newEnabled ? dateAtLocalEndOfDay(data.newUntil) : null,
+        featuredStartAt: dateAtLocalStartOfDay(data.featuredStart),
+        featuredEndAt: data.featuredExpiry === "NEVER" ? null : dateAtLocalEndOfDay(data.featuredEnd),
         images: imageUrls.map(
           (image, index) => ({
             image,
@@ -364,22 +414,6 @@ export default function ProductForm({
       </div>
 
       <div>
-        <label htmlFor="slug">
-          Slug
-        </label>
-
-        <input
-          id="slug"
-          type="text"
-          {...register("slug")}
-        />
-
-        {errors.slug && (
-          <p>{errors.slug.message}</p>
-        )}
-      </div>
-
-      <div>
         <label htmlFor="description">
           Descrição
         </label>
@@ -397,11 +431,21 @@ export default function ProductForm({
 
         <input
           id="price"
-          type="number"
-          step="0.01"
-          {...register("price", {
-            valueAsNumber: true,
-          })}
+          type="text"
+          inputMode="decimal"
+          value={priceText}
+          onChange={(event) => {
+            const text = event.target.value;
+            setPriceText(text);
+            const raw = text.replace(/R\$\s?/g, "").trim();
+            const normalized = (raw.includes(",") ? raw.replace(/\./g, "").replace(",", ".") : raw).replace(/[^0-9.]/g, "");
+            const value = Number(normalized);
+            setValue("price", value, { shouldValidate: true });
+          }}
+          onBlur={() => {
+            const value = watch("price");
+            if (Number.isFinite(value) && value > 0) setPriceText(value.toLocaleString("pt-BR", { style: "currency", currency: "BRL" }));
+          }}
         />
 
         {errors.price && (
@@ -409,45 +453,7 @@ export default function ProductForm({
         )}
       </div>
 
-      <div>
-        <label htmlFor="compareAtPrice">
-          Preço anterior
-        </label>
-
-        <input
-          id="compareAtPrice"
-          type="number"
-          step="0.01"
-          {...register("compareAtPrice", {
-            setValueAs: (value) =>
-              value === ""
-                ? undefined
-                : Number(value),
-          })}
-        />
-
-        {errors.compareAtPrice && (
-          <p>
-            {errors.compareAtPrice.message}
-          </p>
-        )}
-      </div>
-
-      <div>
-        <label htmlFor="sku">
-          SKU
-        </label>
-
-        <input
-          id="sku"
-          type="text"
-          {...register("sku")}
-        />
-
-        {errors.sku && (
-          <p>{errors.sku.message}</p>
-        )}
-      </div>
+      <div><label htmlFor="stock">Estoque</label><input id="stock" type="number" min="0" step="1" {...register("stock", { valueAsNumber: true })} />{errors.stock && <p role="alert">{errors.stock.message}</p>}</div>
 
       <div>
         <label htmlFor="status">
@@ -466,33 +472,56 @@ export default function ProductForm({
             Inativo
           </option>
 
-          <option value="OUT_OF_STOCK">
-            Sem estoque
-          </option>
         </select>
       </div>
 
-      <div>
-        <label>
-          <input
-            type="checkbox"
-            {...register("featured")}
-          />
+      <fieldset className="space-y-3"><legend className="font-medium">Coleções</legend><div className="flex flex-wrap gap-2"><select aria-label="Selecionar coleção" className="min-w-56" value="" onChange={(event) => { const id = event.target.value; if (id && !selectedCollections.includes(id)) setValue("collectionIds", [...selectedCollections, id], { shouldDirty: true }); }}><option value="">Selecionar coleção…</option>{collections.filter((collection) => !selectedCollections.includes(collection.id)).map((collection) => <option key={collection.id} value={collection.id}>{collection.name}</option>)}</select><Button type="button" variant="outline" onClick={() => { setCollectionError(""); setCreateCollectionOpen(true); }}><Plus className="mr-1 size-4" />Criar coleção</Button></div>{selectedCollections.length > 0 && <div className="flex flex-wrap gap-2">{collections.filter((collection) => selectedCollections.includes(collection.id)).map((collection) => <span key={collection.id} className="inline-flex items-center gap-1 rounded-full bg-neutral-100 px-3 py-1 text-sm">{collection.name}<button type="button" aria-label={`Remover ${collection.name}`} onClick={() => setValue("collectionIds", selectedCollections.filter((id) => id !== collection.id), { shouldDirty: true })}><X className="size-3.5" /></button></span>)}</div>}</fieldset>
 
-          Destaque
-        </label>
-      </div>
+      {createCollectionOpen && <div className="fixed inset-0 z-[70] flex items-center justify-center bg-black/45 p-4" onMouseDown={(event) => { if (event.target === event.currentTarget && !creatingCollection) setCreateCollectionOpen(false); }}><section role="dialog" aria-modal="true" aria-labelledby="quick-collection-title" className="w-full max-w-md rounded-xl border bg-white p-5 shadow-2xl"><h2 id="quick-collection-title" className="text-lg font-semibold">Criar coleção</h2><p className="mt-1 text-sm text-neutral-600">A coleção será adicionada a este produto e você continuará preenchendo o formulário.</p><label className="mt-4 block space-y-1 text-sm font-medium">Nome<input autoFocus className="w-full" value={newCollectionName} onChange={(event) => setNewCollectionName(event.target.value)} onKeyDown={(event) => { if (event.key === "Enter") { event.preventDefault(); void createCollectionFromProduct(); } }} /></label>{collectionError && <p role="alert" className="mt-2 text-sm text-red-700">{collectionError}</p>}<div className="mt-5 flex justify-end gap-2"><Button type="button" variant="outline" disabled={creatingCollection} onClick={() => setCreateCollectionOpen(false)}>Cancelar</Button><Button type="button" disabled={creatingCollection} onClick={() => void createCollectionFromProduct()}>{creatingCollection ? "Criando…" : "Criar e selecionar"}</Button></div></section></div>}
 
-      <div>
-        <label>
-          <input
-            type="checkbox"
-            {...register("isNew")}
-          />
+      <fieldset className="space-y-3 rounded-lg border p-4"><legend className="px-1 font-semibold">Detalhes do produto</legend>
+        {detailFields.map((field, index) => <div key={field.id} className="grid gap-2 sm:grid-cols-[1fr_2fr_auto]">
+          <input aria-label="Título do detalhe" placeholder="Título" {...register(`details.${index}.title`)} />
+          <input aria-label="Valor do detalhe" placeholder="Valor" {...register(`details.${index}.value`)} />
+          <button type="button" onClick={() => remove(index)}>Remover</button>
+        </div>)}
+        <button type="button" onClick={() => append({ title: "", value: "" })}>+ Adicionar detalhe</button>
+      </fieldset>
 
-          Produto novo
-        </label>
-      </div>
+      <fieldset className="space-y-4 rounded-xl border border-neutral-200 p-4 sm:p-5">
+        <legend className="px-1 font-semibold">Lançamento</legend>
+        <label className="flex items-center gap-2 text-sm font-medium"><input type="checkbox" checked={newEnabled} onChange={(event) => {
+          const enabled = event.target.checked;
+          setValue("newEnabled", enabled, { shouldDirty: true });
+          if (enabled) setValue("newUntil", dateAfterDays(Number(newDurationDays)), { shouldDirty: true, shouldValidate: true });
+        }} />Marcar como novo</label>
+        <div className="grid gap-3 sm:grid-cols-2">
+          <label className="space-y-1 text-sm font-medium">Duração<select className="w-full" disabled={!newEnabled} value={newDurationDays} onChange={(event) => {
+            const duration = event.target.value as ProductFormData["newDurationDays"];
+            setValue("newDurationDays", duration, { shouldDirty: true });
+            if (newEnabled) setValue("newUntil", dateAfterDays(Number(duration)), { shouldDirty: true, shouldValidate: true });
+          }}><option value="7">7 dias</option><option value="14">14 dias</option><option value="30">30 dias</option><option value="60">60 dias</option></select></label>
+          <label className="space-y-1 text-sm font-medium">Válido até<input className="w-full" type="date" disabled={!newEnabled} {...register("newUntil")} /></label>
+        </div>
+        <p className="text-xs text-neutral-500">A novidade termina automaticamente ao fim da data selecionada. A duração pode ser escolhida ou ajustada pela data.</p>
+      </fieldset>
+
+      <fieldset className="space-y-4 rounded-xl border border-neutral-200 p-4 sm:p-5">
+        <legend className="px-1 font-semibold">Destaque editorial</legend>
+        <label className="flex items-center gap-2 text-sm font-medium"><input type="checkbox" {...register("featured")} />Ativar destaque</label>
+        <div className="grid gap-3 sm:grid-cols-2">
+          <label className="space-y-1 text-sm font-medium">Período<select className="w-full" disabled={!featured} value={featuredExpiry} onChange={(event) => {
+            const expiry = event.target.value as ProductFormData["featuredExpiry"];
+            setValue("featuredExpiry", expiry, { shouldDirty: true, shouldValidate: true });
+            if (expiry === "NEVER") setValue("featuredEnd", "", { shouldDirty: true });
+            else if (expiry !== "CUSTOM") setValue("featuredEnd", dateAfterDays(Number(expiry)), { shouldDirty: true, shouldValidate: true });
+            else if (!watch("featuredEnd")) setValue("featuredEnd", dateAfterDays(14), { shouldDirty: true, shouldValidate: true });
+          }}><option value="NEVER">Sem expiração</option><option value="7">7 dias</option><option value="14">14 dias</option><option value="30">30 dias</option><option value="60">60 dias</option><option value="CUSTOM">Personalizado</option></select></label>
+          <label className="space-y-1 text-sm font-medium">Início<input className="w-full" type="date" disabled={!featured} {...register("featuredStart")} /></label>
+          {featuredExpiry !== "NEVER" && <label className="space-y-1 text-sm font-medium">Fim<input className="w-full" type="date" disabled={!featured} {...register("featuredEnd")} />{errors.featuredEnd && <span role="alert" className="block text-xs text-red-700">{errors.featuredEnd.message}</span>}</label>}
+        </div>
+        <p className="text-xs text-neutral-500">Sem expiração mantém o destaque até desativá-lo. Com período, ele termina automaticamente após a data final.</p>
+      </fieldset>
 
       {isEditing &&
         existingImages.length > 0 && (
@@ -538,6 +567,7 @@ export default function ProductForm({
           multiple
           onChange={handleImagesChange}
         />
+        <p className="text-sm text-neutral-600">Dimensão recomendada: 1000 × 1250 px (proporção 4:5), para capa principal e imagens adicionais. Formatos: JPG, PNG, WebP ou AVIF.</p>
 
         {!isEditing &&
           errors.images && (

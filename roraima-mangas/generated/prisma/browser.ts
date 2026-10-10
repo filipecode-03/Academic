@@ -23,15 +23,20 @@ export * from './enums';
  */
 export type User = Prisma.UserModel
 /**
- * Model Category
- * 
- */
-export type Category = Prisma.CategoryModel
-/**
  * Model Product
  * 
  */
 export type Product = Prisma.ProductModel
+/**
+ * Model Order
+ * 
+ */
+export type Order = Prisma.OrderModel
+/**
+ * Model OrderItem
+ * 
+ */
+export type OrderItem = Prisma.OrderItemModel
 /**
  * Model ProductImage
  * 
@@ -42,6 +47,11 @@ export type ProductImage = Prisma.ProductImageModel
  * 
  */
 export type Collection = Prisma.CollectionModel
+/**
+ * Model NavbarItem
+ * 
+ */
+export type NavbarItem = Prisma.NavbarItemModel
 /**
  * Model ProductCollection
  * 
@@ -62,6 +72,11 @@ export type PromoNotice = Prisma.PromoNoticeModel
  * 
  */
 export type HomeSection = Prisma.HomeSectionModel
+/**
+ * Model HomeCollectionBlock
+ * 
+ */
+export type HomeCollectionBlock = Prisma.HomeCollectionBlockModel
 /**
  * Model HomeSectionProduct
  * 

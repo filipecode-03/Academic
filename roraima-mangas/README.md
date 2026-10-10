@@ -34,3 +34,6 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+# Checkout por WhatsApp
+
+Configure `WHATSAPP_STORE_NUMBER` no Infisical com o telefone da loja em formato internacional, contendo apenas o código do país e os dígitos do número (por exemplo, sem `+`, espaços ou pontuação). O endpoint de pedidos usa essa variável para montar o link `wa.me`; o número não é incluído no código.

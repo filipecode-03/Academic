@@ -50,7 +50,6 @@ function CollectionForm({ collection, onSave, onCancel }: CollectionFormProps) {
     resolver: zodResolver(createCollectionSchema),
     defaultValues: {
       name: collection?.name ?? "",
-      slug: collection?.slug ?? "",
       description: collection?.description ?? "",
     },
   });
@@ -83,12 +82,6 @@ function CollectionForm({ collection, onSave, onCancel }: CollectionFormProps) {
       </div>
 
       <div>
-        <label className="block" htmlFor="collection-slug">Slug</label>
-        <input id="collection-slug" className="w-full border p-2" {...register("slug")} />
-        {errors.slug && <p role="alert">{errors.slug.message}</p>}
-      </div>
-
-      <div>
         <label className="block" htmlFor="collection-description">Descrição</label>
         <textarea
           id="collection-description"
@@ -117,6 +110,7 @@ function CollectionForm({ collection, onSave, onCancel }: CollectionFormProps) {
           accept="image/jpeg,image/png,image/webp,image/avif"
           onChange={(event) => setImageFile(event.target.files?.[0])}
         />
+        <p className="text-sm text-neutral-600">Dimensão recomendada: 1600 × 600 px (proporção 8:3), para o banner responsivo da coleção. Formatos: JPG, PNG, WebP ou AVIF.</p>
         {previewUrl && (
           <div>
             <p>Prévia da nova imagem:</p>
@@ -357,7 +351,7 @@ export default function CollectionsPage() {
   );
   const normalizedSearch = search.trim().toLocaleLowerCase();
   const filteredCollections = collections.filter((collection) =>
-    `${collection.name} ${collection.slug}`.toLocaleLowerCase().includes(normalizedSearch)
+    collection.name.toLocaleLowerCase().includes(normalizedSearch)
   );
 
   return (
@@ -424,7 +418,7 @@ export default function CollectionsPage() {
             <ul className="space-y-2">
               {associatedProducts.map((product) => (
                 <li key={product.id} className="flex items-center justify-between border p-3">
-                  <span>{product.name} <span className="text-sm">({product.slug})</span></span>
+                  <span>{product.name}</span>
                   <button type="button" onClick={() => void removeProduct(product)}>Remover</button>
                 </li>
               ))}
@@ -440,7 +434,7 @@ export default function CollectionsPage() {
             type="search"
             className="w-full max-w-md border p-2"
             placeholder="Pesquisar coleções..."
-            aria-label="Pesquisar coleções por nome ou slug"
+            aria-label="Pesquisar coleções pelo nome"
             value={search}
             onChange={(event) => setSearch(event.target.value)}
           />
@@ -455,7 +449,6 @@ export default function CollectionsPage() {
           <article key={collection.id} className="flex flex-wrap items-center justify-between gap-3 border p-4">
             <div>
               <h3 className="font-semibold">{collection.name}</h3>
-              <p className="text-sm">Slug: {collection.slug}</p>
               {collection.description && <p>{collection.description}</p>}
             </div>
             <div className="flex flex-wrap gap-3">

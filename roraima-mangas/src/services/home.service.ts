@@ -1,161 +1,83 @@
 import { prisma } from "@/src/lib/prisma";
 import type { Prisma } from "@/generated/prisma/client";
 import { cache } from "react";
+import { serializePublicProduct } from "@/src/types/storefront";
 
 const publicProductInclude = {
   images: { orderBy: { order: "asc" as const } },
-  category: true,
   collections: { include: { collection: true } },
 };
-
-type HomeSectionRecord = Prisma.HomeSectionGetPayload<{
-  include: typeof homeSectionInclude;
-}>;
+const homeSectionInclude = {
+  collection: { include: { products: { orderBy: { product: { createdAt: "desc" as const } }, include: { product: { include: publicProductInclude } } } } },
+  products: { orderBy: { order: "asc" as const }, take: 10, include: { product: { include: publicProductInclude } } },
+};
+type HomeSectionRecord = Prisma.HomeSectionGetPayload<{ include: typeof homeSectionInclude }>;
 
 function toPublicHomeSection(section: HomeSectionRecord) {
+  const now = new Date();
+  const visible = (product: HomeSectionRecord["products"][number]["product"]) => ({
+    ...product,
+    isNew: Boolean(product.newUntil && product.newUntil > now),
+    featured: product.featured && (!product.featuredStartAt || product.featuredStartAt <= now) && (!product.featuredEndAt || product.featuredEndAt > now),
+  });
   const displayProducts = section.type === "MANUAL"
-    ? section.products.map(({ product }) => product)
-    : section.type === "CATEGORY"
-      ? section.category?.products ?? []
-      : section.collection?.products.map(({ product }) => product) ?? [];
-
+    ? section.products.map(({ product }) => visible(product))
+    : section.collection?.products.map(({ product }) => visible(product)).sort((a, b) => Number(b.featured) - Number(a.featured) || b.createdAt.getTime() - a.createdAt.getTime()).slice(0, 10) ?? [];
   return {
     ...section,
-    category: section.category
-      ? {
-          id: section.category.id,
-          name: section.category.name,
-          slug: section.category.slug,
-        }
-      : null,
-    collection: section.collection
-      ? {
-          id: section.collection.id,
-          name: section.collection.name,
-          slug: section.collection.slug,
-          description: section.collection.description,
-          image: section.collection.image,
-        }
-      : null,
+    collection: section.collection ? { id: section.collection.id, name: section.collection.name, slug: section.collection.slug, description: section.collection.description, image: section.collection.image } : null,
     displayProducts,
   };
 }
 
-const homeSectionInclude = {
-  category: {
-    include: {
-      products: {
-        where: { status: { not: "INACTIVE" as const } },
-        orderBy: [{ featured: "desc" as const }, { createdAt: "desc" as const }],
-        include: publicProductInclude,
-      },
-    },
-  },
-  collection: {
-    include: {
-      products: {
-        where: { product: { status: { not: "INACTIVE" as const } } },
-        orderBy: [
-          { product: { featured: "desc" as const } },
-          { product: { createdAt: "desc" as const } },
-        ],
-        include: { product: { include: publicProductInclude } },
-      },
-    },
-  },
-  products: {
-    where: { product: { status: { not: "INACTIVE" as const } } },
-    orderBy: { order: "asc" as const },
-    include: {
-      product: { include: publicProductInclude },
-    },
-  },
-};
-
 export async function getActiveHomeSections() {
-  const sections = await prisma.homeSection.findMany({
-    where: { active: true },
-    orderBy: { order: "asc" },
-    include: homeSectionInclude,
-  });
-
+  const sections = await prisma.homeSection.findMany({ where: { active: true }, orderBy: { order: "asc" }, include: homeSectionInclude });
   return sections.map(toPublicHomeSection);
 }
-
 export const getPublicHomeSectionById = cache(async (id: string) => {
-  const section = await prisma.homeSection.findFirst({
-    where: { id, active: true },
-    include: homeSectionInclude,
-  });
+  const section = await prisma.homeSection.findFirst({ where: { id, active: true }, include: homeSectionInclude });
   return section ? toPublicHomeSection(section) : null;
 });
-
 export async function getPublicProductBySlug(slug: string) {
-  const decodedSlug = decodePathSegment(slug);
-  return prisma.product.findFirst({
-    where: { slug: decodedSlug, status: { not: "INACTIVE" } },
+  return prisma.product.findFirst({ where: { slug: decodePathSegment(slug) }, include: publicProductInclude });
+}
+export async function getPublicCollectionBySlug(slug: string) {
+  return prisma.collection.findUnique({ where: { slug: decodePathSegment(slug) }, include: {
+    products: { orderBy: [{ product: { featured: "desc" } }, { product: { createdAt: "desc" } }], include: { product: { include: publicProductInclude } } },
+  } });
+}
+export async function searchCatalog(query: string) {
+  const term = query.trim();
+  if (term.length < 2) return { products: [], collections: [] };
+  const [products, collections] = await Promise.all([
+    prisma.product.findMany({ where: { name: { contains: term, mode: "insensitive" } }, take: 48, orderBy: { createdAt: "desc" }, include: publicProductInclude }),
+    prisma.collection.findMany({ where: { name: { contains: term, mode: "insensitive" } }, take: 12, orderBy: { name: "asc" } }),
+  ]);
+  return { products, collections };
+}
+
+export async function getPublicProductsForListing(kind: "ALL" | "NEW" | "FEATURED") {
+  const now = new Date();
+  const products = await prisma.product.findMany({
+    where: kind === "NEW" ? { newUntil: { gt: now } } : kind === "FEATURED" ? {
+      featured: true,
+      AND: [{ OR: [{ featuredStartAt: null }, { featuredStartAt: { lte: now } }] }, { OR: [{ featuredEndAt: null }, { featuredEndAt: { gt: now } }] }],
+    } : {},
+    orderBy: [{ createdAt: "desc" }],
     include: publicProductInclude,
   });
+  const result = products.map(serializePublicProduct);
+  return kind === "ALL" ? result.sort((a, b) => Number(b.featured) - Number(a.featured) || Date.parse(b.createdAt) - Date.parse(a.createdAt)) : result;
 }
-
-export async function getPublicCategoryBySlug(slug: string) {
-  const decodedSlug = decodePathSegment(slug);
-  return prisma.category.findUnique({
-    where: { slug: decodedSlug },
-    include: {
-      products: {
-        where: { status: { not: "INACTIVE" } },
-        orderBy: [{ featured: "desc" }, { createdAt: "desc" }],
-        include: publicProductInclude,
-      },
-    },
-  });
-}
-
-export async function getPublicCollectionBySlug(slug: string) {
-  const decodedSlug = decodePathSegment(slug);
-  return prisma.collection.findUnique({
-    where: { slug: decodedSlug },
-    include: {
-      products: {
-        where: { product: { status: { not: "INACTIVE" } } },
-        orderBy: [
-          { product: { featured: "desc" } },
-          { product: { createdAt: "desc" } },
-        ],
-        include: { product: { include: publicProductInclude } },
-      },
-    },
-  });
-}
-
-function decodePathSegment(value: string) {
-  try {
-    return decodeURIComponent(value);
-  } catch {
-    return value;
-  }
-}
+function decodePathSegment(value: string) { try { return decodeURIComponent(value); } catch { return value; } }
 
 export async function getHomeData() {
   const now = new Date();
-
-  const [promoNotices, banners, sections] = await Promise.all([
-    prisma.promoNotice.findMany({
-      where: {
-        active: true,
-        startAt: { lte: now },
-        endAt: { gte: now },
-      },
-      orderBy: [{ position: "asc" }, { order: "asc" }],
-    }),
-    prisma.homeBanner.findMany({
-      where: { active: true },
-      orderBy: { order: "asc" },
-      include: { product: true, category: true, collection: true },
-    }).then((items) => items.map(({ title, description, ...banner }) => banner)),
+  const [promoNotices, banners, sections, collectionBlocks] = await Promise.all([
+    prisma.promoNotice.findMany({ where: { active: true, startAt: { lte: now }, endAt: { gte: now } }, orderBy: [{ position: "asc" }, { order: "asc" }] }),
+    prisma.homeBanner.findMany({ where: { active: true }, orderBy: { order: "asc" }, include: { product: true, collection: true } }).then((items) => items.map(({ title, description, ...banner }) => banner)),
     getActiveHomeSections(),
+    prisma.homeCollectionBlock.findMany({ where: { active: true }, orderBy: { order: "asc" }, include: { collection: { select: { slug: true } } } }),
   ]);
-
-  return { promoNotices, banners, sections };
+  return { promoNotices, banners, sections, collectionBlocks };
 }

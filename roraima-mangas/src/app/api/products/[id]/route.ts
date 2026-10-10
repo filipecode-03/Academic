@@ -109,7 +109,7 @@ export async function PATCH(
       return NextResponse.json(
         {
           success: false,
-          message: "Slug ou SKU já está sendo utilizado.",
+          message: "Não foi possível salvar o produto por conflito de dados. Tente novamente.",
         },
         { status: 409 }
       );

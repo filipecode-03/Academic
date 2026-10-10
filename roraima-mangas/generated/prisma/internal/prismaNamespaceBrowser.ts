@@ -52,14 +52,17 @@ export const AnyNull = runtime.AnyNull
 
 export const ModelName = {
   User: 'User',
-  Category: 'Category',
   Product: 'Product',
+  Order: 'Order',
+  OrderItem: 'OrderItem',
   ProductImage: 'ProductImage',
   Collection: 'Collection',
+  NavbarItem: 'NavbarItem',
   ProductCollection: 'ProductCollection',
   HomeBanner: 'HomeBanner',
   PromoNotice: 'PromoNotice',
   HomeSection: 'HomeSection',
+  HomeCollectionBlock: 'HomeCollectionBlock',
   HomeSectionProduct: 'HomeSectionProduct'
 } as const
 
@@ -91,35 +94,49 @@ export const UserScalarFieldEnum = {
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
 
 
-export const CategoryScalarFieldEnum = {
-  id: 'id',
-  name: 'name',
-  slug: 'slug',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-} as const
-
-export type CategoryScalarFieldEnum = (typeof CategoryScalarFieldEnum)[keyof typeof CategoryScalarFieldEnum]
-
-
 export const ProductScalarFieldEnum = {
   id: 'id',
   name: 'name',
   slug: 'slug',
   description: 'description',
   price: 'price',
-  compareAtPrice: 'compareAtPrice',
-  sku: 'sku',
+  stock: 'stock',
+  details: 'details',
   image: 'image',
   status: 'status',
   featured: 'featured',
-  isNew: 'isNew',
-  categoryId: 'categoryId',
+  newUntil: 'newUntil',
+  featuredStartAt: 'featuredStartAt',
+  featuredEndAt: 'featuredEndAt',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
 
 export type ProductScalarFieldEnum = (typeof ProductScalarFieldEnum)[keyof typeof ProductScalarFieldEnum]
+
+
+export const OrderScalarFieldEnum = {
+  id: 'id',
+  status: 'status',
+  total: 'total',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type OrderScalarFieldEnum = (typeof OrderScalarFieldEnum)[keyof typeof OrderScalarFieldEnum]
+
+
+export const OrderItemScalarFieldEnum = {
+  id: 'id',
+  orderId: 'orderId',
+  productId: 'productId',
+  productName: 'productName',
+  unitPrice: 'unitPrice',
+  quantity: 'quantity',
+  subtotal: 'subtotal'
+} as const
+
+export type OrderItemScalarFieldEnum = (typeof OrderItemScalarFieldEnum)[keyof typeof OrderItemScalarFieldEnum]
 
 
 export const ProductImageScalarFieldEnum = {
@@ -147,6 +164,23 @@ export const CollectionScalarFieldEnum = {
 export type CollectionScalarFieldEnum = (typeof CollectionScalarFieldEnum)[keyof typeof CollectionScalarFieldEnum]
 
 
+export const NavbarItemScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  type: 'type',
+  destinationType: 'destinationType',
+  collectionId: 'collectionId',
+  externalUrl: 'externalUrl',
+  parentId: 'parentId',
+  order: 'order',
+  active: 'active',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type NavbarItemScalarFieldEnum = (typeof NavbarItemScalarFieldEnum)[keyof typeof NavbarItemScalarFieldEnum]
+
+
 export const ProductCollectionScalarFieldEnum = {
   productId: 'productId',
   collectionId: 'collectionId'
@@ -157,17 +191,16 @@ export type ProductCollectionScalarFieldEnum = (typeof ProductCollectionScalarFi
 
 export const HomeBannerScalarFieldEnum = {
   id: 'id',
-  title: 'title',
-  description: 'description',
   image: 'image',
   order: 'order',
   active: 'active',
   destinationType: 'destinationType',
   productId: 'productId',
-  categoryId: 'categoryId',
   collectionId: 'collectionId',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  title: 'title',
+  description: 'description'
 } as const
 
 export type HomeBannerScalarFieldEnum = (typeof HomeBannerScalarFieldEnum)[keyof typeof HomeBannerScalarFieldEnum]
@@ -194,13 +227,26 @@ export const HomeSectionScalarFieldEnum = {
   type: 'type',
   order: 'order',
   active: 'active',
-  categoryId: 'categoryId',
   collectionId: 'collectionId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
 
 export type HomeSectionScalarFieldEnum = (typeof HomeSectionScalarFieldEnum)[keyof typeof HomeSectionScalarFieldEnum]
+
+
+export const HomeCollectionBlockScalarFieldEnum = {
+  id: 'id',
+  image: 'image',
+  title: 'title',
+  collectionId: 'collectionId',
+  order: 'order',
+  active: 'active',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type HomeCollectionBlockScalarFieldEnum = (typeof HomeCollectionBlockScalarFieldEnum)[keyof typeof HomeCollectionBlockScalarFieldEnum]
 
 
 export const HomeSectionProductScalarFieldEnum = {
@@ -220,6 +266,13 @@ export const SortOrder = {
 export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
 
 
+export const JsonNullValueInput = {
+  JsonNull: JsonNull
+} as const
+
+export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
+
+
 export const QueryMode = {
   default: 'default',
   insensitive: 'insensitive'
@@ -234,4 +287,13 @@ export const NullsOrder = {
 } as const
 
 export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
+
+
+export const JsonNullValueFilter = {
+  DbNull: DbNull,
+  JsonNull: JsonNull,
+  AnyNull: AnyNull
+} as const
+
+export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
 

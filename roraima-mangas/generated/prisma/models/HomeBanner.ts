@@ -36,47 +36,44 @@ export type HomeBannerSumAggregateOutputType = {
 
 export type HomeBannerMinAggregateOutputType = {
   id: string | null
-  title: string | null
-  description: string | null
   image: string | null
   order: number | null
   active: boolean | null
   destinationType: $Enums.BannerDestinationType | null
   productId: string | null
-  categoryId: string | null
   collectionId: string | null
   createdAt: Date | null
   updatedAt: Date | null
+  title: string | null
+  description: string | null
 }
 
 export type HomeBannerMaxAggregateOutputType = {
   id: string | null
-  title: string | null
-  description: string | null
   image: string | null
   order: number | null
   active: boolean | null
   destinationType: $Enums.BannerDestinationType | null
   productId: string | null
-  categoryId: string | null
   collectionId: string | null
   createdAt: Date | null
   updatedAt: Date | null
+  title: string | null
+  description: string | null
 }
 
 export type HomeBannerCountAggregateOutputType = {
   id: number
-  title: number
-  description: number
   image: number
   order: number
   active: number
   destinationType: number
   productId: number
-  categoryId: number
   collectionId: number
   createdAt: number
   updatedAt: number
+  title: number
+  description: number
   _all: number
 }
 
@@ -91,47 +88,44 @@ export type HomeBannerSumAggregateInputType = {
 
 export type HomeBannerMinAggregateInputType = {
   id?: true
-  title?: true
-  description?: true
   image?: true
   order?: true
   active?: true
   destinationType?: true
   productId?: true
-  categoryId?: true
   collectionId?: true
   createdAt?: true
   updatedAt?: true
+  title?: true
+  description?: true
 }
 
 export type HomeBannerMaxAggregateInputType = {
   id?: true
-  title?: true
-  description?: true
   image?: true
   order?: true
   active?: true
   destinationType?: true
   productId?: true
-  categoryId?: true
   collectionId?: true
   createdAt?: true
   updatedAt?: true
+  title?: true
+  description?: true
 }
 
 export type HomeBannerCountAggregateInputType = {
   id?: true
-  title?: true
-  description?: true
   image?: true
   order?: true
   active?: true
   destinationType?: true
   productId?: true
-  categoryId?: true
   collectionId?: true
   createdAt?: true
   updatedAt?: true
+  title?: true
+  description?: true
   _all?: true
 }
 
@@ -223,17 +217,16 @@ export type HomeBannerGroupByArgs<ExtArgs extends runtime.Types.Extensions.Inter
 
 export type HomeBannerGroupByOutputType = {
   id: string
-  title: string
-  description: string | null
   image: string
   order: number
   active: boolean
   destinationType: $Enums.BannerDestinationType
   productId: string | null
-  categoryId: string | null
   collectionId: string | null
   createdAt: Date
   updatedAt: Date
+  title: string
+  description: string | null
   _count: HomeBannerCountAggregateOutputType | null
   _avg: HomeBannerAvgAggregateOutputType | null
   _sum: HomeBannerSumAggregateOutputType | null
@@ -261,38 +254,34 @@ export type HomeBannerWhereInput = {
   OR?: Prisma.HomeBannerWhereInput[]
   NOT?: Prisma.HomeBannerWhereInput | Prisma.HomeBannerWhereInput[]
   id?: Prisma.StringFilter<"HomeBanner"> | string
-  title?: Prisma.StringFilter<"HomeBanner"> | string
-  description?: Prisma.StringNullableFilter<"HomeBanner"> | string | null
   image?: Prisma.StringFilter<"HomeBanner"> | string
   order?: Prisma.IntFilter<"HomeBanner"> | number
   active?: Prisma.BoolFilter<"HomeBanner"> | boolean
   destinationType?: Prisma.EnumBannerDestinationTypeFilter<"HomeBanner"> | $Enums.BannerDestinationType
   productId?: Prisma.StringNullableFilter<"HomeBanner"> | string | null
-  categoryId?: Prisma.StringNullableFilter<"HomeBanner"> | string | null
   collectionId?: Prisma.StringNullableFilter<"HomeBanner"> | string | null
   createdAt?: Prisma.DateTimeFilter<"HomeBanner"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"HomeBanner"> | Date | string
-  product?: Prisma.XOR<Prisma.ProductNullableScalarRelationFilter, Prisma.ProductWhereInput> | null
-  category?: Prisma.XOR<Prisma.CategoryNullableScalarRelationFilter, Prisma.CategoryWhereInput> | null
+  title?: Prisma.StringFilter<"HomeBanner"> | string
+  description?: Prisma.StringNullableFilter<"HomeBanner"> | string | null
   collection?: Prisma.XOR<Prisma.CollectionNullableScalarRelationFilter, Prisma.CollectionWhereInput> | null
+  product?: Prisma.XOR<Prisma.ProductNullableScalarRelationFilter, Prisma.ProductWhereInput> | null
 }
 
 export type HomeBannerOrderByWithRelationInput = {
   id?: Prisma.SortOrder
-  title?: Prisma.SortOrder
-  description?: Prisma.SortOrderInput | Prisma.SortOrder
   image?: Prisma.SortOrder
   order?: Prisma.SortOrder
   active?: Prisma.SortOrder
   destinationType?: Prisma.SortOrder
   productId?: Prisma.SortOrderInput | Prisma.SortOrder
-  categoryId?: Prisma.SortOrderInput | Prisma.SortOrder
   collectionId?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
-  product?: Prisma.ProductOrderByWithRelationInput
-  category?: Prisma.CategoryOrderByWithRelationInput
+  title?: Prisma.SortOrder
+  description?: Prisma.SortOrderInput | Prisma.SortOrder
   collection?: Prisma.CollectionOrderByWithRelationInput
+  product?: Prisma.ProductOrderByWithRelationInput
 }
 
 export type HomeBannerWhereUniqueInput = Prisma.AtLeast<{
@@ -300,35 +289,32 @@ export type HomeBannerWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.HomeBannerWhereInput | Prisma.HomeBannerWhereInput[]
   OR?: Prisma.HomeBannerWhereInput[]
   NOT?: Prisma.HomeBannerWhereInput | Prisma.HomeBannerWhereInput[]
-  title?: Prisma.StringFilter<"HomeBanner"> | string
-  description?: Prisma.StringNullableFilter<"HomeBanner"> | string | null
   image?: Prisma.StringFilter<"HomeBanner"> | string
   order?: Prisma.IntFilter<"HomeBanner"> | number
   active?: Prisma.BoolFilter<"HomeBanner"> | boolean
   destinationType?: Prisma.EnumBannerDestinationTypeFilter<"HomeBanner"> | $Enums.BannerDestinationType
   productId?: Prisma.StringNullableFilter<"HomeBanner"> | string | null
-  categoryId?: Prisma.StringNullableFilter<"HomeBanner"> | string | null
   collectionId?: Prisma.StringNullableFilter<"HomeBanner"> | string | null
   createdAt?: Prisma.DateTimeFilter<"HomeBanner"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"HomeBanner"> | Date | string
-  product?: Prisma.XOR<Prisma.ProductNullableScalarRelationFilter, Prisma.ProductWhereInput> | null
-  category?: Prisma.XOR<Prisma.CategoryNullableScalarRelationFilter, Prisma.CategoryWhereInput> | null
+  title?: Prisma.StringFilter<"HomeBanner"> | string
+  description?: Prisma.StringNullableFilter<"HomeBanner"> | string | null
   collection?: Prisma.XOR<Prisma.CollectionNullableScalarRelationFilter, Prisma.CollectionWhereInput> | null
+  product?: Prisma.XOR<Prisma.ProductNullableScalarRelationFilter, Prisma.ProductWhereInput> | null
 }, "id">
 
 export type HomeBannerOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
-  title?: Prisma.SortOrder
-  description?: Prisma.SortOrderInput | Prisma.SortOrder
   image?: Prisma.SortOrder
   order?: Prisma.SortOrder
   active?: Prisma.SortOrder
   destinationType?: Prisma.SortOrder
   productId?: Prisma.SortOrderInput | Prisma.SortOrder
-  categoryId?: Prisma.SortOrderInput | Prisma.SortOrder
   collectionId?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  title?: Prisma.SortOrder
+  description?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.HomeBannerCountOrderByAggregateInput
   _avg?: Prisma.HomeBannerAvgOrderByAggregateInput
   _max?: Prisma.HomeBannerMaxOrderByAggregateInput
@@ -341,119 +327,112 @@ export type HomeBannerScalarWhereWithAggregatesInput = {
   OR?: Prisma.HomeBannerScalarWhereWithAggregatesInput[]
   NOT?: Prisma.HomeBannerScalarWhereWithAggregatesInput | Prisma.HomeBannerScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"HomeBanner"> | string
-  title?: Prisma.StringWithAggregatesFilter<"HomeBanner"> | string
-  description?: Prisma.StringNullableWithAggregatesFilter<"HomeBanner"> | string | null
   image?: Prisma.StringWithAggregatesFilter<"HomeBanner"> | string
   order?: Prisma.IntWithAggregatesFilter<"HomeBanner"> | number
   active?: Prisma.BoolWithAggregatesFilter<"HomeBanner"> | boolean
   destinationType?: Prisma.EnumBannerDestinationTypeWithAggregatesFilter<"HomeBanner"> | $Enums.BannerDestinationType
   productId?: Prisma.StringNullableWithAggregatesFilter<"HomeBanner"> | string | null
-  categoryId?: Prisma.StringNullableWithAggregatesFilter<"HomeBanner"> | string | null
   collectionId?: Prisma.StringNullableWithAggregatesFilter<"HomeBanner"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"HomeBanner"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"HomeBanner"> | Date | string
+  title?: Prisma.StringWithAggregatesFilter<"HomeBanner"> | string
+  description?: Prisma.StringNullableWithAggregatesFilter<"HomeBanner"> | string | null
 }
 
 export type HomeBannerCreateInput = {
   id?: string
-  title: string
-  description?: string | null
   image: string
   order: number
   active?: boolean
   destinationType?: $Enums.BannerDestinationType
   createdAt?: Date | string
   updatedAt?: Date | string
-  product?: Prisma.ProductCreateNestedOneWithoutHomeBannersInput
-  category?: Prisma.CategoryCreateNestedOneWithoutBannersInput
+  title: string
+  description?: string | null
   collection?: Prisma.CollectionCreateNestedOneWithoutBannersInput
+  product?: Prisma.ProductCreateNestedOneWithoutHomeBannersInput
 }
 
 export type HomeBannerUncheckedCreateInput = {
   id?: string
-  title: string
-  description?: string | null
   image: string
   order: number
   active?: boolean
   destinationType?: $Enums.BannerDestinationType
   productId?: string | null
-  categoryId?: string | null
   collectionId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  title: string
+  description?: string | null
 }
 
 export type HomeBannerUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  title?: Prisma.StringFieldUpdateOperationsInput | string
-  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   image?: Prisma.StringFieldUpdateOperationsInput | string
   order?: Prisma.IntFieldUpdateOperationsInput | number
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   destinationType?: Prisma.EnumBannerDestinationTypeFieldUpdateOperationsInput | $Enums.BannerDestinationType
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  product?: Prisma.ProductUpdateOneWithoutHomeBannersNestedInput
-  category?: Prisma.CategoryUpdateOneWithoutBannersNestedInput
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   collection?: Prisma.CollectionUpdateOneWithoutBannersNestedInput
+  product?: Prisma.ProductUpdateOneWithoutHomeBannersNestedInput
 }
 
 export type HomeBannerUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  title?: Prisma.StringFieldUpdateOperationsInput | string
-  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   image?: Prisma.StringFieldUpdateOperationsInput | string
   order?: Prisma.IntFieldUpdateOperationsInput | number
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   destinationType?: Prisma.EnumBannerDestinationTypeFieldUpdateOperationsInput | $Enums.BannerDestinationType
   productId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  categoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   collectionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type HomeBannerCreateManyInput = {
   id?: string
-  title: string
-  description?: string | null
   image: string
   order: number
   active?: boolean
   destinationType?: $Enums.BannerDestinationType
   productId?: string | null
-  categoryId?: string | null
   collectionId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  title: string
+  description?: string | null
 }
 
 export type HomeBannerUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  title?: Prisma.StringFieldUpdateOperationsInput | string
-  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   image?: Prisma.StringFieldUpdateOperationsInput | string
   order?: Prisma.IntFieldUpdateOperationsInput | number
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   destinationType?: Prisma.EnumBannerDestinationTypeFieldUpdateOperationsInput | $Enums.BannerDestinationType
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type HomeBannerUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  title?: Prisma.StringFieldUpdateOperationsInput | string
-  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   image?: Prisma.StringFieldUpdateOperationsInput | string
   order?: Prisma.IntFieldUpdateOperationsInput | number
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   destinationType?: Prisma.EnumBannerDestinationTypeFieldUpdateOperationsInput | $Enums.BannerDestinationType
   productId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  categoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   collectionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type HomeBannerListRelationFilter = {
@@ -468,17 +447,16 @@ export type HomeBannerOrderByRelationAggregateInput = {
 
 export type HomeBannerCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  title?: Prisma.SortOrder
-  description?: Prisma.SortOrder
   image?: Prisma.SortOrder
   order?: Prisma.SortOrder
   active?: Prisma.SortOrder
   destinationType?: Prisma.SortOrder
   productId?: Prisma.SortOrder
-  categoryId?: Prisma.SortOrder
   collectionId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  title?: Prisma.SortOrder
+  description?: Prisma.SortOrder
 }
 
 export type HomeBannerAvgOrderByAggregateInput = {
@@ -487,78 +465,34 @@ export type HomeBannerAvgOrderByAggregateInput = {
 
 export type HomeBannerMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  title?: Prisma.SortOrder
-  description?: Prisma.SortOrder
   image?: Prisma.SortOrder
   order?: Prisma.SortOrder
   active?: Prisma.SortOrder
   destinationType?: Prisma.SortOrder
   productId?: Prisma.SortOrder
-  categoryId?: Prisma.SortOrder
   collectionId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  title?: Prisma.SortOrder
+  description?: Prisma.SortOrder
 }
 
 export type HomeBannerMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  title?: Prisma.SortOrder
-  description?: Prisma.SortOrder
   image?: Prisma.SortOrder
   order?: Prisma.SortOrder
   active?: Prisma.SortOrder
   destinationType?: Prisma.SortOrder
   productId?: Prisma.SortOrder
-  categoryId?: Prisma.SortOrder
   collectionId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  title?: Prisma.SortOrder
+  description?: Prisma.SortOrder
 }
 
 export type HomeBannerSumOrderByAggregateInput = {
   order?: Prisma.SortOrder
-}
-
-export type HomeBannerCreateNestedManyWithoutCategoryInput = {
-  create?: Prisma.XOR<Prisma.HomeBannerCreateWithoutCategoryInput, Prisma.HomeBannerUncheckedCreateWithoutCategoryInput> | Prisma.HomeBannerCreateWithoutCategoryInput[] | Prisma.HomeBannerUncheckedCreateWithoutCategoryInput[]
-  connectOrCreate?: Prisma.HomeBannerCreateOrConnectWithoutCategoryInput | Prisma.HomeBannerCreateOrConnectWithoutCategoryInput[]
-  createMany?: Prisma.HomeBannerCreateManyCategoryInputEnvelope
-  connect?: Prisma.HomeBannerWhereUniqueInput | Prisma.HomeBannerWhereUniqueInput[]
-}
-
-export type HomeBannerUncheckedCreateNestedManyWithoutCategoryInput = {
-  create?: Prisma.XOR<Prisma.HomeBannerCreateWithoutCategoryInput, Prisma.HomeBannerUncheckedCreateWithoutCategoryInput> | Prisma.HomeBannerCreateWithoutCategoryInput[] | Prisma.HomeBannerUncheckedCreateWithoutCategoryInput[]
-  connectOrCreate?: Prisma.HomeBannerCreateOrConnectWithoutCategoryInput | Prisma.HomeBannerCreateOrConnectWithoutCategoryInput[]
-  createMany?: Prisma.HomeBannerCreateManyCategoryInputEnvelope
-  connect?: Prisma.HomeBannerWhereUniqueInput | Prisma.HomeBannerWhereUniqueInput[]
-}
-
-export type HomeBannerUpdateManyWithoutCategoryNestedInput = {
-  create?: Prisma.XOR<Prisma.HomeBannerCreateWithoutCategoryInput, Prisma.HomeBannerUncheckedCreateWithoutCategoryInput> | Prisma.HomeBannerCreateWithoutCategoryInput[] | Prisma.HomeBannerUncheckedCreateWithoutCategoryInput[]
-  connectOrCreate?: Prisma.HomeBannerCreateOrConnectWithoutCategoryInput | Prisma.HomeBannerCreateOrConnectWithoutCategoryInput[]
-  upsert?: Prisma.HomeBannerUpsertWithWhereUniqueWithoutCategoryInput | Prisma.HomeBannerUpsertWithWhereUniqueWithoutCategoryInput[]
-  createMany?: Prisma.HomeBannerCreateManyCategoryInputEnvelope
-  set?: Prisma.HomeBannerWhereUniqueInput | Prisma.HomeBannerWhereUniqueInput[]
-  disconnect?: Prisma.HomeBannerWhereUniqueInput | Prisma.HomeBannerWhereUniqueInput[]
-  delete?: Prisma.HomeBannerWhereUniqueInput | Prisma.HomeBannerWhereUniqueInput[]
-  connect?: Prisma.HomeBannerWhereUniqueInput | Prisma.HomeBannerWhereUniqueInput[]
-  update?: Prisma.HomeBannerUpdateWithWhereUniqueWithoutCategoryInput | Prisma.HomeBannerUpdateWithWhereUniqueWithoutCategoryInput[]
-  updateMany?: Prisma.HomeBannerUpdateManyWithWhereWithoutCategoryInput | Prisma.HomeBannerUpdateManyWithWhereWithoutCategoryInput[]
-  deleteMany?: Prisma.HomeBannerScalarWhereInput | Prisma.HomeBannerScalarWhereInput[]
-}
-
-export type HomeBannerUncheckedUpdateManyWithoutCategoryNestedInput = {
-  create?: Prisma.XOR<Prisma.HomeBannerCreateWithoutCategoryInput, Prisma.HomeBannerUncheckedCreateWithoutCategoryInput> | Prisma.HomeBannerCreateWithoutCategoryInput[] | Prisma.HomeBannerUncheckedCreateWithoutCategoryInput[]
-  connectOrCreate?: Prisma.HomeBannerCreateOrConnectWithoutCategoryInput | Prisma.HomeBannerCreateOrConnectWithoutCategoryInput[]
-  upsert?: Prisma.HomeBannerUpsertWithWhereUniqueWithoutCategoryInput | Prisma.HomeBannerUpsertWithWhereUniqueWithoutCategoryInput[]
-  createMany?: Prisma.HomeBannerCreateManyCategoryInputEnvelope
-  set?: Prisma.HomeBannerWhereUniqueInput | Prisma.HomeBannerWhereUniqueInput[]
-  disconnect?: Prisma.HomeBannerWhereUniqueInput | Prisma.HomeBannerWhereUniqueInput[]
-  delete?: Prisma.HomeBannerWhereUniqueInput | Prisma.HomeBannerWhereUniqueInput[]
-  connect?: Prisma.HomeBannerWhereUniqueInput | Prisma.HomeBannerWhereUniqueInput[]
-  update?: Prisma.HomeBannerUpdateWithWhereUniqueWithoutCategoryInput | Prisma.HomeBannerUpdateWithWhereUniqueWithoutCategoryInput[]
-  updateMany?: Prisma.HomeBannerUpdateManyWithWhereWithoutCategoryInput | Prisma.HomeBannerUpdateManyWithWhereWithoutCategoryInput[]
-  deleteMany?: Prisma.HomeBannerScalarWhereInput | Prisma.HomeBannerScalarWhereInput[]
 }
 
 export type HomeBannerCreateNestedManyWithoutProductInput = {
@@ -649,104 +583,30 @@ export type EnumBannerDestinationTypeFieldUpdateOperationsInput = {
   set?: $Enums.BannerDestinationType
 }
 
-export type HomeBannerCreateWithoutCategoryInput = {
-  id?: string
-  title: string
-  description?: string | null
-  image: string
-  order: number
-  active?: boolean
-  destinationType?: $Enums.BannerDestinationType
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  product?: Prisma.ProductCreateNestedOneWithoutHomeBannersInput
-  collection?: Prisma.CollectionCreateNestedOneWithoutBannersInput
-}
-
-export type HomeBannerUncheckedCreateWithoutCategoryInput = {
-  id?: string
-  title: string
-  description?: string | null
-  image: string
-  order: number
-  active?: boolean
-  destinationType?: $Enums.BannerDestinationType
-  productId?: string | null
-  collectionId?: string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
-}
-
-export type HomeBannerCreateOrConnectWithoutCategoryInput = {
-  where: Prisma.HomeBannerWhereUniqueInput
-  create: Prisma.XOR<Prisma.HomeBannerCreateWithoutCategoryInput, Prisma.HomeBannerUncheckedCreateWithoutCategoryInput>
-}
-
-export type HomeBannerCreateManyCategoryInputEnvelope = {
-  data: Prisma.HomeBannerCreateManyCategoryInput | Prisma.HomeBannerCreateManyCategoryInput[]
-  skipDuplicates?: boolean
-}
-
-export type HomeBannerUpsertWithWhereUniqueWithoutCategoryInput = {
-  where: Prisma.HomeBannerWhereUniqueInput
-  update: Prisma.XOR<Prisma.HomeBannerUpdateWithoutCategoryInput, Prisma.HomeBannerUncheckedUpdateWithoutCategoryInput>
-  create: Prisma.XOR<Prisma.HomeBannerCreateWithoutCategoryInput, Prisma.HomeBannerUncheckedCreateWithoutCategoryInput>
-}
-
-export type HomeBannerUpdateWithWhereUniqueWithoutCategoryInput = {
-  where: Prisma.HomeBannerWhereUniqueInput
-  data: Prisma.XOR<Prisma.HomeBannerUpdateWithoutCategoryInput, Prisma.HomeBannerUncheckedUpdateWithoutCategoryInput>
-}
-
-export type HomeBannerUpdateManyWithWhereWithoutCategoryInput = {
-  where: Prisma.HomeBannerScalarWhereInput
-  data: Prisma.XOR<Prisma.HomeBannerUpdateManyMutationInput, Prisma.HomeBannerUncheckedUpdateManyWithoutCategoryInput>
-}
-
-export type HomeBannerScalarWhereInput = {
-  AND?: Prisma.HomeBannerScalarWhereInput | Prisma.HomeBannerScalarWhereInput[]
-  OR?: Prisma.HomeBannerScalarWhereInput[]
-  NOT?: Prisma.HomeBannerScalarWhereInput | Prisma.HomeBannerScalarWhereInput[]
-  id?: Prisma.StringFilter<"HomeBanner"> | string
-  title?: Prisma.StringFilter<"HomeBanner"> | string
-  description?: Prisma.StringNullableFilter<"HomeBanner"> | string | null
-  image?: Prisma.StringFilter<"HomeBanner"> | string
-  order?: Prisma.IntFilter<"HomeBanner"> | number
-  active?: Prisma.BoolFilter<"HomeBanner"> | boolean
-  destinationType?: Prisma.EnumBannerDestinationTypeFilter<"HomeBanner"> | $Enums.BannerDestinationType
-  productId?: Prisma.StringNullableFilter<"HomeBanner"> | string | null
-  categoryId?: Prisma.StringNullableFilter<"HomeBanner"> | string | null
-  collectionId?: Prisma.StringNullableFilter<"HomeBanner"> | string | null
-  createdAt?: Prisma.DateTimeFilter<"HomeBanner"> | Date | string
-  updatedAt?: Prisma.DateTimeFilter<"HomeBanner"> | Date | string
-}
-
 export type HomeBannerCreateWithoutProductInput = {
   id?: string
-  title: string
-  description?: string | null
   image: string
   order: number
   active?: boolean
   destinationType?: $Enums.BannerDestinationType
   createdAt?: Date | string
   updatedAt?: Date | string
-  category?: Prisma.CategoryCreateNestedOneWithoutBannersInput
+  title: string
+  description?: string | null
   collection?: Prisma.CollectionCreateNestedOneWithoutBannersInput
 }
 
 export type HomeBannerUncheckedCreateWithoutProductInput = {
   id?: string
-  title: string
-  description?: string | null
   image: string
   order: number
   active?: boolean
   destinationType?: $Enums.BannerDestinationType
-  categoryId?: string | null
   collectionId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  title: string
+  description?: string | null
 }
 
 export type HomeBannerCreateOrConnectWithoutProductInput = {
@@ -775,32 +635,47 @@ export type HomeBannerUpdateManyWithWhereWithoutProductInput = {
   data: Prisma.XOR<Prisma.HomeBannerUpdateManyMutationInput, Prisma.HomeBannerUncheckedUpdateManyWithoutProductInput>
 }
 
+export type HomeBannerScalarWhereInput = {
+  AND?: Prisma.HomeBannerScalarWhereInput | Prisma.HomeBannerScalarWhereInput[]
+  OR?: Prisma.HomeBannerScalarWhereInput[]
+  NOT?: Prisma.HomeBannerScalarWhereInput | Prisma.HomeBannerScalarWhereInput[]
+  id?: Prisma.StringFilter<"HomeBanner"> | string
+  image?: Prisma.StringFilter<"HomeBanner"> | string
+  order?: Prisma.IntFilter<"HomeBanner"> | number
+  active?: Prisma.BoolFilter<"HomeBanner"> | boolean
+  destinationType?: Prisma.EnumBannerDestinationTypeFilter<"HomeBanner"> | $Enums.BannerDestinationType
+  productId?: Prisma.StringNullableFilter<"HomeBanner"> | string | null
+  collectionId?: Prisma.StringNullableFilter<"HomeBanner"> | string | null
+  createdAt?: Prisma.DateTimeFilter<"HomeBanner"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"HomeBanner"> | Date | string
+  title?: Prisma.StringFilter<"HomeBanner"> | string
+  description?: Prisma.StringNullableFilter<"HomeBanner"> | string | null
+}
+
 export type HomeBannerCreateWithoutCollectionInput = {
   id?: string
-  title: string
-  description?: string | null
   image: string
   order: number
   active?: boolean
   destinationType?: $Enums.BannerDestinationType
   createdAt?: Date | string
   updatedAt?: Date | string
+  title: string
+  description?: string | null
   product?: Prisma.ProductCreateNestedOneWithoutHomeBannersInput
-  category?: Prisma.CategoryCreateNestedOneWithoutBannersInput
 }
 
 export type HomeBannerUncheckedCreateWithoutCollectionInput = {
   id?: string
-  title: string
-  description?: string | null
   image: string
   order: number
   active?: boolean
   destinationType?: $Enums.BannerDestinationType
   productId?: string | null
-  categoryId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  title: string
+  description?: string | null
 }
 
 export type HomeBannerCreateOrConnectWithoutCollectionInput = {
@@ -829,282 +704,206 @@ export type HomeBannerUpdateManyWithWhereWithoutCollectionInput = {
   data: Prisma.XOR<Prisma.HomeBannerUpdateManyMutationInput, Prisma.HomeBannerUncheckedUpdateManyWithoutCollectionInput>
 }
 
-export type HomeBannerCreateManyCategoryInput = {
-  id?: string
-  title: string
-  description?: string | null
-  image: string
-  order: number
-  active?: boolean
-  destinationType?: $Enums.BannerDestinationType
-  productId?: string | null
-  collectionId?: string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
-}
-
-export type HomeBannerUpdateWithoutCategoryInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  title?: Prisma.StringFieldUpdateOperationsInput | string
-  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  image?: Prisma.StringFieldUpdateOperationsInput | string
-  order?: Prisma.IntFieldUpdateOperationsInput | number
-  active?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  destinationType?: Prisma.EnumBannerDestinationTypeFieldUpdateOperationsInput | $Enums.BannerDestinationType
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  product?: Prisma.ProductUpdateOneWithoutHomeBannersNestedInput
-  collection?: Prisma.CollectionUpdateOneWithoutBannersNestedInput
-}
-
-export type HomeBannerUncheckedUpdateWithoutCategoryInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  title?: Prisma.StringFieldUpdateOperationsInput | string
-  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  image?: Prisma.StringFieldUpdateOperationsInput | string
-  order?: Prisma.IntFieldUpdateOperationsInput | number
-  active?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  destinationType?: Prisma.EnumBannerDestinationTypeFieldUpdateOperationsInput | $Enums.BannerDestinationType
-  productId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  collectionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-}
-
-export type HomeBannerUncheckedUpdateManyWithoutCategoryInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  title?: Prisma.StringFieldUpdateOperationsInput | string
-  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  image?: Prisma.StringFieldUpdateOperationsInput | string
-  order?: Prisma.IntFieldUpdateOperationsInput | number
-  active?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  destinationType?: Prisma.EnumBannerDestinationTypeFieldUpdateOperationsInput | $Enums.BannerDestinationType
-  productId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  collectionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-}
-
 export type HomeBannerCreateManyProductInput = {
   id?: string
-  title: string
-  description?: string | null
   image: string
   order: number
   active?: boolean
   destinationType?: $Enums.BannerDestinationType
-  categoryId?: string | null
   collectionId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  title: string
+  description?: string | null
 }
 
 export type HomeBannerUpdateWithoutProductInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  title?: Prisma.StringFieldUpdateOperationsInput | string
-  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   image?: Prisma.StringFieldUpdateOperationsInput | string
   order?: Prisma.IntFieldUpdateOperationsInput | number
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   destinationType?: Prisma.EnumBannerDestinationTypeFieldUpdateOperationsInput | $Enums.BannerDestinationType
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  category?: Prisma.CategoryUpdateOneWithoutBannersNestedInput
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   collection?: Prisma.CollectionUpdateOneWithoutBannersNestedInput
 }
 
 export type HomeBannerUncheckedUpdateWithoutProductInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  title?: Prisma.StringFieldUpdateOperationsInput | string
-  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   image?: Prisma.StringFieldUpdateOperationsInput | string
   order?: Prisma.IntFieldUpdateOperationsInput | number
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   destinationType?: Prisma.EnumBannerDestinationTypeFieldUpdateOperationsInput | $Enums.BannerDestinationType
-  categoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   collectionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type HomeBannerUncheckedUpdateManyWithoutProductInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  title?: Prisma.StringFieldUpdateOperationsInput | string
-  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   image?: Prisma.StringFieldUpdateOperationsInput | string
   order?: Prisma.IntFieldUpdateOperationsInput | number
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   destinationType?: Prisma.EnumBannerDestinationTypeFieldUpdateOperationsInput | $Enums.BannerDestinationType
-  categoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   collectionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type HomeBannerCreateManyCollectionInput = {
   id?: string
-  title: string
-  description?: string | null
   image: string
   order: number
   active?: boolean
   destinationType?: $Enums.BannerDestinationType
   productId?: string | null
-  categoryId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  title: string
+  description?: string | null
 }
 
 export type HomeBannerUpdateWithoutCollectionInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  title?: Prisma.StringFieldUpdateOperationsInput | string
-  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   image?: Prisma.StringFieldUpdateOperationsInput | string
   order?: Prisma.IntFieldUpdateOperationsInput | number
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   destinationType?: Prisma.EnumBannerDestinationTypeFieldUpdateOperationsInput | $Enums.BannerDestinationType
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   product?: Prisma.ProductUpdateOneWithoutHomeBannersNestedInput
-  category?: Prisma.CategoryUpdateOneWithoutBannersNestedInput
 }
 
 export type HomeBannerUncheckedUpdateWithoutCollectionInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  title?: Prisma.StringFieldUpdateOperationsInput | string
-  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   image?: Prisma.StringFieldUpdateOperationsInput | string
   order?: Prisma.IntFieldUpdateOperationsInput | number
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   destinationType?: Prisma.EnumBannerDestinationTypeFieldUpdateOperationsInput | $Enums.BannerDestinationType
   productId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  categoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type HomeBannerUncheckedUpdateManyWithoutCollectionInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  title?: Prisma.StringFieldUpdateOperationsInput | string
-  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   image?: Prisma.StringFieldUpdateOperationsInput | string
   order?: Prisma.IntFieldUpdateOperationsInput | number
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   destinationType?: Prisma.EnumBannerDestinationTypeFieldUpdateOperationsInput | $Enums.BannerDestinationType
   productId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  categoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 
 
 export type HomeBannerSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  title?: boolean
-  description?: boolean
   image?: boolean
   order?: boolean
   active?: boolean
   destinationType?: boolean
   productId?: boolean
-  categoryId?: boolean
   collectionId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  product?: boolean | Prisma.HomeBanner$productArgs<ExtArgs>
-  category?: boolean | Prisma.HomeBanner$categoryArgs<ExtArgs>
+  title?: boolean
+  description?: boolean
   collection?: boolean | Prisma.HomeBanner$collectionArgs<ExtArgs>
+  product?: boolean | Prisma.HomeBanner$productArgs<ExtArgs>
 }, ExtArgs["result"]["homeBanner"]>
 
 export type HomeBannerSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  title?: boolean
-  description?: boolean
   image?: boolean
   order?: boolean
   active?: boolean
   destinationType?: boolean
   productId?: boolean
-  categoryId?: boolean
   collectionId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  product?: boolean | Prisma.HomeBanner$productArgs<ExtArgs>
-  category?: boolean | Prisma.HomeBanner$categoryArgs<ExtArgs>
+  title?: boolean
+  description?: boolean
   collection?: boolean | Prisma.HomeBanner$collectionArgs<ExtArgs>
+  product?: boolean | Prisma.HomeBanner$productArgs<ExtArgs>
 }, ExtArgs["result"]["homeBanner"]>
 
 export type HomeBannerSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  title?: boolean
-  description?: boolean
   image?: boolean
   order?: boolean
   active?: boolean
   destinationType?: boolean
   productId?: boolean
-  categoryId?: boolean
   collectionId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  product?: boolean | Prisma.HomeBanner$productArgs<ExtArgs>
-  category?: boolean | Prisma.HomeBanner$categoryArgs<ExtArgs>
+  title?: boolean
+  description?: boolean
   collection?: boolean | Prisma.HomeBanner$collectionArgs<ExtArgs>
+  product?: boolean | Prisma.HomeBanner$productArgs<ExtArgs>
 }, ExtArgs["result"]["homeBanner"]>
 
 export type HomeBannerSelectScalar = {
   id?: boolean
-  title?: boolean
-  description?: boolean
   image?: boolean
   order?: boolean
   active?: boolean
   destinationType?: boolean
   productId?: boolean
-  categoryId?: boolean
   collectionId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  title?: boolean
+  description?: boolean
 }
 
-export type HomeBannerOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "description" | "image" | "order" | "active" | "destinationType" | "productId" | "categoryId" | "collectionId" | "createdAt" | "updatedAt", ExtArgs["result"]["homeBanner"]>
+export type HomeBannerOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "image" | "order" | "active" | "destinationType" | "productId" | "collectionId" | "createdAt" | "updatedAt" | "title" | "description", ExtArgs["result"]["homeBanner"]>
 export type HomeBannerInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  product?: boolean | Prisma.HomeBanner$productArgs<ExtArgs>
-  category?: boolean | Prisma.HomeBanner$categoryArgs<ExtArgs>
   collection?: boolean | Prisma.HomeBanner$collectionArgs<ExtArgs>
+  product?: boolean | Prisma.HomeBanner$productArgs<ExtArgs>
 }
 export type HomeBannerIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  product?: boolean | Prisma.HomeBanner$productArgs<ExtArgs>
-  category?: boolean | Prisma.HomeBanner$categoryArgs<ExtArgs>
   collection?: boolean | Prisma.HomeBanner$collectionArgs<ExtArgs>
+  product?: boolean | Prisma.HomeBanner$productArgs<ExtArgs>
 }
 export type HomeBannerIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  product?: boolean | Prisma.HomeBanner$productArgs<ExtArgs>
-  category?: boolean | Prisma.HomeBanner$categoryArgs<ExtArgs>
   collection?: boolean | Prisma.HomeBanner$collectionArgs<ExtArgs>
+  product?: boolean | Prisma.HomeBanner$productArgs<ExtArgs>
 }
 
 export type $HomeBannerPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "HomeBanner"
   objects: {
-    product: Prisma.$ProductPayload<ExtArgs> | null
-    category: Prisma.$CategoryPayload<ExtArgs> | null
     collection: Prisma.$CollectionPayload<ExtArgs> | null
+    product: Prisma.$ProductPayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
-    title: string
-    description: string | null
     image: string
     order: number
     active: boolean
     destinationType: $Enums.BannerDestinationType
     productId: string | null
-    categoryId: string | null
     collectionId: string | null
     createdAt: Date
     updatedAt: Date
+    title: string
+    description: string | null
   }, ExtArgs["result"]["homeBanner"]>
   composites: {}
 }
@@ -1499,9 +1298,8 @@ readonly fields: HomeBannerFieldRefs;
  */
 export interface Prisma__HomeBannerClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  product<T extends Prisma.HomeBanner$productArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.HomeBanner$productArgs<ExtArgs>>): Prisma.Prisma__ProductClient<runtime.Types.Result.GetResult<Prisma.$ProductPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-  category<T extends Prisma.HomeBanner$categoryArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.HomeBanner$categoryArgs<ExtArgs>>): Prisma.Prisma__CategoryClient<runtime.Types.Result.GetResult<Prisma.$CategoryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   collection<T extends Prisma.HomeBanner$collectionArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.HomeBanner$collectionArgs<ExtArgs>>): Prisma.Prisma__CollectionClient<runtime.Types.Result.GetResult<Prisma.$CollectionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  product<T extends Prisma.HomeBanner$productArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.HomeBanner$productArgs<ExtArgs>>): Prisma.Prisma__ProductClient<runtime.Types.Result.GetResult<Prisma.$ProductPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1532,17 +1330,16 @@ export interface Prisma__HomeBannerClient<T, Null = never, ExtArgs extends runti
  */
 export interface HomeBannerFieldRefs {
   readonly id: Prisma.FieldRef<"HomeBanner", 'String'>
-  readonly title: Prisma.FieldRef<"HomeBanner", 'String'>
-  readonly description: Prisma.FieldRef<"HomeBanner", 'String'>
   readonly image: Prisma.FieldRef<"HomeBanner", 'String'>
   readonly order: Prisma.FieldRef<"HomeBanner", 'Int'>
   readonly active: Prisma.FieldRef<"HomeBanner", 'Boolean'>
   readonly destinationType: Prisma.FieldRef<"HomeBanner", 'BannerDestinationType'>
   readonly productId: Prisma.FieldRef<"HomeBanner", 'String'>
-  readonly categoryId: Prisma.FieldRef<"HomeBanner", 'String'>
   readonly collectionId: Prisma.FieldRef<"HomeBanner", 'String'>
   readonly createdAt: Prisma.FieldRef<"HomeBanner", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"HomeBanner", 'DateTime'>
+  readonly title: Prisma.FieldRef<"HomeBanner", 'String'>
+  readonly description: Prisma.FieldRef<"HomeBanner", 'String'>
 }
     
 
@@ -1944,44 +1741,6 @@ export type HomeBannerDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.In
 }
 
 /**
- * HomeBanner.product
- */
-export type HomeBanner$productArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the Product
-   */
-  select?: Prisma.ProductSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the Product
-   */
-  omit?: Prisma.ProductOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.ProductInclude<ExtArgs> | null
-  where?: Prisma.ProductWhereInput
-}
-
-/**
- * HomeBanner.category
- */
-export type HomeBanner$categoryArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the Category
-   */
-  select?: Prisma.CategorySelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the Category
-   */
-  omit?: Prisma.CategoryOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.CategoryInclude<ExtArgs> | null
-  where?: Prisma.CategoryWhereInput
-}
-
-/**
  * HomeBanner.collection
  */
 export type HomeBanner$collectionArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1998,6 +1757,25 @@ export type HomeBanner$collectionArgs<ExtArgs extends runtime.Types.Extensions.I
    */
   include?: Prisma.CollectionInclude<ExtArgs> | null
   where?: Prisma.CollectionWhereInput
+}
+
+/**
+ * HomeBanner.product
+ */
+export type HomeBanner$productArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Product
+   */
+  select?: Prisma.ProductSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Product
+   */
+  omit?: Prisma.ProductOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ProductInclude<ExtArgs> | null
+  where?: Prisma.ProductWhereInput
 }
 
 /**

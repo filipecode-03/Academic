@@ -3,8 +3,8 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
-import { Menu, Search, ShoppingBag, X } from "lucide-react";
+import { usePathname, useRouter } from "next/navigation";
+import { ChevronDown, ChevronRight, Menu, Search, ShoppingBag, X } from "lucide-react";
 import logo from "@/public/logo.jpg";
 import { Button } from "@/src/components/ui/button";
 import CartPanel from "@/src/components/cart/cart-panel";
@@ -12,43 +12,19 @@ import { useCart } from "@/src/components/cart/cart-context";
 
 type CatalogLink = { id: string; name: string; slug: string };
 type SearchProduct = CatalogLink & { status: string };
-type ApiResponse = {
-  categories?: CatalogLink[];
-  collections?: CatalogLink[];
-  products?: SearchProduct[];
-  message?: string;
-};
+type SearchResponse = { collections?: CatalogLink[]; products?: SearchProduct[] };
+type NavigationChild = { id: string; title: string; href: string; external: boolean };
+type NavigationItem = { id: string; title: string; type: "LINK" | "DROPDOWN"; href?: string; external?: boolean; children: NavigationChild[] };
 
-function CatalogMenus({
-  categories,
-  collections,
-  onNavigate,
-}: {
-  categories: CatalogLink[];
-  collections: CatalogLink[];
-  onNavigate?: () => void;
-}) {
-  return <>
-    <Link href="/" onClick={onNavigate} className="rounded-md px-3 py-2 text-sm font-medium transition hover:bg-neutral-100">Início</Link>
-    {categories.length > 0 && <details className="group relative">
-      <summary className="cursor-pointer list-none rounded-md px-3 py-2 text-sm font-medium hover:bg-neutral-100">Categorias <span aria-hidden="true">⌄</span></summary>
-      <div className="absolute left-0 top-full z-30 mt-1 max-h-72 min-w-56 overflow-y-auto rounded-lg border bg-white p-2 shadow-lg">
-        {categories.map((category) => <Link key={category.id} href={`/categorias/${category.slug}`} onClick={onNavigate} className="block rounded px-3 py-2 text-sm hover:bg-neutral-100">{category.name}</Link>)}
-      </div>
-    </details>}
-    {collections.length > 0 && <details className="group relative">
-      <summary className="cursor-pointer list-none rounded-md px-3 py-2 text-sm font-medium hover:bg-neutral-100">Coleções <span aria-hidden="true">⌄</span></summary>
-      <div className="absolute left-0 top-full z-30 mt-1 max-h-72 min-w-56 overflow-y-auto rounded-lg border bg-white p-2 shadow-lg">
-        {collections.map((collection) => <Link key={collection.id} href={`/colecoes/${collection.slug}`} onClick={onNavigate} className="block rounded px-3 py-2 text-sm hover:bg-neutral-100">{collection.name}</Link>)}
-      </div>
-    </details>}
-  </>;
+function isCurrentPath(pathname: string, href: string) {
+  return href.startsWith("/") && (pathname === href || (href !== "/" && pathname.startsWith(`${href}/`)));
 }
 
 export default function Nav() {
   const router = useRouter();
+  const pathname = usePathname();
   const { itemCount } = useCart();
-  const [categories, setCategories] = useState<CatalogLink[]>([]);
+  const [items, setItems] = useState<NavigationItem[]>([]);
   const [collections, setCollections] = useState<CatalogLink[]>([]);
   const [query, setQuery] = useState("");
   const [catalog, setCatalog] = useState<SearchProduct[] | null>(null);
@@ -56,137 +32,144 @@ export default function Nav() {
   const [searching, setSearching] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [desktopOpenId, setDesktopOpenId] = useState<string | null>(null);
+  const [mobileOpenId, setMobileOpenId] = useState<string | null>(null);
   const catalogRequest = useRef<Promise<SearchProduct[]> | null>(null);
 
   useEffect(() => {
     let cancelled = false;
-    Promise.all([fetch("/api/categories"), fetch("/api/collections")])
-      .then(async ([categoryResponse, collectionResponse]) => {
-        if (!categoryResponse.ok || !collectionResponse.ok) return;
-        const [categoryData, collectionData] = await Promise.all([
-          categoryResponse.json() as Promise<ApiResponse>,
-          collectionResponse.json() as Promise<ApiResponse>,
-        ]);
-        if (!cancelled) {
-          setCategories(categoryData.categories ?? []);
-          setCollections(collectionData.collections ?? []);
-        }
-      })
-      .catch((cause: unknown) => console.error("Não foi possível carregar a navegação do catálogo:", cause));
+    void Promise.all([
+      fetch("/api/navigation", { cache: "no-store" }).then(async (response) => {
+        if (!response.ok) throw new Error("Não foi possível carregar a navegação.");
+        const data = await response.json() as { items?: NavigationItem[] };
+        if (!cancelled) setItems(data.items ?? []);
+      }),
+      fetch("/api/collections").then(async (response) => {
+        if (!response.ok) throw new Error("Não foi possível carregar as coleções.");
+        const data = await response.json() as SearchResponse;
+        if (!cancelled) setCollections(data.collections ?? []);
+      }),
+    ]).catch((cause: unknown) => console.error("Não foi possível carregar a navegação da loja:", cause));
     return () => { cancelled = true; };
   }, []);
 
-  const loadProductCatalog = useCallback(() => {
-    if (!catalogRequest.current) {
-      catalogRequest.current = fetch("/api/products")
-        .then(async (response) => {
-          if (!response.ok) throw new Error("Não foi possível pesquisar produtos.");
-          const data = await response.json() as ApiResponse;
-          const available = (data.products ?? []).filter((product) => product.status !== "INACTIVE");
-          setCatalog(available);
-          return available;
-        })
-        .catch((cause: unknown) => {
-          catalogRequest.current = null;
-          throw cause;
-        });
+  useEffect(() => {
+    function closeOnEscape(event: KeyboardEvent) {
+      if (event.key === "Escape") { setDesktopOpenId(null); setMobileOpenId(null); setMobileOpen(false); }
     }
+    window.addEventListener("keydown", closeOnEscape);
+    return () => window.removeEventListener("keydown", closeOnEscape);
+  }, []);
+
+  const loadProductCatalog = useCallback(() => {
+    if (!catalogRequest.current) catalogRequest.current = fetch("/api/products").then(async (response) => {
+      if (!response.ok) throw new Error("Não foi possível pesquisar produtos.");
+      const data = await response.json() as SearchResponse;
+      const products = data.products ?? [];
+      setCatalog(products);
+      return products;
+    }).catch((cause: unknown) => { catalogRequest.current = null; throw cause; });
     return catalogRequest.current;
   }, []);
 
   const normalizedQuery = query.trim().toLocaleLowerCase();
-  const results = useMemo(() => {
-    if (!normalizedQuery || !catalog) return [];
-    return catalog.filter((product) => product.name.toLocaleLowerCase().includes(normalizedQuery)).slice(0, 6);
-  }, [catalog, normalizedQuery]);
+  const productResults = useMemo(() => catalog?.filter((product) => product.name.toLocaleLowerCase().includes(normalizedQuery)).slice(0, 6) ?? [], [catalog, normalizedQuery]);
+  const collectionResults = useMemo(() => collections.filter((item) => item.name.toLocaleLowerCase().includes(normalizedQuery)).slice(0, 4), [collections, normalizedQuery]);
 
   useEffect(() => {
     if (normalizedQuery.length < 2 || catalog) return;
     let cancelled = false;
     const timer = window.setTimeout(() => {
       setSearching(true);
-      setSearchError("");
-      void loadProductCatalog()
-        .catch((cause: unknown) => {
-          console.error("Erro na busca do catálogo:", cause);
-          if (!cancelled) setSearchError("Não foi possível carregar os resultados da busca.");
-        })
-        .finally(() => { if (!cancelled) setSearching(false); });
+      void loadProductCatalog().catch((cause: unknown) => {
+        console.error("Erro na busca do catálogo:", cause);
+        if (!cancelled) setSearchError("Não foi possível carregar os resultados da busca.");
+      }).finally(() => { if (!cancelled) setSearching(false); });
     }, 250);
     return () => { cancelled = true; window.clearTimeout(timer); };
   }, [normalizedQuery, catalog, loadProductCatalog]);
 
-  async function submitSearch(event: React.FormEvent<HTMLFormElement>) {
+  function submitSearch(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (normalizedQuery.length < 2) return;
-    try {
-      setSearching(true);
-      setSearchError("");
-      const products = await loadProductCatalog();
-      const match = products.find((product) => product.name.toLocaleLowerCase().includes(normalizedQuery));
-      if (match) {
-        setQuery("");
-        router.push(`/produtos/${match.slug}`);
-      }
-      else setSearchError(`Nenhum produto encontrado para “${query.trim()}”.`);
-    } catch (cause) {
-      console.error("Erro ao pesquisar produtos:", cause);
-      setSearchError("Não foi possível realizar a busca agora.");
-    } finally {
-      setSearching(false);
-    }
+    router.push(`/busca?q=${encodeURIComponent(query.trim())}`);
+    setQuery("");
   }
 
-  return (
-    <>
-      <header className="sticky top-0 z-40 border-b border-neutral-200 bg-white/95 shadow-sm backdrop-blur">
-        <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-3 px-4 py-3 sm:px-6 lg:px-8">
-          <div className="flex items-center gap-2">
-            <details className="relative md:hidden" open={mobileOpen} onToggle={(event) => setMobileOpen(event.currentTarget.open)}>
-              <summary className="flex size-10 cursor-pointer list-none items-center justify-center rounded-full hover:bg-neutral-100" aria-label={mobileOpen ? "Fechar menu" : "Abrir menu"}>
-                {mobileOpen ? <X className="size-5" /> : <Menu className="size-5" />}
-              </summary>
-              {mobileOpen && <div className="absolute left-0 top-full z-40 mt-3 flex min-w-64 flex-col gap-1 rounded-lg border bg-white p-3 shadow-xl">
-                <CatalogMenus categories={categories} collections={collections} onNavigate={() => setMobileOpen(false)} />
-              </div>}
-            </details>
-            <Link href="/" aria-label="Roraima Mangas, início" className="shrink-0">
-              <Image src={logo} alt="Roraima Mangas" priority className="size-12 rounded-full object-cover sm:size-14" />
-            </Link>
-          </div>
+  function closeMobileMenu() { setMobileOpen(false); setMobileOpenId(null); }
 
-          <nav aria-label="Navegação principal" className="hidden items-center gap-1 md:flex">
-            <CatalogMenus categories={categories} collections={collections} />
-          </nav>
-
-          <form onSubmit={(event) => void submitSearch(event)} role="search" className="order-3 relative flex w-full md:order-none md:w-auto md:flex-1 md:max-w-md">
-            <input
-              type="search"
-              aria-label="Pesquisar produtos"
-              aria-expanded={normalizedQuery.length >= 2}
-              placeholder="Buscar no catálogo..."
-              value={query}
-              onChange={(event) => { setQuery(event.target.value); setSearchError(""); }}
-              className="h-10 min-w-0 flex-1 rounded-l-md border border-r-0 border-neutral-300 bg-white px-3 text-sm outline-none transition focus:border-neutral-800 focus:ring-2 focus:ring-neutral-800/15"
-            />
-            <Button type="submit" aria-label="Buscar" disabled={normalizedQuery.length < 2 || searching} className="h-10 rounded-l-none rounded-r-md bg-neutral-900 px-3 text-white hover:bg-neutral-700">
-              <Search className="size-4" />
-            </Button>
-            {normalizedQuery.length >= 2 && (results.length > 0 || searching || searchError || catalog) && <div className="absolute left-0 right-0 top-full z-40 mt-1 overflow-hidden rounded-lg border bg-white shadow-xl">
-              {searching && <p className="px-4 py-3 text-sm text-neutral-500">Buscando produtos...</p>}
-              {!searching && searchError && <p className="px-4 py-3 text-sm text-neutral-600">{searchError}</p>}
-              {!searching && !searchError && results.length === 0 && <p className="px-4 py-3 text-sm text-neutral-600">Nenhum produto encontrado.</p>}
-              {!searching && results.map((product) => <Link key={product.id} href={`/produtos/${product.slug}`} onClick={() => setQuery("")} className="block border-b px-4 py-3 text-sm last:border-0 hover:bg-neutral-50">{product.name}</Link>)}
-            </div>}
-          </form>
-
-          <Button type="button" variant="outline" className="relative h-10 gap-2 px-3" onClick={() => setCartOpen(true)} aria-label={`Abrir sacola, ${itemCount} itens`}>
-            <ShoppingBag className="size-5" /><span className="hidden sm:inline">Sacola</span>
-            <span className="flex min-w-5 items-center justify-center rounded-full bg-yellow-300 px-1 text-xs font-bold text-black">{itemCount}</span>
+  return <>
+    <header className="sticky top-0 z-40 border-b border-neutral-200/80 bg-white/95 shadow-sm backdrop-blur-xl">
+      <div className="mx-auto flex min-h-[4.5rem] max-w-7xl items-center gap-3 px-3 sm:px-6 lg:gap-7 lg:px-8">
+        <div className="flex shrink-0 items-center gap-2">
+          <Button type="button" variant="ghost" size="icon" className="md:hidden" aria-label={mobileOpen ? "Fechar menu" : "Abrir menu"} aria-expanded={mobileOpen} onClick={() => { setMobileOpen((open) => !open); setMobileOpenId(null); }}>
+            {mobileOpen ? <X /> : <Menu />}
           </Button>
+          <Link href="/" aria-label="Roraima Mangas, início" className="group flex shrink-0 items-center gap-2.5">
+            <Image src={logo} alt="Roraima Mangas" priority className="size-10 rounded-full object-cover ring-1 ring-neutral-200 transition group-hover:ring-neutral-400 sm:size-11" />
+            <span className="hidden text-sm font-bold leading-tight tracking-tight text-neutral-900 sm:block">RORAIMA<br /><span className="text-[0.65rem] font-medium tracking-[0.22em] text-neutral-500">MANGÁS</span></span>
+          </Link>
         </div>
-      </header>
-      <CartPanel open={cartOpen} onClose={() => setCartOpen(false)} />
-    </>
-  );
+
+        <form onSubmit={submitSearch} role="search" className="relative flex min-w-0 flex-1 lg:mx-auto lg:max-w-2xl">
+          <input type="search" aria-label="Pesquisar produtos e coleções" aria-expanded={normalizedQuery.length >= 2} placeholder="Busque produtos e coleções" value={query} onChange={(event) => { setQuery(event.target.value); setSearchError(""); }} className="h-10 min-w-0 flex-1 rounded-l-full border border-neutral-300 bg-neutral-50 px-4 text-sm outline-none transition focus:border-neutral-800 focus:bg-white focus:ring-2 focus:ring-neutral-800/10 sm:h-11 sm:px-5" />
+          <Button type="submit" aria-label="Buscar" disabled={normalizedQuery.length < 2 || searching} className="h-10 rounded-l-none rounded-r-full bg-neutral-900 px-4 text-white hover:bg-neutral-700 sm:h-11 sm:px-5"><Search className="size-4" /></Button>
+          {normalizedQuery.length >= 2 && (productResults.length > 0 || collectionResults.length > 0 || searching || searchError || catalog) && <div className="absolute left-0 right-0 top-full z-50 mt-2 max-h-96 overflow-y-auto rounded-2xl border border-neutral-200 bg-white p-1.5 shadow-xl">
+            {searching && <p className="px-4 py-3 text-sm text-neutral-500">Buscando…</p>}{searchError && <p role="alert" className="px-4 py-3 text-sm text-neutral-600">{searchError}</p>}
+            {!searching && !searchError && productResults.length + collectionResults.length === 0 && <p className="px-4 py-3 text-sm text-neutral-600">Nenhum resultado encontrado.</p>}
+            {productResults.length > 0 && <><p className="px-3 pb-1 pt-2 text-[0.65rem] font-bold uppercase tracking-[0.16em] text-neutral-400">Produtos</p>{productResults.map((product) => <Link key={product.id} href={`/produtos/${product.slug}`} onClick={() => setQuery("")} className="block rounded-lg px-3 py-2.5 text-sm transition hover:bg-neutral-50">{product.name}</Link>)}</>}
+            {collectionResults.length > 0 && <><p className="px-3 pb-1 pt-2 text-[0.65rem] font-bold uppercase tracking-[0.16em] text-neutral-400">Coleções</p>{collectionResults.map((collection) => <Link key={collection.id} href={`/colecoes/${collection.slug}`} onClick={() => setQuery("")} className="block rounded-lg px-3 py-2.5 text-sm transition hover:bg-neutral-50">{collection.name}</Link>)}</>}
+            {!searching && <Link href={`/busca?q=${encodeURIComponent(query.trim())}`} onClick={() => setQuery("")} className="mt-1 block rounded-lg border-t px-3 py-3 text-sm font-semibold text-neutral-700 transition hover:bg-neutral-50">Ver todos os resultados</Link>}
+          </div>}
+        </form>
+
+        <Button type="button" variant="ghost" className="relative h-10 shrink-0 gap-2 rounded-full px-3 sm:h-11 sm:px-4" onClick={() => setCartOpen(true)} aria-label={`Abrir sacola, ${itemCount} itens`}><ShoppingBag className="size-5" /><span className="hidden text-sm font-semibold sm:inline">Sacola</span><span className="flex min-w-5 items-center justify-center rounded-full bg-yellow-300 px-1.5 text-xs font-bold text-neutral-950">{itemCount}</span></Button>
+      </div>
+
+      <nav aria-label="Navegação principal" className="hidden border-t border-neutral-100 md:block">
+        <div className="mx-auto flex max-w-7xl items-center gap-1 px-6 py-1.5 lg:px-8">
+          {items.map((item) => {
+            if (item.type === "LINK" && item.href) {
+              const className = `rounded-full px-4 py-2 text-sm font-semibold transition-colors ${isCurrentPath(pathname, item.href) ? "bg-neutral-900 text-white" : "text-neutral-700 hover:bg-neutral-100 hover:text-neutral-950"}`;
+              return item.external ? <a key={item.id} href={item.href} target="_blank" rel="noreferrer" className={className}>{item.title}</a> : <Link key={item.id} href={item.href} className={className}>{item.title}</Link>;
+            }
+            return <div key={item.id} className="relative" onMouseEnter={() => setDesktopOpenId(item.id)} onMouseLeave={() => setDesktopOpenId((open) => open === item.id ? null : open)} onBlur={(event) => { if (!event.currentTarget.contains(event.relatedTarget as Node | null)) setDesktopOpenId(null); }}>
+              <button type="button" aria-haspopup="true" aria-expanded={desktopOpenId === item.id} onClick={() => setDesktopOpenId((open) => open === item.id ? null : item.id)} className={`flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-semibold transition-colors hover:bg-neutral-100 ${desktopOpenId === item.id ? "bg-neutral-100 text-neutral-950" : "text-neutral-700"}`}>
+                {item.title}<ChevronDown aria-hidden="true" className={`size-4 transition-transform duration-150 ${desktopOpenId === item.id ? "rotate-180" : ""}`} />
+              </button>
+              <div className={`absolute left-0 top-full z-50 min-w-56 origin-top-left pt-2 transition duration-150 motion-reduce:transition-none ${desktopOpenId === item.id ? "visible translate-y-0 opacity-100" : "invisible -translate-y-1 opacity-0"}`}>
+                <div className="max-h-[70vh] overflow-y-auto rounded-xl border border-neutral-200 bg-white p-1.5 shadow-xl">
+                  {item.children.map((child) => child.external
+                    ? <a key={child.id} href={child.href} target="_blank" rel="noreferrer" className="block rounded-lg px-3.5 py-2.5 text-sm text-neutral-700 transition-colors hover:bg-neutral-50 hover:text-neutral-950">{child.title}</a>
+                    : <Link key={child.id} href={child.href} onClick={() => setDesktopOpenId(null)} className="block rounded-lg px-3.5 py-2.5 text-sm text-neutral-700 transition-colors hover:bg-neutral-50 hover:text-neutral-950">{child.title}</Link>)}
+                </div>
+              </div>
+            </div>;
+          })}
+        </div>
+      </nav>
+
+      <nav aria-label="Menu móvel" aria-hidden={!mobileOpen} inert={!mobileOpen} className={`overflow-hidden border-t border-neutral-200 bg-white shadow-lg transition-[max-height,opacity] duration-200 motion-reduce:transition-none md:hidden ${mobileOpen ? "max-h-[75vh] opacity-100" : "max-h-0 border-transparent opacity-0"}`}>
+        <div className="max-h-[75vh] overflow-y-auto px-3 py-3">
+        <div className="mx-auto flex max-w-7xl flex-col gap-1">
+          {items.map((item) => item.type === "DROPDOWN" ? <div key={item.id} className="rounded-xl">
+            <button type="button" aria-expanded={mobileOpenId === item.id} onClick={() => setMobileOpenId((open) => open === item.id ? null : item.id)} className="flex min-h-12 w-full items-center justify-between rounded-xl px-4 text-left text-sm font-semibold text-neutral-800 transition-colors hover:bg-neutral-50">
+              {item.title}<ChevronRight aria-hidden="true" className={`size-4 transition-transform duration-150 ${mobileOpenId === item.id ? "rotate-90" : ""}`} />
+            </button>
+            <div className={`grid transition-[grid-template-rows,opacity] duration-200 motion-reduce:transition-none ${mobileOpenId === item.id ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"}`}>
+              <div className="overflow-hidden"><div className="mb-1 ml-4 flex flex-col border-l border-neutral-200 pl-3">
+                {item.children.map((child) => child.external
+                  ? <a key={child.id} href={child.href} target="_blank" rel="noreferrer" onClick={closeMobileMenu} className="flex min-h-11 items-center rounded-lg px-3 text-sm text-neutral-600 transition-colors hover:bg-neutral-50 hover:text-neutral-950">{child.title}</a>
+                  : <Link key={child.id} href={child.href} onClick={closeMobileMenu} className="flex min-h-11 items-center rounded-lg px-3 text-sm text-neutral-600 transition-colors hover:bg-neutral-50 hover:text-neutral-950">{child.title}</Link>)}
+              </div></div>
+            </div>
+          </div> : item.href && (item.external
+            ? <a key={item.id} href={item.href} target="_blank" rel="noreferrer" onClick={closeMobileMenu} className="flex min-h-12 items-center rounded-xl px-4 text-sm font-semibold text-neutral-800 transition-colors hover:bg-neutral-50">{item.title}</a>
+            : <Link key={item.id} href={item.href} onClick={closeMobileMenu} className={`flex min-h-12 items-center rounded-xl px-4 text-sm font-semibold transition-colors hover:bg-neutral-50 ${isCurrentPath(pathname, item.href) ? "bg-neutral-100 text-neutral-950" : "text-neutral-800"}`}>{item.title}</Link>))}
+        </div>
+        </div>
+      </nav>
+    </header>
+    <CartPanel open={cartOpen} onClose={() => setCartOpen(false)} />
+  </>;
 }

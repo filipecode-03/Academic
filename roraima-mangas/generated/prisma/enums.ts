@@ -11,17 +11,25 @@
 
 export const ProductStatus = {
   ACTIVE: 'ACTIVE',
-  INACTIVE: 'INACTIVE',
-  OUT_OF_STOCK: 'OUT_OF_STOCK'
+  INACTIVE: 'INACTIVE'
 } as const
 
 export type ProductStatus = (typeof ProductStatus)[keyof typeof ProductStatus]
 
 
+export const OrderStatus = {
+  PENDING: 'PENDING',
+  CONTACTED: 'CONTACTED',
+  COMPLETED: 'COMPLETED',
+  CANCELLED: 'CANCELLED'
+} as const
+
+export type OrderStatus = (typeof OrderStatus)[keyof typeof OrderStatus]
+
+
 export const BannerDestinationType = {
   NONE: 'NONE',
   PRODUCT: 'PRODUCT',
-  CATEGORY: 'CATEGORY',
   COLLECTION: 'COLLECTION'
 } as const
 
@@ -38,8 +46,26 @@ export type PromoNoticePosition = (typeof PromoNoticePosition)[keyof typeof Prom
 
 export const HomeSectionType = {
   MANUAL: 'MANUAL',
-  CATEGORY: 'CATEGORY',
   COLLECTION: 'COLLECTION'
 } as const
 
 export type HomeSectionType = (typeof HomeSectionType)[keyof typeof HomeSectionType]
+
+
+export const NavbarItemType = {
+  LINK: 'LINK',
+  DROPDOWN: 'DROPDOWN'
+} as const
+
+export type NavbarItemType = (typeof NavbarItemType)[keyof typeof NavbarItemType]
+
+
+export const NavbarDestinationType = {
+  COLLECTION: 'COLLECTION',
+  ALL_PRODUCTS: 'ALL_PRODUCTS',
+  NEW_PRODUCTS: 'NEW_PRODUCTS',
+  FEATURED_PRODUCTS: 'FEATURED_PRODUCTS',
+  EXTERNAL: 'EXTERNAL'
+} as const
+
+export type NavbarDestinationType = (typeof NavbarDestinationType)[keyof typeof NavbarDestinationType]
