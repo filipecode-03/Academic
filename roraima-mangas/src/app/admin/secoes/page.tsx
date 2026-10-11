@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import AdminConfirmDialog from "@/src/components/admin/admin-confirm-dialog";
 
 type Product = { id: string; name: string; slug: string };
 type Collection = { id: string; name: string };
@@ -62,6 +63,7 @@ export default function HomeSectionsPage() {
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
   const [notice, setNotice] = useState("");
+  const [deleteTarget, setDeleteTarget] = useState<Section | null>(null);
 
   async function loadData() {
     try {
@@ -241,11 +243,11 @@ export default function HomeSectionsPage() {
   }
 
   async function deleteSection(section: Section) {
-    if (!window.confirm(`Deseja excluir a seção “${section.title}”?`)) return;
     try {
       setError("");
       await readApi(await fetch(`/api/home-sections/${section.id}`, { method: "DELETE" }));
       setNotice("Seção excluída. A ordem foi reorganizada.");
+      setDeleteTarget(null);
       await loadData();
     } catch (cause) {
       console.error("Erro ao excluir seção:", cause);
@@ -295,18 +297,19 @@ export default function HomeSectionsPage() {
   }
 
   return (
-    <div className="space-y-6">
-      <header className="flex flex-wrap items-center justify-between gap-3">
+    <div className="admin-page">
+      <header className="admin-page-header">
         <div>
-          <h1 className="text-2xl font-bold">Seções da Home</h1>
+          <p className="admin-eyebrow">Conteúdo</p>
+          <h1>Seções da Home</h1>
           <p>Gerencie as seções de produtos exibidas na página inicial.</p>
         </div>
-        <div className="flex flex-wrap gap-2">
+        <div className="admin-page-actions">
           {!isOrdering && <button type="button" onClick={showForm ? () => setShowForm(false) : startCreate}>
             {showForm ? "Fechar formulário" : "Nova seção"}
           </button>}
           {!isOrdering ? <button type="button" disabled={sections.length < 2} onClick={startOrdering}>Alterar ordem</button> : <>
-            <button type="button" onClick={() => { setIsOrdering(false); setOrderedIds([]); setError(""); }}>Cancelar</button>
+            <button type="button" className="admin-button-secondary" onClick={() => { setIsOrdering(false); setOrderedIds([]); setError(""); }}>Cancelar</button>
             <button type="button" disabled={saving} onClick={() => void saveOrder()}>{saving ? "Salvando ordem..." : "Concluir alteração"}</button>
           </>}
         </div>
@@ -317,10 +320,10 @@ export default function HomeSectionsPage() {
         {search && <button type="button" onClick={() => setSearch("")}>Limpar pesquisa</button>}
       </div>
 
-      {error && <p role="alert" className="text-red-700">{error}</p>}
-      {notice && <p role="status">{notice}</p>}
+      {error && <p role="alert" className="admin-feedback admin-feedback-error">{error}</p>}
+      {notice && <p role="status" className="admin-feedback admin-feedback-success">{notice}</p>}
 
-      {showForm && <form className="space-y-4 border p-4" onSubmit={(event) => void saveSection(event)}>
+      {showForm && <form className="space-y-4" onSubmit={(event) => void saveSection(event)}>
         <h2 className="text-xl font-semibold">{editing ? "Editar seção" : "Nova seção"}</h2>
         <div>
           <label className="mb-1 block" htmlFor="section-title">Título</label>
@@ -342,7 +345,7 @@ export default function HomeSectionsPage() {
           <legend className="font-semibold">Produtos da seção</legend>
           <p className="text-sm">Selecionados: {selectedProductIds.length}/10. Produtos existentes mantêm a ordem salva; novas seleções são adicionadas ao final.</p>
           <input type="search" className="w-full max-w-md border p-2" placeholder="Pesquisar produto..." aria-label="Pesquisar produtos" value={productSearch} onChange={(event) => setProductSearch(event.target.value)} />
-          <div className="max-h-64 space-y-1 overflow-auto border p-3">
+          <div className="max-h-64 space-y-1 overflow-auto rounded-lg border border-slate-200 p-3">
             {visibleProducts.length === 0 ? <p>Nenhum produto encontrado.</p> : visibleProducts.map((product) => <label key={product.id} className="flex items-center gap-2">
               <input type="checkbox" checked={selectedProductIds.includes(product.id)} disabled={selectedProductIds.length >= 10 && !selectedProductIds.includes(product.id)} onChange={() => toggleProduct(product.id)} />
               <span>{product.name}</span>
@@ -357,23 +360,23 @@ export default function HomeSectionsPage() {
           </ol>}
         </fieldset>}
         <label className="flex items-center gap-2"><input type="checkbox" checked={draft.active} onChange={(event) => setDraft({ ...draft, active: event.target.checked })} /> Ativa</label>
-        <div className="flex gap-3"><button type="submit" disabled={saving}>{saving ? "Salvando..." : "Salvar seção"}</button><button type="button" disabled={saving} onClick={() => setShowForm(false)}>Cancelar</button></div>
+        <div className="flex gap-3"><button type="submit" disabled={saving}>{saving ? "Salvando..." : "Salvar seção"}</button><button type="button" className="admin-button-secondary" disabled={saving} onClick={() => setShowForm(false)}>Cancelar</button></div>
       </form>}
 
       <section className="space-y-3">
         <h2 className="text-xl font-semibold">Seções cadastradas</h2>
-        {loading && <p>Carregando seções...</p>}
-        {!loading && sections.length === 0 && !error && <p>Nenhuma seção cadastrada.</p>}
-        {!loading && sections.length > 0 && displayedSections.length === 0 && <p>Nenhuma seção encontrada para “{search}”.</p>}
+        {loading && <div className="h-24 animate-pulse rounded-xl border border-slate-200 bg-white" />}
+        {!loading && sections.length === 0 && !error && <p className="admin-empty-state">Nenhuma seção cadastrada. Crie uma seção para organizar os produtos da Home.</p>}
+        {!loading && sections.length > 0 && displayedSections.length === 0 && <p className="admin-empty-state">Nenhuma seção encontrada para “{search}”.</p>}
         {!loading && displayedSections.map((section) => {
           const sectionIndex = isOrdering ? orderedIds.indexOf(section.id) : sections.findIndex((item) => item.id === section.id);
           const typeLabel = section.type === "MANUAL" ? "Manual" : "Coleção";
           const source = section.type === "COLLECTION" ? section.collection?.name ?? "Coleção indisponível" : `${section.products.length} produto(s)`;
-          return <article key={section.id} className="flex flex-wrap items-center justify-between gap-4 border p-4">
+          return <article key={section.id} className="admin-item flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <h3 className="font-semibold">{section.title}</h3>
-              <p>Ordem: {sectionIndex + 1} · Tipo: {typeLabel} · Origem: {source}</p>
-              <p>Status: {section.active ? "Ativa" : "Inativa"}</p>
+              <p className="mt-1 text-sm text-slate-500">Ordem: {sectionIndex + 1} · Tipo: {typeLabel} · Origem: {source}</p>
+              <span className={`admin-badge mt-2 ${section.active ? "admin-badge-success" : "admin-badge-muted"}`}>{section.active ? "Ativa" : "Inativa"}</span>
             </div>
             <div className="flex flex-wrap gap-3">
               {isOrdering ? <div className="flex gap-2" aria-label={`Mover ${section.title}`}>
@@ -382,12 +385,13 @@ export default function HomeSectionsPage() {
               </div> : <>
                 <button type="button" onClick={() => startEdit(section)}>Editar</button>
                 <button type="button" onClick={() => void toggleActive(section)}>{section.active ? "Desativar" : "Ativar"}</button>
-                <button type="button" onClick={() => void deleteSection(section)}>Excluir</button>
+                <button type="button" className="admin-button-danger" onClick={() => setDeleteTarget(section)}>Excluir</button>
               </>}
             </div>
           </article>;
         })}
       </section>
+      <AdminConfirmDialog open={Boolean(deleteTarget)} title="Excluir seção?" description={deleteTarget ? `“${deleteTarget.title}” será removida da Home.` : ""} onCancel={() => setDeleteTarget(null)} onConfirm={() => deleteSection(deleteTarget!)} />
     </div>
   );
 }

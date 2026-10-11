@@ -129,15 +129,124 @@
 }
 
 @layer components {
-  [data-admin] form,
-  [data-admin] article,
-  [data-admin] section {
-    border-radius: var(--radius-lg);
+  .admin-page {
+    @apply space-y-6;
+  }
+  .admin-page-header {
+    @apply flex flex-col gap-4 border-b border-slate-200 pb-6 sm:flex-row sm:items-end sm:justify-between;
+  }
+  .admin-page-header h1 {
+    @apply font-heading text-2xl font-bold tracking-tight text-slate-950 sm:text-3xl;
+  }
+  .admin-page-header > div > p:not(.admin-eyebrow) {
+    @apply mt-1 max-w-2xl text-sm leading-6 text-slate-600;
+  }
+  .admin-eyebrow {
+    @apply mb-1 text-[0.68rem] font-bold uppercase tracking-[0.17em] text-emerald-700;
+  }
+  .admin-page-actions {
+    @apply flex w-full flex-wrap items-center gap-2 sm:w-auto sm:justify-end;
+  }
+  .admin-page-actions > button,
+  .admin-page-actions > a {
+    @apply max-sm:flex-1;
+  }
+  .admin-panel {
+    @apply rounded-xl border border-slate-200 bg-white p-4 shadow-[0_1px_2px_rgb(15_23_42/0.04)] sm:p-5;
+  }
+  .admin-section-heading {
+    @apply flex flex-wrap items-center justify-between gap-3;
+  }
+  .admin-section-heading h2 {
+    @apply font-heading text-base font-bold text-slate-900 sm:text-lg;
+  }
+  .admin-section-heading p {
+    @apply mt-0.5 text-sm text-slate-500;
+  }
+  .admin-toolbar {
+    @apply flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between;
+  }
+  .admin-search {
+    @apply flex min-h-10 w-full max-w-md items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 text-slate-500 shadow-[0_1px_2px_rgb(15_23_42/0.03)] transition focus-within:border-slate-400 focus-within:ring-3 focus-within:ring-slate-950/5;
+  }
+  .admin-search input {
+    @apply min-w-0 flex-1 border-0 bg-transparent p-0 text-sm text-slate-900 shadow-none outline-none ring-0;
+  }
+  .admin-search input:focus {
+    box-shadow: none;
+  }
+  .admin-search button {
+    @apply p-1 text-xs font-medium text-slate-500 hover:text-slate-900;
+  }
+  .admin-feedback {
+    @apply flex items-start gap-2.5 rounded-lg border px-3.5 py-3 text-sm;
+  }
+  .admin-feedback-error {
+    @apply border-red-200 bg-red-50 text-red-800;
+  }
+  .admin-feedback-success {
+    @apply border-emerald-200 bg-emerald-50 text-emerald-800;
+  }
+  .admin-empty-state {
+    @apply flex min-h-52 flex-col items-center justify-center rounded-xl border border-dashed border-slate-300 bg-white px-6 py-10 text-center;
+  }
+  .admin-empty-icon {
+    @apply mb-3 grid size-10 place-items-center rounded-xl bg-slate-100 text-slate-500;
+  }
+  .admin-empty-state h3 {
+    @apply font-heading text-base font-bold text-slate-900;
+  }
+  .admin-empty-state p {
+    @apply mt-1 max-w-md text-sm leading-6 text-slate-500;
+  }
+  .admin-badge {
+    @apply inline-flex items-center rounded-full px-2 py-0.5 text-xs font-semibold;
+  }
+  .admin-badge-success {
+    @apply bg-emerald-50 text-emerald-700 ring-1 ring-inset ring-emerald-200;
+  }
+  .admin-badge-muted {
+    @apply bg-slate-100 text-slate-600 ring-1 ring-inset ring-slate-200;
+  }
+  .admin-badge-warning {
+    @apply bg-amber-50 text-amber-700 ring-1 ring-inset ring-amber-200;
+  }
+  .admin-item {
+    @apply rounded-xl border border-slate-200 bg-white p-4 shadow-[0_1px_2px_rgb(15_23_42/0.04)] transition duration-200 hover:border-slate-300 hover:shadow-sm sm:p-5;
+  }
+  .admin-actions {
+    @apply flex flex-wrap items-center gap-2;
+  }
+  .admin-field {
+    @apply space-y-1.5;
+  }
+  .admin-field > label,
+  label.admin-field {
+    @apply text-sm font-medium text-slate-800;
+  }
+  .admin-help {
+    @apply text-xs leading-5 text-slate-500;
+  }
+  .admin-form-section {
+    @apply space-y-4 rounded-xl border border-slate-200 bg-white p-4 sm:p-5;
+  }
+  .admin-form-section > legend {
+    @apply px-1 font-heading text-base font-bold text-slate-900;
   }
   [data-admin] form {
-    background: white;
-    padding: 1.25rem;
-    box-shadow: 0 1px 3px rgb(0 0 0 / 6%);
+    @apply rounded-xl border border-slate-200 bg-white p-4 shadow-[0_1px_2px_rgb(15_23_42/0.04)] sm:p-5;
+  }
+  [data-admin] form label:not([class*="text-"]) {
+    @apply mb-1.5 block text-sm font-medium text-slate-800;
+  }
+  [data-admin] form p[role="alert"] {
+    @apply mt-1.5 text-sm text-red-700;
+  }
+  [data-admin] form h2 {
+    @apply font-heading text-lg font-bold text-slate-900;
+  }
+  .admin-upload {
+    @apply rounded-xl border border-dashed border-slate-300 bg-slate-50 p-4 transition hover:border-slate-400;
   }
   [data-admin] input:not([type="checkbox"]):not([type="radio"]):not([type="file"]),
   [data-admin] textarea,
@@ -153,8 +262,18 @@
   [data-admin] input:focus,
   [data-admin] textarea:focus,
   [data-admin] select:focus {
-    border-color: var(--foreground);
-    box-shadow: 0 0 0 3px rgb(0 0 0 / 8%);
+    border-color: rgb(71 85 105);
+    box-shadow: 0 0 0 3px rgb(15 23 42 / 7%);
+  }
+  [data-admin] input[type="checkbox"],
+  [data-admin] input[type="radio"] {
+    @apply size-4 accent-emerald-600;
+  }
+  [data-admin] input[type="file"] {
+    @apply block w-full text-sm text-slate-600 file:mr-3 file:rounded-lg file:border-0 file:bg-slate-900 file:px-3 file:py-2 file:text-sm file:font-medium file:text-white hover:file:bg-slate-700;
+  }
+  [data-admin] textarea {
+    @apply min-h-24 resize-y;
   }
   [data-admin] button:not(:disabled) {
     cursor: pointer;
@@ -163,9 +282,26 @@
     cursor: not-allowed;
     opacity: 0.55;
   }
-  [data-admin] button:not([class*="bg-"]) {
-    border-radius: calc(var(--radius) * 0.8);
-    padding: 0.5rem 0.75rem;
+  [data-admin] button:not([class*="bg-"]):not([class*="p-"]):not([class*="size-"]) {
+    @apply rounded-lg px-3 py-2 text-sm font-medium transition-colors;
+  }
+  [data-admin] button:not([data-slot="button"]):not(.admin-button-secondary):not(.admin-button-danger):not([class*="bg-"]):not([class*="p-"]):not([class*="size-"]) {
+    @apply bg-slate-950 text-white hover:bg-slate-800;
+  }
+  .admin-button-secondary {
+    @apply rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-100;
+  }
+  .admin-button-danger {
+    @apply rounded-lg bg-red-50 px-3 py-2 text-sm font-medium text-red-700 transition hover:bg-red-100;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }
 

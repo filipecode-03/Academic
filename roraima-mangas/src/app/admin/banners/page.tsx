@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { createHomeBannerSchema } from "@/src/schemas/home-banner.schema";
+import AdminConfirmDialog from "@/src/components/admin/admin-confirm-dialog";
 
 type DestinationType = "NONE" | "PRODUCT" | "COLLECTION";
 type BannerPosition = "FIRST" | "LAST";
@@ -99,7 +100,7 @@ function BannerForm({
 
   return (
     <form
-      className="space-y-4 border p-4"
+      className="space-y-5"
       onSubmit={handleSubmit((values) =>
         onSave(values, imageFile, position === "KEEP" ? undefined : position)
       )}
@@ -212,7 +213,7 @@ function BannerForm({
 
       <div className="flex gap-3">
         <button type="submit" disabled={isSubmitting}>{isSubmitting ? "Salvando..." : "Salvar banner"}</button>
-        <button type="button" onClick={onCancel}>Cancelar</button>
+        <button type="button" className="admin-button-secondary" onClick={onCancel}>Cancelar</button>
       </div>
     </form>
   );
@@ -292,6 +293,7 @@ export default function BannersPage() {
   const [isSavingOrder, setIsSavingOrder] = useState(false);
   const [error, setError] = useState("");
   const [notice, setNotice] = useState("");
+  const [deleteTarget, setDeleteTarget] = useState<Banner>();
 
   async function loadPageData() {
     try {
@@ -434,12 +436,12 @@ export default function BannersPage() {
   }
 
   async function deleteBanner(banner: Banner) {
-    if (!window.confirm("Deseja excluir este banner?")) return;
     try {
       setError("");
       setNotice("");
       await readJson<{ message?: string }>(await fetch(`/api/banners/${banner.id}`, { method: "DELETE" }));
       setNotice("Banner excluído com sucesso.");
+      setDeleteTarget(undefined);
       await loadPageData();
     } catch (cause) {
       console.error("Erro ao excluir banner:", cause);
@@ -448,11 +450,12 @@ export default function BannersPage() {
   }
 
   return (
-    <div className="space-y-6">
-      <header className="flex items-center justify-between">
+    <div className="admin-page">
+      <header className="admin-page-header">
         <div>
-          <h1 className="text-2xl font-bold">Banners</h1>
-          <p>Gerencie os banners exibidos na Home.</p>
+          <p className="admin-eyebrow">Conteúdo</p>
+          <h1>Banners</h1>
+          <p>Gerencie imagens, destinos e a ordem dos banners exibidos na Home.</p>
         </div>
         <div className="flex flex-wrap gap-2">
           {!isOrdering && (
@@ -478,7 +481,7 @@ export default function BannersPage() {
             </button>
           ) : (
             <>
-              <button type="button" onClick={cancelOrdering}>Cancelar</button>
+              <button type="button" className="admin-button-secondary" onClick={cancelOrdering}>Cancelar</button>
               <button type="button" disabled={isSavingOrder} onClick={() => void saveBannerOrder()}>
                 {isSavingOrder ? "Salvando ordem..." : "Concluir alteração"}
               </button>
@@ -490,7 +493,7 @@ export default function BannersPage() {
       <div className="flex flex-wrap items-center gap-2">
         <input
           type="search"
-          className="w-full max-w-md border p-2"
+        className="w-full max-w-md"
           placeholder="Pesquisar banners..."
           aria-label="Pesquisar banners por título, descrição ou destino"
           value={search}
@@ -499,8 +502,8 @@ export default function BannersPage() {
         {search && <button type="button" onClick={() => setSearch("")}>Limpar pesquisa</button>}
       </div>
 
-      {error && <p role="alert">{error}</p>}
-      {notice && <p role="status">{notice}</p>}
+      {error && <p role="alert" className="admin-feedback admin-feedback-error">{error}</p>}
+      {notice && <p role="status" className="admin-feedback admin-feedback-success">{notice}</p>}
       {showForm && (
         <BannerForm
           key={editingBanner?.id ?? "new"}
@@ -516,15 +519,15 @@ export default function BannersPage() {
 
       <section className="space-y-3">
         <h2 className="text-xl font-semibold">Banners cadastrados</h2>
-        {loading && <p>Carregando banners...</p>}
-        {!loading && banners.length === 0 && !error && <p>Nenhum banner cadastrado.</p>}
+        {loading && <div className="h-28 animate-pulse rounded-xl border border-slate-200 bg-white" />}
+        {!loading && banners.length === 0 && !error && <p className="admin-empty-state">Nenhum banner cadastrado. Crie o primeiro banner para destacar o conteúdo da Home.</p>}
         {!loading && banners.length > 0 && visibleBanners.length === 0 && (
           <p>Nenhum banner encontrado para “{search}”.</p>
         )}
         {!loading && visibleBanners.map((banner) => (
-          <article key={banner.id} className="flex flex-wrap items-center justify-between gap-4 border p-4">
+          <article key={banner.id} className="admin-item flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div className="flex items-center gap-4">
-              <img src={banner.image} alt="Banner" className="h-24 w-40 object-cover" />
+              <img src={banner.image} alt="" className="h-20 w-32 shrink-0 rounded-lg border border-slate-200 object-cover sm:h-24 sm:w-40" />
               <div>
                 <h3 className="font-semibold">{banner.title}</h3>
                 {banner.description && <p className="max-w-xl truncate">{banner.description}</p>}
@@ -553,13 +556,14 @@ export default function BannersPage() {
                 <>
                   <button type="button" onClick={() => { setEditingBanner(banner); setError(""); setNotice(""); setShowForm(true); }}>Editar</button>
                   <button type="button" onClick={() => void toggleActive(banner)}>{banner.active ? "Desativar" : "Ativar"}</button>
-                  <button type="button" onClick={() => void deleteBanner(banner)}>Excluir</button>
+                  <button type="button" className="admin-button-danger" onClick={() => setDeleteTarget(banner)}>Excluir</button>
                 </>
               )}
             </div>
           </article>
         ))}
       </section>
+      <AdminConfirmDialog open={Boolean(deleteTarget)} title="Excluir banner?" description={deleteTarget ? `“${deleteTarget.title}” será removido permanentemente da Home.` : ""} onCancel={() => setDeleteTarget(undefined)} onConfirm={() => deleteBanner(deleteTarget!)} />
     </div>
   );
 }

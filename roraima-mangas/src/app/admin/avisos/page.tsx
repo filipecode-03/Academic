@@ -4,6 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import AdminConfirmDialog from "@/src/components/admin/admin-confirm-dialog";
 import {
   createPromoNoticeSchema,
   type CreatePromoNoticeInput,
@@ -43,7 +44,7 @@ function PromoNoticeForm({ notice, onSave, onCancel }: PromoNoticeFormProps) {
   });
 
   return (
-    <form className="space-y-4 border p-4" onSubmit={handleSubmit(onSave)}>
+    <form className="space-y-5" onSubmit={handleSubmit(onSave)}>
       <h2 className="text-xl font-semibold">{notice ? "Editar aviso" : "Novo aviso"}</h2>
 
       <div>
@@ -105,7 +106,7 @@ function PromoNoticeForm({ notice, onSave, onCancel }: PromoNoticeFormProps) {
 
       <div className="flex gap-3">
         <button type="submit" disabled={isSubmitting}>{isSubmitting ? "Salvando..." : "Salvar aviso"}</button>
-        <button type="button" onClick={onCancel}>Cancelar</button>
+        <button type="button" className="admin-button-secondary" onClick={onCancel}>Cancelar</button>
       </div>
     </form>
   );
@@ -138,6 +139,7 @@ export default function PromoNoticesPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [noticeMessage, setNoticeMessage] = useState("");
+  const [deleteTarget, setDeleteTarget] = useState<PromoNotice>();
 
   async function loadNotices() {
     try {
@@ -186,11 +188,11 @@ export default function PromoNoticesPage() {
   }
 
   async function deleteNotice(notice: PromoNotice) {
-    if (!window.confirm("Deseja excluir este aviso promocional?")) return;
     try {
       setError("");
       await readResponse(await fetch(`/api/promo-notices/${notice.id}`, { method: "DELETE" }));
       setNoticeMessage("Aviso excluído.");
+      setDeleteTarget(undefined);
       await loadNotices();
     } catch (cause) {
       console.error("Erro ao excluir aviso promocional:", cause);
@@ -199,11 +201,12 @@ export default function PromoNoticesPage() {
   }
 
   return (
-    <div className="space-y-6">
-      <header className="flex flex-wrap items-center justify-between gap-3">
+    <div className="admin-page">
+      <header className="admin-page-header">
         <div>
-          <h1 className="text-2xl font-bold">Avisos promocionais</h1>
-          <p>Gerencie o conteúdo e o período de exibição dos avisos.</p>
+          <p className="admin-eyebrow">Conteúdo</p>
+          <h1>Avisos promocionais</h1>
+          <p>Gerencie o conteúdo, a posição e o período de exibição dos avisos.</p>
         </div>
         <button
           type="button"
@@ -218,8 +221,8 @@ export default function PromoNoticesPage() {
         </button>
       </header>
 
-      {error && <p role="alert">{error}</p>}
-      {noticeMessage && <p role="status">{noticeMessage}</p>}
+      {error && <p role="alert" className="admin-feedback admin-feedback-error">{error}</p>}
+      {noticeMessage && <p role="status" className="admin-feedback admin-feedback-success">{noticeMessage}</p>}
       {showForm && (
         <PromoNoticeForm
           key={editingNotice?.id ?? "new"}
@@ -234,7 +237,7 @@ export default function PromoNoticesPage() {
         <div className="flex flex-wrap items-center gap-2">
           <input
             type="search"
-            className="w-full max-w-md border p-2"
+            className="w-full max-w-md"
             placeholder="Pesquisar avisos..."
             aria-label="Pesquisar avisos pelo conteúdo"
             value={search}
@@ -242,13 +245,13 @@ export default function PromoNoticesPage() {
           />
           {search && <button type="button" onClick={() => setSearch("")}>Limpar pesquisa</button>}
         </div>
-        {loading && <p>Carregando avisos...</p>}
-        {!loading && notices.length === 0 && !error && <p>Nenhum aviso cadastrado.</p>}
+        {loading && <div className="h-24 animate-pulse rounded-xl border border-slate-200 bg-white" />}
+        {!loading && notices.length === 0 && !error && <p className="admin-empty-state">Nenhum aviso cadastrado. Crie um aviso para comunicar novidades na loja.</p>}
         {!loading && notices.length > 0 && filteredNotices.length === 0 && (
           <p>Nenhum aviso encontrado para “{search}”.</p>
         )}
         {!loading && filteredNotices.map((notice) => (
-          <article key={notice.id} className="flex flex-wrap items-center justify-between gap-3 border p-4">
+          <article key={notice.id} className="admin-item flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <p className="font-medium">{notice.content}</p>
               <p>Posição: {notice.position === "TOP" ? "Topo" : "Abaixo do carrossel"} · Ordem: {notice.order}</p>
@@ -257,11 +260,12 @@ export default function PromoNoticesPage() {
             </div>
             <div className="flex gap-3">
               <button type="button" onClick={() => { setEditingNotice(notice); setError(""); setNoticeMessage(""); setShowForm(true); }}>Editar</button>
-              <button type="button" onClick={() => void deleteNotice(notice)}>Excluir</button>
+              <button type="button" className="admin-button-danger" onClick={() => setDeleteTarget(notice)}>Excluir</button>
             </div>
           </article>
         ))}
       </section>
+      <AdminConfirmDialog open={Boolean(deleteTarget)} title="Excluir aviso?" description="O aviso promocional será removido permanentemente." onCancel={() => setDeleteTarget(undefined)} onConfirm={() => deleteNotice(deleteTarget!)} />
     </div>
   );
 }

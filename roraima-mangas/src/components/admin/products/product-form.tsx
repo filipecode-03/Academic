@@ -3,7 +3,8 @@
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useFieldArray } from "react-hook-form";
-import { Plus, X } from "lucide-react";
+import { ImagePlus, Plus, Trash2, X } from "lucide-react";
+import { AdminFeedback } from "@/src/components/admin/admin-ui";
 import { Button } from "@/src/components/ui/button";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -397,98 +398,64 @@ export default function ProductForm({
       onSubmit={handleSubmit(onSubmit)}
       className="space-y-6"
     >
-      <div>
-        <label htmlFor="name">
-          Nome
-        </label>
+      <fieldset className="admin-form-section">
+        <legend>Informações básicas</legend>
+        <p className="admin-help">Dados usados para identificar e apresentar o produto na loja.</p>
+        <div className="admin-field">
+          <label htmlFor="name">Nome</label>
+          <input id="name" className="w-full" type="text" {...register("name")} />
+          {errors.name && <p role="alert">{errors.name.message}</p>}
+        </div>
+        <div className="admin-field">
+          <label htmlFor="description">Descrição</label>
+          <textarea id="description" className="w-full" {...register("description")} />
+        </div>
+      </fieldset>
 
-        <input
-          id="name"
-          type="text"
-          {...register("name")}
-        />
+      <fieldset className="admin-form-section">
+        <legend>Preço e estoque</legend>
+        <p className="admin-help">Controle o valor, a disponibilidade e o saldo atual.</p>
+        <div className="grid gap-4 sm:grid-cols-3">
+          <div className="admin-field">
+            <label htmlFor="price">Preço</label>
+            <input id="price" className="w-full" type="text" inputMode="decimal" value={priceText} onChange={(event) => {
+              const text = event.target.value;
+              setPriceText(text);
+              const raw = text.replace(/R\$\s?/g, "").trim();
+              const normalized = (raw.includes(",") ? raw.replace(/\./g, "").replace(",", ".") : raw).replace(/[^0-9.]/g, "");
+              setValue("price", Number(normalized), { shouldValidate: true });
+            }} onBlur={() => {
+              const value = watch("price");
+              if (Number.isFinite(value) && value > 0) setPriceText(value.toLocaleString("pt-BR", { style: "currency", currency: "BRL" }));
+            }} />
+            {errors.price && <p role="alert">{errors.price.message}</p>}
+          </div>
+          <div className="admin-field">
+            <label htmlFor="stock">Estoque</label>
+            <input id="stock" className="w-full" type="number" min="0" step="1" {...register("stock", { valueAsNumber: true })} />
+            {errors.stock && <p role="alert">{errors.stock.message}</p>}
+          </div>
+          <div className="admin-field">
+            <label htmlFor="status">Status</label>
+            <select id="status" className="w-full" {...register("status")}><option value="ACTIVE">Ativo</option><option value="INACTIVE">Inativo</option></select>
+          </div>
+        </div>
+      </fieldset>
 
-        {errors.name && (
-          <p>{errors.name.message}</p>
-        )}
-      </div>
-
-      <div>
-        <label htmlFor="description">
-          Descrição
-        </label>
-
-        <textarea
-          id="description"
-          {...register("description")}
-        />
-      </div>
-
-      <div>
-        <label htmlFor="price">
-          Preço
-        </label>
-
-        <input
-          id="price"
-          type="text"
-          inputMode="decimal"
-          value={priceText}
-          onChange={(event) => {
-            const text = event.target.value;
-            setPriceText(text);
-            const raw = text.replace(/R\$\s?/g, "").trim();
-            const normalized = (raw.includes(",") ? raw.replace(/\./g, "").replace(",", ".") : raw).replace(/[^0-9.]/g, "");
-            const value = Number(normalized);
-            setValue("price", value, { shouldValidate: true });
-          }}
-          onBlur={() => {
-            const value = watch("price");
-            if (Number.isFinite(value) && value > 0) setPriceText(value.toLocaleString("pt-BR", { style: "currency", currency: "BRL" }));
-          }}
-        />
-
-        {errors.price && (
-          <p>{errors.price.message}</p>
-        )}
-      </div>
-
-      <div><label htmlFor="stock">Estoque</label><input id="stock" type="number" min="0" step="1" {...register("stock", { valueAsNumber: true })} />{errors.stock && <p role="alert">{errors.stock.message}</p>}</div>
-
-      <div>
-        <label htmlFor="status">
-          Status
-        </label>
-
-        <select
-          id="status"
-          {...register("status")}
-        >
-          <option value="ACTIVE">
-            Ativo
-          </option>
-
-          <option value="INACTIVE">
-            Inativo
-          </option>
-
-        </select>
-      </div>
-
-      <fieldset className="space-y-3"><legend className="font-medium">Coleções</legend><div className="flex flex-wrap gap-2"><select aria-label="Selecionar coleção" className="min-w-56" value="" onChange={(event) => { const id = event.target.value; if (id && !selectedCollections.includes(id)) setValue("collectionIds", [...selectedCollections, id], { shouldDirty: true }); }}><option value="">Selecionar coleção…</option>{collections.filter((collection) => !selectedCollections.includes(collection.id)).map((collection) => <option key={collection.id} value={collection.id}>{collection.name}</option>)}</select><Button type="button" variant="outline" onClick={() => { setCollectionError(""); setCreateCollectionOpen(true); }}><Plus className="mr-1 size-4" />Criar coleção</Button></div>{selectedCollections.length > 0 && <div className="flex flex-wrap gap-2">{collections.filter((collection) => selectedCollections.includes(collection.id)).map((collection) => <span key={collection.id} className="inline-flex items-center gap-1 rounded-full bg-neutral-100 px-3 py-1 text-sm">{collection.name}<button type="button" aria-label={`Remover ${collection.name}`} onClick={() => setValue("collectionIds", selectedCollections.filter((id) => id !== collection.id), { shouldDirty: true })}><X className="size-3.5" /></button></span>)}</div>}</fieldset>
+      <fieldset className="admin-form-section"><legend>Coleções</legend><p className="admin-help">Associe o produto a uma ou mais coleções da loja.</p><div className="flex flex-col gap-2 sm:flex-row"><select aria-label="Selecionar coleção" className="min-w-0 flex-1" value="" onChange={(event) => { const id = event.target.value; if (id && !selectedCollections.includes(id)) setValue("collectionIds", [...selectedCollections, id], { shouldDirty: true }); }}><option value="">Selecionar coleção…</option>{collections.filter((collection) => !selectedCollections.includes(collection.id)).map((collection) => <option key={collection.id} value={collection.id}>{collection.name}</option>)}</select><Button type="button" variant="outline" onClick={() => { setCollectionError(""); setCreateCollectionOpen(true); }}><Plus className="size-4" />Criar coleção</Button></div>{selectedCollections.length > 0 && <div className="flex flex-wrap gap-2">{collections.filter((collection) => selectedCollections.includes(collection.id)).map((collection) => <span key={collection.id} className="inline-flex items-center gap-1 rounded-full bg-slate-100 px-3 py-1 text-sm font-medium text-slate-700">{collection.name}<button type="button" className="rounded-full p-0.5 text-slate-400 hover:bg-slate-200 hover:text-slate-700" aria-label={`Remover ${collection.name}`} onClick={() => setValue("collectionIds", selectedCollections.filter((id) => id !== collection.id), { shouldDirty: true })}><X className="size-3.5" /></button></span>)}</div>}</fieldset>
 
       {createCollectionOpen && <div className="fixed inset-0 z-[70] flex items-center justify-center bg-black/45 p-4" onMouseDown={(event) => { if (event.target === event.currentTarget && !creatingCollection) setCreateCollectionOpen(false); }}><section role="dialog" aria-modal="true" aria-labelledby="quick-collection-title" className="w-full max-w-md rounded-xl border bg-white p-5 shadow-2xl"><h2 id="quick-collection-title" className="text-lg font-semibold">Criar coleção</h2><p className="mt-1 text-sm text-neutral-600">A coleção será adicionada a este produto e você continuará preenchendo o formulário.</p><label className="mt-4 block space-y-1 text-sm font-medium">Nome<input autoFocus className="w-full" value={newCollectionName} onChange={(event) => setNewCollectionName(event.target.value)} onKeyDown={(event) => { if (event.key === "Enter") { event.preventDefault(); void createCollectionFromProduct(); } }} /></label>{collectionError && <p role="alert" className="mt-2 text-sm text-red-700">{collectionError}</p>}<div className="mt-5 flex justify-end gap-2"><Button type="button" variant="outline" disabled={creatingCollection} onClick={() => setCreateCollectionOpen(false)}>Cancelar</Button><Button type="button" disabled={creatingCollection} onClick={() => void createCollectionFromProduct()}>{creatingCollection ? "Criando…" : "Criar e selecionar"}</Button></div></section></div>}
 
-      <fieldset className="space-y-3 rounded-lg border p-4"><legend className="px-1 font-semibold">Detalhes do produto</legend>
+      <fieldset className="admin-form-section"><legend>Detalhes do produto</legend><p className="admin-help">Adicione informações como formato, editora ou autor.</p>
         {detailFields.map((field, index) => <div key={field.id} className="grid gap-2 sm:grid-cols-[1fr_2fr_auto]">
           <input aria-label="Título do detalhe" placeholder="Título" {...register(`details.${index}.title`)} />
           <input aria-label="Valor do detalhe" placeholder="Valor" {...register(`details.${index}.value`)} />
-          <button type="button" onClick={() => remove(index)}>Remover</button>
+          <Button type="button" variant="destructive" size="icon" aria-label="Remover detalhe" onClick={() => remove(index)}><Trash2 /></Button>
         </div>)}
-        <button type="button" onClick={() => append({ title: "", value: "" })}>+ Adicionar detalhe</button>
+        <Button type="button" variant="outline" onClick={() => append({ title: "", value: "" })}><Plus />Adicionar detalhe</Button>
       </fieldset>
 
-      <fieldset className="space-y-4 rounded-xl border border-neutral-200 p-4 sm:p-5">
+      <fieldset className="admin-form-section">
         <legend className="px-1 font-semibold">Lançamento</legend>
         <label className="flex items-center gap-2 text-sm font-medium"><input type="checkbox" checked={newEnabled} onChange={(event) => {
           const enabled = event.target.checked;
@@ -506,7 +473,7 @@ export default function ProductForm({
         <p className="text-xs text-neutral-500">A novidade termina automaticamente ao fim da data selecionada. A duração pode ser escolhida ou ajustada pela data.</p>
       </fieldset>
 
-      <fieldset className="space-y-4 rounded-xl border border-neutral-200 p-4 sm:p-5">
+      <fieldset className="admin-form-section">
         <legend className="px-1 font-semibold">Destaque editorial</legend>
         <label className="flex items-center gap-2 text-sm font-medium"><input type="checkbox" {...register("featured")} />Ativar destaque</label>
         <div className="grid gap-3 sm:grid-cols-2">
@@ -525,27 +492,30 @@ export default function ProductForm({
 
       {isEditing &&
         existingImages.length > 0 && (
-          <div>
-            <p>Imagens atuais:</p>
+          <div className="admin-upload">
+            <p className="mb-3 text-sm font-semibold text-slate-800">Imagens atuais</p>
 
             <div className="flex gap-4 flex-wrap">
               {existingImages.map(
                 (image, index) => (
-                  <div key={image}>
+                  <div key={image} className="relative overflow-hidden rounded-xl border border-slate-200 bg-white">
                     <img
                       src={image}
                       alt={`Imagem atual ${index + 1}`}
-                      className="w-32 h-32 object-cover"
+                      className="h-36 w-28 object-cover sm:w-32"
                     />
 
-                    <button
+                    <Button
                       type="button"
+                      variant="destructive"
+                      size="sm"
+                      className="m-2 w-[calc(100%-1rem)]"
                       onClick={() =>
                         removeExistingImage(index)
                       }
                     >
                       Remover
-                    </button>
+                    </Button>
                   </div>
                 )
               )}
@@ -553,8 +523,8 @@ export default function ProductForm({
           </div>
         )}
 
-      <div>
-        <label htmlFor="images">
+      <div className="admin-upload space-y-3">
+        <label htmlFor="images" className="flex items-center gap-2 font-semibold text-slate-800"><ImagePlus className="size-4" />
           {isEditing
             ? "Substituir imagens"
             : "Imagens"}
@@ -567,7 +537,7 @@ export default function ProductForm({
           multiple
           onChange={handleImagesChange}
         />
-        <p className="text-sm text-neutral-600">Dimensão recomendada: 1000 × 1250 px (proporção 4:5), para capa principal e imagens adicionais. Formatos: JPG, PNG, WebP ou AVIF.</p>
+        <p className="admin-help">Recomendado: 1000 × 1250 px (proporção 4:5). JPG, PNG, WebP ou AVIF.</p>
 
         {!isEditing &&
           errors.images && (
@@ -579,7 +549,7 @@ export default function ProductForm({
 
       {previews.length > 0 && (
         <div>
-          <p>Novas imagens:</p>
+          <p className="mb-3 text-sm font-semibold text-slate-800">Prévia das novas imagens</p>
 
           <div className="flex gap-4 flex-wrap">
             {previews.map(
@@ -588,7 +558,7 @@ export default function ProductForm({
                   key={preview}
                   src={preview}
                   alt={`Nova imagem ${index + 1}`}
-                  className="w-32 h-32 object-cover"
+                  className="h-36 w-28 rounded-xl border border-slate-200 object-cover sm:w-32"
                 />
               )
             )}
@@ -596,12 +566,12 @@ export default function ProductForm({
         </div>
       )}
 
-      {submitError && (
-        <p>{submitError}</p>
-      )}
+      {submitError && <AdminFeedback type="error">{submitError}</AdminFeedback>}
 
-      <button
+      <Button
         type="submit"
+        size="lg"
+        className="w-full sm:w-auto"
         disabled={isSubmitting}
       >
         {isSubmitting
@@ -611,7 +581,7 @@ export default function ProductForm({
           : isEditing
             ? "Salvar alterações"
             : "Cadastrar produto"}
-      </button>
+      </Button>
     </form>
   );
 }

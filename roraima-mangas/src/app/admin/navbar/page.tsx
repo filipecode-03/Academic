@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { ArrowDown, ArrowUp, Plus, X } from "lucide-react";
 import { Button } from "@/src/components/ui/button";
+import AdminConfirmDialog from "@/src/components/admin/admin-confirm-dialog";
 
 type DestinationType = "COLLECTION" | "ALL_PRODUCTS" | "NEW_PRODUCTS" | "FEATURED_PRODUCTS" | "EXTERNAL";
 type Collection = { id: string; name: string };
@@ -43,6 +44,7 @@ export default function NavbarAdminPage() {
   const [notice, setNotice] = useState("");
   const [rootEditor, setRootEditor] = useState<{ id: string | null; draft: Draft } | null>(null);
   const [childEditor, setChildEditor] = useState<{ parentId: string; id: string | null; draft: Draft } | null>(null);
+  const [deleteTarget, setDeleteTarget] = useState<{ item: Item; parentId?: string } | null>(null);
 
   async function loadData() {
     try {
@@ -106,9 +108,8 @@ export default function NavbarAdminPage() {
   }
 
   async function removeItem(item: Item, parentId?: string) {
-    if (!window.confirm(parentId ? "Remover este link do submenu?" : "Remover este item da Navbar?")) return;
     const endpoint = parentId ? `/api/navbar-items/${parentId}/children/${item.id}` : `/api/navbar-items/${item.id}`;
-    try { await readJson(await fetch(endpoint, { method: "DELETE" })); setNotice("Item removido."); await loadData(); }
+    try { await readJson(await fetch(endpoint, { method: "DELETE" })); setNotice("Item removido."); setDeleteTarget(null); await loadData(); }
     catch (cause) { setError(cause instanceof Error ? cause.message : "Não foi possível remover o item."); }
   }
 
@@ -133,20 +134,21 @@ export default function NavbarAdminPage() {
     </form>;
   }
 
-  return <div className="mx-auto max-w-4xl space-y-6">
-    <header className="flex flex-wrap items-center justify-between gap-3"><div><p className="text-xs font-semibold uppercase tracking-[0.18em] text-neutral-500">Loja</p><h1 className="mt-1 text-2xl font-bold">Links da Navbar</h1><p className="mt-1 max-w-2xl text-sm text-neutral-600">Gerencie os títulos, destinos, submenus e a ordem. A apresentação visual permanece padronizada no site.</p></div><Button type="button" onClick={() => { setError(""); setRootEditor({ id: null, draft: { ...blankDraft } }); }}><Plus className="size-4" />Novo item</Button></header>
-    {error && <p role="alert" className="rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-800">{error}</p>}{notice && <p role="status" className="rounded-lg border border-green-200 bg-green-50 p-3 text-sm text-green-800">{notice}</p>}
+  return <div className="admin-page">
+    <header className="admin-page-header"><div><p className="admin-eyebrow">Conteúdo</p><h1>Links da Navbar</h1><p>Gerencie títulos, destinos, submenus e a ordem de exibição na loja.</p></div><div className="admin-page-actions"><Button type="button" onClick={() => { setError(""); setRootEditor({ id: null, draft: { ...blankDraft } }); }}><Plus className="size-4" />Novo item</Button></div></header>
+    {error && <p role="alert" className="admin-feedback admin-feedback-error">{error}</p>}{notice && <p role="status" className="admin-feedback admin-feedback-success">{notice}</p>}
     {rootEditor && <section className="space-y-3 rounded-2xl border bg-white p-5 shadow-sm"><h2 className="font-semibold">{rootEditor.id ? "Editar item" : "Novo item"}</h2>{EditorForm({ value: rootEditor.draft, onChange: (draft) => setRootEditor((current) => current && { ...current, draft }), onSubmit: saveRoot, onCancel: () => setRootEditor(null) })}</section>}
     {childEditor && <section className="space-y-3 rounded-2xl border bg-white p-5 shadow-sm"><div className="flex items-center justify-between"><h2 className="font-semibold">{childEditor.id ? "Editar link filho" : "Novo link filho"}</h2><Button type="button" variant="ghost" size="icon" aria-label="Fechar formulário" onClick={() => setChildEditor(null)}><X /></Button></div>{EditorForm({ child: true, value: childEditor.draft, onChange: (draft) => setChildEditor((current) => current && { ...current, draft }), onSubmit: saveChild, onCancel: () => setChildEditor(null) })}</section>}
-    {loading ? <p className="py-8 text-center text-neutral-500">Carregando links…</p> : items.length === 0 ? <p className="rounded-xl border border-dashed bg-white p-8 text-center text-sm text-neutral-500">Nenhum item configurado. Crie links simples ou dropdowns para exibir na Navbar.</p> : <ol className="space-y-3">{items.map((item, index) => <li key={item.id} className="rounded-2xl border bg-white p-4 shadow-sm sm:p-5">
+    {loading ? <div className="h-24 animate-pulse rounded-xl border border-slate-200 bg-white" /> : items.length === 0 ? <p className="admin-empty-state">Nenhum item configurado. Crie links simples ou dropdowns para exibir na Navbar.</p> : <ol className="space-y-3">{items.map((item, index) => <li key={item.id} className="admin-item">
       <div className="flex flex-wrap items-start justify-between gap-3"><div className="flex min-w-0 items-start gap-3"><span className="mt-1 rounded-lg bg-neutral-100 p-2 text-neutral-500"><span className="sr-only">Posição {index + 1}</span>☰</span><div className="min-w-0"><h2 className="font-semibold">{item.title}<span className="ml-2 rounded-full bg-neutral-100 px-2 py-0.5 text-[0.65rem] font-semibold uppercase tracking-wide text-neutral-500">{item.type === "DROPDOWN" ? "Dropdown" : "Link"}</span></h2><p className="mt-1 break-all text-sm text-neutral-500">{destinationLabel(item, collections)}</p></div></div><div className="flex flex-wrap items-center gap-1">
         <Button type="button" variant="ghost" size="icon-sm" aria-label="Mover para cima" disabled={index === 0} onClick={() => void moveItems(null, items, index, -1)}><ArrowUp /></Button><Button type="button" variant="ghost" size="icon-sm" aria-label="Mover para baixo" disabled={index === items.length - 1} onClick={() => void moveItems(null, items, index, 1)}><ArrowDown /></Button>
-        <Button type="button" variant="outline" size="sm" onClick={() => setRootEditor({ id: item.id, draft: fromItem(item) })}>Editar</Button><Button type="button" variant="outline" size="sm" onClick={() => void toggleActive(item)}>{item.active ? "Desativar" : "Ativar"}</Button><Button type="button" variant="destructive" size="sm" onClick={() => void removeItem(item)}>Excluir</Button>
+        <Button type="button" variant="outline" size="sm" onClick={() => setRootEditor({ id: item.id, draft: fromItem(item) })}>Editar</Button><Button type="button" variant="outline" size="sm" onClick={() => void toggleActive(item)}>{item.active ? "Desativar" : "Ativar"}</Button><Button type="button" variant="destructive" size="sm" onClick={() => setDeleteTarget({ item })}>Excluir</Button>
       </div></div>
       {item.type === "DROPDOWN" && <div className="mt-4 space-y-3 border-l-2 border-neutral-100 pl-4 sm:ml-3 sm:pl-5">
         <div className="flex flex-wrap items-center justify-between gap-2"><h3 className="text-sm font-semibold text-neutral-700">Itens filhos</h3><Button type="button" variant="outline" size="sm" onClick={() => setChildEditor({ parentId: item.id, id: null, draft: { ...blankDraft, type: "LINK" } })}><Plus className="size-4" />Adicionar link</Button></div>
-        {(item.children ?? []).length === 0 ? <p className="text-sm text-neutral-500">Este dropdown ainda não tem links.</p> : <ul className="space-y-2">{item.children!.map((child, childIndex) => <li key={child.id} className="flex flex-wrap items-center justify-between gap-2 rounded-xl bg-neutral-50 px-3 py-2.5"><div className="min-w-0"><p className="text-sm font-medium">{child.title}{!child.active && <span className="ml-2 text-xs text-neutral-400">Inativo</span>}</p><p className="break-all text-xs text-neutral-500">{destinationLabel(child, collections)}</p></div><div className="flex items-center gap-1"><Button type="button" variant="ghost" size="icon-sm" aria-label="Mover filho para cima" disabled={childIndex === 0} onClick={() => void moveItems(item.id, item.children ?? [], childIndex, -1)}><ArrowUp /></Button><Button type="button" variant="ghost" size="icon-sm" aria-label="Mover filho para baixo" disabled={childIndex === item.children!.length - 1} onClick={() => void moveItems(item.id, item.children ?? [], childIndex, 1)}><ArrowDown /></Button><Button type="button" variant="outline" size="sm" onClick={() => setChildEditor({ parentId: item.id, id: child.id, draft: fromItem(child) })}>Editar</Button><Button type="button" variant="outline" size="sm" onClick={() => void toggleActive(child, item.id)}>{child.active ? "Desativar" : "Ativar"}</Button><Button type="button" variant="destructive" size="sm" onClick={() => void removeItem(child, item.id)}>Excluir</Button></div></li>)}</ul>}
+        {(item.children ?? []).length === 0 ? <p className="text-sm text-neutral-500">Este dropdown ainda não tem links.</p> : <ul className="space-y-2">{item.children!.map((child, childIndex) => <li key={child.id} className="flex flex-wrap items-center justify-between gap-2 rounded-xl bg-neutral-50 px-3 py-2.5"><div className="min-w-0"><p className="text-sm font-medium">{child.title}{!child.active && <span className="ml-2 text-xs text-neutral-400">Inativo</span>}</p><p className="break-all text-xs text-neutral-500">{destinationLabel(child, collections)}</p></div><div className="flex items-center gap-1"><Button type="button" variant="ghost" size="icon-sm" aria-label="Mover filho para cima" disabled={childIndex === 0} onClick={() => void moveItems(item.id, item.children ?? [], childIndex, -1)}><ArrowUp /></Button><Button type="button" variant="ghost" size="icon-sm" aria-label="Mover filho para baixo" disabled={childIndex === item.children!.length - 1} onClick={() => void moveItems(item.id, item.children ?? [], childIndex, 1)}><ArrowDown /></Button><Button type="button" variant="outline" size="sm" onClick={() => setChildEditor({ parentId: item.id, id: child.id, draft: fromItem(child) })}>Editar</Button><Button type="button" variant="outline" size="sm" onClick={() => void toggleActive(child, item.id)}>{child.active ? "Desativar" : "Ativar"}</Button><Button type="button" variant="destructive" size="sm" onClick={() => setDeleteTarget({ item: child, parentId: item.id })}>Excluir</Button></div></li>)}</ul>}
       </div>}
     </li>)}</ol>}
+    <AdminConfirmDialog open={Boolean(deleteTarget)} title={deleteTarget?.parentId ? "Excluir link do submenu?" : "Excluir item da Navbar?"} description={deleteTarget ? `“${deleteTarget.item.title}” será removido da navegação pública.` : ""} onCancel={() => setDeleteTarget(null)} onConfirm={() => removeItem(deleteTarget!.item, deleteTarget!.parentId)} />
   </div>;
 }

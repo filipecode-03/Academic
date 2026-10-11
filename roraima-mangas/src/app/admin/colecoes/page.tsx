@@ -3,6 +3,10 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import { ImageIcon, Plus } from "lucide-react";
+import { AdminEmptyState, AdminFeedback, AdminPageHeader, AdminSearch, AdminSkeletonList } from "@/src/components/admin/admin-ui";
+import { Button } from "@/src/components/ui/button";
+import AdminConfirmDialog from "@/src/components/admin/admin-confirm-dialog";
 import {
   createCollectionSchema,
   type CreateCollectionInput,
@@ -68,7 +72,7 @@ function CollectionForm({ collection, onSave, onCancel }: CollectionFormProps) {
 
   return (
     <form
-      className="space-y-4 border p-4"
+      className="space-y-5"
       onSubmit={handleSubmit((values) => onSave(values, imageFile))}
     >
       <h2 className="text-xl font-semibold">
@@ -124,13 +128,13 @@ function CollectionForm({ collection, onSave, onCancel }: CollectionFormProps) {
       </div>
 
       <div className="flex gap-3">
-        <button
+        <Button
           type="submit"
           disabled={isSubmitting}
         >
           {isSubmitting ? "Salvando..." : "Salvar coleção"}
-        </button>
-        <button type="button" onClick={onCancel}>Cancelar</button>
+        </Button>
+        <Button type="button" variant="outline" onClick={onCancel}>Cancelar</Button>
       </div>
     </form>
   );
@@ -225,6 +229,7 @@ export default function CollectionsPage() {
   const [error, setError] = useState("");
   const [notice, setNotice] = useState("");
   const [search, setSearch] = useState("");
+  const [deleteTarget, setDeleteTarget] = useState<Collection>();
 
   async function loadCollections() {
     try {
@@ -293,7 +298,6 @@ export default function CollectionsPage() {
   }
 
   async function deleteCollection(collection: Collection) {
-    if (!window.confirm(`Deseja excluir a coleção “${collection.name}”?`)) return;
     try {
       setError("");
       setNotice("");
@@ -303,6 +307,7 @@ export default function CollectionsPage() {
         setAssociatedProducts([]);
       }
       setNotice("Coleção excluída com sucesso.");
+      setDeleteTarget(undefined);
       await loadCollections();
     } catch (cause) {
       console.error("Erro ao excluir coleção:", cause);
@@ -355,13 +360,9 @@ export default function CollectionsPage() {
   );
 
   return (
-    <div className="space-y-6">
-      <header className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold">Coleções</h1>
-          <p>Organize produtos em coleções para a loja.</p>
-        </div>
-        <button
+    <div className="admin-page">
+      <AdminPageHeader eyebrow="Catálogo" title="Coleções" description="Organize produtos em coleções para facilitar a descoberta na loja." actions={
+        <Button
           type="button"
           onClick={() => {
             if (showForm) {
@@ -374,12 +375,12 @@ export default function CollectionsPage() {
             setShowForm(true);
           }}
         >
-          {showForm ? "Fechar formulário" : "Nova coleção"}
-        </button>
-      </header>
+          {showForm ? "Fechar formulário" : <><Plus />Nova coleção</>}
+        </Button>
+      } />
 
-      {error && <p role="alert">{error}</p>}
-      {notice && <p role="status">{notice}</p>}
+      {error && <AdminFeedback type="error">{error}</AdminFeedback>}
+      {notice && <AdminFeedback type="success">{notice}</AdminFeedback>}
 
       {showForm && (
         <CollectionForm
@@ -391,10 +392,10 @@ export default function CollectionsPage() {
       )}
 
       {managingCollection && (
-        <section className="space-y-4 border p-4">
+        <section className="admin-panel space-y-4">
           <div className="flex items-center justify-between gap-3">
             <h2 className="text-xl font-semibold">Produtos: {managingCollection.name}</h2>
-            <button type="button" onClick={() => setManagingCollection(undefined)}>Fechar</button>
+            <Button type="button" variant="ghost" onClick={() => setManagingCollection(undefined)}>Fechar</Button>
           </div>
           <div className="flex flex-wrap gap-2">
             <select
@@ -407,9 +408,9 @@ export default function CollectionsPage() {
                 <option key={product.id} value={product.id}>{product.name}</option>
               ))}
             </select>
-            <button type="button" disabled={!selectedProductId || savingAssociation} onClick={() => void addProduct()}>
+            <Button type="button" disabled={!selectedProductId || savingAssociation} onClick={() => void addProduct()}>
               {savingAssociation ? "Adicionando..." : "Adicionar produto"}
-            </button>
+            </Button>
           </div>
           {availableProducts.length === 0 && <p>Todos os produtos existentes já estão nesta coleção.</p>}
           {associatedProducts.length === 0 ? (
@@ -417,9 +418,9 @@ export default function CollectionsPage() {
           ) : (
             <ul className="space-y-2">
               {associatedProducts.map((product) => (
-                <li key={product.id} className="flex items-center justify-between border p-3">
+                <li key={product.id} className="flex items-center justify-between rounded-lg bg-slate-50 p-3">
                   <span>{product.name}</span>
-                  <button type="button" onClick={() => void removeProduct(product)}>Remover</button>
+                  <Button type="button" variant="destructive" size="sm" onClick={() => void removeProduct(product)}>Remover</Button>
                 </li>
               ))}
             </ul>
@@ -427,32 +428,24 @@ export default function CollectionsPage() {
         </section>
       )}
 
-      <section className="space-y-3">
-        <h2 className="text-xl font-semibold">Coleções cadastradas</h2>
-        <div className="flex flex-wrap items-center gap-2">
-          <input
-            type="search"
-            className="w-full max-w-md border p-2"
-            placeholder="Pesquisar coleções..."
-            aria-label="Pesquisar coleções pelo nome"
-            value={search}
-            onChange={(event) => setSearch(event.target.value)}
-          />
-          {search && <button type="button" onClick={() => setSearch("")}>Limpar pesquisa</button>}
-        </div>
-        {loading && <p>Carregando coleções...</p>}
-        {!loading && collections.length === 0 && !error && <p>Nenhuma coleção cadastrada.</p>}
+      <section className="space-y-4">
+        <div className="admin-toolbar"><div className="admin-section-heading"><div><h2>Coleções cadastradas</h2><p>{collections.length} {collections.length === 1 ? "coleção" : "coleções"}</p></div></div><AdminSearch value={search} onChange={setSearch} placeholder="Pesquisar coleções..." label="Pesquisar coleções pelo nome" /></div>
+        {loading && <AdminSkeletonList />}
+        {!loading && collections.length === 0 && !error && <AdminEmptyState icon={ImageIcon} title="Nenhuma coleção cadastrada" description="Crie uma coleção para organizar os produtos da loja." />}
         {!loading && collections.length > 0 && filteredCollections.length === 0 && (
-          <p>Nenhuma coleção encontrada para “{search}”.</p>
+          <AdminEmptyState title="Nenhum resultado" description={`Nenhuma coleção corresponde à busca “${search}”.`} />
         )}
         {!loading && filteredCollections.map((collection) => (
-          <article key={collection.id} className="flex flex-wrap items-center justify-between gap-3 border p-4">
-            <div>
+          <article key={collection.id} className="admin-item flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex min-w-0 items-center gap-3">
+              {collection.image ? <img src={collection.image} alt="" className="size-14 shrink-0 rounded-lg border border-slate-200 object-cover" /> : <span className="grid size-14 shrink-0 place-items-center rounded-lg bg-slate-100 text-slate-400"><ImageIcon className="size-5" /></span>}
+              <div className="min-w-0">
               <h3 className="font-semibold">{collection.name}</h3>
-              {collection.description && <p>{collection.description}</p>}
+              {collection.description && <p className="mt-1 line-clamp-2 text-sm text-slate-500">{collection.description}</p>}
+              </div>
             </div>
-            <div className="flex flex-wrap gap-3">
-              <button
+            <div className="admin-actions">
+              <Button variant="outline" size="sm"
                 type="button"
                 onClick={() => {
                   setEditingCollection(collection);
@@ -460,13 +453,14 @@ export default function CollectionsPage() {
                   setNotice("");
                   setShowForm(true);
                 }}
-              >Editar</button>
-              <button type="button" onClick={() => void loadAssociatedProducts(collection)}>Gerenciar produtos</button>
-              <button type="button" onClick={() => void deleteCollection(collection)}>Excluir</button>
+              >Editar</Button>
+              <Button variant="outline" size="sm" type="button" onClick={() => void loadAssociatedProducts(collection)}>Gerenciar produtos</Button>
+              <Button variant="destructive" size="sm" type="button" onClick={() => setDeleteTarget(collection)}>Excluir</Button>
             </div>
           </article>
         ))}
       </section>
+      <AdminConfirmDialog open={Boolean(deleteTarget)} title="Excluir coleção?" description={deleteTarget ? `“${deleteTarget.name}” será removida. Os produtos continuarão cadastrados.` : ""} onCancel={() => setDeleteTarget(undefined)} onConfirm={() => deleteCollection(deleteTarget!)} />
     </div>
   );
 }
