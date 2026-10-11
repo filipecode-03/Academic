@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
 import ProductCard from "@/src/components/products/product-card";
 import Skeleton from "@/src/components/ui/skeleton";
 import type { PublicProduct } from "@/src/types/storefront";
@@ -22,6 +22,12 @@ type HomeSection = {
   displayProducts: PublicProduct[];
   collection?: { slug: string } | null;
 };
+type CollectionBlock = {
+  id: string;
+  title: string;
+  image: string;
+  collection: { slug: string };
+};
 type HomeResponse = {
   success: boolean;
   message?: string;
@@ -29,7 +35,7 @@ type HomeResponse = {
     promoNotices: PromoNotice[];
     banners: Banner[];
     sections: HomeSection[];
-    collectionBlocks: { id: string; title: string; image: string; collection: { slug: string } }[];
+    collectionBlocks: CollectionBlock[];
   };
 };
 
@@ -42,13 +48,65 @@ function getBannerHref(banner: Banner) {
 }
 
 function NoticeStrip({ notices }: { notices: PromoNotice[] }) {
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [timerVersion, setTimerVersion] = useState(0);
+
+  useEffect(() => {
+    if (notices.length < 2) return;
+    const timer = window.setInterval(
+      () => setActiveIndex((index) => (index + 1) % notices.length),
+      5_000,
+    );
+    return () => window.clearInterval(timer);
+  }, [notices.length, timerVersion]);
+
   if (notices.length === 0) return null;
+  const notice = notices[activeIndex % notices.length];
+
+  function move(direction: -1 | 1) {
+    setActiveIndex((index) => (index + direction + notices.length) % notices.length);
+    setTimerVersion((version) => version + 1);
+  }
+
   return (
-    <div className="space-y-1 border-b border-yellow-400 bg-yellow-300 px-4 py-2 text-center text-sm font-semibold text-neutral-950 shadow-sm">
-      {notices.map((notice) => (
-        <p key={notice.id}>{notice.content}</p>
-      ))}
-    </div>
+    <section
+      aria-label="Avisos da loja"
+      aria-live="polite"
+      className="border-b border-white/10 bg-brand-ink text-white"
+    >
+      <div className="mx-auto grid min-h-10 max-w-7xl grid-cols-[2.75rem_1fr_2.75rem] items-center px-1 sm:min-h-11 sm:px-4">
+        {notices.length > 1 ? (
+          <button
+            type="button"
+            aria-label="Aviso anterior"
+            onClick={() => move(-1)}
+            className="grid size-10 place-items-center rounded-full text-brand transition-colors duration-200 hover:bg-white/10 focus-visible:ring-2 focus-visible:ring-brand focus-visible:outline-none"
+          >
+            <ChevronLeft aria-hidden="true" className="size-4" />
+          </button>
+        ) : (
+          <span aria-hidden="true" />
+        )}
+        <p
+          key={notice.id}
+          className="animate-[noticeEnter_400ms_ease-out] px-2 text-center text-xs leading-5 font-medium tracking-wide text-pretty sm:text-sm"
+        >
+          {notice.content}
+        </p>
+        {notices.length > 1 ? (
+          <button
+            type="button"
+            aria-label="Próximo aviso"
+            onClick={() => move(1)}
+            className="grid size-10 place-items-center rounded-full text-brand transition-colors duration-200 hover:bg-white/10 focus-visible:ring-2 focus-visible:ring-brand focus-visible:outline-none"
+          >
+            <ChevronRight aria-hidden="true" className="size-4" />
+          </button>
+        ) : (
+          <span aria-hidden="true" />
+        )}
+      </div>
+    </section>
   );
 }
 
@@ -57,6 +115,7 @@ function BannerCarousel({ banners }: { banners: Banner[] }) {
   const [timerVersion, setTimerVersion] = useState(0);
   const touchStart = useRef<number | null>(null);
   const swipeHandled = useRef(false);
+
   useEffect(() => {
     if (banners.length < 2) return;
     const timer = window.setInterval(
@@ -65,23 +124,30 @@ function BannerCarousel({ banners }: { banners: Banner[] }) {
     );
     return () => window.clearInterval(timer);
   }, [banners.length, timerVersion]);
+
   if (banners.length === 0) return null;
-  const banner = banners[activeIndex];
+  const banner = banners[activeIndex % banners.length];
   const href = getBannerHref(banner);
   const image = (
+    // Banner URLs come from the configured object storage host.
     // eslint-disable-next-line @next/next/no-img-element
     <img
       src={banner.image}
       alt="Banner da loja"
-      className="h-full w-full object-cover"
+      className="h-full w-full object-cover motion-safe:animate-[heroEnter_650ms_cubic-bezier(0.22,1,0.36,1)]"
       fetchPriority="high"
     />
   );
 
+  function move(direction: -1 | 1) {
+    setActiveIndex((index) => (index + direction + banners.length) % banners.length);
+    setTimerVersion((version) => version + 1);
+  }
+
   return (
     <section
       aria-label="Banners em destaque"
-      className="relative mx-auto aspect-[2/1] w-full max-w-7xl touch-pan-y overflow-hidden bg-neutral-100 shadow-sm sm:aspect-[3/1] sm:rounded-b-xl"
+      className="relative aspect-[16/9] w-full touch-pan-y overflow-hidden bg-neutral-100 sm:aspect-[12/5] lg:aspect-[16/5] xl:max-h-[34rem]"
       onPointerDown={(event) => {
         if (event.pointerType === "touch") touchStart.current = event.clientX;
       }}
@@ -91,18 +157,15 @@ function BannerCarousel({ banners }: { banners: Banner[] }) {
         touchStart.current = null;
         if (Math.abs(distance) < 40 || banners.length < 2) return;
         swipeHandled.current = true;
-        setActiveIndex(
-          (index) => (index + (distance < 0 ? 1 : -1) + banners.length) % banners.length,
-        );
-        setTimerVersion((version) => version + 1);
+        move(distance < 0 ? 1 : -1);
       }}
     >
-      <div key={banner.id} className="h-full animate-[heroFade_700ms_ease-in-out]">
+      <div key={banner.id} className="h-full">
         {href ? (
           <Link
             href={href}
             aria-label="Acessar conteúdo do banner"
-            className="block h-full"
+            className="block h-full focus-visible:ring-2 focus-visible:ring-brand focus-visible:outline-none focus-visible:ring-inset"
             onClick={(event) => {
               if (swipeHandled.current) {
                 event.preventDefault();
@@ -121,33 +184,27 @@ function BannerCarousel({ banners }: { banners: Banner[] }) {
           <button
             type="button"
             aria-label="Banner anterior"
-            className="absolute top-1/2 left-3 hidden h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 shadow transition hover:bg-white focus-visible:ring-2 focus-visible:ring-neutral-900 focus-visible:outline-none md:flex"
-            onClick={() => {
-              setActiveIndex((index) => (index - 1 + banners.length) % banners.length);
-              setTimerVersion((version) => version + 1);
-            }}
+            className="absolute top-1/2 left-5 hidden size-11 -translate-y-1/2 place-items-center rounded-full border border-white/50 bg-brand-ink/65 text-white shadow-sm backdrop-blur-sm transition duration-200 hover:bg-brand-ink/85 focus-visible:ring-2 focus-visible:ring-brand focus-visible:outline-none md:grid"
+            onClick={() => move(-1)}
           >
-            <ChevronLeft aria-hidden="true" />
+            <ChevronLeft aria-hidden="true" className="size-5" />
           </button>
           <button
             type="button"
             aria-label="Próximo banner"
-            className="absolute top-1/2 right-3 hidden h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 shadow transition hover:bg-white focus-visible:ring-2 focus-visible:ring-neutral-900 focus-visible:outline-none md:flex"
-            onClick={() => {
-              setActiveIndex((index) => (index + 1) % banners.length);
-              setTimerVersion((version) => version + 1);
-            }}
+            className="absolute top-1/2 right-5 hidden size-11 -translate-y-1/2 place-items-center rounded-full border border-white/50 bg-brand-ink/65 text-white shadow-sm backdrop-blur-sm transition duration-200 hover:bg-brand-ink/85 focus-visible:ring-2 focus-visible:ring-brand focus-visible:outline-none md:grid"
+            onClick={() => move(1)}
           >
-            <ChevronRight aria-hidden="true" />
+            <ChevronRight aria-hidden="true" className="size-5" />
           </button>
-          <div className="absolute bottom-3 left-1/2 flex -translate-x-1/2 gap-2">
+          <div className="absolute bottom-3 left-1/2 flex -translate-x-1/2 items-center gap-1.5 rounded-full bg-brand-ink/45 px-2.5 py-2 backdrop-blur-sm sm:bottom-5">
             {banners.map((item, index) => (
               <button
                 key={item.id}
                 type="button"
                 aria-label={`Mostrar banner ${index + 1}`}
-                aria-current={index === activeIndex}
-                className={`h-2.5 w-2.5 rounded-full border border-white shadow ${index === activeIndex ? "bg-white" : "bg-black/40"}`}
+                aria-current={index === activeIndex ? "true" : undefined}
+                className={`h-1.5 rounded-full transition-[width,background-color] duration-300 focus-visible:ring-2 focus-visible:ring-brand focus-visible:outline-none ${index === activeIndex ? "w-6 bg-brand" : "w-1.5 bg-white/70 hover:bg-white"}`}
                 onClick={() => {
                   setActiveIndex(index);
                   setTimerVersion((version) => version + 1);
@@ -161,6 +218,97 @@ function BannerCarousel({ banners }: { banners: Banner[] }) {
   );
 }
 
+function CarouselControls({
+  label,
+  onPrevious,
+  onNext,
+}: {
+  label: string;
+  onPrevious: () => void;
+  onNext: () => void;
+}) {
+  return (
+    <div className="hidden items-center gap-2 md:flex">
+      <button
+        type="button"
+        aria-label={`${label} anteriores`}
+        onClick={onPrevious}
+        className="grid size-10 place-items-center rounded-full border border-neutral-200 bg-white text-brand-deep transition duration-200 hover:border-brand-secondary hover:bg-brand/15 focus-visible:ring-2 focus-visible:ring-brand-secondary focus-visible:outline-none"
+      >
+        <ChevronLeft aria-hidden="true" className="size-4" />
+      </button>
+      <button
+        type="button"
+        aria-label={`Próximos ${label.toLocaleLowerCase()}`}
+        onClick={onNext}
+        className="grid size-10 place-items-center rounded-full border border-neutral-200 bg-white text-brand-deep transition duration-200 hover:border-brand-secondary hover:bg-brand/15 focus-visible:ring-2 focus-visible:ring-brand-secondary focus-visible:outline-none"
+      >
+        <ChevronRight aria-hidden="true" className="size-4" />
+      </button>
+    </div>
+  );
+}
+
+function CollectionShowcase({ blocks }: { blocks: CollectionBlock[] }) {
+  const track = useRef<HTMLDivElement>(null);
+  const move = (direction: -1 | 1) =>
+    track.current?.scrollBy({
+      left: direction * track.current.clientWidth * 0.82,
+      behavior: "smooth",
+    });
+
+  return (
+    <section aria-labelledby="collection-showcase-title" className="space-y-5">
+      <div className="flex items-end justify-between gap-5">
+        <div>
+          <p className="mb-1 text-xs font-bold tracking-[0.18em] text-brand-accent uppercase">
+            Explore a loja
+          </p>
+          <h2
+            id="collection-showcase-title"
+            className="text-2xl font-bold tracking-tight text-brand-ink sm:text-3xl"
+          >
+            Universos em destaque
+          </h2>
+        </div>
+        {blocks.length > 1 && (
+          <CarouselControls label="Atalhos" onPrevious={() => move(-1)} onNext={() => move(1)} />
+        )}
+      </div>
+      <div
+        ref={track}
+        className="storefront-scrollbar flex snap-x snap-mandatory gap-4 overflow-x-auto pb-3 sm:gap-5"
+      >
+        {blocks.map((block) => (
+          <Link
+            key={block.id}
+            href={`/colecoes/${block.collection.slug}`}
+            className="group relative aspect-[4/5] w-[78%] max-w-sm shrink-0 snap-start overflow-hidden rounded-2xl bg-neutral-200 shadow-[0_2px_10px_rgb(13_13_13/0.08)] focus-visible:ring-2 focus-visible:ring-brand-secondary focus-visible:ring-offset-2 focus-visible:outline-none sm:w-[44%] md:w-[35%] lg:w-[calc((100%_-_3.75rem)/4)]"
+          >
+            {/* Home shortcut images are managed through the existing Admin. */}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={block.image}
+              alt=""
+              loading="lazy"
+              className="absolute inset-0 size-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.035]"
+            />
+            <span className="absolute inset-0 bg-gradient-to-t from-brand-ink/90 via-brand-ink/10 to-transparent transition-colors duration-300 group-hover:from-brand-ink/95" />
+            <span className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-4 p-5 text-white sm:p-6">
+              <span className="text-xl leading-tight font-bold tracking-tight text-balance transition-transform duration-300 group-hover:-translate-y-0.5 sm:text-2xl">
+                {block.title}
+              </span>
+              <span className="grid size-9 shrink-0 translate-x-2 place-items-center rounded-full border border-white/35 bg-white/10 opacity-0 backdrop-blur-sm transition duration-300 group-hover:translate-x-0 group-hover:opacity-100">
+                <ArrowRight aria-hidden="true" className="size-4" />
+              </span>
+            </span>
+          </Link>
+        ))}
+      </div>
+    </section>
+  );
+}
+
 function HomeProductCarousel({ products }: { products: PublicProduct[] }) {
   const track = useRef<HTMLDivElement>(null);
   const move = (direction: -1 | 1) =>
@@ -168,39 +316,27 @@ function HomeProductCarousel({ products }: { products: PublicProduct[] }) {
       left: direction * track.current.clientWidth * 0.9,
       behavior: "smooth",
     });
+
   return (
     <div className="relative">
-      <div className="mb-2 hidden justify-end gap-2 md:flex">
-        <button
-          type="button"
-          aria-label="Produtos anteriores"
-          onClick={() => move(-1)}
-          className="rounded-full border bg-white p-2 shadow-sm hover:bg-neutral-100"
-        >
-          <ChevronLeft className="size-4" />
-        </button>
-        <button
-          type="button"
-          aria-label="Próximos produtos"
-          onClick={() => move(1)}
-          className="rounded-full border bg-white p-2 shadow-sm hover:bg-neutral-100"
-        >
-          <ChevronRight className="size-4" />
-        </button>
-      </div>
       <div
         ref={track}
-        className="flex snap-x snap-mandatory gap-3 overflow-x-auto scroll-smooth pb-3 sm:gap-4"
+        className="storefront-scrollbar flex snap-x snap-mandatory gap-3 overflow-x-auto scroll-smooth pb-4 sm:gap-5"
       >
         {products.map((product) => (
           <div
             key={product.id}
-            className="w-[calc((100%_-_0.75rem)/2)] shrink-0 snap-start sm:w-[calc((100%_-_2rem)/3)] lg:w-[calc((100%_-_3rem)/4)]"
+            className="w-[calc((100%_-_0.75rem)/2)] shrink-0 snap-start sm:w-[calc((100%_-_2.5rem)/3)] lg:w-[calc((100%_-_3.75rem)/4)]"
           >
             <ProductCard product={product} />
           </div>
         ))}
       </div>
+      {products.length > 4 && (
+        <div className="mt-1 flex justify-end">
+          <CarouselControls label="Produtos" onPrevious={() => move(-1)} onNext={() => move(1)} />
+        </div>
+      )}
     </div>
   );
 }
@@ -237,78 +373,79 @@ export default function Main() {
 
   const notices = home?.promoNotices ?? [];
   return (
-    <main className="min-h-40">
+    <main className="min-h-40 overflow-hidden bg-stone-50">
       <NoticeStrip notices={notices.filter(({ position }) => position === "TOP")} />
       {home ? (
         <BannerCarousel banners={home.banners} />
       ) : (
-        <Skeleton className="mx-auto aspect-[2/1] w-full max-w-7xl sm:aspect-[3/1] sm:rounded-b-xl" />
+        <Skeleton className="aspect-[16/9] w-full rounded-none sm:aspect-[12/5] lg:aspect-[16/5]" />
       )}
       <NoticeStrip notices={notices.filter(({ position }) => position === "BELOW_CAROUSEL")} />
-      <div className="mx-auto max-w-7xl space-y-10 px-4 py-8 sm:px-6 lg:px-8 lg:py-12">
+
+      <div className="mx-auto max-w-7xl space-y-14 px-4 py-10 sm:space-y-16 sm:px-6 sm:py-14 lg:space-y-20 lg:px-8 lg:py-16">
         {home && home.collectionBlocks.length > 0 && (
-          <section className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
-            {home.collectionBlocks.map((block) => (
-              <Link
-                key={block.id}
-                href={`/colecoes/${block.collection.slug}`}
-                className="group relative aspect-[4/3] overflow-hidden rounded-xl bg-neutral-200 shadow-sm"
-              >
-                {/* Home collection shortcut banners use a 4:3 crop. */}
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={block.image}
-                  alt=""
-                  className="absolute inset-0 size-full object-cover transition-transform duration-300 group-hover:scale-105"
-                />
-                <span className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 to-transparent px-4 pt-12 pb-4 text-lg font-bold text-white sm:text-xl">
-                  {block.title}
-                </span>
-              </Link>
-            ))}
-          </section>
+          <CollectionShowcase blocks={home.collectionBlocks} />
         )}
+
         {!home ? (
-          <div className="space-y-10" aria-label="Carregando conteúdo da loja">
+          <div className="space-y-14" aria-label="Carregando conteúdo da loja">
             {[0, 1].map((row) => (
-              <section key={row} className="space-y-4">
+              <section key={row} className="space-y-5">
                 <div className="flex items-center justify-between">
-                  <Skeleton className="h-7 w-48" />
+                  <Skeleton className="h-8 w-48" />
                   <Skeleton className="h-5 w-20" />
                 </div>
                 <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-5 lg:grid-cols-4">
                   {[0, 1, 2, 3].map((card) => (
-                    <Skeleton key={card} className="aspect-[3/4] rounded-xl" />
+                    <Skeleton key={card} className="aspect-[3/4] rounded-2xl" />
                   ))}
                 </div>
               </section>
             ))}
           </div>
         ) : (
-          home.sections.map((section) => (
-            <section key={section.id} className="space-y-4">
-              <div className="flex items-end justify-between gap-4 border-b border-neutral-200 pb-3">
-                <h2 className="text-xl font-bold tracking-tight sm:text-2xl">{section.title}</h2>
-                <Link
-                  href={
-                    section.type === "COLLECTION" && section.collection
-                      ? `/colecoes/${section.collection.slug}`
-                      : `/secoes/${section.id}`
-                  }
-                  className="shrink-0 rounded-md px-3 py-2 text-sm font-semibold text-neutral-800 transition hover:bg-yellow-100 hover:text-black"
-                >
-                  Ver todos <span aria-hidden="true">→</span>
-                </Link>
-              </div>
-              {section.displayProducts.length === 0 ? (
-                <p className="rounded-xl border border-dashed bg-white p-6 text-sm text-neutral-600">
-                  Nenhum produto disponível nesta seção.
-                </p>
-              ) : (
-                <HomeProductCarousel products={section.displayProducts.slice(0, 10)} />
-              )}
-            </section>
-          ))
+          <div className="space-y-16 lg:space-y-20">
+            {home.sections.map((section) => (
+              <section
+                key={section.id}
+                className="space-y-5"
+                aria-labelledby={`section-${section.id}`}
+              >
+                <div className="flex items-end justify-between gap-4 border-b border-brand-secondary/35 pb-4">
+                  <div className="flex min-w-0 items-center gap-3">
+                    <span aria-hidden="true" className="h-8 w-1 rounded-full bg-brand-accent" />
+                    <h2
+                      id={`section-${section.id}`}
+                      className="truncate text-2xl font-bold tracking-tight text-brand-ink sm:text-3xl"
+                    >
+                      {section.title}
+                    </h2>
+                  </div>
+                  <Link
+                    href={
+                      section.type === "COLLECTION" && section.collection
+                        ? `/colecoes/${section.collection.slug}`
+                        : `/secoes/${section.id}`
+                    }
+                    className="group/link flex shrink-0 items-center gap-1.5 rounded-lg px-2 py-2 text-sm font-semibold text-brand-deep transition-colors hover:bg-brand/15 focus-visible:ring-2 focus-visible:ring-brand-secondary focus-visible:outline-none"
+                  >
+                    Ver todos
+                    <ArrowRight
+                      aria-hidden="true"
+                      className="size-4 transition-transform duration-200 group-hover/link:translate-x-0.5"
+                    />
+                  </Link>
+                </div>
+                {section.displayProducts.length === 0 ? (
+                  <p className="rounded-2xl border border-dashed border-neutral-300 bg-white p-6 text-sm text-neutral-600">
+                    Nenhum produto disponível nesta seção.
+                  </p>
+                ) : (
+                  <HomeProductCarousel products={section.displayProducts.slice(0, 10)} />
+                )}
+              </section>
+            ))}
+          </div>
         )}
       </div>
     </main>

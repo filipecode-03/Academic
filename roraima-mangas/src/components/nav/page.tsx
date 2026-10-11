@@ -145,7 +145,7 @@ export default function Nav() {
 
   return (
     <>
-      <header className="sticky top-0 z-40 border-b border-neutral-200/80 bg-white/95 shadow-sm backdrop-blur-xl">
+      <header className="sticky top-0 z-40 border-b border-neutral-200/80 bg-white/95 shadow-[0_2px_14px_rgb(13_13_13/0.05)] backdrop-blur-xl">
         <div className="mx-auto flex min-h-[4.5rem] max-w-7xl items-center gap-3 px-3 sm:px-6 lg:gap-7 lg:px-8">
           <div className="flex shrink-0 items-center gap-2">
             <Button
@@ -171,7 +171,7 @@ export default function Nav() {
                 src={logo}
                 alt="Roraima Mangas"
                 priority
-                className="size-10 rounded-full object-cover ring-1 ring-neutral-200 transition group-hover:ring-neutral-400 sm:size-11"
+                className="size-10 rounded-full object-cover ring-1 ring-neutral-200 transition duration-200 group-hover:ring-brand-secondary sm:size-11"
               />
               <span className="hidden text-sm leading-tight font-bold tracking-tight text-neutral-900 sm:block">
                 RORAIMA
@@ -197,13 +197,13 @@ export default function Nav() {
                 setQuery(event.target.value);
                 setSearchError("");
               }}
-              className="h-10 min-w-0 flex-1 rounded-l-full border border-neutral-300 bg-neutral-50 px-4 text-sm transition outline-none focus:border-neutral-800 focus:bg-white focus:ring-2 focus:ring-neutral-800/10 sm:h-11 sm:px-5"
+              className="h-10 min-w-0 flex-1 rounded-l-full border border-neutral-300 bg-neutral-50 px-4 text-sm transition outline-none focus:border-brand-accent focus:bg-white focus:ring-2 focus:ring-brand/30 sm:h-11 sm:px-5"
             />
             <Button
               type="submit"
               aria-label="Buscar"
               disabled={normalizedQuery.length < 2 || searching}
-              className="h-10 rounded-l-none rounded-r-full bg-neutral-900 px-4 text-white hover:bg-neutral-700 sm:h-11 sm:px-5"
+              className="h-10 rounded-l-none rounded-r-full bg-brand-ink px-4 text-white hover:bg-brand-deep sm:h-11 sm:px-5"
             >
               <Search className="size-4" />
             </Button>
@@ -283,7 +283,7 @@ export default function Nav() {
           >
             <ShoppingBag className="size-5" />
             <span className="hidden text-sm font-semibold sm:inline">Sacola</span>
-            <span className="flex min-w-5 items-center justify-center rounded-full bg-yellow-300 px-1.5 text-xs font-bold text-neutral-950">
+            <span className="flex min-w-5 items-center justify-center rounded-full bg-brand px-1.5 text-xs font-bold text-brand-deep">
               {itemCount}
             </span>
           </Button>
@@ -296,7 +296,8 @@ export default function Nav() {
           <div className="mx-auto flex max-w-7xl items-center gap-1 px-6 py-1.5 lg:px-8">
             {items.map((item) => {
               if (item.type === "LINK" && item.href) {
-                const className = `rounded-full px-4 py-2 text-sm font-semibold transition-colors ${isCurrentPath(pathname, item.href) ? "bg-neutral-900 text-white" : "text-neutral-700 hover:bg-neutral-100 hover:text-neutral-950"}`;
+                const active = isCurrentPath(pathname, item.href);
+                const className = `store-nav-link ${active ? "is-active" : ""}`;
                 return item.external ? (
                   <a
                     key={item.id}
@@ -304,11 +305,17 @@ export default function Nav() {
                     target="_blank"
                     rel="noreferrer"
                     className={className}
+                    aria-current={active ? "page" : undefined}
                   >
                     {item.title}
                   </a>
                 ) : (
-                  <Link key={item.id} href={item.href} className={className}>
+                  <Link
+                    key={item.id}
+                    href={item.href}
+                    className={className}
+                    aria-current={active ? "page" : undefined}
+                  >
                     {item.title}
                   </Link>
                 );
@@ -329,7 +336,7 @@ export default function Nav() {
                     aria-haspopup="true"
                     aria-expanded={desktopOpenId === item.id}
                     onClick={() => setDesktopOpenId((open) => (open === item.id ? null : item.id))}
-                    className={`flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-semibold transition-colors hover:bg-neutral-100 ${desktopOpenId === item.id ? "bg-neutral-100 text-neutral-950" : "text-neutral-700"}`}
+                    className={`store-nav-link flex items-center gap-1.5 ${desktopOpenId === item.id ? "is-active" : ""}`}
                   >
                     {item.title}
                     <ChevronDown
@@ -338,9 +345,9 @@ export default function Nav() {
                     />
                   </button>
                   <div
-                    className={`absolute top-full left-0 z-50 min-w-56 origin-top-left pt-2 transition duration-150 motion-reduce:transition-none ${desktopOpenId === item.id ? "visible translate-y-0 opacity-100" : "invisible -translate-y-1 opacity-0"}`}
+                    className={`absolute top-full left-0 z-50 min-w-56 origin-top-left pt-2 transition-[opacity,transform,visibility] duration-200 ease-out motion-reduce:transition-none ${desktopOpenId === item.id ? "visible translate-y-0 scale-100 opacity-100" : "invisible -translate-y-1 scale-[0.985] opacity-0"}`}
                   >
-                    <div className="max-h-[70vh] overflow-y-auto rounded-xl border border-neutral-200 bg-white p-1.5 shadow-xl">
+                    <div className="max-h-[70vh] overflow-y-auto rounded-xl border border-brand-secondary/25 bg-white p-1.5 shadow-[0_14px_35px_rgb(13_13_13/0.14)]">
                       {item.children.map((child) =>
                         child.external ? (
                           <a
@@ -348,7 +355,7 @@ export default function Nav() {
                             href={child.href}
                             target="_blank"
                             rel="noreferrer"
-                            className="block rounded-lg px-3.5 py-2.5 text-sm text-neutral-700 transition-colors hover:bg-neutral-50 hover:text-neutral-950"
+                            className="block rounded-lg px-3.5 py-2.5 text-sm text-neutral-700 transition duration-150 hover:translate-x-0.5 hover:bg-brand/15 hover:text-brand-deep focus-visible:ring-2 focus-visible:ring-brand-secondary focus-visible:outline-none"
                           >
                             {child.title}
                           </a>
@@ -357,7 +364,7 @@ export default function Nav() {
                             key={child.id}
                             href={child.href}
                             onClick={() => setDesktopOpenId(null)}
-                            className="block rounded-lg px-3.5 py-2.5 text-sm text-neutral-700 transition-colors hover:bg-neutral-50 hover:text-neutral-950"
+                            className="block rounded-lg px-3.5 py-2.5 text-sm text-neutral-700 transition duration-150 hover:translate-x-0.5 hover:bg-brand/15 hover:text-brand-deep focus-visible:ring-2 focus-visible:ring-brand-secondary focus-visible:outline-none"
                           >
                             {child.title}
                           </Link>
@@ -386,7 +393,7 @@ export default function Nav() {
                       type="button"
                       aria-expanded={mobileOpenId === item.id}
                       onClick={() => setMobileOpenId((open) => (open === item.id ? null : item.id))}
-                      className="flex min-h-12 w-full items-center justify-between rounded-xl px-4 text-left text-sm font-semibold text-neutral-800 transition-colors hover:bg-neutral-50"
+                      className={`flex min-h-12 w-full items-center justify-between rounded-xl border-l-2 px-4 text-left text-sm font-semibold transition-colors ${mobileOpenId === item.id ? "border-brand-accent bg-brand/15 text-brand-deep" : "border-transparent text-neutral-800 hover:bg-neutral-50"}`}
                     >
                       {item.title}
                       <ChevronRight
@@ -398,7 +405,7 @@ export default function Nav() {
                       className={`grid transition-[grid-template-rows,opacity] duration-200 motion-reduce:transition-none ${mobileOpenId === item.id ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"}`}
                     >
                       <div className="overflow-hidden">
-                        <div className="mb-1 ml-4 flex flex-col border-l border-neutral-200 pl-3">
+                        <div className="mb-1 ml-4 flex flex-col border-l border-brand-secondary/35 pl-3">
                           {item.children.map((child) =>
                             child.external ? (
                               <a
@@ -407,7 +414,7 @@ export default function Nav() {
                                 target="_blank"
                                 rel="noreferrer"
                                 onClick={closeMobileMenu}
-                                className="flex min-h-11 items-center rounded-lg px-3 text-sm text-neutral-600 transition-colors hover:bg-neutral-50 hover:text-neutral-950"
+                                className="flex min-h-11 items-center rounded-lg px-3 text-sm text-neutral-600 transition-colors hover:bg-brand/10 hover:text-brand-deep active:bg-brand/20"
                               >
                                 {child.title}
                               </a>
@@ -416,7 +423,7 @@ export default function Nav() {
                                 key={child.id}
                                 href={child.href}
                                 onClick={closeMobileMenu}
-                                className="flex min-h-11 items-center rounded-lg px-3 text-sm text-neutral-600 transition-colors hover:bg-neutral-50 hover:text-neutral-950"
+                                className="flex min-h-11 items-center rounded-lg px-3 text-sm text-neutral-600 transition-colors hover:bg-brand/10 hover:text-brand-deep active:bg-brand/20"
                               >
                                 {child.title}
                               </Link>
@@ -435,7 +442,7 @@ export default function Nav() {
                       target="_blank"
                       rel="noreferrer"
                       onClick={closeMobileMenu}
-                      className="flex min-h-12 items-center rounded-xl px-4 text-sm font-semibold text-neutral-800 transition-colors hover:bg-neutral-50"
+                      className="flex min-h-12 items-center rounded-xl border-l-2 border-transparent px-4 text-sm font-semibold text-neutral-800 transition-colors hover:bg-brand/10 active:bg-brand/20"
                     >
                       {item.title}
                     </a>
@@ -444,7 +451,7 @@ export default function Nav() {
                       key={item.id}
                       href={item.href}
                       onClick={closeMobileMenu}
-                      className={`flex min-h-12 items-center rounded-xl px-4 text-sm font-semibold transition-colors hover:bg-neutral-50 ${isCurrentPath(pathname, item.href) ? "bg-neutral-100 text-neutral-950" : "text-neutral-800"}`}
+                      className={`flex min-h-12 items-center rounded-xl border-l-2 px-4 text-sm font-semibold transition-colors active:bg-brand/20 ${isCurrentPath(pathname, item.href) ? "border-brand-accent bg-brand/15 text-brand-deep" : "border-transparent text-neutral-800 hover:bg-brand/10"}`}
                     >
                       {item.title}
                     </Link>

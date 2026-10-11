@@ -13,19 +13,19 @@ export default function ProductCard({ product }: { product: PublicProduct }) {
   const available = product.status === "ACTIVE" && product.stock > 0;
 
   return (
-    <article className="group min-w-0 overflow-hidden rounded-xl border border-neutral-200 bg-white shadow-sm transition duration-200 hover:-translate-y-0.5 hover:shadow-md">
+    <article className="group min-w-0 overflow-hidden rounded-2xl border border-neutral-200/90 bg-white shadow-[0_2px_8px_rgb(13_13_13/0.05)] transition-[transform,border-color,box-shadow] duration-300 ease-out hover:-translate-y-1 hover:border-brand-secondary/60 hover:shadow-[0_10px_24px_rgb(13_13_13/0.09)]">
       <Link
         href={`/produtos/${product.slug}`}
-        className="block focus-visible:ring-2 focus-visible:ring-neutral-900 focus-visible:outline-none focus-visible:ring-inset"
+        className="block focus-visible:ring-2 focus-visible:ring-brand-secondary focus-visible:outline-none focus-visible:ring-inset"
       >
-        <div className="relative aspect-[4/5] overflow-hidden bg-neutral-50 p-2 sm:p-3">
+        <div className="relative aspect-[4/5] overflow-hidden bg-stone-50 p-2 sm:p-3">
           {image ? (
             // Product images are stored on the configured object storage host.
             // eslint-disable-next-line @next/next/no-img-element
             <img
               src={image}
               alt={product.name}
-              className="h-full w-full object-contain transition-transform duration-300 group-hover:scale-[1.03]"
+              className="h-full w-full object-contain transition-transform duration-500 ease-out group-hover:scale-[1.035]"
               loading="lazy"
             />
           ) : (
@@ -36,24 +36,37 @@ export default function ProductCard({ product }: { product: PublicProduct }) {
           {(product.featured || product.isNew || !available) && (
             <div className="absolute top-2 left-2 flex flex-wrap gap-1">
               {!available && (
-                <span className="rounded bg-neutral-700 px-2 py-1 text-xs text-white">
+                <span className="rounded-full bg-neutral-700/95 px-2.5 py-1 text-[0.68rem] font-semibold text-white shadow-sm">
                   Indisponível
                 </span>
               )}
               {product.isNew && (
-                <span className="rounded bg-black px-2 py-1 text-xs text-white">Novo</span>
+                <span className="rounded-full bg-brand-ink px-2.5 py-1 text-[0.68rem] font-semibold text-white shadow-sm">
+                  Novo
+                </span>
               )}
               {product.featured && (
-                <span className="rounded bg-yellow-300 px-2 py-1 text-xs text-black">Destaque</span>
+                <span className="rounded-full bg-brand px-2.5 py-1 text-[0.68rem] font-semibold text-brand-deep shadow-sm">
+                  Destaque
+                </span>
               )}
             </div>
           )}
         </div>
-        <div className="space-y-1.5 p-3 sm:p-4">
-          <h3 className="line-clamp-2 min-h-10 text-sm leading-5 font-medium transition-colors group-hover:text-neutral-600 sm:text-base">
+        <div className="space-y-2 p-3.5 sm:p-4">
+          <h3 className="line-clamp-2 min-h-10 text-sm leading-5 font-semibold text-neutral-800 transition-colors group-hover:text-brand-deep sm:text-base">
             {product.name}
           </h3>
-          <p className="text-base font-semibold sm:text-lg">{formatPrice(product.price)}</p>
+          <div className="flex items-end justify-between gap-2">
+            <p className="text-lg leading-none font-bold tracking-tight text-brand-ink sm:text-xl">
+              {formatPrice(product.price)}
+            </p>
+            <span
+              className={`text-[0.68rem] font-semibold ${available ? "text-neutral-500" : "text-neutral-400"}`}
+            >
+              {available ? "Disponível" : "Sem estoque"}
+            </span>
+          </div>
         </div>
       </Link>
     </article>

@@ -139,6 +139,41 @@
 }
 
 @layer components {
+  .store-nav-link {
+    @apply relative rounded-lg px-4 py-2 text-sm font-semibold text-neutral-700 transition-colors duration-200 hover:text-brand-deep focus-visible:ring-2 focus-visible:ring-brand-secondary focus-visible:outline-none;
+  }
+  .store-nav-link::after {
+    content: "";
+    position: absolute;
+    right: 1rem;
+    bottom: 0.25rem;
+    left: 1rem;
+    height: 2px;
+    border-radius: 9999px;
+    background: var(--brand-accent);
+    transform: scaleX(0);
+    transform-origin: center;
+    transition: transform 200ms ease-out;
+  }
+  .store-nav-link:hover::after,
+  .store-nav-link:focus-visible::after,
+  .store-nav-link.is-active::after {
+    transform: scaleX(1);
+  }
+  .store-nav-link.is-active {
+    @apply text-brand-deep;
+  }
+  .storefront-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: color-mix(in srgb, var(--brand-secondary) 65%, transparent) transparent;
+  }
+  .storefront-scrollbar::-webkit-scrollbar {
+    height: 5px;
+  }
+  .storefront-scrollbar::-webkit-scrollbar-thumb {
+    border-radius: 9999px;
+    background: color-mix(in srgb, var(--brand-secondary) 65%, transparent);
+  }
   .admin-page {
     @apply space-y-6;
   }
@@ -322,11 +357,24 @@
   }
 }
 
-@keyframes heroFade {
+@keyframes heroEnter {
   from {
-    opacity: 0.55;
+    opacity: 0.45;
+    transform: scale(1.012);
   }
   to {
     opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes noticeEnter {
+  from {
+    opacity: 0;
+    transform: translateX(0.5rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
   }
 }
