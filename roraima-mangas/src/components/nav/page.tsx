@@ -9,6 +9,7 @@ import logo from "@/public/logo.jpg";
 import { Button } from "@/src/components/ui/button";
 import CartPanel from "@/src/components/cart/cart-panel";
 import { useCart } from "@/src/components/cart/cart-context";
+import ThemeToggle from "@/src/components/theme-toggle";
 
 type CatalogLink = { id: string; name: string; slug: string };
 type SearchProduct = CatalogLink & { status: string };
@@ -145,8 +146,8 @@ export default function Nav() {
 
   return (
     <>
-      <header className="sticky top-0 z-40 border-b border-neutral-200/80 bg-white/95 shadow-[0_2px_14px_rgb(13_13_13/0.05)] backdrop-blur-xl">
-        <div className="mx-auto flex min-h-[4.5rem] max-w-7xl items-center gap-3 px-3 sm:px-6 lg:gap-7 lg:px-8">
+      <header className="sticky top-0 z-40 border-b border-border bg-background/95 shadow-[0_2px_14px_rgb(13_13_13/0.05)] backdrop-blur-xl">
+        <div className="mx-auto flex min-h-[4.5rem] max-w-7xl flex-wrap items-center gap-2 px-3 py-2 sm:gap-3 sm:px-6 md:flex-nowrap md:py-0 lg:gap-7 lg:px-8">
           <div className="flex shrink-0 items-center gap-2">
             <Button
               type="button"
@@ -176,7 +177,7 @@ export default function Nav() {
               <span className="hidden text-sm leading-tight font-bold tracking-tight text-neutral-900 sm:block">
                 RORAIMA
                 <br />
-                <span className="text-[0.65rem] font-medium tracking-[0.22em] text-neutral-500">
+                <span className="text-[0.65rem] font-medium tracking-[0.22em] text-muted-foreground">
                   MANGÁS
                 </span>
               </span>
@@ -186,7 +187,7 @@ export default function Nav() {
           <form
             onSubmit={submitSearch}
             role="search"
-            className="relative flex min-w-0 flex-1 lg:mx-auto lg:max-w-2xl"
+            className="relative order-3 flex min-w-0 basis-full md:order-none md:flex-1 md:basis-auto lg:mx-auto lg:max-w-2xl"
           >
             <input
               type="search"
@@ -197,7 +198,7 @@ export default function Nav() {
                 setQuery(event.target.value);
                 setSearchError("");
               }}
-              className="h-10 min-w-0 flex-1 rounded-l-full border border-neutral-300 bg-neutral-50 px-4 text-sm transition outline-none focus:border-brand-accent focus:bg-white focus:ring-2 focus:ring-brand/30 sm:h-11 sm:px-5"
+              className="h-10 min-w-0 flex-1 rounded-l-full border border-border bg-muted/55 px-4 text-sm text-foreground transition-colors duration-200 outline-none placeholder:text-muted-foreground focus:border-brand-accent focus:bg-background focus:ring-2 focus:ring-brand/30 sm:h-11 sm:px-5"
             />
             <Button
               type="submit"
@@ -274,10 +275,12 @@ export default function Nav() {
               )}
           </form>
 
+          <ThemeToggle className="shrink-0" />
+
           <Button
             type="button"
             variant="ghost"
-            className="relative h-10 shrink-0 gap-2 rounded-full px-3 sm:h-11 sm:px-4"
+            className="relative h-10 shrink-0 cursor-pointer gap-2 rounded-full px-3 sm:h-11 sm:px-4"
             onClick={() => setCartOpen(true)}
             aria-label={`Abrir sacola, ${itemCount} itens`}
           >

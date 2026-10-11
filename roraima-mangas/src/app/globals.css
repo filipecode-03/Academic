@@ -93,37 +93,38 @@
 }
 
 .dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
+  color-scheme: dark;
+  --background: oklch(0.16 0.008 75);
+  --foreground: oklch(0.96 0.012 82);
+  --card: oklch(0.205 0.01 75);
   --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
+  --popover: oklch(0.205 0.01 75);
   --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
+  --primary: var(--brand);
+  --primary-foreground: var(--brand-deep);
+  --secondary: oklch(0.25 0.012 75);
   --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
+  --muted: oklch(0.25 0.012 75);
+  --muted-foreground: oklch(0.72 0.015 82);
+  --accent: oklch(0.27 0.02 75);
   --accent-foreground: oklch(0.985 0 0);
   --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
+  --border: oklch(1 0 0 / 13%);
+  --input: oklch(1 0 0 / 16%);
+  --ring: var(--brand-secondary);
   --chart-1: oklch(0.87 0 0);
   --chart-2: oklch(0.556 0 0);
   --chart-3: oklch(0.439 0 0);
   --chart-4: oklch(0.371 0 0);
   --chart-5: oklch(0.269 0 0);
-  --sidebar: oklch(0.205 0 0);
+  --sidebar: var(--brand-ink);
   --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-primary: var(--brand);
+  --sidebar-primary-foreground: var(--brand-deep);
   --sidebar-accent: oklch(0.269 0 0);
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
+  --sidebar-ring: var(--brand-secondary);
 }
 
 @layer base {
@@ -140,7 +141,7 @@
 
 @layer components {
   .store-nav-link {
-    @apply relative rounded-lg px-4 py-2 text-sm font-semibold text-neutral-700 transition-colors duration-200 hover:text-brand-deep focus-visible:ring-2 focus-visible:ring-brand-secondary focus-visible:outline-none;
+    @apply relative rounded-lg px-4 py-2 text-sm font-semibold text-neutral-700 transition-colors duration-200 hover:text-brand-deep focus-visible:ring-2 focus-visible:ring-brand-secondary focus-visible:outline-none dark:text-neutral-300 dark:hover:text-brand;
   }
   .store-nav-link::after {
     content: "";
@@ -161,7 +162,7 @@
     transform: scaleX(1);
   }
   .store-nav-link.is-active {
-    @apply text-brand-deep;
+    @apply text-brand-deep dark:text-brand;
   }
   .storefront-scrollbar {
     scrollbar-width: thin;
@@ -174,17 +175,24 @@
     border-radius: 9999px;
     background: color-mix(in srgb, var(--brand-secondary) 65%, transparent);
   }
+  .storefront-scroll-hidden {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .storefront-scroll-hidden::-webkit-scrollbar {
+    display: none;
+  }
   .admin-page {
     @apply space-y-6;
   }
   .admin-page-header {
-    @apply flex flex-col gap-4 border-b border-slate-200 pb-6 sm:flex-row sm:items-end sm:justify-between;
+    @apply flex flex-col gap-4 border-b border-border pb-6 sm:flex-row sm:items-end sm:justify-between;
   }
   .admin-page-header h1 {
-    @apply font-heading text-2xl font-bold tracking-tight text-slate-950 sm:text-3xl;
+    @apply font-heading text-2xl font-bold tracking-tight text-foreground sm:text-3xl;
   }
   .admin-page-header > div > p:not(.admin-eyebrow) {
-    @apply mt-1 max-w-2xl text-sm leading-6 text-slate-600;
+    @apply mt-1 max-w-2xl text-sm leading-6 text-muted-foreground;
   }
   .admin-eyebrow {
     @apply mb-1 text-[0.68rem] font-bold tracking-[0.17em] text-brand-accent uppercase;
@@ -197,25 +205,25 @@
     @apply max-sm:flex-1;
   }
   .admin-panel {
-    @apply rounded-xl border border-slate-200 bg-white p-4 shadow-[0_1px_2px_rgb(15_23_42/0.04)] sm:p-5;
+    @apply rounded-xl border border-border bg-card p-4 text-card-foreground shadow-[0_1px_2px_rgb(15_23_42/0.04)] sm:p-5;
   }
   .admin-section-heading {
     @apply flex flex-wrap items-center justify-between gap-3;
   }
   .admin-section-heading h2 {
-    @apply font-heading text-base font-bold text-slate-900 sm:text-lg;
+    @apply font-heading text-base font-bold text-foreground sm:text-lg;
   }
   .admin-section-heading p {
-    @apply mt-0.5 text-sm text-slate-500;
+    @apply mt-0.5 text-sm text-muted-foreground;
   }
   .admin-toolbar {
     @apply flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between;
   }
   .admin-search {
-    @apply flex min-h-10 w-full max-w-md items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 text-slate-500 shadow-[0_1px_2px_rgb(15_23_42/0.03)] transition focus-within:border-slate-400 focus-within:ring-3 focus-within:ring-slate-950/5;
+    @apply flex min-h-10 w-full max-w-md items-center gap-2 rounded-lg border border-border bg-card px-3 text-muted-foreground shadow-[0_1px_2px_rgb(15_23_42/0.03)] transition focus-within:border-brand-secondary focus-within:ring-3 focus-within:ring-brand/20;
   }
   .admin-search input {
-    @apply min-w-0 flex-1 border-0 bg-transparent p-0 text-sm text-slate-900 shadow-none ring-0 outline-none;
+    @apply min-w-0 flex-1 border-0 bg-transparent p-0 text-sm text-foreground shadow-none ring-0 outline-none;
   }
   .admin-search input:focus {
     box-shadow: none;
@@ -233,7 +241,7 @@
     @apply border-emerald-200 bg-emerald-50 text-emerald-800;
   }
   .admin-empty-state {
-    @apply flex min-h-52 flex-col items-center justify-center rounded-xl border border-dashed border-slate-300 bg-white px-6 py-10 text-center;
+    @apply flex min-h-52 flex-col items-center justify-center rounded-xl border border-dashed border-border bg-card px-6 py-10 text-center;
   }
   .admin-empty-icon {
     @apply mb-3 grid size-10 place-items-center rounded-xl bg-slate-100 text-slate-500;
@@ -257,7 +265,7 @@
     @apply bg-amber-50 text-amber-700 ring-1 ring-amber-200 ring-inset;
   }
   .admin-item {
-    @apply rounded-xl border border-slate-200 bg-white p-4 shadow-[0_1px_2px_rgb(15_23_42/0.04)] transition duration-200 hover:border-slate-300 hover:shadow-sm sm:p-5;
+    @apply rounded-xl border border-border bg-card p-4 shadow-[0_1px_2px_rgb(15_23_42/0.04)] transition duration-200 hover:border-brand-secondary/50 hover:shadow-sm sm:p-5;
   }
   .admin-actions {
     @apply flex flex-wrap items-center gap-2;
@@ -273,16 +281,16 @@
     @apply text-xs leading-5 text-slate-500;
   }
   .admin-form-section {
-    @apply space-y-4 rounded-xl border border-slate-200 bg-white p-4 sm:p-5;
+    @apply min-w-0 space-y-4 rounded-xl border border-border bg-card p-4 sm:p-5;
   }
   .admin-form-section > legend {
     @apply px-1 font-heading text-base font-bold text-slate-900;
   }
   [data-admin] form {
-    @apply rounded-xl border border-slate-200 bg-white p-4 shadow-[0_1px_2px_rgb(15_23_42/0.04)] sm:p-5;
+    @apply min-w-0 rounded-xl border border-border bg-card p-4 text-card-foreground shadow-[0_1px_2px_rgb(15_23_42/0.04)] sm:p-5;
   }
   [data-admin] form label:not([class*="text-"]) {
-    @apply mb-1.5 block text-sm font-medium text-slate-800;
+    @apply mb-1.5 block text-sm font-medium text-foreground;
   }
   [data-admin] form p[role="alert"] {
     @apply mt-1.5 text-sm text-red-700;
@@ -291,20 +299,24 @@
     @apply font-heading text-lg font-bold text-slate-900;
   }
   .admin-upload {
-    @apply rounded-xl border border-dashed border-slate-300 bg-slate-50 p-4 transition hover:border-slate-400;
+    @apply min-w-0 rounded-xl border border-dashed border-border bg-muted/40 p-4 transition hover:border-brand-secondary;
   }
   [data-admin] input:not([type="checkbox"]):not([type="radio"]):not([type="file"]),
   [data-admin] textarea,
   [data-admin] select {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
     min-height: 2.5rem;
     border: 1px solid var(--border);
     border-radius: calc(var(--radius) * 0.8);
-    background: white;
+    background: var(--background);
+    color: var(--foreground);
     padding: 0.5rem 0.75rem;
     outline: none;
     transition:
-      border-color 150ms,
-      box-shadow 150ms;
+      border-color 250ms,
+      box-shadow 250ms;
   }
   [data-admin] input:focus,
   [data-admin] textarea:focus,
@@ -317,7 +329,7 @@
     @apply size-4 accent-brand-accent;
   }
   [data-admin] input[type="file"] {
-    @apply block w-full text-sm text-slate-600 file:mr-3 file:rounded-lg file:border-0 file:bg-slate-900 file:px-3 file:py-2 file:text-sm file:font-medium file:text-white hover:file:bg-slate-700;
+    @apply block w-full max-w-full min-w-0 overflow-hidden text-sm text-slate-600 file:mr-3 file:rounded-lg file:border-0 file:bg-slate-900 file:px-3 file:py-2 file:text-sm file:font-medium file:text-white hover:file:bg-slate-700;
   }
   [data-admin] textarea {
     @apply min-h-24 resize-y;
@@ -344,6 +356,59 @@
   .admin-button-danger {
     @apply rounded-lg bg-red-50 px-3 py-2 text-sm font-medium text-red-700 transition hover:bg-red-100;
   }
+}
+
+.dark [data-storefront] .bg-white,
+.dark [data-storefront] .bg-neutral-50,
+.dark [data-storefront] .bg-stone-50 {
+  background-color: var(--card);
+}
+.dark [data-storefront] .bg-neutral-100,
+.dark [data-storefront] .bg-neutral-200 {
+  background-color: var(--muted);
+}
+.dark [data-storefront] .text-neutral-950,
+.dark [data-storefront] .text-neutral-900,
+.dark [data-storefront] .text-neutral-800,
+.dark [data-storefront] .text-neutral-700 {
+  color: var(--foreground);
+}
+.dark [data-storefront] .text-neutral-600,
+.dark [data-storefront] .text-neutral-500,
+.dark [data-storefront] .text-neutral-400 {
+  color: var(--muted-foreground);
+}
+.dark [data-storefront] .border-neutral-100,
+.dark [data-storefront] .border-neutral-200,
+.dark [data-storefront] .border-neutral-300 {
+  border-color: var(--border);
+}
+.dark [data-storefront] .hover\:bg-neutral-50:hover,
+.dark [data-storefront] .hover\:bg-neutral-100:hover {
+  background-color: var(--muted);
+}
+.dark [data-admin] .bg-white,
+.dark [data-admin] .bg-slate-50,
+.dark [data-admin] .bg-slate-100 {
+  background-color: var(--card);
+}
+.dark [data-admin] .text-slate-950,
+.dark [data-admin] .text-slate-900,
+.dark [data-admin] .text-slate-800,
+.dark [data-admin] .text-slate-700 {
+  color: var(--foreground);
+}
+.dark [data-admin] .text-slate-600,
+.dark [data-admin] .text-slate-500,
+.dark [data-admin] .text-slate-400 {
+  color: var(--muted-foreground);
+}
+.dark [data-admin] .border-slate-200,
+.dark [data-admin] .border-slate-300 {
+  border-color: var(--border);
+}
+.dark [data-admin] .admin-help {
+  color: var(--muted-foreground);
 }
 
 @media (prefers-reduced-motion: reduce) {

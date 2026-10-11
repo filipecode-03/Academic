@@ -148,7 +148,12 @@ export default function ProductsPage() {
           if (!open) closeForm();
         }}
       >
-        <SheetContent data-admin className="w-full sm:max-w-4xl" side="right">
+        <SheetContent
+          data-admin
+          className="overflow-x-hidden"
+          style={{ width: "min(94vw, 96rem)", maxWidth: "none" }}
+          side="right"
+        >
           <SheetHeader className="border-b px-5 py-4 pr-12">
             <SheetTitle className="text-lg font-bold">
               {editingProduct ? "Editar produto" : "Novo produto"}
@@ -157,8 +162,12 @@ export default function ProductsPage() {
               Preencha os campos e salve para atualizar o catálogo.
             </SheetDescription>
           </SheetHeader>
-          <div className="min-h-0 flex-1 overflow-y-auto p-4 sm:p-5">
-            <ProductForm product={editingProduct ?? undefined} onSuccess={handleProductSaved} />
+          <div className="min-h-0 min-w-0 flex-1 overflow-x-hidden overflow-y-auto p-3 sm:p-5 lg:p-6">
+            <ProductForm
+              product={editingProduct ?? undefined}
+              onSuccess={handleProductSaved}
+              onCancel={closeForm}
+            />
           </div>
         </SheetContent>
       </Sheet>

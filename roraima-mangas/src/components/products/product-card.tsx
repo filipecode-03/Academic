@@ -13,19 +13,19 @@ export default function ProductCard({ product }: { product: PublicProduct }) {
   const available = product.status === "ACTIVE" && product.stock > 0;
 
   return (
-    <article className="group min-w-0 overflow-hidden rounded-2xl border border-neutral-200/90 bg-white shadow-[0_2px_8px_rgb(13_13_13/0.05)] transition-[transform,border-color,box-shadow] duration-300 ease-out hover:-translate-y-1 hover:border-brand-secondary/60 hover:shadow-[0_10px_24px_rgb(13_13_13/0.09)]">
+    <article className="group relative min-w-0 overflow-hidden rounded-2xl border border-border bg-card text-card-foreground shadow-[0_2px_8px_rgb(13_13_13/0.05)] transition-[border-color,box-shadow] duration-300 ease-out hover:z-10 hover:border-brand-secondary/60 hover:shadow-[0_10px_24px_rgb(13_13_13/0.11)]">
       <Link
         href={`/produtos/${product.slug}`}
         className="block focus-visible:ring-2 focus-visible:ring-brand-secondary focus-visible:outline-none focus-visible:ring-inset"
       >
-        <div className="relative aspect-[4/5] overflow-hidden bg-stone-50 p-2 sm:p-3">
+        <div className="relative aspect-[4/5] overflow-hidden bg-muted/45 p-2 sm:p-3">
           {image ? (
             // Product images are stored on the configured object storage host.
             // eslint-disable-next-line @next/next/no-img-element
             <img
               src={image}
               alt={product.name}
-              className="h-full w-full object-contain transition-transform duration-500 ease-out group-hover:scale-[1.035]"
+              className="h-full w-full object-contain transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.03]"
               loading="lazy"
             />
           ) : (
@@ -54,15 +54,15 @@ export default function ProductCard({ product }: { product: PublicProduct }) {
           )}
         </div>
         <div className="space-y-2 p-3.5 sm:p-4">
-          <h3 className="line-clamp-2 min-h-10 text-sm leading-5 font-semibold text-neutral-800 transition-colors group-hover:text-brand-deep sm:text-base">
+          <h3 className="line-clamp-2 min-h-10 text-sm leading-5 font-semibold text-foreground transition-colors duration-200 group-hover:text-brand-deep sm:text-base dark:group-hover:text-brand">
             {product.name}
           </h3>
           <div className="flex items-end justify-between gap-2">
-            <p className="text-lg leading-none font-bold tracking-tight text-brand-ink sm:text-xl">
+            <p className="text-lg leading-none font-bold tracking-tight text-brand-ink sm:text-xl dark:text-brand">
               {formatPrice(product.price)}
             </p>
             <span
-              className={`text-[0.68rem] font-semibold ${available ? "text-neutral-500" : "text-neutral-400"}`}
+              className={`text-[0.68rem] font-semibold ${available ? "text-muted-foreground" : "text-muted-foreground/70"}`}
             >
               {available ? "Disponível" : "Sem estoque"}
             </span>

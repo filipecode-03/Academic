@@ -70,6 +70,7 @@ export type ProductFormInitialData = {
 type ProductFormProps = {
   product?: ProductFormInitialData;
   onSuccess?: () => void;
+  onCancel?: () => void;
 };
 
 function toDateInput(value?: string | null) {
@@ -98,7 +99,7 @@ function dateAfterDays(days: number) {
   return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
 }
 
-export default function ProductForm({ product, onSuccess }: ProductFormProps) {
+export default function ProductForm({ product, onSuccess, onCancel }: ProductFormProps) {
   const isEditing = Boolean(product);
 
   const [previews, setPreviews] = useState<string[]>([]);
@@ -365,7 +366,7 @@ export default function ProductForm({ product, onSuccess }: ProductFormProps) {
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+    <form onSubmit={handleSubmit(onSubmit)} className="min-w-0 space-y-6 overflow-x-hidden">
       <fieldset className="admin-form-section">
         <legend>Informações básicas</legend>
         <p className="admin-help">Dados usados para identificar e apresentar o produto na loja.</p>
@@ -787,15 +788,22 @@ export default function ProductForm({ product, onSuccess }: ProductFormProps) {
 
       {submitError && <AdminFeedback type="error">{submitError}</AdminFeedback>}
 
-      <Button type="submit" size="lg" className="w-full sm:w-auto" disabled={isSubmitting}>
-        {isSubmitting
-          ? isEditing
-            ? "Salvando..."
-            : "Cadastrando..."
-          : isEditing
-            ? "Salvar alterações"
-            : "Cadastrar produto"}
-      </Button>
+      <div className="sticky bottom-0 z-10 -mx-4 flex flex-col-reverse gap-2 border-t border-border bg-card/95 px-4 py-3 backdrop-blur sm:flex-row sm:justify-end">
+        {onCancel && (
+          <Button type="button" variant="outline" size="lg" onClick={onCancel}>
+            Cancelar
+          </Button>
+        )}
+        <Button type="submit" size="lg" className="sm:min-w-40" disabled={isSubmitting}>
+          {isSubmitting
+            ? isEditing
+              ? "Salvando..."
+              : "Cadastrando..."
+            : isEditing
+              ? "Salvar alterações"
+              : "Cadastrar produto"}
+        </Button>
+      </div>
     </form>
   );
 }

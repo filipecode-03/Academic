@@ -20,6 +20,7 @@ import {
 import Image from "next/image";
 
 import AdminLogout from "@/src/components/admin/admin-logout";
+import ThemeToggle from "@/src/components/theme-toggle";
 
 const navigation = [
   {
@@ -116,11 +117,9 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
     };
   }, [open]);
 
-  if (pathname === "/admin/login") return <>{children}</>;
-
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-950 lg:flex">
-      <aside className="fixed inset-y-0 left-0 z-40 hidden w-64 flex-col bg-slate-950 lg:flex">
+    <div className="min-h-screen bg-background text-foreground lg:flex">
+      <aside className="fixed inset-y-0 left-0 z-40 hidden w-64 flex-col bg-brand-ink lg:flex">
         <NavigationContent />
       </aside>
 
@@ -132,7 +131,7 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
             className="absolute inset-0 bg-slate-950/55 backdrop-blur-[2px]"
             onClick={() => setOpen(false)}
           />
-          <aside className="relative flex h-full w-[min(20rem,88vw)] flex-col bg-slate-950 shadow-2xl motion-safe:animate-in motion-safe:duration-200 motion-safe:slide-in-from-left">
+          <aside className="relative flex h-full w-[min(20rem,88vw)] flex-col bg-brand-ink shadow-2xl motion-safe:animate-in motion-safe:duration-200 motion-safe:ease-out motion-safe:slide-in-from-left">
             <button
               type="button"
               aria-label="Fechar navegação"
@@ -147,19 +146,20 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
       )}
 
       <div className="min-w-0 flex-1 lg:pl-64">
-        <header className="sticky top-0 z-30 flex h-16 items-center border-b border-slate-200/80 bg-white/90 px-4 backdrop-blur sm:px-6 lg:hidden">
+        <header className="sticky top-0 z-30 flex h-16 items-center border-b border-border bg-background/90 px-4 backdrop-blur sm:px-6 lg:justify-end">
           <button
             type="button"
             aria-label="Abrir navegação"
-            className="grid size-10 place-items-center rounded-lg border border-slate-200 text-slate-700 transition hover:bg-slate-100"
+            className="grid size-10 place-items-center rounded-lg border border-border text-foreground transition-colors duration-200 hover:bg-muted lg:hidden"
             onClick={() => setOpen(true)}
           >
             <Menu className="size-5" />
           </button>
-          <div className="ml-3">
+          <div className="ml-3 lg:hidden">
             <p className="font-heading text-sm font-bold">Roraima Mangás</p>
             <p className="text-xs text-slate-500">Admin</p>
           </div>
+          <ThemeToggle className="ml-auto lg:ml-0" />
         </header>
 
         <main data-admin className="px-4 py-6 sm:px-6 sm:py-8 xl:px-10">

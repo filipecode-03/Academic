@@ -222,18 +222,25 @@ function CarouselControls({
   label,
   onPrevious,
   onNext,
+  previousDisabled = false,
+  nextDisabled = false,
+  spread = false,
 }: {
   label: string;
   onPrevious: () => void;
   onNext: () => void;
+  previousDisabled?: boolean;
+  nextDisabled?: boolean;
+  spread?: boolean;
 }) {
   return (
-    <div className="hidden items-center gap-2 md:flex">
+    <div className={`hidden items-center gap-2 md:flex ${spread ? "w-full justify-between" : ""}`}>
       <button
         type="button"
         aria-label={`${label} anteriores`}
         onClick={onPrevious}
-        className="grid size-10 place-items-center rounded-full border border-neutral-200 bg-white text-brand-deep transition duration-200 hover:border-brand-secondary hover:bg-brand/15 focus-visible:ring-2 focus-visible:ring-brand-secondary focus-visible:outline-none"
+        disabled={previousDisabled}
+        className="grid size-10 place-items-center rounded-full border border-border bg-card text-brand-deep shadow-sm transition-[color,background-color,border-color,opacity] duration-200 hover:border-brand-secondary hover:bg-brand/15 focus-visible:ring-2 focus-visible:ring-brand-secondary focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-35 dark:text-brand"
       >
         <ChevronLeft aria-hidden="true" className="size-4" />
       </button>
@@ -241,7 +248,8 @@ function CarouselControls({
         type="button"
         aria-label={`Próximos ${label.toLocaleLowerCase()}`}
         onClick={onNext}
-        className="grid size-10 place-items-center rounded-full border border-neutral-200 bg-white text-brand-deep transition duration-200 hover:border-brand-secondary hover:bg-brand/15 focus-visible:ring-2 focus-visible:ring-brand-secondary focus-visible:outline-none"
+        disabled={nextDisabled}
+        className="grid size-10 place-items-center rounded-full border border-border bg-card text-brand-deep shadow-sm transition-[color,background-color,border-color,opacity] duration-200 hover:border-brand-secondary hover:bg-brand/15 focus-visible:ring-2 focus-visible:ring-brand-secondary focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-35 dark:text-brand"
       >
         <ChevronRight aria-hidden="true" className="size-4" />
       </button>
@@ -266,7 +274,7 @@ function CollectionShowcase({ blocks }: { blocks: CollectionBlock[] }) {
           </p>
           <h2
             id="collection-showcase-title"
-            className="text-2xl font-bold tracking-tight text-brand-ink sm:text-3xl"
+            className="text-2xl font-bold tracking-tight text-brand-ink sm:text-3xl dark:text-brand"
           >
             Universos em destaque
           </h2>
@@ -277,7 +285,7 @@ function CollectionShowcase({ blocks }: { blocks: CollectionBlock[] }) {
       </div>
       <div
         ref={track}
-        className="storefront-scrollbar flex snap-x snap-mandatory gap-4 overflow-x-auto pb-3 sm:gap-5"
+        className="storefront-scroll-hidden flex snap-x snap-mandatory gap-4 overflow-x-auto pb-3 sm:gap-5"
       >
         {blocks.map((block) => (
           <Link
@@ -311,9 +319,28 @@ function CollectionShowcase({ blocks }: { blocks: CollectionBlock[] }) {
 
 function HomeProductCarousel({ products }: { products: PublicProduct[] }) {
   const track = useRef<HTMLDivElement>(null);
+  const [canGoBack, setCanGoBack] = useState(false);
+  const [canGoForward, setCanGoForward] = useState(false);
+
+  useEffect(() => {
+    const element = track.current;
+    if (!element) return;
+    const updateControls = () => {
+      setCanGoBack(element.scrollLeft > 2);
+      setCanGoForward(element.scrollLeft + element.clientWidth < element.scrollWidth - 2);
+    };
+    updateControls();
+    element.addEventListener("scroll", updateControls, { passive: true });
+    window.addEventListener("resize", updateControls);
+    return () => {
+      element.removeEventListener("scroll", updateControls);
+      window.removeEventListener("resize", updateControls);
+    };
+  }, [products.length]);
+
   const move = (direction: -1 | 1) =>
     track.current?.scrollBy({
-      left: direction * track.current.clientWidth * 0.9,
+      left: direction * track.current.clientWidth,
       behavior: "smooth",
     });
 
@@ -321,20 +348,29 @@ function HomeProductCarousel({ products }: { products: PublicProduct[] }) {
     <div className="relative">
       <div
         ref={track}
-        className="storefront-scrollbar flex snap-x snap-mandatory gap-3 overflow-x-auto scroll-smooth pb-4 sm:gap-5"
+        className="storefront-scroll-hidden flex snap-x snap-mandatory gap-3 overflow-x-auto scroll-smooth py-2 sm:gap-5"
       >
         {products.map((product) => (
           <div
             key={product.id}
-            className="w-[calc((100%_-_0.75rem)/2)] shrink-0 snap-start sm:w-[calc((100%_-_2.5rem)/3)] lg:w-[calc((100%_-_3.75rem)/4)]"
+            className="w-[82%] shrink-0 snap-start min-[420px]:w-[calc((100%_-_0.75rem)/2)] sm:w-[calc((100%_-_2.5rem)/3)] lg:w-[calc((100%_-_3.75rem)/4)]"
           >
             <ProductCard product={product} />
           </div>
         ))}
       </div>
-      {products.length > 4 && (
-        <div className="mt-1 flex justify-end">
-          <CarouselControls label="Produtos" onPrevious={() => move(-1)} onNext={() => move(1)} />
+      {products.length > 1 && (
+        <div className="pointer-events-none absolute inset-x-2 top-1/2 z-20 hidden -translate-y-1/2 md:flex">
+          <div className="pointer-events-auto w-full">
+            <CarouselControls
+              label="Produtos"
+              onPrevious={() => move(-1)}
+              onNext={() => move(1)}
+              previousDisabled={!canGoBack}
+              nextDisabled={!canGoForward}
+              spread
+            />
+          </div>
         </div>
       )}
     </div>
@@ -373,7 +409,7 @@ export default function Main() {
 
   const notices = home?.promoNotices ?? [];
   return (
-    <main className="min-h-40 overflow-hidden bg-stone-50">
+    <main className="min-h-40 overflow-hidden bg-background">
       <NoticeStrip notices={notices.filter(({ position }) => position === "TOP")} />
       {home ? (
         <BannerCarousel banners={home.banners} />
@@ -416,7 +452,7 @@ export default function Main() {
                     <span aria-hidden="true" className="h-8 w-1 rounded-full bg-brand-accent" />
                     <h2
                       id={`section-${section.id}`}
-                      className="truncate text-2xl font-bold tracking-tight text-brand-ink sm:text-3xl"
+                      className="text-xl leading-tight font-bold tracking-tight text-brand-ink sm:text-3xl dark:text-brand"
                     >
                       {section.title}
                     </h2>

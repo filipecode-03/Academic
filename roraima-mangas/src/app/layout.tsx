@@ -4,6 +4,7 @@ import "./globals.css";
 import { cn } from "../lib/utils";
 import { config } from "@fortawesome/fontawesome-svg-core";
 import "@fortawesome/fontawesome-svg-core/styles.css";
+import ThemeProvider from "@/src/components/theme-provider";
 
 config.autoAddCss = false;
 
@@ -24,8 +25,21 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="pt-BR" className={cn("h-full", "antialiased", roboto.variable, nunito.variable)}>
-      <body className="">{children}</body>
+    <html
+      lang="pt-BR"
+      suppressHydrationWarning
+      className={cn("h-full", "antialiased", roboto.variable, nunito.variable)}
+    >
+      <body>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          {children}
+        </ThemeProvider>
+      </body>
     </html>
   );
 }
