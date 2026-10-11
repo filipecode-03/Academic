@@ -6,6 +6,8 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { createHomeBannerSchema } from "@/src/schemas/home-banner.schema";
 import AdminConfirmDialog from "@/src/components/admin/admin-confirm-dialog";
+import AdminFormDialog from "@/src/components/admin/admin-form-dialog";
+import { Button } from "@/src/components/ui/button";
 
 type DestinationType = "NONE" | "PRODUCT" | "COLLECTION";
 type BannerPosition = "FIRST" | "LAST";
@@ -85,7 +87,7 @@ function BannerForm({
   function handleImageChange(event: React.ChangeEvent<HTMLInputElement>) {
     const file = event.target.files?.[0];
     setImageFile(file);
-    setValue("image", file ? `upload-pending:${file.name}` : banner?.image ?? "", {
+    setValue("image", file ? `upload-pending:${file.name}` : (banner?.image ?? ""), {
       shouldValidate: true,
       shouldDirty: true,
     });
@@ -102,24 +104,22 @@ function BannerForm({
     <form
       className="space-y-5"
       onSubmit={handleSubmit((values) =>
-        onSave(values, imageFile, position === "KEEP" ? undefined : position)
+        onSave(values, imageFile, position === "KEEP" ? undefined : position),
       )}
     >
-      <h2 className="text-xl font-semibold">{banner ? "Editar banner" : "Novo banner"}</h2>
-
       <div>
-        <label className="block" htmlFor="banner-title">Título *</label>
-        <input
-          id="banner-title"
-          className="w-full border p-2"
-          {...register("title")}
-        />
+        <label className="block" htmlFor="banner-title">
+          Título *
+        </label>
+        <input id="banner-title" className="w-full border p-2" {...register("title")} />
         {errors.title && <p role="alert">{errors.title.message}</p>}
         <p className="text-sm">Identificação administrativa, não exibida na Home.</p>
       </div>
 
       <div>
-        <label className="block" htmlFor="banner-description">Descrição</label>
+        <label className="block" htmlFor="banner-description">
+          Descrição
+        </label>
         <textarea
           id="banner-description"
           className="w-full border p-2"
@@ -130,11 +130,17 @@ function BannerForm({
       </div>
 
       <div>
-        <label className="block" htmlFor="banner-image">Imagem do banner</label>
+        <label className="block" htmlFor="banner-image">
+          Imagem do banner
+        </label>
         {banner?.image && (
           <div className="my-2">
             <p>Imagem atual:</p>
-            <img src={banner.image} alt="Imagem atual do banner" className="h-32 w-auto object-cover" />
+            <img
+              src={banner.image}
+              alt="Imagem atual do banner"
+              className="h-32 w-auto object-cover"
+            />
           </div>
         )}
         <input
@@ -143,12 +149,19 @@ function BannerForm({
           accept="image/jpeg,image/png,image/webp,image/avif"
           onChange={handleImageChange}
         />
-        <p className="text-sm text-neutral-600">Dimensão recomendada: 1920 × 640 px (proporção 3:1); o mobile aplica um recorte mais fechado. Formatos: JPG, PNG, WebP ou AVIF.</p>
+        <p className="text-sm text-neutral-600">
+          Dimensão recomendada: 1920 × 640 px (proporção 3:1); o mobile aplica um recorte mais
+          fechado. Formatos: JPG, PNG, WebP ou AVIF.
+        </p>
         <input type="hidden" {...register("image")} />
         {previewUrl && (
           <div className="my-2">
             <p>Prévia da nova imagem:</p>
-            <img src={previewUrl} alt="Prévia da nova imagem do banner" className="h-32 w-auto object-cover" />
+            <img
+              src={previewUrl}
+              alt="Prévia da nova imagem do banner"
+              className="h-32 w-auto object-cover"
+            />
           </div>
         )}
         {errors.image && <p role="alert">{errors.image.message}</p>}
@@ -156,7 +169,9 @@ function BannerForm({
 
       {canChoosePosition && (
         <div>
-          <label className="block" htmlFor="banner-position">Posição</label>
+          <label className="block" htmlFor="banner-position">
+            Posição
+          </label>
           {banner && <p>Posição atual: {(currentPosition ?? 0) + 1}</p>}
           <select
             id="banner-position"
@@ -176,7 +191,9 @@ function BannerForm({
       </label>
 
       <div>
-        <label className="block" htmlFor="banner-destination">Destino</label>
+        <label className="block" htmlFor="banner-destination">
+          Destino
+        </label>
         <select
           id="banner-destination"
           {...register("destinationType", { onChange: handleDestinationChange })}
@@ -190,37 +207,52 @@ function BannerForm({
 
       {destinationType === "PRODUCT" && (
         <div>
-          <label className="block" htmlFor="banner-product">Produto</label>
+          <label className="block" htmlFor="banner-product">
+            Produto
+          </label>
           <select id="banner-product" {...register("productId")}>
             <option value="">Selecione um produto</option>
-            {products.map((product) => <option key={product.id} value={product.id}>{product.name}</option>)}
+            {products.map((product) => (
+              <option key={product.id} value={product.id}>
+                {product.name}
+              </option>
+            ))}
           </select>
           {errors.productId && <p role="alert">{errors.productId.message}</p>}
         </div>
       )}
 
-
       {destinationType === "COLLECTION" && (
         <div>
-          <label className="block" htmlFor="banner-collection">Coleção</label>
+          <label className="block" htmlFor="banner-collection">
+            Coleção
+          </label>
           <select id="banner-collection" {...register("collectionId")}>
             <option value="">Selecione uma coleção</option>
-            {collections.map((collection) => <option key={collection.id} value={collection.id}>{collection.name}</option>)}
+            {collections.map((collection) => (
+              <option key={collection.id} value={collection.id}>
+                {collection.name}
+              </option>
+            ))}
           </select>
           {errors.collectionId && <p role="alert">{errors.collectionId.message}</p>}
         </div>
       )}
 
       <div className="flex gap-3">
-        <button type="submit" disabled={isSubmitting}>{isSubmitting ? "Salvando..." : "Salvar banner"}</button>
-        <button type="button" className="admin-button-secondary" onClick={onCancel}>Cancelar</button>
+        <Button type="submit" disabled={isSubmitting}>
+          {isSubmitting ? "Salvando..." : "Salvar banner"}
+        </Button>
+        <Button type="button" variant="outline" onClick={onCancel}>
+          Cancelar
+        </Button>
       </div>
     </form>
   );
 }
 
 async function readJson<T>(response: Response): Promise<T> {
-  const data = await response.json() as T & ApiError;
+  const data = (await response.json()) as T & ApiError;
   if (!response.ok) {
     throw new Error(data.message ?? data.error ?? "A operação não foi concluída.");
   }
@@ -229,7 +261,8 @@ async function readJson<T>(response: Response): Promise<T> {
 
 function getErrorMessage(cause: unknown, fallback: string) {
   if (!(cause instanceof Error)) return fallback;
-  if (cause instanceof TypeError || cause.message.toLowerCase() === "failed to fetch") return fallback;
+  if (cause instanceof TypeError || cause.message.toLowerCase() === "failed to fetch")
+    return fallback;
   return cause.message;
 }
 
@@ -266,7 +299,11 @@ async function uploadBannerImage(file: File) {
   }
 
   if (!uploadResponse.ok) {
-    console.error("R2 recusou o upload do banner:", uploadResponse.status, uploadResponse.statusText);
+    console.error(
+      "R2 recusou o upload do banner:",
+      uploadResponse.status,
+      uploadResponse.statusText,
+    );
     throw new Error("Não foi possível enviar a imagem. Verifique a conexão e tente novamente.");
   }
   return data.publicUrl;
@@ -274,9 +311,12 @@ async function uploadBannerImage(file: File) {
 
 function getBannerDestination(banner: Banner) {
   switch (banner.destinationType) {
-    case "PRODUCT": return `Produto: ${banner.product?.name ?? "não encontrado"}`;
-    case "COLLECTION": return `Coleção: ${banner.collection?.name ?? "não encontrada"}`;
-    default: return "Sem destino";
+    case "PRODUCT":
+      return `Produto: ${banner.product?.name ?? "não encontrado"}`;
+    case "COLLECTION":
+      return `Coleção: ${banner.collection?.name ?? "não encontrada"}`;
+    default:
+      return "Sem destino";
   }
 }
 
@@ -320,7 +360,9 @@ export default function BannersPage() {
     }
   }
 
-  useEffect(() => { void loadPageData(); }, []);
+  useEffect(() => {
+    void loadPageData();
+  }, []);
 
   const orderedBanners = isOrdering
     ? orderedBannerIds
@@ -332,7 +374,7 @@ export default function BannersPage() {
     [banner.title, banner.description ?? "", getBannerDestination(banner)]
       .join(" ")
       .toLocaleLowerCase()
-      .includes(normalizedSearch)
+      .includes(normalizedSearch),
   );
 
   function startOrdering() {
@@ -365,11 +407,13 @@ export default function BannersPage() {
     try {
       setIsSavingOrder(true);
       setError("");
-      await readJson(await fetch("/api/banners/order", {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ bannerIds: orderedBannerIds }),
-      }));
+      await readJson(
+        await fetch("/api/banners/order", {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ bannerIds: orderedBannerIds }),
+        }),
+      );
       setIsOrdering(false);
       setOrderedBannerIds([]);
       setNotice("Ordem dos banners atualizada.");
@@ -382,11 +426,7 @@ export default function BannersPage() {
     }
   }
 
-  async function saveBanner(
-    values: BannerFormData,
-    imageFile?: File,
-    position?: BannerPosition,
-  ) {
+  async function saveBanner(values: BannerFormData, imageFile?: File, position?: BannerPosition) {
     try {
       setError("");
       const image = imageFile ? await uploadBannerImage(imageFile) : editingBanner?.image;
@@ -403,7 +443,7 @@ export default function BannersPage() {
           method: editingBanner ? "PATCH" : "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(payload),
-        }
+        },
       );
       await readJson<Banner>(response);
       setShowForm(false);
@@ -412,21 +452,27 @@ export default function BannersPage() {
       await loadPageData();
     } catch (cause) {
       console.error("Erro ao salvar banner:", cause);
-      setError(getErrorMessage(
-        cause,
-        editingBanner ? "Não foi possível atualizar o banner." : "Não foi possível criar o banner."
-      ));
+      setError(
+        getErrorMessage(
+          cause,
+          editingBanner
+            ? "Não foi possível atualizar o banner."
+            : "Não foi possível criar o banner.",
+        ),
+      );
     }
   }
 
   async function toggleActive(banner: Banner) {
     try {
       setError("");
-      await readJson<Banner>(await fetch(`/api/banners/${banner.id}`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ active: !banner.active }),
-      }));
+      await readJson<Banner>(
+        await fetch(`/api/banners/${banner.id}`, {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ active: !banner.active }),
+        }),
+      );
       setNotice(`Banner ${banner.active ? "desativado" : "ativado"}.`);
       await loadPageData();
     } catch (cause) {
@@ -439,7 +485,9 @@ export default function BannersPage() {
     try {
       setError("");
       setNotice("");
-      await readJson<{ message?: string }>(await fetch(`/api/banners/${banner.id}`, { method: "DELETE" }));
+      await readJson<{ message?: string }>(
+        await fetch(`/api/banners/${banner.id}`, { method: "DELETE" }),
+      );
       setNotice("Banner excluído com sucesso.");
       setDeleteTarget(undefined);
       await loadPageData();
@@ -481,7 +529,9 @@ export default function BannersPage() {
             </button>
           ) : (
             <>
-              <button type="button" className="admin-button-secondary" onClick={cancelOrdering}>Cancelar</button>
+              <button type="button" className="admin-button-secondary" onClick={cancelOrdering}>
+                Cancelar
+              </button>
               <button type="button" disabled={isSavingOrder} onClick={() => void saveBannerOrder()}>
                 {isSavingOrder ? "Salvando ordem..." : "Concluir alteração"}
               </button>
@@ -493,18 +543,39 @@ export default function BannersPage() {
       <div className="flex flex-wrap items-center gap-2">
         <input
           type="search"
-        className="w-full max-w-md"
+          className="w-full max-w-md"
           placeholder="Pesquisar banners..."
           aria-label="Pesquisar banners por título, descrição ou destino"
           value={search}
           onChange={(event) => setSearch(event.target.value)}
         />
-        {search && <button type="button" onClick={() => setSearch("")}>Limpar pesquisa</button>}
+        {search && (
+          <button type="button" onClick={() => setSearch("")}>
+            Limpar pesquisa
+          </button>
+        )}
       </div>
 
-      {error && <p role="alert" className="admin-feedback admin-feedback-error">{error}</p>}
-      {notice && <p role="status" className="admin-feedback admin-feedback-success">{notice}</p>}
-      {showForm && (
+      {error && (
+        <p role="alert" className="admin-feedback admin-feedback-error">
+          {error}
+        </p>
+      )}
+      {notice && (
+        <p role="status" className="admin-feedback admin-feedback-success">
+          {notice}
+        </p>
+      )}
+      <AdminFormDialog
+        open={showForm}
+        onOpenChange={(open) => {
+          setShowForm(open);
+          if (!open) setEditingBanner(undefined);
+        }}
+        title={editingBanner ? "Editar banner" : "Novo banner"}
+        description="Configure a imagem, o destino e a posição do banner na Home."
+        size="wide"
+      >
         <BannerForm
           key={editingBanner?.id ?? "new"}
           banner={editingBanner}
@@ -515,55 +586,101 @@ export default function BannersPage() {
           onSave={saveBanner}
           onCancel={() => setShowForm(false)}
         />
-      )}
+      </AdminFormDialog>
 
       <section className="space-y-3">
         <h2 className="text-xl font-semibold">Banners cadastrados</h2>
-        {loading && <div className="h-28 animate-pulse rounded-xl border border-slate-200 bg-white" />}
-        {!loading && banners.length === 0 && !error && <p className="admin-empty-state">Nenhum banner cadastrado. Crie o primeiro banner para destacar o conteúdo da Home.</p>}
+        {loading && (
+          <div className="h-28 animate-pulse rounded-xl border border-slate-200 bg-white" />
+        )}
+        {!loading && banners.length === 0 && !error && (
+          <p className="admin-empty-state">
+            Nenhum banner cadastrado. Crie o primeiro banner para destacar o conteúdo da Home.
+          </p>
+        )}
         {!loading && banners.length > 0 && visibleBanners.length === 0 && (
           <p>Nenhum banner encontrado para “{search}”.</p>
         )}
-        {!loading && visibleBanners.map((banner) => (
-          <article key={banner.id} className="admin-item flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-            <div className="flex items-center gap-4">
-              <img src={banner.image} alt="" className="h-20 w-32 shrink-0 rounded-lg border border-slate-200 object-cover sm:h-24 sm:w-40" />
-              <div>
-                <h3 className="font-semibold">{banner.title}</h3>
-                {banner.description && <p className="max-w-xl truncate">{banner.description}</p>}
-                <p>Posição: {(isOrdering ? orderedBannerIds.indexOf(banner.id) : banner.order) + 1}</p>
-                <p>Status: {banner.active ? "Ativo" : "Inativo"}</p>
-                <p>Destino: {getBannerDestination(banner)}</p>
-              </div>
-            </div>
-            <div className="flex flex-wrap gap-3">
-              {isOrdering ? (
-                <div className="flex gap-2" aria-label={`Mover ${banner.title}`}>
-                  <button
-                    type="button"
-                    aria-label={`Mover ${banner.title} para cima`}
-                    disabled={orderedBannerIds.indexOf(banner.id) === 0}
-                    onClick={() => moveBanner(banner.id, -1)}
-                  >↑</button>
-                  <button
-                    type="button"
-                    aria-label={`Mover ${banner.title} para baixo`}
-                    disabled={orderedBannerIds.indexOf(banner.id) === orderedBannerIds.length - 1}
-                    onClick={() => moveBanner(banner.id, 1)}
-                  >↓</button>
+        {!loading &&
+          visibleBanners.map((banner) => (
+            <article
+              key={banner.id}
+              className="admin-item flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between"
+            >
+              <div className="flex items-center gap-4">
+                <img
+                  src={banner.image}
+                  alt=""
+                  className="h-20 w-32 shrink-0 rounded-lg border border-slate-200 object-cover sm:h-24 sm:w-40"
+                />
+                <div>
+                  <h3 className="font-semibold">{banner.title}</h3>
+                  {banner.description && <p className="max-w-xl truncate">{banner.description}</p>}
+                  <p>
+                    Posição: {(isOrdering ? orderedBannerIds.indexOf(banner.id) : banner.order) + 1}
+                  </p>
+                  <p>Status: {banner.active ? "Ativo" : "Inativo"}</p>
+                  <p>Destino: {getBannerDestination(banner)}</p>
                 </div>
-              ) : (
-                <>
-                  <button type="button" onClick={() => { setEditingBanner(banner); setError(""); setNotice(""); setShowForm(true); }}>Editar</button>
-                  <button type="button" onClick={() => void toggleActive(banner)}>{banner.active ? "Desativar" : "Ativar"}</button>
-                  <button type="button" className="admin-button-danger" onClick={() => setDeleteTarget(banner)}>Excluir</button>
-                </>
-              )}
-            </div>
-          </article>
-        ))}
+              </div>
+              <div className="flex flex-wrap gap-3">
+                {isOrdering ? (
+                  <div className="flex gap-2" aria-label={`Mover ${banner.title}`}>
+                    <button
+                      type="button"
+                      aria-label={`Mover ${banner.title} para cima`}
+                      disabled={orderedBannerIds.indexOf(banner.id) === 0}
+                      onClick={() => moveBanner(banner.id, -1)}
+                    >
+                      ↑
+                    </button>
+                    <button
+                      type="button"
+                      aria-label={`Mover ${banner.title} para baixo`}
+                      disabled={orderedBannerIds.indexOf(banner.id) === orderedBannerIds.length - 1}
+                      onClick={() => moveBanner(banner.id, 1)}
+                    >
+                      ↓
+                    </button>
+                  </div>
+                ) : (
+                  <>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setEditingBanner(banner);
+                        setError("");
+                        setNotice("");
+                        setShowForm(true);
+                      }}
+                    >
+                      Editar
+                    </button>
+                    <button type="button" onClick={() => void toggleActive(banner)}>
+                      {banner.active ? "Desativar" : "Ativar"}
+                    </button>
+                    <button
+                      type="button"
+                      className="admin-button-danger"
+                      onClick={() => setDeleteTarget(banner)}
+                    >
+                      Excluir
+                    </button>
+                  </>
+                )}
+              </div>
+            </article>
+          ))}
       </section>
-      <AdminConfirmDialog open={Boolean(deleteTarget)} title="Excluir banner?" description={deleteTarget ? `“${deleteTarget.title}” será removido permanentemente da Home.` : ""} onCancel={() => setDeleteTarget(undefined)} onConfirm={() => deleteBanner(deleteTarget!)} />
+      <AdminConfirmDialog
+        open={Boolean(deleteTarget)}
+        title="Excluir banner?"
+        description={
+          deleteTarget ? `“${deleteTarget.title}” será removido permanentemente da Home.` : ""
+        }
+        onCancel={() => setDeleteTarget(undefined)}
+        onConfirm={() => deleteBanner(deleteTarget!)}
+      />
     </div>
   );
 }

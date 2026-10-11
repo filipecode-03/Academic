@@ -1,14 +1,9 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
-import {
-  createHomeSection,
-  getHomeSections,
-} from "@/src/services/home-section.service";
+import { createHomeSection, getHomeSections } from "@/src/services/home-section.service";
 
-import {
-  createHomeSectionSchema,
-} from "@/src/schemas/home-section.schema";
+import { createHomeSectionSchema } from "@/src/schemas/home-section.schema";
 
 import { getAuthenticatedToken } from "@/src/lib/auth-guard";
 
@@ -28,7 +23,7 @@ export async function GET() {
         success: false,
         message: "Erro ao buscar seções da Home.",
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -43,7 +38,7 @@ export async function POST(request: NextRequest) {
           success: false,
           message: "Não autorizado.",
         },
-        { status: 401 }
+        { status: 401 },
       );
     }
 
@@ -58,7 +53,7 @@ export async function POST(request: NextRequest) {
           message: "Dados inválidos.",
           errors: result.error.flatten().fieldErrors,
         },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -69,7 +64,7 @@ export async function POST(request: NextRequest) {
         success: true,
         homeSection,
       },
-      { status: 201 }
+      { status: 201 },
     );
   } catch (error) {
     console.error("Erro ao criar seção da Home:", error);
@@ -79,7 +74,7 @@ export async function POST(request: NextRequest) {
         success: false,
         message: "Erro ao criar seção da Home.",
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

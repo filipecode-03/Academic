@@ -1,9 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import {
-  getProductById,
-  updateProduct,
-  deleteProduct,
-} from "@/src/services/product.service";
+import { getProductById, updateProduct, deleteProduct } from "@/src/services/product.service";
 import { updateProductSchema } from "@/src/schemas/product.schema";
 import { isPrismaUniqueConstraintError } from "@/src/lib/prisma-error";
 import { getAuthenticatedToken } from "@/src/lib/auth-guard";
@@ -14,10 +10,7 @@ type RouteContext = {
   }>;
 };
 
-export async function GET(
-  request: Request,
-  context: RouteContext
-) {
+export async function GET(request: Request, context: RouteContext) {
   try {
     const { id } = await context.params;
 
@@ -29,7 +22,7 @@ export async function GET(
           success: false,
           message: "Produto não encontrado.",
         },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
@@ -45,15 +38,12 @@ export async function GET(
         success: false,
         message: "Erro ao buscar produto.",
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
 
-export async function PATCH(
-  request: NextRequest,
-  context: RouteContext
-) {
+export async function PATCH(request: NextRequest, context: RouteContext) {
   try {
     const token = await getAuthenticatedToken(request);
 
@@ -63,7 +53,7 @@ export async function PATCH(
           success: false,
           message: "Não autorizado.",
         },
-        { status: 401 }
+        { status: 401 },
       );
     }
 
@@ -80,7 +70,7 @@ export async function PATCH(
           message: "Dados inválidos.",
           errors: result.error.flatten().fieldErrors,
         },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -92,7 +82,7 @@ export async function PATCH(
           success: false,
           message: "Produto não encontrado.",
         },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
@@ -111,7 +101,7 @@ export async function PATCH(
           success: false,
           message: "Não foi possível salvar o produto por conflito de dados. Tente novamente.",
         },
-        { status: 409 }
+        { status: 409 },
       );
     }
 
@@ -120,15 +110,12 @@ export async function PATCH(
         success: false,
         message: "Erro ao atualizar produto.",
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
 
-export async function DELETE(
-  request: NextRequest,
-  context: RouteContext
-) {
+export async function DELETE(request: NextRequest, context: RouteContext) {
   try {
     const token = await getAuthenticatedToken(request);
 
@@ -138,7 +125,7 @@ export async function DELETE(
           success: false,
           message: "Não autorizado.",
         },
-        { status: 401 }
+        { status: 401 },
       );
     }
 
@@ -152,7 +139,7 @@ export async function DELETE(
           success: false,
           message: "Produto não encontrado.",
         },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
@@ -170,7 +157,7 @@ export async function DELETE(
         success: false,
         message: "Erro ao excluir produto.",
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

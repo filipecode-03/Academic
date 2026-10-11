@@ -38,9 +38,7 @@ export default async function CollectionPage({ params }: PageProps<"/colecoes/[s
         </header>
       ) : (
         <header>
-          <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">
-            {collection.name}
-          </h1>
+          <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">{collection.name}</h1>
 
           {collection.description && (
             <p className="mt-2 max-w-3xl leading-relaxed text-neutral-700">
@@ -51,9 +49,7 @@ export default async function CollectionPage({ params }: PageProps<"/colecoes/[s
       )}
 
       <ProductListing
-        products={collection.products.map(({ product }) =>
-          serializePublicProduct(product)
-        )}
+        products={collection.products.map(({ product }) => serializePublicProduct(product))}
       />
     </main>
   );

@@ -2,6 +2,8 @@
 
 import { useEffect, useMemo, useState } from "react";
 import AdminConfirmDialog from "@/src/components/admin/admin-confirm-dialog";
+import AdminFormDialog from "@/src/components/admin/admin-form-dialog";
+import { Button } from "@/src/components/ui/button";
 
 type Product = { id: string; name: string; slug: string };
 type Collection = { id: string; name: string };
@@ -32,14 +34,15 @@ type SectionDraft = {
 };
 
 async function readApi<T extends ApiData = ApiData>(response: Response): Promise<T> {
-  const data = await response.json() as T;
+  const data = (await response.json()) as T;
   if (!response.ok) throw new Error(data.message ?? "A operação não foi concluída.");
   return data;
 }
 
 function getErrorMessage(cause: unknown, fallback: string) {
   if (!(cause instanceof Error)) return fallback;
-  if (cause instanceof TypeError || cause.message.toLowerCase() === "failed to fetch") return fallback;
+  if (cause instanceof TypeError || cause.message.toLowerCase() === "failed to fetch")
+    return fallback;
   return cause.message;
 }
 
@@ -75,7 +78,9 @@ export default function HomeSectionsPage() {
         fetch("/api/collections"),
       ]);
       const [sectionData, productData, collectionData] = await Promise.all([
-        readApi(sectionResponse), readApi(productResponse), readApi(collectionResponse),
+        readApi(sectionResponse),
+        readApi(productResponse),
+        readApi(collectionResponse),
       ]);
       setSections(sectionData.homeSections ?? []);
       setProducts(productData.products ?? []);
@@ -88,22 +93,29 @@ export default function HomeSectionsPage() {
     }
   }
 
-  useEffect(() => { void loadData(); }, []);
+  useEffect(() => {
+    void loadData();
+  }, []);
 
   const displayedSections = useMemo(() => {
     const ordered = isOrdering
-      ? orderedIds.map((id) => sections.find((section) => section.id === id)).filter((section): section is Section => Boolean(section))
+      ? orderedIds
+          .map((id) => sections.find((section) => section.id === id))
+          .filter((section): section is Section => Boolean(section))
       : sections;
     const query = search.trim().toLocaleLowerCase();
     return ordered.filter((section) =>
       `${section.title} ${section.type} ${section.collection?.name ?? ""}`
-        .toLocaleLowerCase().includes(query)
+        .toLocaleLowerCase()
+        .includes(query),
     );
   }, [isOrdering, orderedIds, sections, search]);
 
   const visibleProducts = useMemo(() => {
     const query = productSearch.trim().toLocaleLowerCase();
-    return products.filter((product) => `${product.name} ${product.slug}`.toLocaleLowerCase().includes(query));
+    return products.filter((product) =>
+      `${product.name} ${product.slug}`.toLocaleLowerCase().includes(query),
+    );
   }, [productSearch, products]);
 
   const displayedSelectedProductIds = useMemo(() => {
@@ -136,7 +148,9 @@ export default function HomeSectionsPage() {
       collectionId: section.collectionId ?? "",
       active: section.active,
     });
-    setSelectedProductIds([...section.products].sort((a, b) => a.order - b.order).map(({ productId }) => productId));
+    setSelectedProductIds(
+      [...section.products].sort((a, b) => a.order - b.order).map(({ productId }) => productId),
+    );
     setProductSearch("");
     setError("");
     setNotice("");
@@ -153,9 +167,13 @@ export default function HomeSectionsPage() {
   }
 
   function toggleProduct(productId: string) {
-    setSelectedProductIds((current) => current.includes(productId)
-      ? current.filter((id) => id !== productId)
-      : current.length >= 10 ? current : [...current, productId]);
+    setSelectedProductIds((current) =>
+      current.includes(productId)
+        ? current.filter((id) => id !== productId)
+        : current.length >= 10
+          ? current
+          : [...current, productId],
+    );
   }
 
   async function saveSection(event: React.FormEvent<HTMLFormElement>) {
@@ -165,7 +183,10 @@ export default function HomeSectionsPage() {
       setError("O título da seção é obrigatório.");
       return;
     }
-    if (draft.type === "MANUAL" && selectedProductIds.length > 10) { setError("Uma seção pode ter no máximo 10 produtos."); return; }
+    if (draft.type === "MANUAL" && selectedProductIds.length > 10) {
+      setError("Uma seção pode ter no máximo 10 produtos.");
+      return;
+    }
     if (draft.type === "COLLECTION" && !draft.collectionId) {
       setError("Selecione uma coleção para esta seção.");
       return;
@@ -181,19 +202,25 @@ export default function HomeSectionsPage() {
         order: editing?.order ?? sections.length,
         collectionId: draft.type === "COLLECTION" ? draft.collectionId : null,
       };
-      const response = await fetch(editing ? `/api/home-sections/${editing.id}` : "/api/home-sections", {
-        method: editing ? "PATCH" : "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
+      const response = await fetch(
+        editing ? `/api/home-sections/${editing.id}` : "/api/home-sections",
+        {
+          method: editing ? "PATCH" : "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        },
+      );
       const data = await readApi(response);
       const savedSection = data.homeSection;
       if (!savedSection) throw new Error("A API não retornou a seção salva.");
 
       if (draft.type === "MANUAL") {
-        const existingIds = editing?.type === "MANUAL"
-          ? [...editing.products].sort((a, b) => a.order - b.order).map(({ productId }) => productId)
-          : [];
+        const existingIds =
+          editing?.type === "MANUAL"
+            ? [...editing.products]
+                .sort((a, b) => a.order - b.order)
+                .map(({ productId }) => productId)
+            : [];
         const keepExisting = existingIds.filter((id) => selectedProductIds.includes(id));
         const newIds = displayedSelectedProductIds.filter((id) => !existingIds.includes(id));
         const retainedOrders = (editing?.products ?? [])
@@ -201,15 +228,21 @@ export default function HomeSectionsPage() {
           .map(({ order }) => order);
         let nextProductOrder = retainedOrders.length > 0 ? Math.max(...retainedOrders) + 1 : 0;
         for (const productId of newIds) {
-          await readApi(await fetch(`/api/home-sections/${savedSection.id}/products`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ productId, order: nextProductOrder++ }),
-          }));
+          await readApi(
+            await fetch(`/api/home-sections/${savedSection.id}/products`, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ productId, order: nextProductOrder++ }),
+            }),
+          );
         }
         const selectedSet = new Set(selectedProductIds);
         for (const productId of existingIds.filter((id) => !selectedSet.has(id))) {
-          await readApi(await fetch(`/api/home-sections/${savedSection.id}/products/${productId}`, { method: "DELETE" }));
+          await readApi(
+            await fetch(`/api/home-sections/${savedSection.id}/products/${productId}`, {
+              method: "DELETE",
+            }),
+          );
         }
       }
 
@@ -229,11 +262,13 @@ export default function HomeSectionsPage() {
   async function toggleActive(section: Section) {
     try {
       setError("");
-      await readApi(await fetch(`/api/home-sections/${section.id}`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ active: !section.active }),
-      }));
+      await readApi(
+        await fetch(`/api/home-sections/${section.id}`, {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ active: !section.active }),
+        }),
+      );
       setNotice(`Seção ${section.active ? "desativada" : "ativada"}.`);
       await loadData();
     } catch (cause) {
@@ -279,11 +314,13 @@ export default function HomeSectionsPage() {
     try {
       setSaving(true);
       setError("");
-      await readApi(await fetch("/api/home-sections/order", {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ sectionIds: orderedIds }),
-      }));
+      await readApi(
+        await fetch("/api/home-sections/order", {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ sectionIds: orderedIds }),
+        }),
+      );
       setIsOrdering(false);
       setOrderedIds([]);
       setNotice("Ordem das seções atualizada.");
@@ -305,93 +342,286 @@ export default function HomeSectionsPage() {
           <p>Gerencie as seções de produtos exibidas na página inicial.</p>
         </div>
         <div className="admin-page-actions">
-          {!isOrdering && <button type="button" onClick={showForm ? () => setShowForm(false) : startCreate}>
-            {showForm ? "Fechar formulário" : "Nova seção"}
-          </button>}
-          {!isOrdering ? <button type="button" disabled={sections.length < 2} onClick={startOrdering}>Alterar ordem</button> : <>
-            <button type="button" className="admin-button-secondary" onClick={() => { setIsOrdering(false); setOrderedIds([]); setError(""); }}>Cancelar</button>
-            <button type="button" disabled={saving} onClick={() => void saveOrder()}>{saving ? "Salvando ordem..." : "Concluir alteração"}</button>
-          </>}
+          {!isOrdering && (
+            <button type="button" onClick={startCreate}>
+              Nova seção
+            </button>
+          )}
+          {!isOrdering ? (
+            <button type="button" disabled={sections.length < 2} onClick={startOrdering}>
+              Alterar ordem
+            </button>
+          ) : (
+            <>
+              <button
+                type="button"
+                className="admin-button-secondary"
+                onClick={() => {
+                  setIsOrdering(false);
+                  setOrderedIds([]);
+                  setError("");
+                }}
+              >
+                Cancelar
+              </button>
+              <button type="button" disabled={saving} onClick={() => void saveOrder()}>
+                {saving ? "Salvando ordem..." : "Concluir alteração"}
+              </button>
+            </>
+          )}
         </div>
       </header>
 
       <div className="flex flex-wrap items-center gap-2">
-        <input type="search" className="w-full max-w-md border p-2" placeholder="Pesquisar seções..." aria-label="Pesquisar seções por título, tipo ou origem" value={search} onChange={(event) => setSearch(event.target.value)} />
-        {search && <button type="button" onClick={() => setSearch("")}>Limpar pesquisa</button>}
+        <input
+          type="search"
+          className="w-full max-w-md border p-2"
+          placeholder="Pesquisar seções..."
+          aria-label="Pesquisar seções por título, tipo ou origem"
+          value={search}
+          onChange={(event) => setSearch(event.target.value)}
+        />
+        {search && (
+          <button type="button" onClick={() => setSearch("")}>
+            Limpar pesquisa
+          </button>
+        )}
       </div>
 
-      {error && <p role="alert" className="admin-feedback admin-feedback-error">{error}</p>}
-      {notice && <p role="status" className="admin-feedback admin-feedback-success">{notice}</p>}
+      {error && (
+        <p role="alert" className="admin-feedback admin-feedback-error">
+          {error}
+        </p>
+      )}
+      {notice && (
+        <p role="status" className="admin-feedback admin-feedback-success">
+          {notice}
+        </p>
+      )}
 
-      {showForm && <form className="space-y-4" onSubmit={(event) => void saveSection(event)}>
-        <h2 className="text-xl font-semibold">{editing ? "Editar seção" : "Nova seção"}</h2>
-        <div>
-          <label className="mb-1 block" htmlFor="section-title">Título</label>
-          <input id="section-title" className="w-full max-w-xl border p-2" required value={draft.title} onChange={(event) => setDraft({ ...draft, title: event.target.value })} />
-        </div>
-        <div>
-          <label className="mb-1 block" htmlFor="section-type">Tipo da seção</label>
-          <select id="section-type" className="border p-2" value={draft.type} onChange={(event) => changeType(event.target.value as Section["type"])}>
-            <option value="MANUAL">Manual</option><option value="COLLECTION">Coleção</option>
-          </select>
-        </div>
-        {draft.type === "COLLECTION" && <div>
-          <label className="mb-1 block" htmlFor="section-collection">Coleção</label>
-          <select id="section-collection" className="w-full max-w-xl border p-2" required value={draft.collectionId} onChange={(event) => setDraft({ ...draft, collectionId: event.target.value })}>
-            <option value="">Selecione uma coleção</option>{collections.map((collection) => <option key={collection.id} value={collection.id}>{collection.name}</option>)}
-          </select>
-        </div>}
-        {draft.type === "MANUAL" && <fieldset className="space-y-3">
-          <legend className="font-semibold">Produtos da seção</legend>
-          <p className="text-sm">Selecionados: {selectedProductIds.length}/10. Produtos existentes mantêm a ordem salva; novas seleções são adicionadas ao final.</p>
-          <input type="search" className="w-full max-w-md border p-2" placeholder="Pesquisar produto..." aria-label="Pesquisar produtos" value={productSearch} onChange={(event) => setProductSearch(event.target.value)} />
-          <div className="max-h-64 space-y-1 overflow-auto rounded-lg border border-slate-200 p-3">
-            {visibleProducts.length === 0 ? <p>Nenhum produto encontrado.</p> : visibleProducts.map((product) => <label key={product.id} className="flex items-center gap-2">
-              <input type="checkbox" checked={selectedProductIds.includes(product.id)} disabled={selectedProductIds.length >= 10 && !selectedProductIds.includes(product.id)} onChange={() => toggleProduct(product.id)} />
-              <span>{product.name}</span>
-            </label>)}
+      <AdminFormDialog
+        open={showForm}
+        onOpenChange={(open) => {
+          setShowForm(open);
+          if (!open) setEditing(null);
+        }}
+        title={editing ? "Editar seção" : "Nova seção"}
+        description="Defina a origem e os produtos exibidos nesta seção da Home."
+        size="wide"
+      >
+        <form className="space-y-4" onSubmit={(event) => void saveSection(event)}>
+          <div>
+            <label className="mb-1 block" htmlFor="section-title">
+              Título
+            </label>
+            <input
+              id="section-title"
+              className="w-full max-w-xl border p-2"
+              required
+              value={draft.title}
+              onChange={(event) => setDraft({ ...draft, title: event.target.value })}
+            />
           </div>
-          {selectedProductIds.length > 0 && <ol className="list-decimal space-y-1 pl-6">
-            {displayedSelectedProductIds.map((id) => {
-              const product = products.find((item) => item.id === id);
-              if (!product) return null;
-              return <li key={id} className="flex items-center gap-3"><span>{product.name}</span><button type="button" onClick={() => toggleProduct(id)}>Remover</button></li>;
-            })}
-          </ol>}
-        </fieldset>}
-        <label className="flex items-center gap-2"><input type="checkbox" checked={draft.active} onChange={(event) => setDraft({ ...draft, active: event.target.checked })} /> Ativa</label>
-        <div className="flex gap-3"><button type="submit" disabled={saving}>{saving ? "Salvando..." : "Salvar seção"}</button><button type="button" className="admin-button-secondary" disabled={saving} onClick={() => setShowForm(false)}>Cancelar</button></div>
-      </form>}
+          <div>
+            <label className="mb-1 block" htmlFor="section-type">
+              Tipo da seção
+            </label>
+            <select
+              id="section-type"
+              className="border p-2"
+              value={draft.type}
+              onChange={(event) => changeType(event.target.value as Section["type"])}
+            >
+              <option value="MANUAL">Manual</option>
+              <option value="COLLECTION">Coleção</option>
+            </select>
+          </div>
+          {draft.type === "COLLECTION" && (
+            <div>
+              <label className="mb-1 block" htmlFor="section-collection">
+                Coleção
+              </label>
+              <select
+                id="section-collection"
+                className="w-full max-w-xl border p-2"
+                required
+                value={draft.collectionId}
+                onChange={(event) => setDraft({ ...draft, collectionId: event.target.value })}
+              >
+                <option value="">Selecione uma coleção</option>
+                {collections.map((collection) => (
+                  <option key={collection.id} value={collection.id}>
+                    {collection.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
+          {draft.type === "MANUAL" && (
+            <fieldset className="space-y-3">
+              <legend className="font-semibold">Produtos da seção</legend>
+              <p className="text-sm">
+                Selecionados: {selectedProductIds.length}/10. Produtos existentes mantêm a ordem
+                salva; novas seleções são adicionadas ao final.
+              </p>
+              <input
+                type="search"
+                className="w-full max-w-md border p-2"
+                placeholder="Pesquisar produto..."
+                aria-label="Pesquisar produtos"
+                value={productSearch}
+                onChange={(event) => setProductSearch(event.target.value)}
+              />
+              <div className="max-h-64 space-y-1 overflow-auto rounded-lg border border-slate-200 p-3">
+                {visibleProducts.length === 0 ? (
+                  <p>Nenhum produto encontrado.</p>
+                ) : (
+                  visibleProducts.map((product) => (
+                    <label key={product.id} className="flex items-center gap-2">
+                      <input
+                        type="checkbox"
+                        checked={selectedProductIds.includes(product.id)}
+                        disabled={
+                          selectedProductIds.length >= 10 &&
+                          !selectedProductIds.includes(product.id)
+                        }
+                        onChange={() => toggleProduct(product.id)}
+                      />
+                      <span>{product.name}</span>
+                    </label>
+                  ))
+                )}
+              </div>
+              {selectedProductIds.length > 0 && (
+                <ol className="list-decimal space-y-1 pl-6">
+                  {displayedSelectedProductIds.map((id) => {
+                    const product = products.find((item) => item.id === id);
+                    if (!product) return null;
+                    return (
+                      <li key={id} className="flex items-center gap-3">
+                        <span>{product.name}</span>
+                        <button type="button" onClick={() => toggleProduct(id)}>
+                          Remover
+                        </button>
+                      </li>
+                    );
+                  })}
+                </ol>
+              )}
+            </fieldset>
+          )}
+          <label className="flex items-center gap-2">
+            <input
+              type="checkbox"
+              checked={draft.active}
+              onChange={(event) => setDraft({ ...draft, active: event.target.checked })}
+            />{" "}
+            Ativa
+          </label>
+          <div className="flex gap-3">
+            <Button type="submit" disabled={saving}>
+              {saving ? "Salvando..." : "Salvar seção"}
+            </Button>
+            <Button
+              type="button"
+              variant="outline"
+              disabled={saving}
+              onClick={() => setShowForm(false)}
+            >
+              Cancelar
+            </Button>
+          </div>
+        </form>
+      </AdminFormDialog>
 
       <section className="space-y-3">
         <h2 className="text-xl font-semibold">Seções cadastradas</h2>
-        {loading && <div className="h-24 animate-pulse rounded-xl border border-slate-200 bg-white" />}
-        {!loading && sections.length === 0 && !error && <p className="admin-empty-state">Nenhuma seção cadastrada. Crie uma seção para organizar os produtos da Home.</p>}
-        {!loading && sections.length > 0 && displayedSections.length === 0 && <p className="admin-empty-state">Nenhuma seção encontrada para “{search}”.</p>}
-        {!loading && displayedSections.map((section) => {
-          const sectionIndex = isOrdering ? orderedIds.indexOf(section.id) : sections.findIndex((item) => item.id === section.id);
-          const typeLabel = section.type === "MANUAL" ? "Manual" : "Coleção";
-          const source = section.type === "COLLECTION" ? section.collection?.name ?? "Coleção indisponível" : `${section.products.length} produto(s)`;
-          return <article key={section.id} className="admin-item flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-            <div>
-              <h3 className="font-semibold">{section.title}</h3>
-              <p className="mt-1 text-sm text-slate-500">Ordem: {sectionIndex + 1} · Tipo: {typeLabel} · Origem: {source}</p>
-              <span className={`admin-badge mt-2 ${section.active ? "admin-badge-success" : "admin-badge-muted"}`}>{section.active ? "Ativa" : "Inativa"}</span>
-            </div>
-            <div className="flex flex-wrap gap-3">
-              {isOrdering ? <div className="flex gap-2" aria-label={`Mover ${section.title}`}>
-                <button type="button" aria-label={`Mover ${section.title} para cima`} disabled={sectionIndex === 0} onClick={() => moveSection(section.id, -1)}>↑</button>
-                <button type="button" aria-label={`Mover ${section.title} para baixo`} disabled={sectionIndex === orderedIds.length - 1} onClick={() => moveSection(section.id, 1)}>↓</button>
-              </div> : <>
-                <button type="button" onClick={() => startEdit(section)}>Editar</button>
-                <button type="button" onClick={() => void toggleActive(section)}>{section.active ? "Desativar" : "Ativar"}</button>
-                <button type="button" className="admin-button-danger" onClick={() => setDeleteTarget(section)}>Excluir</button>
-              </>}
-            </div>
-          </article>;
-        })}
+        {loading && (
+          <div className="h-24 animate-pulse rounded-xl border border-slate-200 bg-white" />
+        )}
+        {!loading && sections.length === 0 && !error && (
+          <p className="admin-empty-state">
+            Nenhuma seção cadastrada. Crie uma seção para organizar os produtos da Home.
+          </p>
+        )}
+        {!loading && sections.length > 0 && displayedSections.length === 0 && (
+          <p className="admin-empty-state">Nenhuma seção encontrada para “{search}”.</p>
+        )}
+        {!loading &&
+          displayedSections.map((section) => {
+            const sectionIndex = isOrdering
+              ? orderedIds.indexOf(section.id)
+              : sections.findIndex((item) => item.id === section.id);
+            const typeLabel = section.type === "MANUAL" ? "Manual" : "Coleção";
+            const source =
+              section.type === "COLLECTION"
+                ? (section.collection?.name ?? "Coleção indisponível")
+                : `${section.products.length} produto(s)`;
+            return (
+              <article
+                key={section.id}
+                className="admin-item flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between"
+              >
+                <div>
+                  <h3 className="font-semibold">{section.title}</h3>
+                  <p className="mt-1 text-sm text-slate-500">
+                    Ordem: {sectionIndex + 1} · Tipo: {typeLabel} · Origem: {source}
+                  </p>
+                  <span
+                    className={`admin-badge mt-2 ${section.active ? "admin-badge-success" : "admin-badge-muted"}`}
+                  >
+                    {section.active ? "Ativa" : "Inativa"}
+                  </span>
+                </div>
+                <div className="flex flex-wrap gap-3">
+                  {isOrdering ? (
+                    <div className="flex gap-2" aria-label={`Mover ${section.title}`}>
+                      <button
+                        type="button"
+                        aria-label={`Mover ${section.title} para cima`}
+                        disabled={sectionIndex === 0}
+                        onClick={() => moveSection(section.id, -1)}
+                      >
+                        ↑
+                      </button>
+                      <button
+                        type="button"
+                        aria-label={`Mover ${section.title} para baixo`}
+                        disabled={sectionIndex === orderedIds.length - 1}
+                        onClick={() => moveSection(section.id, 1)}
+                      >
+                        ↓
+                      </button>
+                    </div>
+                  ) : (
+                    <>
+                      <button type="button" onClick={() => startEdit(section)}>
+                        Editar
+                      </button>
+                      <button type="button" onClick={() => void toggleActive(section)}>
+                        {section.active ? "Desativar" : "Ativar"}
+                      </button>
+                      <button
+                        type="button"
+                        className="admin-button-danger"
+                        onClick={() => setDeleteTarget(section)}
+                      >
+                        Excluir
+                      </button>
+                    </>
+                  )}
+                </div>
+              </article>
+            );
+          })}
       </section>
-      <AdminConfirmDialog open={Boolean(deleteTarget)} title="Excluir seção?" description={deleteTarget ? `“${deleteTarget.title}” será removida da Home.` : ""} onCancel={() => setDeleteTarget(null)} onConfirm={() => deleteSection(deleteTarget!)} />
+      <AdminConfirmDialog
+        open={Boolean(deleteTarget)}
+        title="Excluir seção?"
+        description={deleteTarget ? `“${deleteTarget.title}” será removida da Home.` : ""}
+        onCancel={() => setDeleteTarget(null)}
+        onConfirm={() => deleteSection(deleteTarget!)}
+      />
     </div>
   );
 }

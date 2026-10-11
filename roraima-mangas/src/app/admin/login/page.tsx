@@ -8,14 +8,9 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 const loginSchema = z.object({
-  email: z
-    .string()
-    .min(1, "Informe o e-mail.")
-    .email("Informe um e-mail válido."),
+  email: z.string().min(1, "Informe o e-mail.").email("Informe um e-mail válido."),
 
-  password: z
-    .string()
-    .min(1, "Informe a senha."),
+  password: z.string().min(1, "Informe a senha."),
 });
 
 type LoginFormData = z.infer<typeof loginSchema>;
@@ -59,16 +54,9 @@ export default function AdminLoginPage() {
         <div>
           <label htmlFor="email">E-mail</label>
 
-          <input
-            id="email"
-            type="email"
-            autoComplete="email"
-            {...register("email")}
-          />
+          <input id="email" type="email" autoComplete="email" {...register("email")} />
 
-          {errors.email && (
-            <p>{errors.email.message}</p>
-          )}
+          {errors.email && <p>{errors.email.message}</p>}
         </div>
 
         <div>
@@ -81,9 +69,7 @@ export default function AdminLoginPage() {
             {...register("password")}
           />
 
-          {errors.password && (
-            <p>{errors.password.message}</p>
-          )}
+          {errors.password && <p>{errors.password.message}</p>}
         </div>
 
         {error && <p>{error}</p>}

@@ -4,9 +4,19 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { ImageIcon, Plus } from "lucide-react";
-import { AdminEmptyState, AdminFeedback, AdminPageHeader, AdminSearch, AdminSkeletonList } from "@/src/components/admin/admin-ui";
+import {
+  AdminEmptyState,
+  AdminFeedback,
+  AdminPageHeader,
+  AdminSearch,
+  AdminSkeletonList,
+} from "@/src/components/admin/admin-ui";
 import { Button } from "@/src/components/ui/button";
+import { Input } from "@/src/components/ui/input";
+import { Label } from "@/src/components/ui/label";
+import { Textarea } from "@/src/components/ui/textarea";
 import AdminConfirmDialog from "@/src/components/admin/admin-confirm-dialog";
+import AdminFormDialog from "@/src/components/admin/admin-form-dialog";
 import {
   createCollectionSchema,
   type CreateCollectionInput,
@@ -71,32 +81,21 @@ function CollectionForm({ collection, onSave, onCancel }: CollectionFormProps) {
   }, [imageFile]);
 
   return (
-    <form
-      className="space-y-5"
-      onSubmit={handleSubmit((values) => onSave(values, imageFile))}
-    >
-      <h2 className="text-xl font-semibold">
-        {collection ? "Editar coleção" : "Nova coleção"}
-      </h2>
-
+    <form className="space-y-5" onSubmit={handleSubmit((values) => onSave(values, imageFile))}>
       <div>
-        <label className="block" htmlFor="collection-name">Nome</label>
-        <input id="collection-name" className="w-full border p-2" {...register("name")} />
+        <Label htmlFor="collection-name">Nome</Label>
+        <Input id="collection-name" {...register("name")} />
         {errors.name && <p role="alert">{errors.name.message}</p>}
       </div>
 
       <div>
-        <label className="block" htmlFor="collection-description">Descrição</label>
-        <textarea
-          id="collection-description"
-          className="w-full border p-2"
-          {...register("description")}
-        />
+        <Label htmlFor="collection-description">Descrição</Label>
+        <Textarea id="collection-description" {...register("description")} />
         {errors.description && <p role="alert">{errors.description.message}</p>}
       </div>
 
       <div className="space-y-2">
-        <label className="block" htmlFor="collection-image">Imagem da coleção</label>
+        <Label htmlFor="collection-image">Imagem da coleção</Label>
         {collection?.image && (
           <div>
             <p>Imagem atual:</p>
@@ -107,14 +106,16 @@ function CollectionForm({ collection, onSave, onCancel }: CollectionFormProps) {
             />
           </div>
         )}
-        <input
+        <Input
           id="collection-image"
-          className="block"
           type="file"
           accept="image/jpeg,image/png,image/webp,image/avif"
           onChange={(event) => setImageFile(event.target.files?.[0])}
         />
-        <p className="text-sm text-neutral-600">Dimensão recomendada: 1600 × 600 px (proporção 8:3), para o banner responsivo da coleção. Formatos: JPG, PNG, WebP ou AVIF.</p>
+        <p className="text-sm text-neutral-600">
+          Dimensão recomendada: 1600 × 600 px (proporção 8:3), para o banner responsivo da coleção.
+          Formatos: JPG, PNG, WebP ou AVIF.
+        </p>
         {previewUrl && (
           <div>
             <p>Prévia da nova imagem:</p>
@@ -128,20 +129,19 @@ function CollectionForm({ collection, onSave, onCancel }: CollectionFormProps) {
       </div>
 
       <div className="flex gap-3">
-        <Button
-          type="submit"
-          disabled={isSubmitting}
-        >
+        <Button type="submit" disabled={isSubmitting}>
           {isSubmitting ? "Salvando..." : "Salvar coleção"}
         </Button>
-        <Button type="button" variant="outline" onClick={onCancel}>Cancelar</Button>
+        <Button type="button" variant="outline" onClick={onCancel}>
+          Cancelar
+        </Button>
       </div>
     </form>
   );
 }
 
 async function readApiResponse(response: Response): Promise<ApiResult> {
-  const data = await response.json() as ApiResult;
+  const data = (await response.json()) as ApiResult;
   if (!response.ok) {
     throw new Error(data.message ?? "A operação não foi concluída.");
   }
@@ -205,11 +205,7 @@ async function uploadCollectionImage(file: File) {
   }
 
   if (!r2Response.ok) {
-    console.error(
-      "O R2 recusou a imagem da coleção:",
-      r2Response.status,
-      r2Response.statusText
-    );
+    console.error("O R2 recusou a imagem da coleção:", r2Response.status, r2Response.statusText);
     throw new Error("Não foi possível enviar a imagem. Verifique a conexão e tente novamente.");
   }
 
@@ -240,7 +236,9 @@ export default function CollectionsPage() {
         fetch("/api/products"),
       ]);
       const collectionData = await readApiResponse(collectionResponse);
-      const productData = await readApiResponse(productResponse) as ApiResult & { products?: Product[] };
+      const productData = (await readApiResponse(productResponse)) as ApiResult & {
+        products?: Product[];
+      };
       setCollections(collectionData.collections ?? []);
       setProducts(productData.products ?? []);
     } catch (cause) {
@@ -274,26 +272,32 @@ export default function CollectionsPage() {
       setError("");
       const uploadedImageUrl = imageFile
         ? await uploadCollectionImage(imageFile)
-        : editingCollection?.image ?? undefined;
+        : (editingCollection?.image ?? undefined);
       const response = await fetch(
         editingCollection ? `/api/collections/${editingCollection.id}` : "/api/collections",
         {
           method: editingCollection ? "PATCH" : "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ ...values, image: uploadedImageUrl }),
-        }
+        },
       );
       await readApiResponse(response);
       setShowForm(false);
       setEditingCollection(undefined);
-      setNotice(editingCollection ? "Coleção atualizada com sucesso." : "Coleção criada com sucesso.");
+      setNotice(
+        editingCollection ? "Coleção atualizada com sucesso." : "Coleção criada com sucesso.",
+      );
       await loadCollections();
     } catch (cause) {
       console.error("Erro ao salvar coleção:", cause);
-      setError(getErrorMessage(
-        cause,
-        editingCollection ? "Não foi possível atualizar a coleção." : "Não foi possível criar a coleção."
-      ));
+      setError(
+        getErrorMessage(
+          cause,
+          editingCollection
+            ? "Não foi possível atualizar a coleção."
+            : "Não foi possível criar a coleção.",
+        ),
+      );
     }
   }
 
@@ -320,11 +324,13 @@ export default function CollectionsPage() {
     try {
       setSavingAssociation(true);
       setError("");
-      await readApiResponse(await fetch(`/api/collections/${managingCollection.id}/products`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ productId: selectedProductId }),
-      }));
+      await readApiResponse(
+        await fetch(`/api/collections/${managingCollection.id}/products`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ productId: selectedProductId }),
+        }),
+      );
       await loadAssociatedProducts(managingCollection);
       setNotice("Produto adicionado à coleção.");
     } catch (cause) {
@@ -339,10 +345,11 @@ export default function CollectionsPage() {
     if (!managingCollection) return;
     try {
       setError("");
-      await readApiResponse(await fetch(
-        `/api/collections/${managingCollection.id}/products/${product.id}`,
-        { method: "DELETE" }
-      ));
+      await readApiResponse(
+        await fetch(`/api/collections/${managingCollection.id}/products/${product.id}`, {
+          method: "DELETE",
+        }),
+      );
       setAssociatedProducts((current) => current.filter((item) => item.id !== product.id));
       setNotice("Produto removido da coleção.");
     } catch (cause) {
@@ -352,50 +359,72 @@ export default function CollectionsPage() {
   }
 
   const availableProducts = products.filter(
-    (product) => !associatedProducts.some((associated) => associated.id === product.id)
+    (product) => !associatedProducts.some((associated) => associated.id === product.id),
   );
   const normalizedSearch = search.trim().toLocaleLowerCase();
   const filteredCollections = collections.filter((collection) =>
-    collection.name.toLocaleLowerCase().includes(normalizedSearch)
+    collection.name.toLocaleLowerCase().includes(normalizedSearch),
   );
 
   return (
     <div className="admin-page">
-      <AdminPageHeader eyebrow="Catálogo" title="Coleções" description="Organize produtos em coleções para facilitar a descoberta na loja." actions={
-        <Button
-          type="button"
-          onClick={() => {
-            if (showForm) {
-              setShowForm(false);
-              return;
-            }
-            setEditingCollection(undefined);
-            setError("");
-            setNotice("");
-            setShowForm(true);
-          }}
-        >
-          {showForm ? "Fechar formulário" : <><Plus />Nova coleção</>}
-        </Button>
-      } />
+      <AdminPageHeader
+        eyebrow="Catálogo"
+        title="Coleções"
+        description="Organize produtos em coleções para facilitar a descoberta na loja."
+        actions={
+          <Button
+            type="button"
+            onClick={() => {
+              if (showForm) {
+                setShowForm(false);
+                return;
+              }
+              setEditingCollection(undefined);
+              setError("");
+              setNotice("");
+              setShowForm(true);
+            }}
+          >
+            {showForm ? (
+              "Fechar formulário"
+            ) : (
+              <>
+                <Plus />
+                Nova coleção
+              </>
+            )}
+          </Button>
+        }
+      />
 
       {error && <AdminFeedback type="error">{error}</AdminFeedback>}
       {notice && <AdminFeedback type="success">{notice}</AdminFeedback>}
 
-      {showForm && (
+      <AdminFormDialog
+        open={showForm}
+        onOpenChange={(open) => {
+          setShowForm(open);
+          if (!open) setEditingCollection(undefined);
+        }}
+        title={editingCollection ? "Editar coleção" : "Nova coleção"}
+        description="Defina o nome, a descrição e a imagem usada para apresentar a coleção."
+      >
         <CollectionForm
           key={editingCollection?.id ?? "new"}
           collection={editingCollection}
           onSave={saveCollection}
           onCancel={() => setShowForm(false)}
         />
-      )}
+      </AdminFormDialog>
 
       {managingCollection && (
         <section className="admin-panel space-y-4">
           <div className="flex items-center justify-between gap-3">
             <h2 className="text-xl font-semibold">Produtos: {managingCollection.name}</h2>
-            <Button type="button" variant="ghost" onClick={() => setManagingCollection(undefined)}>Fechar</Button>
+            <Button type="button" variant="ghost" onClick={() => setManagingCollection(undefined)}>
+              Fechar
+            </Button>
           </div>
           <div className="flex flex-wrap gap-2">
             <select
@@ -405,22 +434,40 @@ export default function CollectionsPage() {
             >
               <option value="">Selecione um produto</option>
               {availableProducts.map((product) => (
-                <option key={product.id} value={product.id}>{product.name}</option>
+                <option key={product.id} value={product.id}>
+                  {product.name}
+                </option>
               ))}
             </select>
-            <Button type="button" disabled={!selectedProductId || savingAssociation} onClick={() => void addProduct()}>
+            <Button
+              type="button"
+              disabled={!selectedProductId || savingAssociation}
+              onClick={() => void addProduct()}
+            >
               {savingAssociation ? "Adicionando..." : "Adicionar produto"}
             </Button>
           </div>
-          {availableProducts.length === 0 && <p>Todos os produtos existentes já estão nesta coleção.</p>}
+          {availableProducts.length === 0 && (
+            <p>Todos os produtos existentes já estão nesta coleção.</p>
+          )}
           {associatedProducts.length === 0 ? (
             <p>Nenhum produto associado a esta coleção.</p>
           ) : (
             <ul className="space-y-2">
               {associatedProducts.map((product) => (
-                <li key={product.id} className="flex items-center justify-between rounded-lg bg-slate-50 p-3">
+                <li
+                  key={product.id}
+                  className="flex items-center justify-between rounded-lg bg-slate-50 p-3"
+                >
                   <span>{product.name}</span>
-                  <Button type="button" variant="destructive" size="sm" onClick={() => void removeProduct(product)}>Remover</Button>
+                  <Button
+                    type="button"
+                    variant="destructive"
+                    size="sm"
+                    onClick={() => void removeProduct(product)}
+                  >
+                    Remover
+                  </Button>
                 </li>
               ))}
             </ul>
@@ -429,38 +476,108 @@ export default function CollectionsPage() {
       )}
 
       <section className="space-y-4">
-        <div className="admin-toolbar"><div className="admin-section-heading"><div><h2>Coleções cadastradas</h2><p>{collections.length} {collections.length === 1 ? "coleção" : "coleções"}</p></div></div><AdminSearch value={search} onChange={setSearch} placeholder="Pesquisar coleções..." label="Pesquisar coleções pelo nome" /></div>
+        <div className="admin-toolbar">
+          <div className="admin-section-heading">
+            <div>
+              <h2>Coleções cadastradas</h2>
+              <p>
+                {collections.length} {collections.length === 1 ? "coleção" : "coleções"}
+              </p>
+            </div>
+          </div>
+          <AdminSearch
+            value={search}
+            onChange={setSearch}
+            placeholder="Pesquisar coleções..."
+            label="Pesquisar coleções pelo nome"
+          />
+        </div>
         {loading && <AdminSkeletonList />}
-        {!loading && collections.length === 0 && !error && <AdminEmptyState icon={ImageIcon} title="Nenhuma coleção cadastrada" description="Crie uma coleção para organizar os produtos da loja." />}
-        {!loading && collections.length > 0 && filteredCollections.length === 0 && (
-          <AdminEmptyState title="Nenhum resultado" description={`Nenhuma coleção corresponde à busca “${search}”.`} />
+        {!loading && collections.length === 0 && !error && (
+          <AdminEmptyState
+            icon={ImageIcon}
+            title="Nenhuma coleção cadastrada"
+            description="Crie uma coleção para organizar os produtos da loja."
+          />
         )}
-        {!loading && filteredCollections.map((collection) => (
-          <article key={collection.id} className="admin-item flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-            <div className="flex min-w-0 items-center gap-3">
-              {collection.image ? <img src={collection.image} alt="" className="size-14 shrink-0 rounded-lg border border-slate-200 object-cover" /> : <span className="grid size-14 shrink-0 place-items-center rounded-lg bg-slate-100 text-slate-400"><ImageIcon className="size-5" /></span>}
-              <div className="min-w-0">
-              <h3 className="font-semibold">{collection.name}</h3>
-              {collection.description && <p className="mt-1 line-clamp-2 text-sm text-slate-500">{collection.description}</p>}
+        {!loading && collections.length > 0 && filteredCollections.length === 0 && (
+          <AdminEmptyState
+            title="Nenhum resultado"
+            description={`Nenhuma coleção corresponde à busca “${search}”.`}
+          />
+        )}
+        {!loading &&
+          filteredCollections.map((collection) => (
+            <article
+              key={collection.id}
+              className="admin-item flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between"
+            >
+              <div className="flex min-w-0 items-center gap-3">
+                {collection.image ? (
+                  <img
+                    src={collection.image}
+                    alt=""
+                    className="size-14 shrink-0 rounded-lg border border-slate-200 object-cover"
+                  />
+                ) : (
+                  <span className="grid size-14 shrink-0 place-items-center rounded-lg bg-slate-100 text-slate-400">
+                    <ImageIcon className="size-5" />
+                  </span>
+                )}
+                <div className="min-w-0">
+                  <h3 className="font-semibold">{collection.name}</h3>
+                  {collection.description && (
+                    <p className="mt-1 line-clamp-2 text-sm text-slate-500">
+                      {collection.description}
+                    </p>
+                  )}
+                </div>
               </div>
-            </div>
-            <div className="admin-actions">
-              <Button variant="outline" size="sm"
-                type="button"
-                onClick={() => {
-                  setEditingCollection(collection);
-                  setError("");
-                  setNotice("");
-                  setShowForm(true);
-                }}
-              >Editar</Button>
-              <Button variant="outline" size="sm" type="button" onClick={() => void loadAssociatedProducts(collection)}>Gerenciar produtos</Button>
-              <Button variant="destructive" size="sm" type="button" onClick={() => setDeleteTarget(collection)}>Excluir</Button>
-            </div>
-          </article>
-        ))}
+              <div className="admin-actions">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  type="button"
+                  onClick={() => {
+                    setEditingCollection(collection);
+                    setError("");
+                    setNotice("");
+                    setShowForm(true);
+                  }}
+                >
+                  Editar
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  type="button"
+                  onClick={() => void loadAssociatedProducts(collection)}
+                >
+                  Gerenciar produtos
+                </Button>
+                <Button
+                  variant="destructive"
+                  size="sm"
+                  type="button"
+                  onClick={() => setDeleteTarget(collection)}
+                >
+                  Excluir
+                </Button>
+              </div>
+            </article>
+          ))}
       </section>
-      <AdminConfirmDialog open={Boolean(deleteTarget)} title="Excluir coleção?" description={deleteTarget ? `“${deleteTarget.name}” será removida. Os produtos continuarão cadastrados.` : ""} onCancel={() => setDeleteTarget(undefined)} onConfirm={() => deleteCollection(deleteTarget!)} />
+      <AdminConfirmDialog
+        open={Boolean(deleteTarget)}
+        title="Excluir coleção?"
+        description={
+          deleteTarget
+            ? `“${deleteTarget.name}” será removida. Os produtos continuarão cadastrados.`
+            : ""
+        }
+        onCancel={() => setDeleteTarget(undefined)}
+        onConfirm={() => deleteCollection(deleteTarget!)}
+      />
     </div>
   );
 }

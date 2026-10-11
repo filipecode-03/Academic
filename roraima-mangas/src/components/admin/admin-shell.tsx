@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import logo from '@/public/logo.jpg'
+import logo from "@/public/logo.jpg";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import {
@@ -60,15 +60,19 @@ function NavigationContent({ onNavigate }: { onNavigate?: () => void }) {
         </div>
       </div>
 
-      <nav className="flex-1 space-y-6 overflow-y-auto px-3 py-5" aria-label="Navegação administrativa">
+      <nav
+        className="flex-1 space-y-6 overflow-y-auto px-3 py-5"
+        aria-label="Navegação administrativa"
+      >
         {navigation.map((group) => (
           <div key={group.label}>
-            <p className="mb-2 px-3 text-[0.68rem] font-semibold uppercase tracking-[0.16em] text-slate-500">
+            <p className="mb-2 px-3 text-[0.68rem] font-semibold tracking-[0.16em] text-slate-500 uppercase">
               {group.label}
             </p>
             <div className="space-y-1">
               {group.items.map((item) => {
-                const active = item.href === "/admin" ? pathname === item.href : pathname.startsWith(item.href);
+                const active =
+                  item.href === "/admin" ? pathname === item.href : pathname.startsWith(item.href);
                 const Icon = item.icon;
                 return (
                   <Link
@@ -76,9 +80,9 @@ function NavigationContent({ onNavigate }: { onNavigate?: () => void }) {
                     href={item.href}
                     onClick={onNavigate}
                     aria-current={active ? "page" : undefined}
-                    className={`group flex min-h-10 items-center gap-3 rounded-lg px-3 text-sm font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 ${
+                    className={`group flex min-h-10 items-center gap-3 rounded-lg px-3 text-sm font-medium transition-all duration-200 focus-visible:ring-2 focus-visible:ring-brand-secondary focus-visible:outline-none ${
                       active
-                        ? "bg-emerald-400 text-emerald-950 shadow-sm"
+                        ? "bg-brand text-brand-deep shadow-sm"
                         : "text-slate-300 hover:bg-white/8 hover:text-white"
                     }`}
                   >
@@ -107,7 +111,9 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
   useEffect(() => setOpen(false), [pathname]);
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
-    return () => { document.body.style.overflow = ""; };
+    return () => {
+      document.body.style.overflow = "";
+    };
   }, [open]);
 
   if (pathname === "/admin/login") return <>{children}</>;
@@ -126,11 +132,11 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
             className="absolute inset-0 bg-slate-950/55 backdrop-blur-[2px]"
             onClick={() => setOpen(false)}
           />
-          <aside className="relative flex h-full w-[min(20rem,88vw)] flex-col bg-slate-950 shadow-2xl motion-safe:animate-in motion-safe:slide-in-from-left motion-safe:duration-200">
+          <aside className="relative flex h-full w-[min(20rem,88vw)] flex-col bg-slate-950 shadow-2xl motion-safe:animate-in motion-safe:duration-200 motion-safe:slide-in-from-left">
             <button
               type="button"
               aria-label="Fechar navegação"
-              className="absolute right-3 top-5 z-10 grid size-9 place-items-center rounded-lg text-slate-300 transition hover:bg-white/10 hover:text-white"
+              className="absolute top-5 right-3 z-10 grid size-9 place-items-center rounded-lg text-slate-300 transition hover:bg-white/10 hover:text-white"
               onClick={() => setOpen(false)}
             >
               <X className="size-5" />

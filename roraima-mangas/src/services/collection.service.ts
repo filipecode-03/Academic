@@ -1,13 +1,8 @@
 import { prisma } from "@/src/lib/prisma";
-import type {
-  CreateCollectionInput,
-  UpdateCollectionInput,
-} from "@/src/schemas/collection.schema";
+import type { CreateCollectionInput, UpdateCollectionInput } from "@/src/schemas/collection.schema";
 import { createUniqueSlug } from "@/src/lib/slug";
 
-export async function createCollection(
-  data: CreateCollectionInput
-) {
+export async function createCollection(data: CreateCollectionInput) {
   const collection = await prisma.collection.create({
     data: {
       name: data.name,
@@ -40,10 +35,7 @@ export async function getCollectionById(id: string) {
   return collection;
 }
 
-export async function updateCollection(
-  id: string,
-  data: UpdateCollectionInput
-) {
+export async function updateCollection(id: string, data: UpdateCollectionInput) {
   const { name, ...rest } = data;
   const collection = await prisma.collection.update({
     where: {

@@ -6,9 +6,7 @@ import {
   deletePromoNotice,
 } from "@/src/services/promo-notice.service";
 
-import {
-  updatePromoNoticeSchema,
-} from "@/src/schemas/promo-notice.schema";
+import { updatePromoNoticeSchema } from "@/src/schemas/promo-notice.schema";
 
 import { getAuthenticatedToken } from "@/src/lib/auth-guard";
 
@@ -18,10 +16,7 @@ type RouteContext = {
   }>;
 };
 
-export async function GET(
-  request: Request,
-  context: RouteContext
-) {
+export async function GET(request: Request, context: RouteContext) {
   try {
     const { id } = await context.params;
 
@@ -33,7 +28,7 @@ export async function GET(
           success: false,
           message: "Aviso promocional não encontrado.",
         },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
@@ -42,25 +37,19 @@ export async function GET(
       promoNotice,
     });
   } catch (error) {
-    console.error(
-      "Erro ao buscar aviso promocional:",
-      error
-    );
+    console.error("Erro ao buscar aviso promocional:", error);
 
     return NextResponse.json(
       {
         success: false,
         message: "Erro ao buscar aviso promocional.",
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
 
-export async function PATCH(
-  request: NextRequest,
-  context: RouteContext
-) {
+export async function PATCH(request: NextRequest, context: RouteContext) {
   try {
     const token = await getAuthenticatedToken(request);
 
@@ -70,7 +59,7 @@ export async function PATCH(
           success: false,
           message: "Não autorizado.",
         },
-        { status: 401 }
+        { status: 401 },
       );
     }
 
@@ -87,14 +76,11 @@ export async function PATCH(
           message: "Dados inválidos.",
           errors: result.error.flatten().fieldErrors,
         },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
-    const promoNotice = await updatePromoNotice(
-      id,
-      result.data
-    );
+    const promoNotice = await updatePromoNotice(id, result.data);
 
     if (!promoNotice) {
       return NextResponse.json(
@@ -102,7 +88,7 @@ export async function PATCH(
           success: false,
           message: "Aviso promocional não encontrado.",
         },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
@@ -111,22 +97,18 @@ export async function PATCH(
       promoNotice,
     });
   } catch (error) {
-    console.error(
-      "Erro ao atualizar aviso promocional:",
-      error
-    );
+    console.error("Erro ao atualizar aviso promocional:", error);
 
     if (
       error instanceof Error &&
-      error.message ===
-        "A data final deve ser posterior à data inicial."
+      error.message === "A data final deve ser posterior à data inicial."
     ) {
       return NextResponse.json(
         {
           success: false,
           message: error.message,
         },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -135,15 +117,12 @@ export async function PATCH(
         success: false,
         message: "Erro ao atualizar aviso promocional.",
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
 
-export async function DELETE(
-  request: NextRequest,
-  context: RouteContext
-) {
+export async function DELETE(request: NextRequest, context: RouteContext) {
   try {
     const token = await getAuthenticatedToken(request);
 
@@ -153,7 +132,7 @@ export async function DELETE(
           success: false,
           message: "Não autorizado.",
         },
-        { status: 401 }
+        { status: 401 },
       );
     }
 
@@ -167,7 +146,7 @@ export async function DELETE(
           success: false,
           message: "Aviso promocional não encontrado.",
         },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
@@ -178,17 +157,14 @@ export async function DELETE(
       message: "Aviso promocional excluído com sucesso.",
     });
   } catch (error) {
-    console.error(
-      "Erro ao excluir aviso promocional:",
-      error
-    );
+    console.error("Erro ao excluir aviso promocional:", error);
 
     return NextResponse.json(
       {
         success: false,
         message: "Erro ao excluir aviso promocional.",
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

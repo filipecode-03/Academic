@@ -28,10 +28,7 @@ export default async function ProductPage({ params }: PageProps<"/produtos/[slug
       <Breadcrumb current={product.name} />
 
       <article className="grid items-start gap-6 lg:grid-cols-[28rem_minmax(0,1fr)] lg:gap-8 xl:grid-cols-[30rem_minmax(0,1fr)]">
-        <ProductGallery
-          name={product.name}
-          images={product.images}
-        />
+        <ProductGallery name={product.name} images={product.images} />
 
         <div className="rounded-2xl border bg-white p-5 shadow-sm sm:p-6 lg:p-7">
           <div className="space-y-5">
@@ -41,7 +38,7 @@ export default async function ProductPage({ params }: PageProps<"/produtos/[slug
                   <Link
                     key={collection.id}
                     href={`/colecoes/${collection.slug}`}
-                    className="rounded-full bg-yellow-400 text-black px-3 py-1 text-xs font-semibold text-neutral-800 transition-colors hover:bg-yellow-200"
+                    className="rounded-full bg-yellow-400 px-3 py-1 text-xs font-semibold text-black text-neutral-800 transition-colors hover:bg-yellow-200"
                   >
                     {collection.name}
                   </Link>
@@ -50,12 +47,12 @@ export default async function ProductPage({ params }: PageProps<"/produtos/[slug
             )}
 
             <div className="space-y-2">
-              <h1 className="text-2xl font-bold leading-tight tracking-tight sm:text-3xl">
+              <h1 className="text-2xl leading-tight font-bold tracking-tight sm:text-3xl">
                 {product.name}
               </h1>
 
               {product.description && (
-                <p className="whitespace-pre-wrap text-sm leading-6 text-neutral-600 sm:text-base sm:leading-7">
+                <p className="text-sm leading-6 whitespace-pre-wrap text-neutral-600 sm:text-base sm:leading-7">
                   {product.description}
                 </p>
               )}
@@ -67,9 +64,7 @@ export default async function ProductPage({ params }: PageProps<"/produtos/[slug
               </p>
 
               {!available && (
-                <p className="mt-1 text-sm font-semibold text-red-700">
-                  Produto indisponível
-                </p>
+                <p className="mt-1 text-sm font-semibold text-red-700">Produto indisponível</p>
               )}
             </div>
 
@@ -82,10 +77,7 @@ export default async function ProductPage({ params }: PageProps<"/produtos/[slug
 
       <section className="mt-8 rounded-2xl border bg-white px-5 shadow-sm sm:mt-10 sm:px-7">
         <Accordion>
-          <AccordionItem
-            value="product-details"
-            className="border-none"
-          >
+          <AccordionItem value="product-details" className="border-none">
             <AccordionTrigger className="py-5 text-base font-semibold hover:no-underline">
               Detalhes do Produto
             </AccordionTrigger>
@@ -97,20 +89,14 @@ export default async function ProductPage({ params }: PageProps<"/produtos/[slug
                     key={`${detail.title}-${index}`}
                     className="grid grid-cols-[1fr_auto] gap-4 py-3"
                   >
-                    <dt className="text-neutral-500">
-                      {detail.title}
-                    </dt>
+                    <dt className="text-neutral-500">{detail.title}</dt>
 
-                    <dd className="text-right font-medium">
-                      {detail.value}
-                    </dd>
+                    <dd className="text-right font-medium">{detail.value}</dd>
                   </div>
                 ))}
 
                 <div className="grid grid-cols-[1fr_auto] gap-4 py-3">
-                  <dt className="text-neutral-500">
-                    Disponibilidade
-                  </dt>
+                  <dt className="text-neutral-500">Disponibilidade</dt>
 
                   <dd className="text-right font-medium">
                     {available ? "Disponível" : "Indisponível"}
@@ -119,25 +105,17 @@ export default async function ProductPage({ params }: PageProps<"/produtos/[slug
 
                 {product.isNew && (
                   <div className="grid grid-cols-[1fr_auto] gap-4 py-3">
-                    <dt className="text-neutral-500">
-                      Novidade
-                    </dt>
+                    <dt className="text-neutral-500">Novidade</dt>
 
-                    <dd className="text-right font-medium">
-                      Sim
-                    </dd>
+                    <dd className="text-right font-medium">Sim</dd>
                   </div>
                 )}
 
                 {product.featured && (
                   <div className="grid grid-cols-[1fr_auto] gap-4 py-3">
-                    <dt className="text-neutral-500">
-                      Destaque
-                    </dt>
+                    <dt className="text-neutral-500">Destaque</dt>
 
-                    <dd className="text-right font-medium">
-                      Sim
-                    </dd>
+                    <dd className="text-right font-medium">Sim</dd>
                   </div>
                 )}
               </dl>

@@ -37,14 +37,21 @@ export function CartProvider({ children }: { children: ReactNode }) {
       if (saved) {
         const parsed: unknown = JSON.parse(saved);
         if (Array.isArray(parsed)) {
-          setItems(parsed.filter((item): item is CartItem =>
-            typeof item?.productId === "string" &&
-            typeof item?.slug === "string" &&
-            typeof item?.name === "string" &&
-            Number.isFinite(item?.price) &&
-            Number.isInteger(item?.quantity) && item.quantity > 0 &&
-            Number.isInteger(item.stock) && item.stock >= 0 && item.status === "ACTIVE" && item.quantity <= item.stock
-          ));
+          setItems(
+            parsed.filter(
+              (item): item is CartItem =>
+                typeof item?.productId === "string" &&
+                typeof item?.slug === "string" &&
+                typeof item?.name === "string" &&
+                Number.isFinite(item?.price) &&
+                Number.isInteger(item?.quantity) &&
+                item.quantity > 0 &&
+                Number.isInteger(item.stock) &&
+                item.stock >= 0 &&
+                item.status === "ACTIVE" &&
+                item.quantity <= item.stock,
+            ),
+          );
         }
       }
     } catch (cause) {
@@ -59,43 +66,65 @@ export function CartProvider({ children }: { children: ReactNode }) {
     if (hydrated) window.localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(items));
   }, [hydrated, items]);
 
-  const value = useMemo<CartContextValue>(() => ({
-    items,
-    itemCount: items.reduce((total, item) => total + item.quantity, 0),
-    subtotal: items.reduce((total, item) => total + item.price * item.quantity, 0),
-    addProduct(product, quantity) {
-      const existing = items.find((entry) => entry.productId === product.id);
-      if (product.status !== "ACTIVE" || product.stock < 1 || !Number.isInteger(quantity) || quantity < 1 || quantity > product.stock || (existing?.quantity ?? 0) + quantity > product.stock) return false;
-      const item: CartItem = {
-        productId: product.id,
-        slug: product.slug,
-        name: product.name,
-        price: Number(product.price),
-        image: product.images[0]?.image ?? null,
-        status: product.status,
-        stock: product.stock,
-        quantity: Math.floor(quantity),
-      };
-      setItems((current) => {
-        const existing = current.find((entry) => entry.productId === product.id);
-        return existing
-          ? current.map((entry) => entry.productId === product.id
-              ? { ...entry, quantity: entry.quantity + item.quantity, stock: product.stock, status: product.status }
-              : entry)
-          : [...current, item];
-      });
-      return true;
-    },
-    setQuantity(productId, quantity) {
-      if (!Number.isFinite(quantity) || quantity < 1) return;
-      setItems((current) => current.map((item) => item.productId === productId
-        ? { ...item, quantity: Math.min(item.stock, Math.floor(quantity)) }
-        : item));
-    },
-    removeProduct(productId) {
-      setItems((current) => current.filter((item) => item.productId !== productId));
-    },
-  }), [items]);
+  const value = useMemo<CartContextValue>(
+    () => ({
+      items,
+      itemCount: items.reduce((total, item) => total + item.quantity, 0),
+      subtotal: items.reduce((total, item) => total + item.price * item.quantity, 0),
+      addProduct(product, quantity) {
+        const existing = items.find((entry) => entry.productId === product.id);
+        if (
+          product.status !== "ACTIVE" ||
+          product.stock < 1 ||
+          !Number.isInteger(quantity) ||
+          quantity < 1 ||
+          quantity > product.stock ||
+          (existing?.quantity ?? 0) + quantity > product.stock
+        )
+          return false;
+        const item: CartItem = {
+          productId: product.id,
+          slug: product.slug,
+          name: product.name,
+          price: Number(product.price),
+          image: product.images[0]?.image ?? null,
+          status: product.status,
+          stock: product.stock,
+          quantity: Math.floor(quantity),
+        };
+        setItems((current) => {
+          const existing = current.find((entry) => entry.productId === product.id);
+          return existing
+            ? current.map((entry) =>
+                entry.productId === product.id
+                  ? {
+                      ...entry,
+                      quantity: entry.quantity + item.quantity,
+                      stock: product.stock,
+                      status: product.status,
+                    }
+                  : entry,
+              )
+            : [...current, item];
+        });
+        return true;
+      },
+      setQuantity(productId, quantity) {
+        if (!Number.isFinite(quantity) || quantity < 1) return;
+        setItems((current) =>
+          current.map((item) =>
+            item.productId === productId
+              ? { ...item, quantity: Math.min(item.stock, Math.floor(quantity)) }
+              : item,
+          ),
+        );
+      },
+      removeProduct(productId) {
+        setItems((current) => current.filter((item) => item.productId !== productId));
+      },
+    }),
+    [items],
+  );
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
 }

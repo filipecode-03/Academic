@@ -6,10 +6,7 @@ import { reorderHomeSections } from "@/src/services/home-section.service";
 export async function PATCH(request: NextRequest) {
   const token = await getAuthenticatedToken(request);
   if (!token?.id) {
-    return NextResponse.json(
-      { success: false, message: "Não autorizado." },
-      { status: 401 },
-    );
+    return NextResponse.json({ success: false, message: "Não autorizado." }, { status: 401 });
   }
 
   try {
@@ -32,9 +29,8 @@ export async function PATCH(request: NextRequest) {
     return NextResponse.json(
       {
         success: false,
-        message: error instanceof Error
-          ? error.message
-          : "Não foi possível salvar a ordem das seções.",
+        message:
+          error instanceof Error ? error.message : "Não foi possível salvar a ordem das seções.",
       },
       { status: 409 },
     );

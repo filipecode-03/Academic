@@ -25,11 +25,9 @@ export const r2Client = new S3Client({
   },
 });
 
-export const r2BucketName =
-  process.env.R2_BUCKET_NAME;
+export const r2BucketName = process.env.R2_BUCKET_NAME;
 
-export const r2PublicUrl =
-  process.env.R2_PUBLIC_URL;
+export const r2PublicUrl = process.env.R2_PUBLIC_URL;
 
 if (!r2BucketName) {
   throw new Error("R2_BUCKET_NAME não configurado.");

@@ -27,9 +27,7 @@ export default function Cnpj() {
         <div className="flex flex-col items-center gap-6 lg:flex-row lg:items-center lg:justify-between lg:gap-10">
           {/* Copyright / CNPJ */}
           <div className="text-center lg:text-left">
-            <p className="text-sm text-neutral-400">
-              &copy; Roraima Mangas
-            </p>
+            <p className="text-sm text-neutral-400">&copy; Roraima Mangas</p>
           </div>
 
           {/* Formas de pagamento */}
@@ -56,7 +54,7 @@ export default function Cnpj() {
               })
             }
             aria-label="Voltar ao topo"
-            className="transition-transform duration-200 cursor-pointer hover:-translate-y-1"
+            className="cursor-pointer transition-transform duration-200 hover:-translate-y-1"
           >
             <ArrowUp className="h-5 w-5 text-yellow-400" />
           </button>

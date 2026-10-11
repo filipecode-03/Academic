@@ -11,24 +11,20 @@ type RouteContext = {
   }>;
 };
 
-export async function DELETE(
-    request: NextRequest,
-    context: RouteContext  
-) {
+export async function DELETE(request: NextRequest, context: RouteContext) {
   try {
-
     const token = await getAuthenticatedToken(request);
 
     if (!token?.id) {
-    return NextResponse.json(
+      return NextResponse.json(
         {
-        success: false,
-        message: "Não autorizado.",
+          success: false,
+          message: "Não autorizado.",
         },
-        { status: 401 }
-    );
+        { status: 401 },
+      );
     }
-    
+
     const { id: collectionId, productId } = await context.params;
 
     const collection = await getCollectionById(collectionId);
@@ -39,7 +35,7 @@ export async function DELETE(
           success: false,
           message: "Coleção não encontrada.",
         },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
@@ -51,14 +47,11 @@ export async function DELETE(
           success: false,
           message: "Produto não encontrado.",
         },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
-    const products = await removeProductFromCollection(
-      collectionId,
-      productId
-    );
+    const products = await removeProductFromCollection(collectionId, productId);
 
     return NextResponse.json({
       success: true,
@@ -68,18 +61,13 @@ export async function DELETE(
   } catch (error) {
     console.error("Erro ao remover produto da coleção:", error);
 
-    if (
-      typeof error === "object" &&
-      error !== null &&
-      "code" in error &&
-      error.code === "P2025"
-    ) {
+    if (typeof error === "object" && error !== null && "code" in error && error.code === "P2025") {
       return NextResponse.json(
         {
           success: false,
           message: "O produto não está associado a esta coleção.",
         },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
@@ -88,7 +76,7 @@ export async function DELETE(
         success: false,
         message: "Erro ao remover produto da coleção.",
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

@@ -4,9 +4,7 @@ import type {
   UpdatePromoNoticeInput,
 } from "@/src/schemas/promo-notice.schema";
 
-export async function createPromoNotice(
-  data: CreatePromoNoticeInput
-) {
+export async function createPromoNotice(data: CreatePromoNoticeInput) {
   const promoNotice = await prisma.promoNotice.create({
     data: {
       content: data.content,
@@ -49,10 +47,7 @@ export async function getPromoNoticeById(id: string) {
   return promoNotice;
 }
 
-export async function updatePromoNotice(
-  id: string,
-  data: UpdatePromoNoticeInput
-) {
+export async function updatePromoNotice(id: string, data: UpdatePromoNoticeInput) {
   const existingPromoNotice = await prisma.promoNotice.findUnique({
     where: {
       id,
@@ -63,18 +58,12 @@ export async function updatePromoNotice(
     return null;
   }
 
-  const startAt = data.startAt
-    ? new Date(data.startAt)
-    : existingPromoNotice.startAt;
+  const startAt = data.startAt ? new Date(data.startAt) : existingPromoNotice.startAt;
 
-  const endAt = data.endAt
-    ? new Date(data.endAt)
-    : existingPromoNotice.endAt;
+  const endAt = data.endAt ? new Date(data.endAt) : existingPromoNotice.endAt;
 
   if (startAt >= endAt) {
-    throw new Error(
-      "A data final deve ser posterior à data inicial."
-    );
+    throw new Error("A data final deve ser posterior à data inicial.");
   }
 
   const promoNotice = await prisma.promoNotice.update({

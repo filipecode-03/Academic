@@ -9,45 +9,42 @@ import { Button } from "@/src/components/ui/button";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-const productFormSchema = z.object({
-  name: z
-    .string()
-    .min(1, "O nome do produto é obrigatório."),
+const productFormSchema = z
+  .object({
+    name: z.string().min(1, "O nome do produto é obrigatório."),
 
-  description: z
-    .string()
-    .optional(),
+    description: z.string().optional(),
 
-  price: z
-    .number()
-    .positive("O preço deve ser maior que zero."),
-  collectionIds: z.array(z.string()),
+    price: z.number().positive("O preço deve ser maior que zero."),
+    collectionIds: z.array(z.string()),
 
-  stock: z.number().int().min(0, "O estoque não pode ser negativo."),
-  details: z.array(z.object({ title: z.string().min(1), value: z.string().min(1) })),
+    stock: z.number().int().min(0, "O estoque não pode ser negativo."),
+    details: z.array(z.object({ title: z.string().min(1), value: z.string().min(1) })),
 
-  status: z
-    .enum(["ACTIVE", "INACTIVE"]),
+    status: z.enum(["ACTIVE", "INACTIVE"]),
 
-  featured: z
-    .boolean(),
+    featured: z.boolean(),
 
-  newEnabled: z.boolean(),
-  newDurationDays: z.enum(["7", "14", "30", "60"]),
-  newUntil: z.string(),
-  featuredExpiry: z.enum(["NEVER", "7", "14", "30", "60", "CUSTOM"]),
-  featuredStart: z.string(),
-  featuredEnd: z.string(),
+    newEnabled: z.boolean(),
+    newDurationDays: z.enum(["7", "14", "30", "60"]),
+    newUntil: z.string(),
+    featuredExpiry: z.enum(["NEVER", "7", "14", "30", "60", "CUSTOM"]),
+    featuredStart: z.string(),
+    featuredEnd: z.string(),
 
-  images: z
-    .array(z.instanceof(File)),
-}).refine((data) => !data.featured || data.featuredExpiry === "NEVER" || Boolean(data.featuredEnd), {
-  path: ["featuredEnd"],
-  message: "Informe a data final do período de destaque.",
-}).refine((data) => !data.newEnabled || Boolean(data.newUntil), {
-  path: ["newUntil"],
-  message: "Informe a data até a qual o produto será considerado novo.",
-});
+    images: z.array(z.instanceof(File)),
+  })
+  .refine(
+    (data) => !data.featured || data.featuredExpiry === "NEVER" || Boolean(data.featuredEnd),
+    {
+      path: ["featuredEnd"],
+      message: "Informe a data final do período de destaque.",
+    },
+  )
+  .refine((data) => !data.newEnabled || Boolean(data.newUntil), {
+    path: ["newUntil"],
+    message: "Informe a data até a qual o produto será considerado novo.",
+  });
 
 type ProductFormData = z.infer<typeof productFormSchema>;
 
@@ -101,14 +98,15 @@ function dateAfterDays(days: number) {
   return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
 }
 
-export default function ProductForm({
-  product,
-  onSuccess,
-}: ProductFormProps) {
+export default function ProductForm({ product, onSuccess }: ProductFormProps) {
   const isEditing = Boolean(product);
 
   const [previews, setPreviews] = useState<string[]>([]);
-  const [priceText, setPriceText] = useState(product ? Number(product.price).toLocaleString("pt-BR", { style: "currency", currency: "BRL" }) : "");
+  const [priceText, setPriceText] = useState(
+    product
+      ? Number(product.price).toLocaleString("pt-BR", { style: "currency", currency: "BRL" })
+      : "",
+  );
   const [collections, setCollections] = useState<{ id: string; name: string }[]>([]);
   const [createCollectionOpen, setCreateCollectionOpen] = useState(false);
   const [newCollectionName, setNewCollectionName] = useState("");
@@ -116,9 +114,7 @@ export default function ProductForm({
   const [creatingCollection, setCreatingCollection] = useState(false);
 
   const [existingImages, setExistingImages] = useState<string[]>(
-    product?.images
-      .sort((a, b) => a.order - b.order)
-      .map((image) => image.image) ?? []
+    product?.images.sort((a, b) => a.order - b.order).map((image) => image.image) ?? [],
   );
 
   const [submitError, setSubmitError] = useState("");
@@ -129,10 +125,7 @@ export default function ProductForm({
     setValue,
     watch,
     control,
-    formState: {
-      errors,
-      isSubmitting,
-    },
+    formState: { errors, isSubmitting },
   } = useForm<ProductFormData>({
     resolver: zodResolver(productFormSchema),
 
@@ -140,9 +133,7 @@ export default function ProductForm({
       name: product?.name ?? "",
       description: product?.description ?? "",
 
-      price: product
-        ? Number(product.price)
-        : undefined,
+      price: product ? Number(product.price) : undefined,
 
       stock: product?.stock ?? 0,
       details: product?.details ?? [],
@@ -168,33 +159,27 @@ export default function ProductForm({
   const { fields: detailFields, append, remove } = useFieldArray({ control, name: "details" });
 
   useEffect(() => {
-    void fetch("/api/collections").then(async (collectionResponse) => {
-      if (!collectionResponse.ok) throw new Error("Não foi possível carregar coleções.");
-      const collectionData = await collectionResponse.json();
-      setCollections(collectionData.collections ?? []);
-    }).catch((error) => console.error("Não foi possível carregar coleções do formulário:", error));
+    void fetch("/api/collections")
+      .then(async (collectionResponse) => {
+        if (!collectionResponse.ok) throw new Error("Não foi possível carregar coleções.");
+        const collectionData = await collectionResponse.json();
+        setCollections(collectionData.collections ?? []);
+      })
+      .catch((error) => console.error("Não foi possível carregar coleções do formulário:", error));
   }, []);
 
   useEffect(() => {
-    const urls = images.map((file) =>
-      URL.createObjectURL(file)
-    );
+    const urls = images.map((file) => URL.createObjectURL(file));
 
     setPreviews(urls);
 
     return () => {
-      urls.forEach((url) =>
-        URL.revokeObjectURL(url)
-      );
+      urls.forEach((url) => URL.revokeObjectURL(url));
     };
   }, [images]);
 
-  function handleImagesChange(
-    event: React.ChangeEvent<HTMLInputElement>
-  ) {
-    const files = Array.from(
-      event.target.files ?? []
-    );
+  function handleImagesChange(event: React.ChangeEvent<HTMLInputElement>) {
+    const files = Array.from(event.target.files ?? []);
 
     if (files.length === 0) {
       return;
@@ -206,50 +191,64 @@ export default function ProductForm({
   }
 
   function removeExistingImage(index: number) {
-    setExistingImages((current) =>
-      current.filter(
-        (_, imageIndex) => imageIndex !== index
-      )
-    );
+    setExistingImages((current) => current.filter((_, imageIndex) => imageIndex !== index));
   }
 
   async function createCollectionFromProduct() {
     const collectionName = newCollectionName.trim();
-    if (!collectionName) { setCollectionError("Informe o nome da coleção."); return; }
+    if (!collectionName) {
+      setCollectionError("Informe o nome da coleção.");
+      return;
+    }
     try {
-      setCreatingCollection(true); setCollectionError("");
-      const response = await fetch("/api/collections", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ name: collectionName }) });
-      const result = await response.json() as { message?: string; collection?: { id: string; name: string } };
-      if (!response.ok || !result.collection) throw new Error(result.message ?? "Não foi possível criar a coleção.");
+      setCreatingCollection(true);
+      setCollectionError("");
+      const response = await fetch("/api/collections", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name: collectionName }),
+      });
+      const result = (await response.json()) as {
+        message?: string;
+        collection?: { id: string; name: string };
+      };
+      if (!response.ok || !result.collection)
+        throw new Error(result.message ?? "Não foi possível criar a coleção.");
       setCollections((current) => [...current, result.collection!]);
-      setValue("collectionIds", [...selectedCollections, result.collection.id], { shouldDirty: true, shouldValidate: true });
-      setNewCollectionName(""); setCreateCollectionOpen(false);
-    } catch (cause) { setCollectionError(cause instanceof Error ? cause.message : "Não foi possível criar a coleção."); }
-    finally { setCreatingCollection(false); }
+      setValue("collectionIds", [...selectedCollections, result.collection.id], {
+        shouldDirty: true,
+        shouldValidate: true,
+      });
+      setNewCollectionName("");
+      setCreateCollectionOpen(false);
+    } catch (cause) {
+      setCollectionError(
+        cause instanceof Error ? cause.message : "Não foi possível criar a coleção.",
+      );
+    } finally {
+      setCreatingCollection(false);
+    }
   }
 
   async function uploadImage(file: File) {
     let uploadResponse: Response;
 
     try {
-      uploadResponse = await fetch(
-        "/api/uploads/image",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            fileName: file.name,
-            contentType: file.type,
-            folder: "products",
-          }),
-        }
-      );
+      uploadResponse = await fetch("/api/uploads/image", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          fileName: file.name,
+          contentType: file.type,
+          folder: "products",
+        }),
+      });
     } catch (error) {
       console.error("Falha ao solicitar URL de upload:", error);
       throw new Error(
-        "Não foi possível preparar o envio da imagem. Verifique a conexão e tente novamente."
+        "Não foi possível preparar o envio da imagem. Verifique a conexão e tente novamente.",
       );
     }
 
@@ -263,23 +262,16 @@ export default function ProductForm({
       uploadData = await uploadResponse.json();
     } catch (error) {
       console.error("Resposta inválida ao solicitar URL de upload:", error);
-      throw new Error(
-        "Não foi possível preparar o envio da imagem. Tente novamente."
-      );
+      throw new Error("Não foi possível preparar o envio da imagem. Tente novamente.");
     }
 
     if (!uploadResponse.ok) {
-      throw new Error(
-        uploadData.message ??
-          "Não foi possível preparar o upload."
-      );
+      throw new Error(uploadData.message ?? "Não foi possível preparar o upload.");
     }
 
     if (!uploadData.uploadUrl || !uploadData.publicUrl) {
       console.error("A API de upload retornou URLs incompletas.");
-      throw new Error(
-        "Não foi possível preparar o envio da imagem. Tente novamente."
-      );
+      throw new Error("Não foi possível preparar o envio da imagem. Tente novamente.");
     }
 
     let r2Response: Response;
@@ -296,16 +288,12 @@ export default function ProductForm({
       // A URL assinada contém credenciais temporárias; não a inclua no log.
       console.error("Falha de rede/CORS durante o PUT para o R2:", error);
       throw new Error(
-        "Não foi possível enviar a imagem. Verifique a conexão e a configuração de CORS do armazenamento, depois tente novamente."
+        "Não foi possível enviar a imagem. Verifique a conexão e a configuração de CORS do armazenamento, depois tente novamente.",
       );
     }
 
     if (!r2Response.ok) {
-      console.error(
-        "O R2 recusou o upload da imagem:",
-        r2Response.status,
-        r2Response.statusText
-      );
+      console.error("O R2 recusou o upload da imagem:", r2Response.status, r2Response.statusText);
       throw new Error("Não foi possível enviar a imagem. Tente novamente.");
     }
 
@@ -319,23 +307,16 @@ export default function ProductForm({
       let imageUrls = existingImages;
 
       if (data.images.length > 0) {
-        imageUrls = await Promise.all(
-          data.images.map((file) =>
-            uploadImage(file)
-          )
-        );
+        imageUrls = await Promise.all(data.images.map((file) => uploadImage(file)));
       }
 
       if (imageUrls.length === 0) {
-        throw new Error(
-          "O produto deve possuir pelo menos uma imagem."
-        );
+        throw new Error("O produto deve possuir pelo menos uma imagem.");
       }
 
       const payload = {
         name: data.name,
-        description:
-          data.description || undefined,
+        description: data.description || undefined,
         price: data.price,
         stock: data.stock,
         details: data.details,
@@ -344,38 +325,30 @@ export default function ProductForm({
         featured: data.featured,
         newUntil: data.newEnabled ? dateAtLocalEndOfDay(data.newUntil) : null,
         featuredStartAt: dateAtLocalStartOfDay(data.featuredStart),
-        featuredEndAt: data.featuredExpiry === "NEVER" ? null : dateAtLocalEndOfDay(data.featuredEnd),
-        images: imageUrls.map(
-          (image, index) => ({
-            image,
-            order: index,
-          })
-        ),
+        featuredEndAt:
+          data.featuredExpiry === "NEVER" ? null : dateAtLocalEndOfDay(data.featuredEnd),
+        images: imageUrls.map((image, index) => ({
+          image,
+          order: index,
+        })),
       };
 
-      const response = await fetch(
-        isEditing
-          ? `/api/products/${product!.id}`
-          : "/api/products",
-        {
-          method: isEditing ? "PATCH" : "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(payload),
-        }
-      );
+      const response = await fetch(isEditing ? `/api/products/${product!.id}` : "/api/products", {
+        method: isEditing ? "PATCH" : "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
 
       const result = await response.json();
 
       if (!response.ok) {
         throw new Error(
           result.message ??
-            (
-              isEditing
-                ? "Não foi possível atualizar o produto."
-                : "Não foi possível criar o produto."
-            )
+            (isEditing
+              ? "Não foi possível atualizar o produto."
+              : "Não foi possível criar o produto."),
         );
       }
 
@@ -384,20 +357,15 @@ export default function ProductForm({
       setSubmitError(
         error instanceof Error
           ? error.message
-          : (
-              isEditing
-                ? "Ocorreu um erro ao atualizar o produto."
-                : "Ocorreu um erro ao criar o produto."
-            )
+          : isEditing
+            ? "Ocorreu um erro ao atualizar o produto."
+            : "Ocorreu um erro ao criar o produto.",
       );
     }
   }
 
   return (
-    <form
-      onSubmit={handleSubmit(onSubmit)}
-      className="space-y-6"
-    >
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
       <fieldset className="admin-form-section">
         <legend>Informações básicas</legend>
         <p className="admin-help">Dados usados para identificar e apresentar o produto na loja.</p>
@@ -418,116 +386,372 @@ export default function ProductForm({
         <div className="grid gap-4 sm:grid-cols-3">
           <div className="admin-field">
             <label htmlFor="price">Preço</label>
-            <input id="price" className="w-full" type="text" inputMode="decimal" value={priceText} onChange={(event) => {
-              const text = event.target.value;
-              setPriceText(text);
-              const raw = text.replace(/R\$\s?/g, "").trim();
-              const normalized = (raw.includes(",") ? raw.replace(/\./g, "").replace(",", ".") : raw).replace(/[^0-9.]/g, "");
-              setValue("price", Number(normalized), { shouldValidate: true });
-            }} onBlur={() => {
-              const value = watch("price");
-              if (Number.isFinite(value) && value > 0) setPriceText(value.toLocaleString("pt-BR", { style: "currency", currency: "BRL" }));
-            }} />
+            <input
+              id="price"
+              className="w-full"
+              type="text"
+              inputMode="decimal"
+              value={priceText}
+              onChange={(event) => {
+                const text = event.target.value;
+                setPriceText(text);
+                const raw = text.replace(/R\$\s?/g, "").trim();
+                const normalized = (
+                  raw.includes(",") ? raw.replace(/\./g, "").replace(",", ".") : raw
+                ).replace(/[^0-9.]/g, "");
+                setValue("price", Number(normalized), { shouldValidate: true });
+              }}
+              onBlur={() => {
+                const value = watch("price");
+                if (Number.isFinite(value) && value > 0)
+                  setPriceText(
+                    value.toLocaleString("pt-BR", { style: "currency", currency: "BRL" }),
+                  );
+              }}
+            />
             {errors.price && <p role="alert">{errors.price.message}</p>}
           </div>
           <div className="admin-field">
             <label htmlFor="stock">Estoque</label>
-            <input id="stock" className="w-full" type="number" min="0" step="1" {...register("stock", { valueAsNumber: true })} />
+            <input
+              id="stock"
+              className="w-full"
+              type="number"
+              min="0"
+              step="1"
+              {...register("stock", { valueAsNumber: true })}
+            />
             {errors.stock && <p role="alert">{errors.stock.message}</p>}
           </div>
           <div className="admin-field">
             <label htmlFor="status">Status</label>
-            <select id="status" className="w-full" {...register("status")}><option value="ACTIVE">Ativo</option><option value="INACTIVE">Inativo</option></select>
+            <select id="status" className="w-full" {...register("status")}>
+              <option value="ACTIVE">Ativo</option>
+              <option value="INACTIVE">Inativo</option>
+            </select>
           </div>
         </div>
       </fieldset>
 
-      <fieldset className="admin-form-section"><legend>Coleções</legend><p className="admin-help">Associe o produto a uma ou mais coleções da loja.</p><div className="flex flex-col gap-2 sm:flex-row"><select aria-label="Selecionar coleção" className="min-w-0 flex-1" value="" onChange={(event) => { const id = event.target.value; if (id && !selectedCollections.includes(id)) setValue("collectionIds", [...selectedCollections, id], { shouldDirty: true }); }}><option value="">Selecionar coleção…</option>{collections.filter((collection) => !selectedCollections.includes(collection.id)).map((collection) => <option key={collection.id} value={collection.id}>{collection.name}</option>)}</select><Button type="button" variant="outline" onClick={() => { setCollectionError(""); setCreateCollectionOpen(true); }}><Plus className="size-4" />Criar coleção</Button></div>{selectedCollections.length > 0 && <div className="flex flex-wrap gap-2">{collections.filter((collection) => selectedCollections.includes(collection.id)).map((collection) => <span key={collection.id} className="inline-flex items-center gap-1 rounded-full bg-slate-100 px-3 py-1 text-sm font-medium text-slate-700">{collection.name}<button type="button" className="rounded-full p-0.5 text-slate-400 hover:bg-slate-200 hover:text-slate-700" aria-label={`Remover ${collection.name}`} onClick={() => setValue("collectionIds", selectedCollections.filter((id) => id !== collection.id), { shouldDirty: true })}><X className="size-3.5" /></button></span>)}</div>}</fieldset>
+      <fieldset className="admin-form-section">
+        <legend>Coleções</legend>
+        <p className="admin-help">Associe o produto a uma ou mais coleções da loja.</p>
+        <div className="flex flex-col gap-2 sm:flex-row">
+          <select
+            aria-label="Selecionar coleção"
+            className="min-w-0 flex-1"
+            value=""
+            onChange={(event) => {
+              const id = event.target.value;
+              if (id && !selectedCollections.includes(id))
+                setValue("collectionIds", [...selectedCollections, id], { shouldDirty: true });
+            }}
+          >
+            <option value="">Selecionar coleção…</option>
+            {collections
+              .filter((collection) => !selectedCollections.includes(collection.id))
+              .map((collection) => (
+                <option key={collection.id} value={collection.id}>
+                  {collection.name}
+                </option>
+              ))}
+          </select>
+          <Button
+            type="button"
+            variant="outline"
+            onClick={() => {
+              setCollectionError("");
+              setCreateCollectionOpen(true);
+            }}
+          >
+            <Plus className="size-4" />
+            Criar coleção
+          </Button>
+        </div>
+        {selectedCollections.length > 0 && (
+          <div className="flex flex-wrap gap-2">
+            {collections
+              .filter((collection) => selectedCollections.includes(collection.id))
+              .map((collection) => (
+                <span
+                  key={collection.id}
+                  className="inline-flex items-center gap-1 rounded-full bg-slate-100 px-3 py-1 text-sm font-medium text-slate-700"
+                >
+                  {collection.name}
+                  <button
+                    type="button"
+                    className="rounded-full p-0.5 text-slate-400 hover:bg-slate-200 hover:text-slate-700"
+                    aria-label={`Remover ${collection.name}`}
+                    onClick={() =>
+                      setValue(
+                        "collectionIds",
+                        selectedCollections.filter((id) => id !== collection.id),
+                        { shouldDirty: true },
+                      )
+                    }
+                  >
+                    <X className="size-3.5" />
+                  </button>
+                </span>
+              ))}
+          </div>
+        )}
+      </fieldset>
 
-      {createCollectionOpen && <div className="fixed inset-0 z-[70] flex items-center justify-center bg-black/45 p-4" onMouseDown={(event) => { if (event.target === event.currentTarget && !creatingCollection) setCreateCollectionOpen(false); }}><section role="dialog" aria-modal="true" aria-labelledby="quick-collection-title" className="w-full max-w-md rounded-xl border bg-white p-5 shadow-2xl"><h2 id="quick-collection-title" className="text-lg font-semibold">Criar coleção</h2><p className="mt-1 text-sm text-neutral-600">A coleção será adicionada a este produto e você continuará preenchendo o formulário.</p><label className="mt-4 block space-y-1 text-sm font-medium">Nome<input autoFocus className="w-full" value={newCollectionName} onChange={(event) => setNewCollectionName(event.target.value)} onKeyDown={(event) => { if (event.key === "Enter") { event.preventDefault(); void createCollectionFromProduct(); } }} /></label>{collectionError && <p role="alert" className="mt-2 text-sm text-red-700">{collectionError}</p>}<div className="mt-5 flex justify-end gap-2"><Button type="button" variant="outline" disabled={creatingCollection} onClick={() => setCreateCollectionOpen(false)}>Cancelar</Button><Button type="button" disabled={creatingCollection} onClick={() => void createCollectionFromProduct()}>{creatingCollection ? "Criando…" : "Criar e selecionar"}</Button></div></section></div>}
+      {createCollectionOpen && (
+        <div
+          className="fixed inset-0 z-[70] flex items-center justify-center bg-black/45 p-4"
+          onMouseDown={(event) => {
+            if (event.target === event.currentTarget && !creatingCollection)
+              setCreateCollectionOpen(false);
+          }}
+        >
+          <section
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="quick-collection-title"
+            className="w-full max-w-md rounded-xl border bg-white p-5 shadow-2xl"
+          >
+            <h2 id="quick-collection-title" className="text-lg font-semibold">
+              Criar coleção
+            </h2>
+            <p className="mt-1 text-sm text-neutral-600">
+              A coleção será adicionada a este produto e você continuará preenchendo o formulário.
+            </p>
+            <label className="mt-4 block space-y-1 text-sm font-medium">
+              Nome
+              <input
+                autoFocus
+                className="w-full"
+                value={newCollectionName}
+                onChange={(event) => setNewCollectionName(event.target.value)}
+                onKeyDown={(event) => {
+                  if (event.key === "Enter") {
+                    event.preventDefault();
+                    void createCollectionFromProduct();
+                  }
+                }}
+              />
+            </label>
+            {collectionError && (
+              <p role="alert" className="mt-2 text-sm text-red-700">
+                {collectionError}
+              </p>
+            )}
+            <div className="mt-5 flex justify-end gap-2">
+              <Button
+                type="button"
+                variant="outline"
+                disabled={creatingCollection}
+                onClick={() => setCreateCollectionOpen(false)}
+              >
+                Cancelar
+              </Button>
+              <Button
+                type="button"
+                disabled={creatingCollection}
+                onClick={() => void createCollectionFromProduct()}
+              >
+                {creatingCollection ? "Criando…" : "Criar e selecionar"}
+              </Button>
+            </div>
+          </section>
+        </div>
+      )}
 
-      <fieldset className="admin-form-section"><legend>Detalhes do produto</legend><p className="admin-help">Adicione informações como formato, editora ou autor.</p>
-        {detailFields.map((field, index) => <div key={field.id} className="grid gap-2 sm:grid-cols-[1fr_2fr_auto]">
-          <input aria-label="Título do detalhe" placeholder="Título" {...register(`details.${index}.title`)} />
-          <input aria-label="Valor do detalhe" placeholder="Valor" {...register(`details.${index}.value`)} />
-          <Button type="button" variant="destructive" size="icon" aria-label="Remover detalhe" onClick={() => remove(index)}><Trash2 /></Button>
-        </div>)}
-        <Button type="button" variant="outline" onClick={() => append({ title: "", value: "" })}><Plus />Adicionar detalhe</Button>
+      <fieldset className="admin-form-section">
+        <legend>Detalhes do produto</legend>
+        <p className="admin-help">Adicione informações como formato, editora ou autor.</p>
+        {detailFields.map((field, index) => (
+          <div key={field.id} className="grid gap-2 sm:grid-cols-[1fr_2fr_auto]">
+            <input
+              aria-label="Título do detalhe"
+              placeholder="Título"
+              {...register(`details.${index}.title`)}
+            />
+            <input
+              aria-label="Valor do detalhe"
+              placeholder="Valor"
+              {...register(`details.${index}.value`)}
+            />
+            <Button
+              type="button"
+              variant="destructive"
+              size="icon"
+              aria-label="Remover detalhe"
+              onClick={() => remove(index)}
+            >
+              <Trash2 />
+            </Button>
+          </div>
+        ))}
+        <Button type="button" variant="outline" onClick={() => append({ title: "", value: "" })}>
+          <Plus />
+          Adicionar detalhe
+        </Button>
       </fieldset>
 
       <fieldset className="admin-form-section">
         <legend className="px-1 font-semibold">Lançamento</legend>
-        <label className="flex items-center gap-2 text-sm font-medium"><input type="checkbox" checked={newEnabled} onChange={(event) => {
-          const enabled = event.target.checked;
-          setValue("newEnabled", enabled, { shouldDirty: true });
-          if (enabled) setValue("newUntil", dateAfterDays(Number(newDurationDays)), { shouldDirty: true, shouldValidate: true });
-        }} />Marcar como novo</label>
+        <label className="flex items-center gap-2 text-sm font-medium">
+          <input
+            type="checkbox"
+            checked={newEnabled}
+            onChange={(event) => {
+              const enabled = event.target.checked;
+              setValue("newEnabled", enabled, { shouldDirty: true });
+              if (enabled)
+                setValue("newUntil", dateAfterDays(Number(newDurationDays)), {
+                  shouldDirty: true,
+                  shouldValidate: true,
+                });
+            }}
+          />
+          Marcar como novo
+        </label>
         <div className="grid gap-3 sm:grid-cols-2">
-          <label className="space-y-1 text-sm font-medium">Duração<select className="w-full" disabled={!newEnabled} value={newDurationDays} onChange={(event) => {
-            const duration = event.target.value as ProductFormData["newDurationDays"];
-            setValue("newDurationDays", duration, { shouldDirty: true });
-            if (newEnabled) setValue("newUntil", dateAfterDays(Number(duration)), { shouldDirty: true, shouldValidate: true });
-          }}><option value="7">7 dias</option><option value="14">14 dias</option><option value="30">30 dias</option><option value="60">60 dias</option></select></label>
-          <label className="space-y-1 text-sm font-medium">Válido até<input className="w-full" type="date" disabled={!newEnabled} {...register("newUntil")} /></label>
+          <label className="space-y-1 text-sm font-medium">
+            Duração
+            <select
+              className="w-full"
+              disabled={!newEnabled}
+              value={newDurationDays}
+              onChange={(event) => {
+                const duration = event.target.value as ProductFormData["newDurationDays"];
+                setValue("newDurationDays", duration, { shouldDirty: true });
+                if (newEnabled)
+                  setValue("newUntil", dateAfterDays(Number(duration)), {
+                    shouldDirty: true,
+                    shouldValidate: true,
+                  });
+              }}
+            >
+              <option value="7">7 dias</option>
+              <option value="14">14 dias</option>
+              <option value="30">30 dias</option>
+              <option value="60">60 dias</option>
+            </select>
+          </label>
+          <label className="space-y-1 text-sm font-medium">
+            Válido até
+            <input
+              className="w-full"
+              type="date"
+              disabled={!newEnabled}
+              {...register("newUntil")}
+            />
+          </label>
         </div>
-        <p className="text-xs text-neutral-500">A novidade termina automaticamente ao fim da data selecionada. A duração pode ser escolhida ou ajustada pela data.</p>
+        <p className="text-xs text-neutral-500">
+          A novidade termina automaticamente ao fim da data selecionada. A duração pode ser
+          escolhida ou ajustada pela data.
+        </p>
       </fieldset>
 
       <fieldset className="admin-form-section">
         <legend className="px-1 font-semibold">Destaque editorial</legend>
-        <label className="flex items-center gap-2 text-sm font-medium"><input type="checkbox" {...register("featured")} />Ativar destaque</label>
+        <label className="flex items-center gap-2 text-sm font-medium">
+          <input type="checkbox" {...register("featured")} />
+          Ativar destaque
+        </label>
         <div className="grid gap-3 sm:grid-cols-2">
-          <label className="space-y-1 text-sm font-medium">Período<select className="w-full" disabled={!featured} value={featuredExpiry} onChange={(event) => {
-            const expiry = event.target.value as ProductFormData["featuredExpiry"];
-            setValue("featuredExpiry", expiry, { shouldDirty: true, shouldValidate: true });
-            if (expiry === "NEVER") setValue("featuredEnd", "", { shouldDirty: true });
-            else if (expiry !== "CUSTOM") setValue("featuredEnd", dateAfterDays(Number(expiry)), { shouldDirty: true, shouldValidate: true });
-            else if (!watch("featuredEnd")) setValue("featuredEnd", dateAfterDays(14), { shouldDirty: true, shouldValidate: true });
-          }}><option value="NEVER">Sem expiração</option><option value="7">7 dias</option><option value="14">14 dias</option><option value="30">30 dias</option><option value="60">60 dias</option><option value="CUSTOM">Personalizado</option></select></label>
-          <label className="space-y-1 text-sm font-medium">Início<input className="w-full" type="date" disabled={!featured} {...register("featuredStart")} /></label>
-          {featuredExpiry !== "NEVER" && <label className="space-y-1 text-sm font-medium">Fim<input className="w-full" type="date" disabled={!featured} {...register("featuredEnd")} />{errors.featuredEnd && <span role="alert" className="block text-xs text-red-700">{errors.featuredEnd.message}</span>}</label>}
+          <label className="space-y-1 text-sm font-medium">
+            Período
+            <select
+              className="w-full"
+              disabled={!featured}
+              value={featuredExpiry}
+              onChange={(event) => {
+                const expiry = event.target.value as ProductFormData["featuredExpiry"];
+                setValue("featuredExpiry", expiry, { shouldDirty: true, shouldValidate: true });
+                if (expiry === "NEVER") setValue("featuredEnd", "", { shouldDirty: true });
+                else if (expiry !== "CUSTOM")
+                  setValue("featuredEnd", dateAfterDays(Number(expiry)), {
+                    shouldDirty: true,
+                    shouldValidate: true,
+                  });
+                else if (!watch("featuredEnd"))
+                  setValue("featuredEnd", dateAfterDays(14), {
+                    shouldDirty: true,
+                    shouldValidate: true,
+                  });
+              }}
+            >
+              <option value="NEVER">Sem expiração</option>
+              <option value="7">7 dias</option>
+              <option value="14">14 dias</option>
+              <option value="30">30 dias</option>
+              <option value="60">60 dias</option>
+              <option value="CUSTOM">Personalizado</option>
+            </select>
+          </label>
+          <label className="space-y-1 text-sm font-medium">
+            Início
+            <input
+              className="w-full"
+              type="date"
+              disabled={!featured}
+              {...register("featuredStart")}
+            />
+          </label>
+          {featuredExpiry !== "NEVER" && (
+            <label className="space-y-1 text-sm font-medium">
+              Fim
+              <input
+                className="w-full"
+                type="date"
+                disabled={!featured}
+                {...register("featuredEnd")}
+              />
+              {errors.featuredEnd && (
+                <span role="alert" className="block text-xs text-red-700">
+                  {errors.featuredEnd.message}
+                </span>
+              )}
+            </label>
+          )}
         </div>
-        <p className="text-xs text-neutral-500">Sem expiração mantém o destaque até desativá-lo. Com período, ele termina automaticamente após a data final.</p>
+        <p className="text-xs text-neutral-500">
+          Sem expiração mantém o destaque até desativá-lo. Com período, ele termina automaticamente
+          após a data final.
+        </p>
       </fieldset>
 
-      {isEditing &&
-        existingImages.length > 0 && (
-          <div className="admin-upload">
-            <p className="mb-3 text-sm font-semibold text-slate-800">Imagens atuais</p>
+      {isEditing && existingImages.length > 0 && (
+        <div className="admin-upload">
+          <p className="mb-3 text-sm font-semibold text-slate-800">Imagens atuais</p>
 
-            <div className="flex gap-4 flex-wrap">
-              {existingImages.map(
-                (image, index) => (
-                  <div key={image} className="relative overflow-hidden rounded-xl border border-slate-200 bg-white">
-                    <img
-                      src={image}
-                      alt={`Imagem atual ${index + 1}`}
-                      className="h-36 w-28 object-cover sm:w-32"
-                    />
+          <div className="flex flex-wrap gap-4">
+            {existingImages.map((image, index) => (
+              <div
+                key={image}
+                className="relative overflow-hidden rounded-xl border border-slate-200 bg-white"
+              >
+                <img
+                  src={image}
+                  alt={`Imagem atual ${index + 1}`}
+                  className="h-36 w-28 object-cover sm:w-32"
+                />
 
-                    <Button
-                      type="button"
-                      variant="destructive"
-                      size="sm"
-                      className="m-2 w-[calc(100%-1rem)]"
-                      onClick={() =>
-                        removeExistingImage(index)
-                      }
-                    >
-                      Remover
-                    </Button>
-                  </div>
-                )
-              )}
-            </div>
+                <Button
+                  type="button"
+                  variant="destructive"
+                  size="sm"
+                  className="m-2 w-[calc(100%-1rem)]"
+                  onClick={() => removeExistingImage(index)}
+                >
+                  Remover
+                </Button>
+              </div>
+            ))}
           </div>
-        )}
+        </div>
+      )}
 
       <div className="admin-upload space-y-3">
-        <label htmlFor="images" className="flex items-center gap-2 font-semibold text-slate-800"><ImagePlus className="size-4" />
-          {isEditing
-            ? "Substituir imagens"
-            : "Imagens"}
+        <label htmlFor="images" className="flex items-center gap-2 font-semibold text-slate-800">
+          <ImagePlus className="size-4" />
+          {isEditing ? "Substituir imagens" : "Imagens"}
         </label>
 
         <input
@@ -537,43 +761,33 @@ export default function ProductForm({
           multiple
           onChange={handleImagesChange}
         />
-        <p className="admin-help">Recomendado: 1000 × 1250 px (proporção 4:5). JPG, PNG, WebP ou AVIF.</p>
+        <p className="admin-help">
+          Recomendado: 1000 × 1250 px (proporção 4:5). JPG, PNG, WebP ou AVIF.
+        </p>
 
-        {!isEditing &&
-          errors.images && (
-            <p>
-              {errors.images.message}
-            </p>
-          )}
+        {!isEditing && errors.images && <p>{errors.images.message}</p>}
       </div>
 
       {previews.length > 0 && (
         <div>
           <p className="mb-3 text-sm font-semibold text-slate-800">Prévia das novas imagens</p>
 
-          <div className="flex gap-4 flex-wrap">
-            {previews.map(
-              (preview, index) => (
-                <img
-                  key={preview}
-                  src={preview}
-                  alt={`Nova imagem ${index + 1}`}
-                  className="h-36 w-28 rounded-xl border border-slate-200 object-cover sm:w-32"
-                />
-              )
-            )}
+          <div className="flex flex-wrap gap-4">
+            {previews.map((preview, index) => (
+              <img
+                key={preview}
+                src={preview}
+                alt={`Nova imagem ${index + 1}`}
+                className="h-36 w-28 rounded-xl border border-slate-200 object-cover sm:w-32"
+              />
+            ))}
           </div>
         </div>
       )}
 
       {submitError && <AdminFeedback type="error">{submitError}</AdminFeedback>}
 
-      <Button
-        type="submit"
-        size="lg"
-        className="w-full sm:w-auto"
-        disabled={isSubmitting}
-      >
+      <Button type="submit" size="lg" className="w-full sm:w-auto" disabled={isSubmitting}>
         {isSubmitting
           ? isEditing
             ? "Salvando..."

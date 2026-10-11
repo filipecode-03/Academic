@@ -5,6 +5,11 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import AdminConfirmDialog from "@/src/components/admin/admin-confirm-dialog";
+import AdminFormDialog from "@/src/components/admin/admin-form-dialog";
+import { Button } from "@/src/components/ui/button";
+import { Input } from "@/src/components/ui/input";
+import { Label } from "@/src/components/ui/label";
+import { Textarea } from "@/src/components/ui/textarea";
 import {
   createPromoNoticeSchema,
   type CreatePromoNoticeInput,
@@ -45,16 +50,14 @@ function PromoNoticeForm({ notice, onSave, onCancel }: PromoNoticeFormProps) {
 
   return (
     <form className="space-y-5" onSubmit={handleSubmit(onSave)}>
-      <h2 className="text-xl font-semibold">{notice ? "Editar aviso" : "Novo aviso"}</h2>
-
       <div>
-        <label className="block" htmlFor="notice-content">Conteúdo</label>
-        <textarea id="notice-content" className="w-full border p-2" {...register("content")} />
+        <Label htmlFor="notice-content">Conteúdo</Label>
+        <Textarea id="notice-content" {...register("content")} />
         {errors.content && <p role="alert">{errors.content.message}</p>}
       </div>
 
       <div>
-        <label className="block" htmlFor="notice-position">Posição</label>
+        <Label htmlFor="notice-position">Posição</Label>
         <select id="notice-position" {...register("position")}>
           <option value="TOP">Topo</option>
           <option value="BELOW_CAROUSEL">Abaixo do carrossel</option>
@@ -62,30 +65,38 @@ function PromoNoticeForm({ notice, onSave, onCancel }: PromoNoticeFormProps) {
       </div>
 
       <div>
-        <label className="block" htmlFor="notice-order">Ordem</label>
-        <input id="notice-order" type="number" min={0} step={1} {...register("order", { valueAsNumber: true })} />
+        <Label htmlFor="notice-order">Ordem</Label>
+        <Input
+          id="notice-order"
+          type="number"
+          min={0}
+          step={1}
+          {...register("order", { valueAsNumber: true })}
+        />
         {errors.order && <p role="alert">{errors.order.message}</p>}
       </div>
 
       <div>
-        <label className="block" htmlFor="notice-start">Início</label>
-        <input
+        <Label htmlFor="notice-start">Início</Label>
+        <Input
           id="notice-start"
           type="datetime-local"
           value={startInput}
           onChange={(event) => {
             const value = event.target.value;
             setStartInput(value);
-            setValue("startAt", value ? new Date(value).toISOString() : "", { shouldValidate: true });
+            setValue("startAt", value ? new Date(value).toISOString() : "", {
+              shouldValidate: true,
+            });
           }}
         />
-        <input type="hidden" {...register("startAt")} />
+        <Input type="hidden" {...register("startAt")} />
         {errors.startAt && <p role="alert">{errors.startAt.message}</p>}
       </div>
 
       <div>
-        <label className="block" htmlFor="notice-end">Fim</label>
-        <input
+        <Label htmlFor="notice-end">Fim</Label>
+        <Input
           id="notice-end"
           type="datetime-local"
           value={endInput}
@@ -95,7 +106,7 @@ function PromoNoticeForm({ notice, onSave, onCancel }: PromoNoticeFormProps) {
             setValue("endAt", value ? new Date(value).toISOString() : "", { shouldValidate: true });
           }}
         />
-        <input type="hidden" {...register("endAt")} />
+        <Input type="hidden" {...register("endAt")} />
         {errors.endAt && <p role="alert">{errors.endAt.message}</p>}
       </div>
 
@@ -105,8 +116,12 @@ function PromoNoticeForm({ notice, onSave, onCancel }: PromoNoticeFormProps) {
       </label>
 
       <div className="flex gap-3">
-        <button type="submit" disabled={isSubmitting}>{isSubmitting ? "Salvando..." : "Salvar aviso"}</button>
-        <button type="button" className="admin-button-secondary" onClick={onCancel}>Cancelar</button>
+        <Button type="submit" disabled={isSubmitting}>
+          {isSubmitting ? "Salvando..." : "Salvar aviso"}
+        </Button>
+        <Button type="button" variant="outline" onClick={onCancel}>
+          Cancelar
+        </Button>
       </div>
     </form>
   );
@@ -120,14 +135,15 @@ type ApiResponse = {
 };
 
 async function readResponse(response: Response): Promise<ApiResponse> {
-  const data = await response.json() as ApiResponse;
+  const data = (await response.json()) as ApiResponse;
   if (!response.ok) throw new Error(data.message ?? "A operação não foi concluída.");
   return data;
 }
 
 function getErrorMessage(cause: unknown, fallback: string) {
   if (!(cause instanceof Error)) return fallback;
-  if (cause instanceof TypeError || cause.message.toLowerCase() === "failed to fetch") return fallback;
+  if (cause instanceof TypeError || cause.message.toLowerCase() === "failed to fetch")
+    return fallback;
   return cause.message;
 }
 
@@ -155,11 +171,13 @@ export default function PromoNoticesPage() {
     }
   }
 
-  useEffect(() => { void loadNotices(); }, []);
+  useEffect(() => {
+    void loadNotices();
+  }, []);
 
   const normalizedSearch = search.trim().toLocaleLowerCase();
   const filteredNotices = notices.filter((notice) =>
-    notice.content.toLocaleLowerCase().includes(normalizedSearch)
+    notice.content.toLocaleLowerCase().includes(normalizedSearch),
   );
 
   async function saveNotice(values: CreatePromoNoticeInput) {
@@ -171,7 +189,7 @@ export default function PromoNoticesPage() {
           method: editingNotice ? "PATCH" : "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(values),
-        }
+        },
       );
       await readResponse(response);
       setShowForm(false);
@@ -180,10 +198,12 @@ export default function PromoNoticesPage() {
       await loadNotices();
     } catch (cause) {
       console.error("Erro ao salvar aviso promocional:", cause);
-      setError(getErrorMessage(
-        cause,
-        editingNotice ? "Não foi possível atualizar o aviso." : "Não foi possível criar o aviso."
-      ));
+      setError(
+        getErrorMessage(
+          cause,
+          editingNotice ? "Não foi possível atualizar o aviso." : "Não foi possível criar o aviso.",
+        ),
+      );
     }
   }
 
@@ -221,16 +241,32 @@ export default function PromoNoticesPage() {
         </button>
       </header>
 
-      {error && <p role="alert" className="admin-feedback admin-feedback-error">{error}</p>}
-      {noticeMessage && <p role="status" className="admin-feedback admin-feedback-success">{noticeMessage}</p>}
-      {showForm && (
+      {error && (
+        <p role="alert" className="admin-feedback admin-feedback-error">
+          {error}
+        </p>
+      )}
+      {noticeMessage && (
+        <p role="status" className="admin-feedback admin-feedback-success">
+          {noticeMessage}
+        </p>
+      )}
+      <AdminFormDialog
+        open={showForm}
+        onOpenChange={(open) => {
+          setShowForm(open);
+          if (!open) setEditingNotice(undefined);
+        }}
+        title={editingNotice ? "Editar aviso" : "Novo aviso"}
+        description="Configure a mensagem, a posição e o período de exibição."
+      >
         <PromoNoticeForm
           key={editingNotice?.id ?? "new"}
           notice={editingNotice}
           onSave={saveNotice}
           onCancel={() => setShowForm(false)}
         />
-      )}
+      </AdminFormDialog>
 
       <section className="space-y-3">
         <h2 className="text-xl font-semibold">Avisos cadastrados</h2>
@@ -243,29 +279,71 @@ export default function PromoNoticesPage() {
             value={search}
             onChange={(event) => setSearch(event.target.value)}
           />
-          {search && <button type="button" onClick={() => setSearch("")}>Limpar pesquisa</button>}
+          {search && (
+            <button type="button" onClick={() => setSearch("")}>
+              Limpar pesquisa
+            </button>
+          )}
         </div>
-        {loading && <div className="h-24 animate-pulse rounded-xl border border-slate-200 bg-white" />}
-        {!loading && notices.length === 0 && !error && <p className="admin-empty-state">Nenhum aviso cadastrado. Crie um aviso para comunicar novidades na loja.</p>}
+        {loading && (
+          <div className="h-24 animate-pulse rounded-xl border border-slate-200 bg-white" />
+        )}
+        {!loading && notices.length === 0 && !error && (
+          <p className="admin-empty-state">
+            Nenhum aviso cadastrado. Crie um aviso para comunicar novidades na loja.
+          </p>
+        )}
         {!loading && notices.length > 0 && filteredNotices.length === 0 && (
           <p>Nenhum aviso encontrado para “{search}”.</p>
         )}
-        {!loading && filteredNotices.map((notice) => (
-          <article key={notice.id} className="admin-item flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-            <div>
-              <p className="font-medium">{notice.content}</p>
-              <p>Posição: {notice.position === "TOP" ? "Topo" : "Abaixo do carrossel"} · Ordem: {notice.order}</p>
-              <p>Status: {notice.active ? "Ativo" : "Inativo"}</p>
-              <p>Período: {new Date(notice.startAt).toLocaleString()} – {new Date(notice.endAt).toLocaleString()}</p>
-            </div>
-            <div className="flex gap-3">
-              <button type="button" onClick={() => { setEditingNotice(notice); setError(""); setNoticeMessage(""); setShowForm(true); }}>Editar</button>
-              <button type="button" className="admin-button-danger" onClick={() => setDeleteTarget(notice)}>Excluir</button>
-            </div>
-          </article>
-        ))}
+        {!loading &&
+          filteredNotices.map((notice) => (
+            <article
+              key={notice.id}
+              className="admin-item flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between"
+            >
+              <div>
+                <p className="font-medium">{notice.content}</p>
+                <p>
+                  Posição: {notice.position === "TOP" ? "Topo" : "Abaixo do carrossel"} · Ordem:{" "}
+                  {notice.order}
+                </p>
+                <p>Status: {notice.active ? "Ativo" : "Inativo"}</p>
+                <p>
+                  Período: {new Date(notice.startAt).toLocaleString()} –{" "}
+                  {new Date(notice.endAt).toLocaleString()}
+                </p>
+              </div>
+              <div className="flex gap-3">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setEditingNotice(notice);
+                    setError("");
+                    setNoticeMessage("");
+                    setShowForm(true);
+                  }}
+                >
+                  Editar
+                </button>
+                <button
+                  type="button"
+                  className="admin-button-danger"
+                  onClick={() => setDeleteTarget(notice)}
+                >
+                  Excluir
+                </button>
+              </div>
+            </article>
+          ))}
       </section>
-      <AdminConfirmDialog open={Boolean(deleteTarget)} title="Excluir aviso?" description="O aviso promocional será removido permanentemente." onCancel={() => setDeleteTarget(undefined)} onConfirm={() => deleteNotice(deleteTarget!)} />
+      <AdminConfirmDialog
+        open={Boolean(deleteTarget)}
+        title="Excluir aviso?"
+        description="O aviso promocional será removido permanentemente."
+        onCancel={() => setDeleteTarget(undefined)}
+        onConfirm={() => deleteNotice(deleteTarget!)}
+      />
     </div>
   );
 }

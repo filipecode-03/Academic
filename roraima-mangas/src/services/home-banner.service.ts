@@ -1,9 +1,6 @@
 import { prisma } from "@/src/lib/prisma";
 import { Prisma } from "@/generated/prisma/client";
-import {
-  createHomeBannerSchema,
-  updateHomeBannerSchema,
-} from "@/src/schemas/home-banner.schema";
+import { createHomeBannerSchema, updateHomeBannerSchema } from "@/src/schemas/home-banner.schema";
 import { z } from "zod";
 
 type CreateHomeBannerInput = z.infer<typeof createHomeBannerSchema>;
@@ -19,11 +16,7 @@ const bannerInclude = {
 export async function listHomeBanners() {
   return prisma.homeBanner.findMany({
     include: bannerInclude,
-    orderBy: [
-      { order: "asc" },
-      { createdAt: "asc" },
-      { id: "asc" },
-    ],
+    orderBy: [{ order: "asc" }, { createdAt: "asc" }, { id: "asc" }],
   });
 }
 
@@ -43,9 +36,7 @@ export async function createHomeBanner(data: CreateHomeBannerInput) {
 
     const currentBanners = await normalizeBannerOrders(tx);
     const position: BannerPosition =
-      currentBanners.length === 0
-        ? "FIRST"
-        : data.position ?? "LAST";
+      currentBanners.length === 0 ? "FIRST" : (data.position ?? "LAST");
 
     if (position === "FIRST") {
       for (let index = currentBanners.length - 1; index >= 0; index -= 1) {
@@ -72,28 +63,27 @@ export async function createHomeBanner(data: CreateHomeBannerInput) {
   });
 }
 
-export async function updateHomeBanner(
-  id: string,
-  data: UpdateHomeBannerInput,
-) {
+export async function updateHomeBanner(id: string, data: UpdateHomeBannerInput) {
   return withSerializableTransaction(async (tx) => {
     const existingBanner = await tx.homeBanner.findUnique({ where: { id } });
     if (!existingBanner) return null;
 
     const destinationType = data.destinationType ?? existingBanner.destinationType;
     const productId = data.productId !== undefined ? data.productId : existingBanner.productId;
-    const collectionId = data.collectionId !== undefined ? data.collectionId : existingBanner.collectionId;
+    const collectionId =
+      data.collectionId !== undefined ? data.collectionId : existingBanner.collectionId;
 
     await validateDestination(tx, destinationType, {
       productId,
       collectionId,
     });
 
-    const destinationData = destinationType === "PRODUCT"
-      ? { productId, collectionId: null }
-      : destinationType === "COLLECTION"
-        ? { productId: null, collectionId }
-        : { productId: null, collectionId: null };
+    const destinationData =
+      destinationType === "PRODUCT"
+        ? { productId, collectionId: null }
+        : destinationType === "COLLECTION"
+          ? { productId: null, collectionId }
+          : { productId: null, collectionId: null };
 
     const orderedBanners = await normalizeBannerOrders(tx);
     if (data.position) {
@@ -161,21 +151,14 @@ export async function deleteHomeBanner(id: string) {
 async function normalizeBannerOrders(tx: BannerTransaction) {
   const banners = await tx.homeBanner.findMany({
     select: { id: true },
-    orderBy: [
-      { order: "asc" },
-      { createdAt: "asc" },
-      { id: "asc" },
-    ],
+    orderBy: [{ order: "asc" }, { createdAt: "asc" }, { id: "asc" }],
   });
 
   await assignSequentialOrders(tx, banners);
   return banners;
 }
 
-async function assignSequentialOrders(
-  tx: BannerTransaction,
-  banners: { id: string }[],
-) {
+async function assignSequentialOrders(tx: BannerTransaction, banners: { id: string }[]) {
   for (const [order, banner] of banners.entries()) {
     await tx.homeBanner.update({
       where: { id: banner.id },
@@ -194,10 +177,7 @@ async function withSerializableTransaction<T>(
       });
     } catch (error) {
       const isSerializationConflict =
-        typeof error === "object" &&
-        error !== null &&
-        "code" in error &&
-        error.code === "P2034";
+        typeof error === "object" && error !== null && "code" in error && error.code === "P2034";
 
       if (!isSerializationConflict || attempt >= 2) throw error;
     }

@@ -42,16 +42,9 @@ export default function DuvidasAndSobre() {
   return (
     <>
       {/* Mobile / Tablet */}
-      <Accordion
-        multiple
-        className="w-full max-w-lg gap-10 lg:hidden"
-      >
+      <Accordion multiple className="w-full max-w-lg gap-10 lg:hidden">
         {items.map((item) => (
-          <AccordionItem
-            key={item.value}
-            value={item.value}
-            className="border-none"
-          >
+          <AccordionItem key={item.value} value={item.value} className="border-none">
             <AccordionTrigger className="text-[20px] font-semibold text-white hover:no-underline">
               {item.trigger}
             </AccordionTrigger>
@@ -77,9 +70,7 @@ export default function DuvidasAndSobre() {
       <div className="hidden lg:flex lg:gap-16">
         {items.map((item) => (
           <div key={item.value}>
-            <h3 className="text-[20px] font-semibold text-white">
-              {item.trigger}
-            </h3>
+            <h3 className="text-[20px] font-semibold text-white">{item.trigger}</h3>
 
             <nav className="mt-4 flex flex-col gap-3">
               {item.links.map((link) => (

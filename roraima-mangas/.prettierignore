@@ -1,0 +1,10 @@
+node_modules
+.agents
+.next
+out
+build
+dist
+generated
+prisma/migrations
+package-lock.json
+next-env.d.ts

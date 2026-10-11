@@ -15,44 +15,29 @@ type RouteContext = {
   }>;
 };
 
-export async function GET(
-  _request: NextRequest,
-  context: RouteContext,
-) {
+export async function GET(_request: NextRequest, context: RouteContext) {
   try {
     const { id } = await context.params;
 
     const banner = await getHomeBannerById(id);
 
     if (!banner) {
-      return NextResponse.json(
-        { error: "Banner não encontrado." },
-        { status: 404 },
-      );
+      return NextResponse.json({ error: "Banner não encontrado." }, { status: 404 });
     }
 
     return NextResponse.json(banner);
   } catch (error) {
     console.error("GET /api/banners/[id]:", error);
 
-    return NextResponse.json(
-      { error: "Erro interno do servidor." },
-      { status: 500 },
-    );
+    return NextResponse.json({ error: "Erro interno do servidor." }, { status: 500 });
   }
 }
 
-export async function PATCH(
-  request: NextRequest,
-  context: RouteContext,
-) {
+export async function PATCH(request: NextRequest, context: RouteContext) {
   const token = await getAuthenticatedToken(request);
 
   if (!token) {
-    return NextResponse.json(
-      { error: "Não autenticado." },
-      { status: 401 },
-    );
+    return NextResponse.json({ error: "Não autenticado." }, { status: 401 });
   }
 
   try {
@@ -65,10 +50,7 @@ export async function PATCH(
     const banner = await updateHomeBanner(id, data);
 
     if (!banner) {
-      return NextResponse.json(
-        { error: "Banner não encontrado." },
-        { status: 404 },
-      );
+      return NextResponse.json({ error: "Banner não encontrado." }, { status: 404 });
     }
 
     return NextResponse.json(banner);
@@ -84,32 +66,20 @@ export async function PATCH(
     }
 
     if (error instanceof Error) {
-      return NextResponse.json(
-        { error: error.message },
-        { status: 400 },
-      );
+      return NextResponse.json({ error: error.message }, { status: 400 });
     }
 
     console.error("PATCH /api/banners/[id]:", error);
 
-    return NextResponse.json(
-      { error: "Erro interno do servidor." },
-      { status: 500 },
-    );
+    return NextResponse.json({ error: "Erro interno do servidor." }, { status: 500 });
   }
 }
 
-export async function DELETE(
-  request: NextRequest,
-  context: RouteContext,
-) {
+export async function DELETE(request: NextRequest, context: RouteContext) {
   const token = await getAuthenticatedToken(request);
 
   if (!token) {
-    return NextResponse.json(
-      { error: "Não autenticado." },
-      { status: 401 },
-    );
+    return NextResponse.json({ error: "Não autenticado." }, { status: 401 });
   }
 
   try {
@@ -118,10 +88,7 @@ export async function DELETE(
     const banner = await deleteHomeBanner(id);
 
     if (!banner) {
-      return NextResponse.json(
-        { error: "Banner não encontrado." },
-        { status: 404 },
-      );
+      return NextResponse.json({ error: "Banner não encontrado." }, { status: 404 });
     }
 
     return NextResponse.json({
@@ -130,9 +97,6 @@ export async function DELETE(
   } catch (error) {
     console.error("DELETE /api/banners/[id]:", error);
 
-    return NextResponse.json(
-      { error: "Erro interno do servidor." },
-      { status: 500 },
-    );
+    return NextResponse.json({ error: "Erro interno do servidor." }, { status: 500 });
   }
 }

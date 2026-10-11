@@ -6,5 +6,14 @@ export const createHomeCollectionBlockSchema = z.object({
   collectionId: z.string().min(1),
   active: z.boolean().default(true),
 });
-export const updateHomeCollectionBlockSchema = createHomeCollectionBlockSchema.partial().refine((data) => Object.keys(data).length > 0, { message: "Informe pelo menos um campo para atualizar." });
-export const reorderHomeCollectionBlocksSchema = z.object({ blockIds: z.array(z.string().min(1)) }).refine(({ blockIds }) => new Set(blockIds).size === blockIds.length, { path: ["blockIds"], message: "A lista não pode conter blocos repetidos." });
+export const updateHomeCollectionBlockSchema = createHomeCollectionBlockSchema
+  .partial()
+  .refine((data) => Object.keys(data).length > 0, {
+    message: "Informe pelo menos um campo para atualizar.",
+  });
+export const reorderHomeCollectionBlocksSchema = z
+  .object({ blockIds: z.array(z.string().min(1)) })
+  .refine(({ blockIds }) => new Set(blockIds).size === blockIds.length, {
+    path: ["blockIds"],
+    message: "A lista não pode conter blocos repetidos.",
+  });

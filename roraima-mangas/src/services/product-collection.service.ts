@@ -1,9 +1,6 @@
 import { prisma } from "@/src/lib/prisma";
 
-export async function addProductToCollection(
-  collectionId: string,
-  productId: string
-) {
+export async function addProductToCollection(collectionId: string, productId: string) {
   const productCollection = await prisma.productCollection.create({
     data: {
       collectionId,
@@ -27,10 +24,7 @@ export async function getProductsByCollectionId(collectionId: string) {
   return products;
 }
 
-export async function removeProductFromCollection(
-  collectionId: string,
-  productId: string
-) {
+export async function removeProductFromCollection(collectionId: string, productId: string) {
   const productCollection = await prisma.productCollection.delete({
     where: {
       productId_collectionId: {

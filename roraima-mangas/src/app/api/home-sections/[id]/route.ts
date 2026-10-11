@@ -6,9 +6,7 @@ import {
   deleteHomeSection,
 } from "@/src/services/home-section.service";
 
-import {
-  updateHomeSectionSchema,
-} from "@/src/schemas/home-section.schema";
+import { updateHomeSectionSchema } from "@/src/schemas/home-section.schema";
 
 import { getAuthenticatedToken } from "@/src/lib/auth-guard";
 
@@ -18,10 +16,7 @@ type RouteContext = {
   }>;
 };
 
-export async function GET(
-  request: Request,
-  context: RouteContext
-) {
+export async function GET(request: Request, context: RouteContext) {
   try {
     const { id } = await context.params;
 
@@ -33,7 +28,7 @@ export async function GET(
           success: false,
           message: "Seção da Home não encontrada.",
         },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
@@ -49,15 +44,12 @@ export async function GET(
         success: false,
         message: "Erro ao buscar seção da Home.",
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
 
-export async function PATCH(
-  request: NextRequest,
-  context: RouteContext
-) {
+export async function PATCH(request: NextRequest, context: RouteContext) {
   try {
     const token = await getAuthenticatedToken(request);
 
@@ -67,7 +59,7 @@ export async function PATCH(
           success: false,
           message: "Não autorizado.",
         },
-        { status: 401 }
+        { status: 401 },
       );
     }
 
@@ -84,14 +76,11 @@ export async function PATCH(
           message: "Dados inválidos.",
           errors: result.error.flatten().fieldErrors,
         },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
-    const homeSection = await updateHomeSection(
-      id,
-      result.data
-    );
+    const homeSection = await updateHomeSection(id, result.data);
 
     if (!homeSection) {
       return NextResponse.json(
@@ -99,7 +88,7 @@ export async function PATCH(
           success: false,
           message: "Seção da Home não encontrada.",
         },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
@@ -115,15 +104,12 @@ export async function PATCH(
         success: false,
         message: "Erro ao atualizar seção da Home.",
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
 
-export async function DELETE(
-  request: NextRequest,
-  context: RouteContext
-) {
+export async function DELETE(request: NextRequest, context: RouteContext) {
   try {
     const token = await getAuthenticatedToken(request);
 
@@ -133,14 +119,13 @@ export async function DELETE(
           success: false,
           message: "Não autorizado.",
         },
-        { status: 401 }
+        { status: 401 },
       );
     }
 
     const { id } = await context.params;
 
-    const existingHomeSection =
-      await getHomeSectionById(id);
+    const existingHomeSection = await getHomeSectionById(id);
 
     if (!existingHomeSection) {
       return NextResponse.json(
@@ -148,7 +133,7 @@ export async function DELETE(
           success: false,
           message: "Seção da Home não encontrada.",
         },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
@@ -166,7 +151,7 @@ export async function DELETE(
         success: false,
         message: "Erro ao excluir seção da Home.",
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

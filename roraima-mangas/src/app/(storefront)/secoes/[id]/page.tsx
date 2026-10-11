@@ -21,7 +21,10 @@ export default async function HomeSectionPage({ params }: PageProps<"/secoes/[id
     <main className="mx-auto min-h-[50vh] max-w-7xl space-y-5 px-4 py-8 sm:px-6 lg:px-8">
       <Breadcrumb current={section.title} />
       <h1 className="mb-6 text-2xl font-bold sm:text-3xl">{section.title}</h1>
-      <ProductListing products={products} initialSort={section.type === "MANUAL" ? "SECTION" : "FEATURED"} />
+      <ProductListing
+        products={products}
+        initialSort={section.type === "MANUAL" ? "SECTION" : "FEATURED"}
+      />
     </main>
   );
 }

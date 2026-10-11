@@ -26,10 +26,19 @@ export function AdminPageHeader({
   );
 }
 
-export function AdminFeedback({ type, children }: { type: "error" | "success"; children: React.ReactNode }) {
+export function AdminFeedback({
+  type,
+  children,
+}: {
+  type: "error" | "success";
+  children: React.ReactNode;
+}) {
   const Icon = type === "error" ? AlertCircle : CheckCircle2;
   return (
-    <div role={type === "error" ? "alert" : "status"} className={`admin-feedback admin-feedback-${type}`}>
+    <div
+      role={type === "error" ? "alert" : "status"}
+      className={`admin-feedback admin-feedback-${type}`}
+    >
       <Icon className="size-4 shrink-0" />
       <span>{children}</span>
     </div>
@@ -57,7 +66,11 @@ export function AdminSearch({
         placeholder={placeholder}
         aria-label={label}
       />
-      {value && <button type="button" onClick={() => onChange("")}>Limpar</button>}
+      {value && (
+        <button type="button" onClick={() => onChange("")}>
+          Limpar
+        </button>
+      )}
     </div>
   );
 }
@@ -75,7 +88,9 @@ export function AdminEmptyState({
 }) {
   return (
     <div className="admin-empty-state">
-      <div className="admin-empty-icon"><Icon className="size-5" /></div>
+      <div className="admin-empty-icon">
+        <Icon className="size-5" />
+      </div>
       <h3>{title}</h3>
       <p>{description}</p>
       {action && <div className="mt-4">{action}</div>}
@@ -83,15 +98,28 @@ export function AdminEmptyState({
   );
 }
 
-export function AdminStatusBadge({ active, children }: { active: boolean; children?: React.ReactNode }) {
-  return <span className={cn("admin-badge", active ? "admin-badge-success" : "admin-badge-muted")}>{children ?? (active ? "Ativo" : "Inativo")}</span>;
+export function AdminStatusBadge({
+  active,
+  children,
+}: {
+  active: boolean;
+  children?: React.ReactNode;
+}) {
+  return (
+    <span className={cn("admin-badge", active ? "admin-badge-success" : "admin-badge-muted")}>
+      {children ?? (active ? "Ativo" : "Inativo")}
+    </span>
+  );
 }
 
 export function AdminSkeletonList({ rows = 3 }: { rows?: number }) {
   return (
     <div className="space-y-3" aria-label="Carregando conteúdo" role="status">
       {Array.from({ length: rows }).map((_, index) => (
-        <div key={index} className="h-24 animate-pulse rounded-xl border border-slate-200 bg-white" />
+        <div
+          key={index}
+          className="h-24 animate-pulse rounded-xl border border-slate-200 bg-white"
+        />
       ))}
     </div>
   );

@@ -24,15 +24,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html
-      lang="pt-BR"
-      className={cn(
-        "h-full",
-        "antialiased",
-        roboto.variable,
-        nunito.variable
-      )}
-    >
+    <html lang="pt-BR" className={cn("h-full", "antialiased", roboto.variable, nunito.variable)}>
       <body className="">{children}</body>
     </html>
   );

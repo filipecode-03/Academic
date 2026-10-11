@@ -1,8 +1,5 @@
 import { prisma } from "@/src/lib/prisma";
-import type {
-  CreateProductInput,
-  UpdateProductInput,
-} from "@/src/schemas/product.schema";
+import type { CreateProductInput, UpdateProductInput } from "@/src/schemas/product.schema";
 import { createUniqueSlug } from "@/src/lib/slug";
 import type { Prisma } from "@/generated/prisma/client";
 
@@ -60,10 +57,7 @@ export async function getProductById(id: string) {
   return product;
 }
 
-export async function updateProduct(
-  id: string,
-  data: UpdateProductInput
-) {
+export async function updateProduct(id: string, data: UpdateProductInput) {
   const { images, collectionIds, details, ...productData } = data;
 
   const product = await prisma.$transaction(async (tx) => {
@@ -85,7 +79,9 @@ export async function updateProduct(
       data: {
         ...productData,
         ...(details !== undefined && { details: details as Prisma.InputJsonValue }),
-        ...(collectionIds !== undefined && { collections: { create: collectionIds.map((collectionId) => ({ collectionId })) } }),
+        ...(collectionIds !== undefined && {
+          collections: { create: collectionIds.map((collectionId) => ({ collectionId })) },
+        }),
 
         ...(images !== undefined && {
           images: {

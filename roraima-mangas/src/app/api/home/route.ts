@@ -18,7 +18,7 @@ export async function GET() {
         success: false,
         message: "Erro ao buscar dados da Home.",
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
