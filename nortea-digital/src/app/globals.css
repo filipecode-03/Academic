@@ -1,26 +1,153 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --forest: #123d2e;
+  --forest-black: #090d0b;
+  --natural: #f4f5f0;
+  --moss: #718579;
+  --mist: #cbd2cc;
+  --mango: #d49b36;
+  --mango-soft: #e8d7a3;
+  --line: color-mix(in srgb, var(--forest) 18%, transparent);
+  --background: var(--natural);
+  --foreground: var(--forest-black);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-forest: var(--forest);
+  --color-forest-black: var(--forest-black);
+  --color-natural: var(--natural);
+  --color-moss: var(--moss);
+  --color-mist: var(--mist);
+  --color-mango: var(--mango);
+  --color-mango-soft: var(--mango-soft);
+  --font-sans: var(--font-inter);
+  --font-display: var(--font-space-grotesk);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 6rem;
 }
 
 body {
+  margin: 0;
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-inter), Arial, sans-serif;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: var(--forest);
+  color: var(--natural);
+}
+
+a,
+button,
+input,
+select,
+textarea,
+summary {
+  outline-offset: 4px;
+}
+
+a,
+button,
+summary,
+label,
+select {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: color-mix(in srgb, var(--moss) 25%, transparent);
+}
+
+:focus-visible {
+  outline: 2px solid currentColor;
+}
+
+.page-shell {
+  width: min(100% - 2rem, 90rem);
+  margin-inline: auto;
+}
+
+.section-space {
+  padding-block: clamp(5.5rem, 10vw, 10rem);
+}
+
+.topographic-lines {
+  background-image:
+    radial-gradient(circle at center, transparent 0 42%, color-mix(in srgb, var(--mist) 12%, transparent) 42.2% 42.6%, transparent 42.8%),
+    radial-gradient(circle at center, transparent 0 58%, color-mix(in srgb, var(--mist) 10%, transparent) 58.2% 58.6%, transparent 58.8%);
+  background-size: 30rem 30rem;
+}
+
+.route-dash {
+  stroke-dasharray: 10 14;
+  animation: route-flow 4.8s linear infinite;
+}
+
+.route-node {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: route-pulse 3.8s ease-in-out infinite;
+}
+
+
+.fine-grid {
+  background-image:
+    linear-gradient(to right, color-mix(in srgb, var(--forest) 9%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in srgb, var(--forest) 9%, transparent) 1px, transparent 1px);
+  background-size: 3.5rem 3.5rem;
+}
+
+.text-balance {
+  text-wrap: balance;
+}
+
+.text-pretty {
+  text-wrap: pretty;
+}
+
+@keyframes route-flow {
+  to {
+    stroke-dashoffset: -240;
+  }
+}
+
+@keyframes route-pulse {
+  0%,
+  100% {
+    opacity: 0.55;
+    transform: scale(0.85);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.12);
+  }
+}
+
+@media (max-width: 640px) {
+  .page-shell {
+    width: min(100% - 1.25rem, 90rem);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+  }
 }
