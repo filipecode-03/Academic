@@ -5,10 +5,8 @@ export const siteConfig = {
   description:
     "Desenvolvemos soluções digitais que unem estratégia, design e tecnologia para simplificar processos e fazer negócios crescerem.",
   contact: {
-    whatsapp: "[SEU_WHATSAPP]",
-    email: "[SEU_EMAIL]",
-    linkedin: "[SEU_LINKEDIN]",
-    instagram: "[SEU_INSTAGRAM]",
+    whatsapp: "+55 (95) 98111-2229",
+    email: "contatofilipecode@gmail.com",
   },
   owner: {
     name: "[NOME_DO_RESPONSÁVEL]",

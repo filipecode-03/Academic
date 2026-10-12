@@ -3,7 +3,7 @@ import { services } from "@/data/content";
 
 export function Services() {
   return (
-    <section id="servicos" className="section-space bg-natural">
+    <section id="servicos" className="section-space bg-natural px-10">
       <div className="page-shell">
         <SectionHeading
           index="02 / Serviços"

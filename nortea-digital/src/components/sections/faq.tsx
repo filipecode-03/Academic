@@ -3,7 +3,7 @@ import { faqs } from "@/data/content";
 
 export function FAQ() {
   return (
-    <section className="section-space bg-mist/35">
+    <section className="section-space bg-mist/35 px-10">
       <div className="page-shell">
         <SectionHeading
           index="06 / Perguntas frequentes"

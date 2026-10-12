@@ -3,7 +3,7 @@ import { siteConfig } from "@/config/site";
 
 export function About() {
   return (
-    <section id="sobre" className="section-space bg-natural">
+    <section id="sobre" className="section-space bg-natural px-10">
       <div className="page-shell">
         <SectionHeading
           index="05 / Sobre"

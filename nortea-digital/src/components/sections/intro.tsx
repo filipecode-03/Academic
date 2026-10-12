@@ -1,6 +1,6 @@
 export function Intro() {
   return (
-    <section id="nortea" className="section-space bg-natural">
+    <section id="nortea" className="section-space bg-natural px-10">
       <div className="page-shell">
         <div className="grid gap-12 lg:grid-cols-[0.65fr_1.35fr]">
           <div className="flex items-start gap-3 text-sm text-moss">
@@ -8,7 +8,7 @@ export function Intro() {
             Nortea, antes do código
           </div>
           <div>
-            <h2 className="font-display text-balance text-4xl font-medium leading-[1.02] tracking-[-0.05em] sm:text-6xl lg:text-8xl">
+            <h2 className="font-display text-balance text-4xl font-medium leading-[1.02] tracking-[-0.05em] sm:text-6xl lg:text-7xl">
               Não começamos pela tecnologia. Começamos entendendo o que seu negócio precisa.
             </h2>
             <div className="mt-12 grid gap-8 border-t border-forest/20 pt-8 md:grid-cols-2">

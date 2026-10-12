@@ -1,12 +1,14 @@
 import { ContactForm } from "@/components/sections/contact-form";
 import { isPlaceholder, siteConfig } from "@/config/site";
+import { faLinkedin, faInstagram } from "@fortawesome/free-brands-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export function Contact() {
   const whatsappConfigured = !isPlaceholder(siteConfig.contact.whatsapp);
   const emailConfigured = !isPlaceholder(siteConfig.contact.email);
 
   return (
-    <section id="contato" className="section-space bg-forest-black text-natural">
+    <section id="contato" className="section-space bg-forest-black text-natural px-10">
       <div className="page-shell">
         <div className="grid gap-14 lg:grid-cols-[0.82fr_1.18fr] lg:gap-20">
           <div>
@@ -37,9 +39,13 @@ export function Contact() {
               </a>
             </div>
 
-            <div className="mt-8 flex flex-wrap gap-x-6 gap-y-2 text-sm text-natural/50">
-              <span>{siteConfig.contact.linkedin}</span>
-              <span>{siteConfig.contact.instagram}</span>
+            <div className="mt-8 flex flex-wrap gap-x-6 gap-y-2 text-[24px] sm:text-[30px] text-natural/50">
+              <a href="www.linkedin.com/in/filipemagalhães03">
+                <FontAwesomeIcon icon={faLinkedin} className="hover:text-white" />
+              </a>
+              <a href="https://instagram.com/filipe.l_">
+                <FontAwesomeIcon icon={faInstagram} className="hover:text-white" />
+              </a>
             </div>
           </div>
 

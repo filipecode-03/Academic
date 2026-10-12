@@ -3,7 +3,7 @@ import { differentiators } from "@/data/content";
 
 export function Differentials() {
   return (
-    <section className="section-space bg-forest text-natural">
+    <section className="section-space bg-forest text-natural px-10">
       <div className="page-shell">
         <SectionHeading
           index="04 / Como trabalhamos"

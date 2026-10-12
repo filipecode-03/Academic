@@ -4,7 +4,7 @@ export function Hero() {
   return (
     <section
       id="inicio"
-      className="relative flex min-h-[100svh] overflow-hidden bg-forest pt-28 text-natural"
+      className="relative flex min-h-[100svh] overflow-hidden bg-forest px-10 pt-28 text-natural"
     >
       <div className="topographic-lines absolute inset-0 opacity-60" aria-hidden="true" />
       <div className="page-shell relative z-10 grid flex-1 items-center gap-14 pb-10 pt-8 lg:grid-cols-[1.05fr_0.8fr] lg:pb-12 lg:pt-14">

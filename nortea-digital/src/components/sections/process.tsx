@@ -3,7 +3,7 @@ import { processSteps } from "@/data/content";
 
 export function Process() {
   return (
-    <section id="processo" className="section-space fine-grid overflow-hidden bg-mist/45">
+    <section id="processo" className="section-space px-10 fine-grid overflow-hidden bg-mist/45">
       <div className="page-shell">
         <SectionHeading
           index="03 / Processo"

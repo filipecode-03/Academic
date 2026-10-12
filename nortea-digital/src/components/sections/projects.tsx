@@ -45,7 +45,7 @@ export function Projects() {
   const project = projects[0];
 
   return (
-    <section id="projetos" className="section-space bg-forest-black text-natural">
+    <section id="projetos" className="section-space bg-forest-black text-natural px-10">
       <div className="page-shell">
         <SectionHeading
           index="01 / Projetos"
