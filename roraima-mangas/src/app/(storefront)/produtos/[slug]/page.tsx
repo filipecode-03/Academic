@@ -30,7 +30,7 @@ export default async function ProductPage({ params }: PageProps<"/produtos/[slug
       <article className="grid items-start gap-6 lg:grid-cols-[28rem_minmax(0,1fr)] lg:gap-8 xl:grid-cols-[30rem_minmax(0,1fr)]">
         <ProductGallery name={product.name} images={product.images} />
 
-        <div className="rounded-2xl border bg-white p-5 shadow-sm sm:p-6 lg:p-7">
+        <div className="rounded-2xl border border-border bg-card p-5 text-card-foreground shadow-sm sm:p-6 lg:p-7">
           <div className="space-y-5">
             {product.collections?.length > 0 && (
               <div className="flex flex-wrap gap-2">
@@ -38,7 +38,7 @@ export default async function ProductPage({ params }: PageProps<"/produtos/[slug
                   <Link
                     key={collection.id}
                     href={`/colecoes/${collection.slug}`}
-                    className="rounded-full bg-yellow-400 px-3 py-1 text-xs font-semibold text-black text-neutral-800 transition-colors hover:bg-yellow-200"
+                    className="rounded-full bg-yellow-400 px-3 py-1 text-xs font-semibold text-neutral-900 transition-colors hover:bg-yellow-200"
                   >
                     {collection.name}
                   </Link>
@@ -52,7 +52,7 @@ export default async function ProductPage({ params }: PageProps<"/produtos/[slug
               </h1>
 
               {product.description && (
-                <p className="text-sm leading-6 whitespace-pre-wrap text-neutral-600 sm:text-base sm:leading-7">
+                <p className="text-sm leading-6 whitespace-pre-wrap text-muted-foreground sm:text-base sm:leading-7">
                   {product.description}
                 </p>
               )}
@@ -75,7 +75,7 @@ export default async function ProductPage({ params }: PageProps<"/produtos/[slug
         </div>
       </article>
 
-      <section className="mt-8 rounded-2xl border bg-white px-5 shadow-sm sm:mt-10 sm:px-7">
+      <section className="mt-8 rounded-2xl border border-border bg-card px-5 text-card-foreground shadow-sm sm:mt-10 sm:px-7">
         <Accordion>
           <AccordionItem value="product-details" className="border-none">
             <AccordionTrigger className="py-5 text-base font-semibold hover:no-underline">
@@ -89,14 +89,14 @@ export default async function ProductPage({ params }: PageProps<"/produtos/[slug
                     key={`${detail.title}-${index}`}
                     className="grid grid-cols-[1fr_auto] gap-4 py-3"
                   >
-                    <dt className="text-neutral-500">{detail.title}</dt>
+                    <dt className="text-muted-foreground">{detail.title}</dt>
 
                     <dd className="text-right font-medium">{detail.value}</dd>
                   </div>
                 ))}
 
                 <div className="grid grid-cols-[1fr_auto] gap-4 py-3">
-                  <dt className="text-neutral-500">Disponibilidade</dt>
+                  <dt className="text-muted-foreground">Disponibilidade</dt>
 
                   <dd className="text-right font-medium">
                     {available ? "Disponível" : "Indisponível"}
@@ -105,7 +105,7 @@ export default async function ProductPage({ params }: PageProps<"/produtos/[slug
 
                 {product.isNew && (
                   <div className="grid grid-cols-[1fr_auto] gap-4 py-3">
-                    <dt className="text-neutral-500">Novidade</dt>
+                    <dt className="text-muted-foreground">Novidade</dt>
 
                     <dd className="text-right font-medium">Sim</dd>
                   </div>
@@ -113,7 +113,7 @@ export default async function ProductPage({ params }: PageProps<"/produtos/[slug
 
                 {product.featured && (
                   <div className="grid grid-cols-[1fr_auto] gap-4 py-3">
-                    <dt className="text-neutral-500">Destaque</dt>
+                    <dt className="text-muted-foreground">Destaque</dt>
 
                     <dd className="text-right font-medium">Sim</dd>
                   </div>

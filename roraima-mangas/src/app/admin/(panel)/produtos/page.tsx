@@ -185,7 +185,7 @@ export default function ProductsPage() {
           <AdminSearch
             value={search}
             onChange={setSearch}
-            placeholder="Pesquisar produtos..."
+            placeholder="Pesquisar produtos…"
             label="Pesquisar produtos pelo nome"
           />
         </div>
@@ -227,49 +227,49 @@ export default function ProductsPage() {
         )}
 
         {!loading && filteredProducts.length > 0 && (
-          <div className="overflow-hidden rounded-xl border border-slate-200 bg-white">
-            <div className="hidden grid-cols-[minmax(0,2fr)_7rem_7rem_8rem] gap-4 border-b bg-slate-50 px-5 py-3 text-xs font-semibold tracking-wide text-slate-500 uppercase md:grid">
+          <div className="overflow-hidden rounded-xl border border-border bg-card text-card-foreground">
+            <div className="hidden grid-cols-[minmax(0,2fr)_7rem_7rem_8rem] gap-4 border-b bg-muted/60 px-5 py-3 text-xs font-semibold tracking-wide text-muted-foreground uppercase md:grid">
               <span>Produto</span>
               <span>Preço</span>
               <span>Estoque</span>
               <span className="text-right">Ações</span>
             </div>
-            <div className="divide-y divide-slate-100">
+            <div className="divide-y divide-border">
               {filteredProducts.map((product) => (
                 <article
                   key={product.id}
-                  className="grid gap-4 p-4 transition hover:bg-slate-50/70 md:grid-cols-[minmax(0,2fr)_7rem_7rem_8rem] md:items-center md:px-5"
+                  className="grid gap-4 p-4 transition-colors hover:bg-muted/45 md:grid-cols-[minmax(0,2fr)_7rem_7rem_8rem] md:items-center md:px-5"
                 >
                   <div className="flex min-w-0 items-center gap-3">
                     {product.images[0] ? (
                       <img
                         src={product.images[0].image}
                         alt=""
-                        className="size-14 shrink-0 rounded-lg border border-slate-200 object-cover"
+                        className="size-14 shrink-0 rounded-lg border border-border object-cover"
                       />
                     ) : (
-                      <span className="grid size-14 shrink-0 place-items-center rounded-lg border border-dashed border-slate-300 bg-slate-50 text-slate-400">
-                        <ImageIcon className="size-5" />
+                      <span className="grid size-14 shrink-0 place-items-center rounded-lg border border-dashed border-border bg-muted/60 text-muted-foreground">
+                        <ImageIcon aria-hidden="true" className="size-5" />
                       </span>
                     )}
                     <div className="min-w-0">
-                      <h3 className="truncate font-semibold text-slate-900">{product.name}</h3>
+                      <h3 className="truncate font-semibold text-foreground">{product.name}</h3>
                       <div className="mt-1 flex flex-wrap gap-1.5">
                         <AdminStatusBadge active={product.status === "ACTIVE"} />
                         {product.featured && (
                           <span className="admin-badge admin-badge-warning">Destaque</span>
                         )}
                         {product.stock === 0 && (
-                          <span className="admin-badge bg-red-50 text-red-700 ring-1 ring-red-200 ring-inset">
-                            Sem estoque
-                          </span>
+                          <span className="admin-badge admin-badge-danger">Sem estoque</span>
                         )}
                       </div>
                     </div>
                   </div>
                   <div>
-                    <span className="mr-2 text-xs font-medium text-slate-400 md:hidden">Preço</span>
-                    <span className="text-sm font-semibold text-slate-800">
+                    <span className="mr-2 text-xs font-medium text-muted-foreground md:hidden">
+                      Preço
+                    </span>
+                    <span className="text-sm font-semibold text-foreground tabular-nums">
                       {Number(product.price).toLocaleString("pt-BR", {
                         style: "currency",
                         currency: "BRL",
@@ -277,10 +277,12 @@ export default function ProductsPage() {
                     </span>
                   </div>
                   <div>
-                    <span className="mr-2 text-xs font-medium text-slate-400 md:hidden">
+                    <span className="mr-2 text-xs font-medium text-muted-foreground md:hidden">
                       Estoque
                     </span>
-                    <span className="text-sm text-slate-700">{product.stock} un.</span>
+                    <span className="text-sm text-foreground tabular-nums">
+                      {product.stock} un.
+                    </span>
                   </div>
                   <div className="admin-actions md:justify-end">
                     <Button

@@ -12,7 +12,7 @@ export default async function ProductCatalogPage({
   return (
     <main className="mx-auto max-w-7xl space-y-6 px-4 py-8 sm:px-6 lg:px-8 lg:py-12">
       <header className="border-b border-neutral-200 pb-4">
-        <p className="text-xs font-semibold tracking-[0.18em] text-neutral-500 uppercase">
+        <p className="text-xs font-semibold tracking-[0.18em] text-muted-foreground uppercase">
           Roraima Mangas
         </p>
         <h1 className="mt-2 text-3xl font-bold tracking-tight">{title}</h1>

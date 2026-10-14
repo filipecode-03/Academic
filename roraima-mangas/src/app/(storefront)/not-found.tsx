@@ -3,9 +3,9 @@ import Link from "next/link";
 export default function StorefrontNotFound() {
   return (
     <main className="mx-auto flex min-h-[50vh] max-w-7xl flex-col items-center justify-center gap-4 px-4 py-16 text-center">
-      <p className="text-sm font-semibold tracking-widest text-neutral-500 uppercase">404</p>
+      <p className="text-sm font-semibold tracking-widest text-muted-foreground uppercase">404</p>
       <h1 className="text-3xl font-bold">Não encontramos esta página</h1>
-      <p className="max-w-md text-neutral-600">
+      <p className="max-w-md text-muted-foreground">
         O conteúdo pode ter sido removido ou o endereço não está correto.
       </p>
       <Link

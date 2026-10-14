@@ -9,7 +9,7 @@ export default function ProductGallery({ name, images }: { name: string; images:
   const [activeImage, setActiveImage] = useState(0);
   if (images.length === 0) {
     return (
-      <div className="mx-auto flex aspect-[4/5] w-full max-w-[24rem] items-center justify-center rounded-xl border bg-white text-sm text-neutral-500">
+      <div className="mx-auto flex aspect-[4/5] w-full max-w-[24rem] items-center justify-center rounded-xl border border-border bg-card text-sm text-muted-foreground">
         Imagem indisponível
       </div>
     );
@@ -18,7 +18,7 @@ export default function ProductGallery({ name, images }: { name: string; images:
 
   return (
     <div className="w-full lg:w-[28rem] xl:w-[30rem]">
-      <div className="flex aspect-[4/5] items-center justify-center overflow-hidden rounded-2xl border bg-white p-3 shadow-sm sm:p-4 lg:p-5">
+      <div className="flex aspect-[4/5] items-center justify-center overflow-hidden rounded-2xl border border-border bg-card p-3 shadow-sm sm:p-4 lg:p-5">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={current.image}
@@ -39,8 +39,8 @@ export default function ProductGallery({ name, images }: { name: string; images:
               aria-pressed={index === activeImage}
               className={`size-16 shrink-0 overflow-hidden rounded-lg p-1 transition-colors ${
                 index === activeImage
-                  ? "border-neutral-900 ring-1 ring-neutral-900"
-                  : "border-neutral-200 hover:border-neutral-400"
+                  ? "border-primary ring-1 ring-primary"
+                  : "border-border hover:border-muted-foreground"
               }`}
               onClick={() => setActiveImage(index)}
             >

@@ -1,9 +1,21 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import { ArrowDown, ArrowUp, Layers3, Pencil, Plus, Power, Trash2, X } from "lucide-react";
 import AdminConfirmDialog from "@/src/components/admin/admin-confirm-dialog";
 import AdminFormDialog from "@/src/components/admin/admin-form-dialog";
+import {
+  AdminEmptyState,
+  AdminFeedback,
+  AdminPageHeader,
+  AdminSearch,
+  AdminSkeletonList,
+  AdminStatusBadge,
+} from "@/src/components/admin/admin-ui";
 import { Button } from "@/src/components/ui/button";
+import { Input } from "@/src/components/ui/input";
+import { Label } from "@/src/components/ui/label";
+import { Switch } from "@/src/components/ui/switch";
 
 type Product = { id: string; name: string; slug: string };
 type Collection = { id: string; name: string };
@@ -335,69 +347,57 @@ export default function HomeSectionsPage() {
 
   return (
     <div className="admin-page">
-      <header className="admin-page-header">
-        <div>
-          <p className="admin-eyebrow">Conteúdo</p>
-          <h1>Seções da Home</h1>
-          <p>Gerencie as seções de produtos exibidas na página inicial.</p>
-        </div>
-        <div className="admin-page-actions">
-          {!isOrdering && (
-            <button type="button" onClick={startCreate}>
-              Nova seção
-            </button>
-          )}
-          {!isOrdering ? (
-            <button type="button" disabled={sections.length < 2} onClick={startOrdering}>
-              Alterar ordem
-            </button>
-          ) : (
-            <>
-              <button
+      <AdminPageHeader
+        eyebrow="Conteúdo"
+        title="Seções da Home"
+        description="Gerencie as seções de produtos exibidas na página inicial."
+        actions={
+          <div className="admin-page-actions">
+            {!isOrdering && (
+              <Button type="button" onClick={startCreate}>
+                <Plus aria-hidden="true" /> Nova seção
+              </Button>
+            )}
+            {!isOrdering ? (
+              <Button
                 type="button"
-                className="admin-button-secondary"
-                onClick={() => {
-                  setIsOrdering(false);
-                  setOrderedIds([]);
-                  setError("");
-                }}
+                variant="outline"
+                disabled={sections.length < 2}
+                onClick={startOrdering}
               >
-                Cancelar
-              </button>
-              <button type="button" disabled={saving} onClick={() => void saveOrder()}>
-                {saving ? "Salvando ordem..." : "Concluir alteração"}
-              </button>
-            </>
-          )}
-        </div>
-      </header>
+                Alterar ordem
+              </Button>
+            ) : (
+              <>
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => {
+                    setIsOrdering(false);
+                    setOrderedIds([]);
+                    setError("");
+                  }}
+                >
+                  Cancelar
+                </Button>
+                <Button type="button" disabled={saving} onClick={() => void saveOrder()}>
+                  {saving ? "Salvando ordem…" : "Concluir alteração"}
+                </Button>
+              </>
+            )}
+          </div>
+        }
+      />
 
-      <div className="flex flex-wrap items-center gap-2">
-        <input
-          type="search"
-          className="w-full max-w-md border p-2"
-          placeholder="Pesquisar seções..."
-          aria-label="Pesquisar seções por título, tipo ou origem"
-          value={search}
-          onChange={(event) => setSearch(event.target.value)}
-        />
-        {search && (
-          <button type="button" onClick={() => setSearch("")}>
-            Limpar pesquisa
-          </button>
-        )}
-      </div>
+      <AdminSearch
+        value={search}
+        onChange={setSearch}
+        placeholder="Pesquisar seções…"
+        label="Pesquisar seções por título, tipo ou origem"
+      />
 
-      {error && (
-        <p role="alert" className="admin-feedback admin-feedback-error">
-          {error}
-        </p>
-      )}
-      {notice && (
-        <p role="status" className="admin-feedback admin-feedback-success">
-          {notice}
-        </p>
-      )}
+      {error && <AdminFeedback type="error">{error}</AdminFeedback>}
+      {notice && <AdminFeedback type="success">{notice}</AdminFeedback>}
 
       <AdminFormDialog
         open={showForm}
@@ -411,21 +411,17 @@ export default function HomeSectionsPage() {
       >
         <form className="space-y-4" onSubmit={(event) => void saveSection(event)}>
           <div>
-            <label className="mb-1 block" htmlFor="section-title">
-              Título
-            </label>
-            <input
+            <Label htmlFor="section-title">Título</Label>
+            <Input
               id="section-title"
-              className="w-full max-w-xl border p-2"
+              className="max-w-xl"
               required
               value={draft.title}
               onChange={(event) => setDraft({ ...draft, title: event.target.value })}
             />
           </div>
           <div>
-            <label className="mb-1 block" htmlFor="section-type">
-              Tipo da seção
-            </label>
+            <Label htmlFor="section-type">Tipo da seção</Label>
             <select
               id="section-type"
               className="border p-2"
@@ -438,9 +434,7 @@ export default function HomeSectionsPage() {
           </div>
           {draft.type === "COLLECTION" && (
             <div>
-              <label className="mb-1 block" htmlFor="section-collection">
-                Coleção
-              </label>
+              <Label htmlFor="section-collection">Coleção</Label>
               <select
                 id="section-collection"
                 className="w-full max-w-xl border p-2"
@@ -460,19 +454,19 @@ export default function HomeSectionsPage() {
           {draft.type === "MANUAL" && (
             <fieldset className="space-y-3">
               <legend className="font-semibold">Produtos da seção</legend>
-              <p className="text-sm">
+              <p className="text-sm text-muted-foreground">
                 Selecionados: {selectedProductIds.length}/10. Produtos existentes mantêm a ordem
                 salva; novas seleções são adicionadas ao final.
               </p>
-              <input
+              <Input
                 type="search"
-                className="w-full max-w-md border p-2"
-                placeholder="Pesquisar produto..."
+                className="max-w-md"
+                placeholder="Pesquisar produto…"
                 aria-label="Pesquisar produtos"
                 value={productSearch}
                 onChange={(event) => setProductSearch(event.target.value)}
               />
-              <div className="max-h-64 space-y-1 overflow-auto rounded-lg border border-slate-200 p-3">
+              <div className="max-h-64 space-y-1 overflow-auto rounded-lg border border-border bg-background p-3">
                 {visibleProducts.length === 0 ? (
                   <p>Nenhum produto encontrado.</p>
                 ) : (
@@ -500,9 +494,14 @@ export default function HomeSectionsPage() {
                     return (
                       <li key={id} className="flex items-center gap-3">
                         <span>{product.name}</span>
-                        <button type="button" onClick={() => toggleProduct(id)}>
-                          Remover
-                        </button>
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="xs"
+                          onClick={() => toggleProduct(id)}
+                        >
+                          <X aria-hidden="true" /> Remover
+                        </Button>
                       </li>
                     );
                   })}
@@ -510,17 +509,17 @@ export default function HomeSectionsPage() {
               )}
             </fieldset>
           )}
-          <label className="flex items-center gap-2">
-            <input
-              type="checkbox"
+          <label className="flex items-center justify-between gap-4 rounded-lg border border-border p-3">
+            <span className="text-sm font-medium">Seção ativa</span>
+            <Switch
               checked={draft.active}
-              onChange={(event) => setDraft({ ...draft, active: event.target.checked })}
-            />{" "}
-            Ativa
+              onCheckedChange={(active) => setDraft({ ...draft, active })}
+              aria-label="Seção ativa"
+            />
           </label>
           <div className="flex gap-3">
             <Button type="submit" disabled={saving}>
-              {saving ? "Salvando..." : "Salvar seção"}
+              {saving ? "Salvando…" : "Salvar seção"}
             </Button>
             <Button
               type="button"
@@ -534,18 +533,28 @@ export default function HomeSectionsPage() {
         </form>
       </AdminFormDialog>
 
-      <section className="space-y-3">
-        <h2 className="text-xl font-semibold">Seções cadastradas</h2>
-        {loading && (
-          <div className="h-24 animate-pulse rounded-xl border border-slate-200 bg-white" />
-        )}
+      <section className="space-y-3" aria-labelledby="sections-list-title">
+        <div className="admin-section-heading">
+          <div>
+            <h2 id="sections-list-title">Seções cadastradas</h2>
+            <p>
+              {sections.length} {sections.length === 1 ? "seção" : "seções"}
+            </p>
+          </div>
+        </div>
+        {loading && <AdminSkeletonList />}
         {!loading && sections.length === 0 && !error && (
-          <p className="admin-empty-state">
-            Nenhuma seção cadastrada. Crie uma seção para organizar os produtos da Home.
-          </p>
+          <AdminEmptyState
+            icon={Layers3}
+            title="Nenhuma seção cadastrada"
+            description="Crie uma seção para organizar os produtos da Home."
+          />
         )}
         {!loading && sections.length > 0 && displayedSections.length === 0 && (
-          <p className="admin-empty-state">Nenhuma seção encontrada para “{search}”.</p>
+          <AdminEmptyState
+            title="Nenhum resultado"
+            description={`Nenhuma seção corresponde à busca “${search}”.`}
+          />
         )}
         {!loading &&
           displayedSections.map((section) => {
@@ -563,51 +572,65 @@ export default function HomeSectionsPage() {
                 className="admin-item flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between"
               >
                 <div>
-                  <h3 className="font-semibold">{section.title}</h3>
-                  <p className="mt-1 text-sm text-slate-500">
+                  <h3 className="font-semibold text-foreground">{section.title}</h3>
+                  <p className="mt-1 text-sm text-muted-foreground">
                     Ordem: {sectionIndex + 1} · Tipo: {typeLabel} · Origem: {source}
                   </p>
-                  <span
-                    className={`admin-badge mt-2 ${section.active ? "admin-badge-success" : "admin-badge-muted"}`}
-                  >
+                  <AdminStatusBadge active={section.active}>
                     {section.active ? "Ativa" : "Inativa"}
-                  </span>
+                  </AdminStatusBadge>
                 </div>
-                <div className="flex flex-wrap gap-3">
+                <div className="admin-actions">
                   {isOrdering ? (
                     <div className="flex gap-2" aria-label={`Mover ${section.title}`}>
-                      <button
+                      <Button
                         type="button"
+                        variant="outline"
+                        size="icon"
                         aria-label={`Mover ${section.title} para cima`}
                         disabled={sectionIndex === 0}
                         onClick={() => moveSection(section.id, -1)}
                       >
-                        ↑
-                      </button>
-                      <button
+                        <ArrowUp aria-hidden="true" />
+                      </Button>
+                      <Button
                         type="button"
+                        variant="outline"
+                        size="icon"
                         aria-label={`Mover ${section.title} para baixo`}
                         disabled={sectionIndex === orderedIds.length - 1}
                         onClick={() => moveSection(section.id, 1)}
                       >
-                        ↓
-                      </button>
+                        <ArrowDown aria-hidden="true" />
+                      </Button>
                     </div>
                   ) : (
                     <>
-                      <button type="button" onClick={() => startEdit(section)}>
-                        Editar
-                      </button>
-                      <button type="button" onClick={() => void toggleActive(section)}>
-                        {section.active ? "Desativar" : "Ativar"}
-                      </button>
-                      <button
+                      <Button
                         type="button"
-                        className="admin-button-danger"
+                        variant="outline"
+                        size="sm"
+                        onClick={() => startEdit(section)}
+                      >
+                        <Pencil aria-hidden="true" /> Editar
+                      </Button>
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        onClick={() => void toggleActive(section)}
+                      >
+                        <Power aria-hidden="true" />
+                        {section.active ? "Desativar" : "Ativar"}
+                      </Button>
+                      <Button
+                        type="button"
+                        variant="destructive"
+                        size="sm"
                         onClick={() => setDeleteTarget(section)}
                       >
-                        Excluir
-                      </button>
+                        <Trash2 aria-hidden="true" /> Excluir
+                      </Button>
                     </>
                   )}
                 </div>

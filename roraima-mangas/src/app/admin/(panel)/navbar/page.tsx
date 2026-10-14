@@ -244,7 +244,7 @@ export default function NavbarAdminPage() {
   }) {
     if (draft.type === "DROPDOWN")
       return (
-        <p className="text-sm text-neutral-500">
+        <p className="text-sm text-muted-foreground">
           Os links de destino serão adicionados como itens filhos.
         </p>
       );
@@ -295,7 +295,7 @@ export default function NavbarAdminPage() {
             <input
               required
               type="url"
-              placeholder="https://instagram.com/..."
+              placeholder="https://instagram.com/…"
               className="w-full"
               value={draft.externalUrl}
               onChange={(event) => onChange({ ...draft, externalUrl: event.target.value })}
@@ -435,7 +435,7 @@ export default function NavbarAdminPage() {
           })}
       </AdminFormDialog>
       {loading ? (
-        <div className="h-24 animate-pulse rounded-xl border border-slate-200 bg-white" />
+        <div className="h-24 animate-pulse rounded-xl border border-border bg-muted" />
       ) : items.length === 0 ? (
         <p className="admin-empty-state">
           Nenhum item configurado. Crie links simples ou dropdowns para exibir na Navbar.
@@ -446,17 +446,17 @@ export default function NavbarAdminPage() {
             <li key={item.id} className="admin-item">
               <div className="flex flex-wrap items-start justify-between gap-3">
                 <div className="flex min-w-0 items-start gap-3">
-                  <span className="mt-1 rounded-lg bg-neutral-100 p-2 text-neutral-500">
+                  <span className="mt-1 rounded-lg bg-muted p-2 text-muted-foreground">
                     <span className="sr-only">Posição {index + 1}</span>☰
                   </span>
                   <div className="min-w-0">
                     <h2 className="font-semibold">
                       {item.title}
-                      <span className="ml-2 rounded-full bg-neutral-100 px-2 py-0.5 text-[0.65rem] font-semibold tracking-wide text-neutral-500 uppercase">
+                      <span className="ml-2 rounded-full bg-muted px-2 py-0.5 text-[0.65rem] font-semibold tracking-wide text-muted-foreground uppercase">
                         {item.type === "DROPDOWN" ? "Dropdown" : "Link"}
                       </span>
                     </h2>
-                    <p className="mt-1 text-sm break-all text-neutral-500">
+                    <p className="mt-1 text-sm break-all text-muted-foreground">
                       {destinationLabel(item, collections)}
                     </p>
                   </div>
@@ -511,7 +511,7 @@ export default function NavbarAdminPage() {
               {item.type === "DROPDOWN" && (
                 <div className="mt-4 space-y-3 border-l-2 border-neutral-100 pl-4 sm:ml-3 sm:pl-5">
                   <div className="flex flex-wrap items-center justify-between gap-2">
-                    <h3 className="text-sm font-semibold text-neutral-700">Itens filhos</h3>
+                    <h3 className="text-sm font-semibold text-foreground">Itens filhos</h3>
                     <Button
                       type="button"
                       variant="outline"
@@ -529,7 +529,9 @@ export default function NavbarAdminPage() {
                     </Button>
                   </div>
                   {(item.children ?? []).length === 0 ? (
-                    <p className="text-sm text-neutral-500">Este dropdown ainda não tem links.</p>
+                    <p className="text-sm text-muted-foreground">
+                      Este dropdown ainda não tem links.
+                    </p>
                   ) : (
                     <ul className="space-y-2">
                       {item.children!.map((child, childIndex) => (
@@ -541,10 +543,10 @@ export default function NavbarAdminPage() {
                             <p className="text-sm font-medium">
                               {child.title}
                               {!child.active && (
-                                <span className="ml-2 text-xs text-neutral-400">Inativo</span>
+                                <span className="ml-2 text-xs text-muted-foreground">Inativo</span>
                               )}
                             </p>
-                            <p className="text-xs break-all text-neutral-500">
+                            <p className="text-xs break-all text-muted-foreground">
                               {destinationLabel(child, collections)}
                             </p>
                           </div>

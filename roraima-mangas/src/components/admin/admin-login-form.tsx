@@ -50,7 +50,10 @@ export default function AdminLoginForm({ callbackUrl }: { callbackUrl: string })
   }
 
   return (
-    <main className="relative grid min-h-screen place-items-center overflow-hidden bg-background px-4 py-12 text-foreground">
+    <main
+      id="main-content"
+      className="relative grid min-h-screen place-items-center overflow-hidden bg-background px-4 py-12 text-foreground"
+    >
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,color-mix(in_srgb,var(--brand)_24%,transparent),transparent_38%)]"
@@ -83,7 +86,7 @@ export default function AdminLoginForm({ callbackUrl }: { callbackUrl: string })
               id="email"
               type="email"
               autoComplete="email"
-              autoFocus
+              spellCheck={false}
               aria-invalid={Boolean(errors.email)}
               className="h-11"
               {...register("email")}
@@ -117,7 +120,7 @@ export default function AdminLoginForm({ callbackUrl }: { callbackUrl: string })
           )}
 
           <Button type="submit" size="lg" className="h-11 w-full" disabled={isSubmitting}>
-            {isSubmitting ? "Entrando..." : "Entrar"}
+            {isSubmitting ? "Entrando…" : "Entrar"}
           </Button>
         </form>
       </section>

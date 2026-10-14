@@ -29,7 +29,7 @@ export default function ProductCard({ product }: { product: PublicProduct }) {
               loading="lazy"
             />
           ) : (
-            <div className="flex h-full items-center justify-center px-4 text-center text-sm text-neutral-500">
+            <div className="flex h-full items-center justify-center px-4 text-center text-sm text-muted-foreground">
               Imagem indisponível
             </div>
           )}

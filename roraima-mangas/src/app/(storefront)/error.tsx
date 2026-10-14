@@ -15,7 +15,7 @@ export default function StorefrontError({
   return (
     <main className="mx-auto flex min-h-[50vh] max-w-7xl flex-col items-center justify-center gap-4 px-4 py-16 text-center">
       <h1 className="text-2xl font-bold">Não foi possível carregar esta página</h1>
-      <p className="text-neutral-600">Tente novamente em instantes.</p>
+      <p className="text-muted-foreground">Tente novamente em instantes.</p>
       <Button onClick={() => reset()}>Tentar novamente</Button>
     </main>
   );

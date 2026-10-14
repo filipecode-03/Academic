@@ -112,7 +112,7 @@ function CollectionForm({ collection, onSave, onCancel }: CollectionFormProps) {
           accept="image/jpeg,image/png,image/webp,image/avif"
           onChange={(event) => setImageFile(event.target.files?.[0])}
         />
-        <p className="text-sm text-neutral-600">
+        <p className="text-sm text-muted-foreground">
           Dimensão recomendada: 1600 × 600 px (proporção 8:3), para o banner responsivo da coleção.
           Formatos: JPG, PNG, WebP ou AVIF.
         </p>
@@ -130,7 +130,7 @@ function CollectionForm({ collection, onSave, onCancel }: CollectionFormProps) {
 
       <div className="flex gap-3">
         <Button type="submit" disabled={isSubmitting}>
-          {isSubmitting ? "Salvando..." : "Salvar coleção"}
+          {isSubmitting ? "Salvando…" : "Salvar coleção"}
         </Button>
         <Button type="button" variant="outline" onClick={onCancel}>
           Cancelar
@@ -444,7 +444,7 @@ export default function CollectionsPage() {
               disabled={!selectedProductId || savingAssociation}
               onClick={() => void addProduct()}
             >
-              {savingAssociation ? "Adicionando..." : "Adicionar produto"}
+              {savingAssociation ? "Adicionando…" : "Adicionar produto"}
             </Button>
           </div>
           {availableProducts.length === 0 && (
@@ -488,7 +488,7 @@ export default function CollectionsPage() {
           <AdminSearch
             value={search}
             onChange={setSearch}
-            placeholder="Pesquisar coleções..."
+            placeholder="Pesquisar coleções…"
             label="Pesquisar coleções pelo nome"
           />
         </div>
@@ -517,17 +517,17 @@ export default function CollectionsPage() {
                   <img
                     src={collection.image}
                     alt=""
-                    className="size-14 shrink-0 rounded-lg border border-slate-200 object-cover"
+                    className="size-14 shrink-0 rounded-lg border border-border object-cover"
                   />
                 ) : (
-                  <span className="grid size-14 shrink-0 place-items-center rounded-lg bg-slate-100 text-slate-400">
+                  <span className="grid size-14 shrink-0 place-items-center rounded-lg bg-muted text-muted-foreground">
                     <ImageIcon className="size-5" />
                   </span>
                 )}
                 <div className="min-w-0">
                   <h3 className="font-semibold">{collection.name}</h3>
                   {collection.description && (
-                    <p className="mt-1 line-clamp-2 text-sm text-slate-500">
+                    <p className="mt-1 line-clamp-2 text-sm text-muted-foreground">
                       {collection.description}
                     </p>
                   )}

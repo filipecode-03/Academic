@@ -2,13 +2,23 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { z } from "zod";
+import { Megaphone, Pencil, Plus, Trash2 } from "lucide-react";
 import AdminConfirmDialog from "@/src/components/admin/admin-confirm-dialog";
 import AdminFormDialog from "@/src/components/admin/admin-form-dialog";
+import {
+  AdminEmptyState,
+  AdminFeedback,
+  AdminPageHeader,
+  AdminSearch,
+  AdminSkeletonList,
+  AdminStatusBadge,
+} from "@/src/components/admin/admin-ui";
 import { Button } from "@/src/components/ui/button";
 import { Input } from "@/src/components/ui/input";
 import { Label } from "@/src/components/ui/label";
+import { Switch } from "@/src/components/ui/switch";
 import { Textarea } from "@/src/components/ui/textarea";
 import {
   createPromoNoticeSchema,
@@ -35,6 +45,7 @@ function PromoNoticeForm({ notice, onSave, onCancel }: PromoNoticeFormProps) {
     register,
     handleSubmit,
     setValue,
+    control,
     formState: { errors, isSubmitting },
   } = useForm<z.input<typeof createPromoNoticeSchema>, unknown, CreatePromoNoticeInput>({
     resolver: zodResolver(createPromoNoticeSchema),
@@ -47,6 +58,7 @@ function PromoNoticeForm({ notice, onSave, onCancel }: PromoNoticeFormProps) {
       endAt: notice?.endAt ?? "",
     },
   });
+  const active = useWatch({ control, name: "active" });
 
   return (
     <form className="space-y-5" onSubmit={handleSubmit(onSave)}>
@@ -110,14 +122,19 @@ function PromoNoticeForm({ notice, onSave, onCancel }: PromoNoticeFormProps) {
         {errors.endAt && <p role="alert">{errors.endAt.message}</p>}
       </div>
 
-      <label className="flex items-center gap-2">
-        <input type="checkbox" {...register("active")} />
-        Aviso ativo
+      <label className="flex items-center justify-between gap-4 rounded-lg border border-border p-3">
+        <span className="text-sm font-medium">Aviso ativo</span>
+        <Switch
+          checked={Boolean(active)}
+          onCheckedChange={(checked) => setValue("active", checked, { shouldDirty: true })}
+          aria-label="Aviso ativo"
+        />
+        <input type="hidden" {...register("active")} />
       </label>
 
       <div className="flex gap-3">
         <Button type="submit" disabled={isSubmitting}>
-          {isSubmitting ? "Salvando..." : "Salvar aviso"}
+          {isSubmitting ? "Salvando…" : "Salvar aviso"}
         </Button>
         <Button type="button" variant="outline" onClick={onCancel}>
           Cancelar
@@ -156,6 +173,10 @@ export default function PromoNoticesPage() {
   const [error, setError] = useState("");
   const [noticeMessage, setNoticeMessage] = useState("");
   const [deleteTarget, setDeleteTarget] = useState<PromoNotice>();
+  const dateFormatter = new Intl.DateTimeFormat("pt-BR", {
+    dateStyle: "short",
+    timeStyle: "short",
+  });
 
   async function loadNotices() {
     try {
@@ -222,35 +243,27 @@ export default function PromoNoticesPage() {
 
   return (
     <div className="admin-page">
-      <header className="admin-page-header">
-        <div>
-          <p className="admin-eyebrow">Conteúdo</p>
-          <h1>Avisos promocionais</h1>
-          <p>Gerencie o conteúdo, a posição e o período de exibição dos avisos.</p>
-        </div>
-        <button
-          type="button"
-          onClick={() => {
-            setEditingNotice(undefined);
-            setNoticeMessage("");
-            setError("");
-            setShowForm((current) => !current);
-          }}
-        >
-          {showForm ? "Fechar formulário" : "Novo aviso"}
-        </button>
-      </header>
+      <AdminPageHeader
+        eyebrow="Conteúdo"
+        title="Avisos promocionais"
+        description="Gerencie o conteúdo, a posição e o período de exibição dos avisos."
+        actions={
+          <Button
+            type="button"
+            onClick={() => {
+              setEditingNotice(undefined);
+              setNoticeMessage("");
+              setError("");
+              setShowForm(true);
+            }}
+          >
+            <Plus aria-hidden="true" /> Novo aviso
+          </Button>
+        }
+      />
 
-      {error && (
-        <p role="alert" className="admin-feedback admin-feedback-error">
-          {error}
-        </p>
-      )}
-      {noticeMessage && (
-        <p role="status" className="admin-feedback admin-feedback-success">
-          {noticeMessage}
-        </p>
-      )}
+      {error && <AdminFeedback type="error">{error}</AdminFeedback>}
+      {noticeMessage && <AdminFeedback type="success">{noticeMessage}</AdminFeedback>}
       <AdminFormDialog
         open={showForm}
         onOpenChange={(open) => {
@@ -268,33 +281,36 @@ export default function PromoNoticesPage() {
         />
       </AdminFormDialog>
 
-      <section className="space-y-3">
-        <h2 className="text-xl font-semibold">Avisos cadastrados</h2>
-        <div className="flex flex-wrap items-center gap-2">
-          <input
-            type="search"
-            className="w-full max-w-md"
-            placeholder="Pesquisar avisos..."
-            aria-label="Pesquisar avisos pelo conteúdo"
+      <section className="space-y-4" aria-labelledby="notices-list-title">
+        <div className="admin-toolbar">
+          <div className="admin-section-heading">
+            <div>
+              <h2 id="notices-list-title">Avisos cadastrados</h2>
+              <p>
+                {notices.length} {notices.length === 1 ? "aviso" : "avisos"}
+              </p>
+            </div>
+          </div>
+          <AdminSearch
             value={search}
-            onChange={(event) => setSearch(event.target.value)}
+            onChange={setSearch}
+            placeholder="Pesquisar avisos…"
+            label="Pesquisar avisos pelo conteúdo"
           />
-          {search && (
-            <button type="button" onClick={() => setSearch("")}>
-              Limpar pesquisa
-            </button>
-          )}
         </div>
-        {loading && (
-          <div className="h-24 animate-pulse rounded-xl border border-slate-200 bg-white" />
-        )}
+        {loading && <AdminSkeletonList />}
         {!loading && notices.length === 0 && !error && (
-          <p className="admin-empty-state">
-            Nenhum aviso cadastrado. Crie um aviso para comunicar novidades na loja.
-          </p>
+          <AdminEmptyState
+            icon={Megaphone}
+            title="Nenhum aviso cadastrado"
+            description="Crie um aviso para comunicar novidades na loja."
+          />
         )}
         {!loading && notices.length > 0 && filteredNotices.length === 0 && (
-          <p>Nenhum aviso encontrado para “{search}”.</p>
+          <AdminEmptyState
+            title="Nenhum resultado"
+            description={`Nenhum aviso corresponde à busca “${search}”.`}
+          />
         )}
         {!loading &&
           filteredNotices.map((notice) => (
@@ -302,21 +318,23 @@ export default function PromoNoticesPage() {
               key={notice.id}
               className="admin-item flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between"
             >
-              <div>
-                <p className="font-medium">{notice.content}</p>
-                <p>
+              <div className="min-w-0">
+                <h3 className="font-semibold text-foreground">{notice.content}</h3>
+                <p className="mt-1 text-sm text-muted-foreground">
                   Posição: {notice.position === "TOP" ? "Topo" : "Abaixo do carrossel"} · Ordem:{" "}
                   {notice.order}
                 </p>
-                <p>Status: {notice.active ? "Ativo" : "Inativo"}</p>
-                <p>
-                  Período: {new Date(notice.startAt).toLocaleString()} –{" "}
-                  {new Date(notice.endAt).toLocaleString()}
+                <p className="text-sm text-muted-foreground tabular-nums">
+                  Período: {dateFormatter.format(new Date(notice.startAt))} –{" "}
+                  {dateFormatter.format(new Date(notice.endAt))}
                 </p>
+                <AdminStatusBadge active={notice.active} />
               </div>
-              <div className="flex gap-3">
-                <button
+              <div className="admin-actions">
+                <Button
                   type="button"
+                  variant="outline"
+                  size="sm"
                   onClick={() => {
                     setEditingNotice(notice);
                     setError("");
@@ -324,15 +342,16 @@ export default function PromoNoticesPage() {
                     setShowForm(true);
                   }}
                 >
-                  Editar
-                </button>
-                <button
+                  <Pencil aria-hidden="true" /> Editar
+                </Button>
+                <Button
                   type="button"
-                  className="admin-button-danger"
+                  variant="destructive"
+                  size="sm"
                   onClick={() => setDeleteTarget(notice)}
                 >
-                  Excluir
-                </button>
+                  <Trash2 aria-hidden="true" /> Excluir
+                </Button>
               </div>
             </article>
           ))}

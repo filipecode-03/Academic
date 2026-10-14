@@ -328,7 +328,7 @@ export default function HomeCollectionBlocksPage() {
               Recomendado: 1200 × 900 px (proporção 4:3). JPG, PNG ou WebP.
             </p>
           </div>
-          <div className="flex items-center justify-between gap-4 rounded-lg border border-slate-200 p-3">
+          <div className="flex items-center justify-between gap-4 rounded-lg border border-border p-3">
             <Label htmlFor="home-block-active">Ativo na Home</Label>
             <Switch id="home-block-active" checked={active} onCheckedChange={setActive} />
           </div>
@@ -346,9 +346,7 @@ export default function HomeCollectionBlocksPage() {
       </AdminFormDialog>
       <section className="space-y-3">
         <h2 className="text-lg font-semibold">Atalhos cadastrados</h2>
-        {loading && (
-          <div className="h-24 animate-pulse rounded-xl border border-slate-200 bg-white" />
-        )}
+        {loading && <div className="h-24 animate-pulse rounded-xl border border-border bg-muted" />}
         {!loading && blocks.length === 0 && (
           <p className="admin-empty-state">Ainda não há atalhos. Crie o primeiro acima.</p>
         )}
@@ -360,7 +358,7 @@ export default function HomeCollectionBlocksPage() {
             <img src={block.image} alt="" className="size-20 rounded-lg object-cover" />
             <div className="min-w-40 flex-1">
               <h3 className="font-semibold">{block.title}</h3>
-              <p className="text-sm text-slate-500">
+              <p className="text-sm text-muted-foreground">
                 Coleção: {block.collection.name} · Ordem {index + 1}
               </p>
               <span

@@ -50,8 +50,8 @@ export default function AdminConfirmDialog({
     >
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogMedia className="bg-red-50 text-red-700">
-            <AlertTriangle />
+          <AlertDialogMedia className="bg-destructive/10 text-destructive">
+            <AlertTriangle aria-hidden="true" />
           </AlertDialogMedia>
           <AlertDialogTitle>{title}</AlertDialogTitle>
           <AlertDialogDescription>{description}</AlertDialogDescription>

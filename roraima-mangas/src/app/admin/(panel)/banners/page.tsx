@@ -2,12 +2,25 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { z } from "zod";
+import { ArrowDown, ArrowUp, ImageIcon, Pencil, Plus, Power, Trash2 } from "lucide-react";
 import { createHomeBannerSchema } from "@/src/schemas/home-banner.schema";
 import AdminConfirmDialog from "@/src/components/admin/admin-confirm-dialog";
 import AdminFormDialog from "@/src/components/admin/admin-form-dialog";
+import {
+  AdminEmptyState,
+  AdminFeedback,
+  AdminPageHeader,
+  AdminSearch,
+  AdminSkeletonList,
+  AdminStatusBadge,
+} from "@/src/components/admin/admin-ui";
 import { Button } from "@/src/components/ui/button";
+import { Input } from "@/src/components/ui/input";
+import { Label } from "@/src/components/ui/label";
+import { Switch } from "@/src/components/ui/switch";
+import { Textarea } from "@/src/components/ui/textarea";
 
 type DestinationType = "NONE" | "PRODUCT" | "COLLECTION";
 type BannerPosition = "FIRST" | "LAST";
@@ -55,8 +68,8 @@ function BannerForm({
   const {
     register,
     handleSubmit,
-    watch,
     setValue,
+    control,
     formState: { errors, isSubmitting },
   } = useForm<z.input<typeof createHomeBannerSchema>, unknown, BannerFormData>({
     resolver: zodResolver(createHomeBannerSchema),
@@ -71,7 +84,8 @@ function BannerForm({
     },
   });
 
-  const destinationType = watch("destinationType");
+  const destinationType = useWatch({ control, name: "destinationType" });
+  const active = useWatch({ control, name: "active" });
 
   useEffect(() => {
     if (!imageFile) {
@@ -108,37 +122,29 @@ function BannerForm({
       )}
     >
       <div>
-        <label className="block" htmlFor="banner-title">
-          Título *
-        </label>
-        <input id="banner-title" className="w-full border p-2" {...register("title")} />
+        <Label htmlFor="banner-title">Título *</Label>
+        <Input id="banner-title" {...register("title")} />
         {errors.title && <p role="alert">{errors.title.message}</p>}
         <p className="text-sm">Identificação administrativa, não exibida na Home.</p>
       </div>
 
       <div>
-        <label className="block" htmlFor="banner-description">
-          Descrição
-        </label>
-        <textarea
-          id="banner-description"
-          className="w-full border p-2"
-          {...register("description")}
-        />
+        <Label htmlFor="banner-description">Descrição</Label>
+        <Textarea id="banner-description" {...register("description")} />
         {errors.description && <p role="alert">{errors.description.message}</p>}
         <p className="text-sm">Informação administrativa opcional.</p>
       </div>
 
       <div>
-        <label className="block" htmlFor="banner-image">
-          Imagem do banner
-        </label>
+        <Label htmlFor="banner-image">Imagem do banner</Label>
         {banner?.image && (
           <div className="my-2">
             <p>Imagem atual:</p>
             <img
               src={banner.image}
               alt="Imagem atual do banner"
+              width={384}
+              height={128}
               className="h-32 w-auto object-cover"
             />
           </div>
@@ -149,7 +155,7 @@ function BannerForm({
           accept="image/jpeg,image/png,image/webp,image/avif"
           onChange={handleImageChange}
         />
-        <p className="text-sm text-neutral-600">
+        <p className="text-sm text-muted-foreground">
           Dimensão recomendada: 1920 × 640 px (proporção 3:1); o mobile aplica um recorte mais
           fechado. Formatos: JPG, PNG, WebP ou AVIF.
         </p>
@@ -160,6 +166,8 @@ function BannerForm({
             <img
               src={previewUrl}
               alt="Prévia da nova imagem do banner"
+              width={384}
+              height={128}
               className="h-32 w-auto object-cover"
             />
           </div>
@@ -185,9 +193,14 @@ function BannerForm({
         </div>
       )}
 
-      <label className="flex items-center gap-2">
-        <input type="checkbox" {...register("active")} />
-        Banner ativo
+      <label className="flex items-center justify-between gap-4 rounded-lg border border-border p-3">
+        <span className="text-sm font-medium">Banner ativo</span>
+        <Switch
+          checked={Boolean(active)}
+          onCheckedChange={(checked) => setValue("active", checked, { shouldDirty: true })}
+          aria-label="Banner ativo"
+        />
+        <input type="hidden" {...register("active")} />
       </label>
 
       <div>
@@ -241,7 +254,7 @@ function BannerForm({
 
       <div className="flex gap-3">
         <Button type="submit" disabled={isSubmitting}>
-          {isSubmitting ? "Salvando..." : "Salvar banner"}
+          {isSubmitting ? "Salvando…" : "Salvar banner"}
         </Button>
         <Button type="button" variant="outline" onClick={onCancel}>
           Cancelar
@@ -499,73 +512,65 @@ export default function BannersPage() {
 
   return (
     <div className="admin-page">
-      <header className="admin-page-header">
-        <div>
-          <p className="admin-eyebrow">Conteúdo</p>
-          <h1>Banners</h1>
-          <p>Gerencie imagens, destinos e a ordem dos banners exibidos na Home.</p>
-        </div>
-        <div className="flex flex-wrap gap-2">
-          {!isOrdering && (
-            <button
-              type="button"
-              onClick={() => {
-                if (showForm) {
-                  setShowForm(false);
-                  return;
-                }
-                setEditingBanner(undefined);
-                setNotice("");
-                setError("");
-                setShowForm(true);
-              }}
-            >
-              {showForm ? "Fechar formulário" : "Novo banner"}
-            </button>
-          )}
-          {!isOrdering ? (
-            <button type="button" disabled={banners.length < 2} onClick={startOrdering}>
-              Alterar ordem
-            </button>
-          ) : (
-            <>
-              <button type="button" className="admin-button-secondary" onClick={cancelOrdering}>
-                Cancelar
-              </button>
-              <button type="button" disabled={isSavingOrder} onClick={() => void saveBannerOrder()}>
-                {isSavingOrder ? "Salvando ordem..." : "Concluir alteração"}
-              </button>
-            </>
-          )}
-        </div>
-      </header>
+      <AdminPageHeader
+        eyebrow="Conteúdo"
+        title="Banners"
+        description="Gerencie imagens, destinos e a ordem dos banners exibidos na Home."
+        actions={
+          <div className="flex flex-wrap gap-2">
+            {!isOrdering && (
+              <Button
+                type="button"
+                onClick={() => {
+                  if (showForm) {
+                    setShowForm(false);
+                    return;
+                  }
+                  setEditingBanner(undefined);
+                  setNotice("");
+                  setError("");
+                  setShowForm(true);
+                }}
+              >
+                <Plus aria-hidden="true" /> {showForm ? "Fechar formulário" : "Novo banner"}
+              </Button>
+            )}
+            {!isOrdering ? (
+              <Button
+                type="button"
+                variant="outline"
+                disabled={banners.length < 2}
+                onClick={startOrdering}
+              >
+                Alterar ordem
+              </Button>
+            ) : (
+              <>
+                <Button type="button" variant="outline" onClick={cancelOrdering}>
+                  Cancelar
+                </Button>
+                <Button
+                  type="button"
+                  disabled={isSavingOrder}
+                  onClick={() => void saveBannerOrder()}
+                >
+                  {isSavingOrder ? "Salvando ordem…" : "Concluir alteração"}
+                </Button>
+              </>
+            )}
+          </div>
+        }
+      />
 
-      <div className="flex flex-wrap items-center gap-2">
-        <input
-          type="search"
-          className="w-full max-w-md"
-          placeholder="Pesquisar banners..."
-          aria-label="Pesquisar banners por título, descrição ou destino"
-          value={search}
-          onChange={(event) => setSearch(event.target.value)}
-        />
-        {search && (
-          <button type="button" onClick={() => setSearch("")}>
-            Limpar pesquisa
-          </button>
-        )}
-      </div>
+      <AdminSearch
+        value={search}
+        onChange={setSearch}
+        placeholder="Pesquisar banners…"
+        label="Pesquisar banners por título, descrição ou destino"
+      />
 
-      {error && (
-        <p role="alert" className="admin-feedback admin-feedback-error">
-          {error}
-        </p>
-      )}
-      {notice && (
-        <p role="status" className="admin-feedback admin-feedback-success">
-          {notice}
-        </p>
-      )}
+      {error && <AdminFeedback type="error">{error}</AdminFeedback>}
+      {notice && <AdminFeedback type="success">{notice}</AdminFeedback>}
       <AdminFormDialog
         open={showForm}
         onOpenChange={(open) => {
@@ -588,18 +593,28 @@ export default function BannersPage() {
         />
       </AdminFormDialog>
 
-      <section className="space-y-3">
-        <h2 className="text-xl font-semibold">Banners cadastrados</h2>
-        {loading && (
-          <div className="h-28 animate-pulse rounded-xl border border-slate-200 bg-white" />
-        )}
+      <section className="space-y-3" aria-labelledby="banners-list-title">
+        <div className="admin-section-heading">
+          <div>
+            <h2 id="banners-list-title">Banners cadastrados</h2>
+            <p>
+              {banners.length} {banners.length === 1 ? "banner" : "banners"}
+            </p>
+          </div>
+        </div>
+        {loading && <AdminSkeletonList />}
         {!loading && banners.length === 0 && !error && (
-          <p className="admin-empty-state">
-            Nenhum banner cadastrado. Crie o primeiro banner para destacar o conteúdo da Home.
-          </p>
+          <AdminEmptyState
+            icon={ImageIcon}
+            title="Nenhum banner cadastrado"
+            description="Crie o primeiro banner para destacar o conteúdo da Home."
+          />
         )}
         {!loading && banners.length > 0 && visibleBanners.length === 0 && (
-          <p>Nenhum banner encontrado para “{search}”.</p>
+          <AdminEmptyState
+            title="Nenhum resultado"
+            description={`Nenhum banner corresponde à busca “${search}”.`}
+          />
         )}
         {!loading &&
           visibleBanners.map((banner) => (
@@ -611,42 +626,54 @@ export default function BannersPage() {
                 <img
                   src={banner.image}
                   alt=""
-                  className="h-20 w-32 shrink-0 rounded-lg border border-slate-200 object-cover sm:h-24 sm:w-40"
+                  width={160}
+                  height={96}
+                  className="h-20 w-32 shrink-0 rounded-lg border border-border object-cover sm:h-24 sm:w-40"
                 />
-                <div>
-                  <h3 className="font-semibold">{banner.title}</h3>
-                  {banner.description && <p className="max-w-xl truncate">{banner.description}</p>}
-                  <p>
+                <div className="min-w-0">
+                  <h3 className="font-semibold text-foreground">{banner.title}</h3>
+                  {banner.description && (
+                    <p className="max-w-xl truncate text-muted-foreground">{banner.description}</p>
+                  )}
+                  <p className="text-sm text-muted-foreground">
                     Posição: {(isOrdering ? orderedBannerIds.indexOf(banner.id) : banner.order) + 1}
                   </p>
-                  <p>Status: {banner.active ? "Ativo" : "Inativo"}</p>
-                  <p>Destino: {getBannerDestination(banner)}</p>
+                  <p className="text-sm text-muted-foreground">
+                    Destino: {getBannerDestination(banner)}
+                  </p>
+                  <AdminStatusBadge active={banner.active} />
                 </div>
               </div>
-              <div className="flex flex-wrap gap-3">
+              <div className="admin-actions">
                 {isOrdering ? (
                   <div className="flex gap-2" aria-label={`Mover ${banner.title}`}>
-                    <button
+                    <Button
                       type="button"
+                      variant="outline"
+                      size="icon"
                       aria-label={`Mover ${banner.title} para cima`}
                       disabled={orderedBannerIds.indexOf(banner.id) === 0}
                       onClick={() => moveBanner(banner.id, -1)}
                     >
-                      ↑
-                    </button>
-                    <button
+                      <ArrowUp aria-hidden="true" />
+                    </Button>
+                    <Button
                       type="button"
+                      variant="outline"
+                      size="icon"
                       aria-label={`Mover ${banner.title} para baixo`}
                       disabled={orderedBannerIds.indexOf(banner.id) === orderedBannerIds.length - 1}
                       onClick={() => moveBanner(banner.id, 1)}
                     >
-                      ↓
-                    </button>
+                      <ArrowDown aria-hidden="true" />
+                    </Button>
                   </div>
                 ) : (
                   <>
-                    <button
+                    <Button
                       type="button"
+                      variant="outline"
+                      size="sm"
                       onClick={() => {
                         setEditingBanner(banner);
                         setError("");
@@ -654,18 +681,25 @@ export default function BannersPage() {
                         setShowForm(true);
                       }}
                     >
-                      Editar
-                    </button>
-                    <button type="button" onClick={() => void toggleActive(banner)}>
-                      {banner.active ? "Desativar" : "Ativar"}
-                    </button>
-                    <button
+                      <Pencil aria-hidden="true" /> Editar
+                    </Button>
+                    <Button
                       type="button"
-                      className="admin-button-danger"
+                      variant="outline"
+                      size="sm"
+                      onClick={() => void toggleActive(banner)}
+                    >
+                      <Power aria-hidden="true" />
+                      {banner.active ? "Desativar" : "Ativar"}
+                    </Button>
+                    <Button
+                      type="button"
+                      variant="destructive"
+                      size="sm"
                       onClick={() => setDeleteTarget(banner)}
                     >
-                      Excluir
-                    </button>
+                      <Trash2 aria-hidden="true" /> Excluir
+                    </Button>
                   </>
                 )}
               </div>

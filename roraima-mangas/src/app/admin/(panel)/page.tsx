@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 
 import { AdminPageHeader } from "@/src/components/admin/admin-ui";
+import { Button } from "@/src/components/ui/button";
 import { authOptions } from "@/src/lib/auth";
 
 const adminLinks = [
@@ -81,12 +82,9 @@ export default async function AdminPage() {
         title={`Olá, ${userName}`}
         description="Acesse rapidamente as áreas usadas para manter o catálogo e o conteúdo da loja atualizados."
         actions={
-          <Link
-            href="/admin/produtos"
-            className="inline-flex h-9 items-center justify-center gap-1.5 rounded-lg bg-slate-950 px-3 text-sm font-medium text-white transition hover:bg-slate-800 focus-visible:ring-3 focus-visible:ring-slate-400/40 focus-visible:outline-none"
-          >
-            <Plus className="size-4" /> Novo produto
-          </Link>
+          <Button render={<Link href="/admin/produtos" />} size="lg">
+            <Plus aria-hidden="true" /> Novo produto
+          </Button>
         }
       />
 
@@ -102,20 +100,23 @@ export default async function AdminPage() {
             <Link
               key={href}
               href={href}
-              className="group flex min-h-36 flex-col rounded-xl border border-slate-200 bg-white p-5 shadow-[0_1px_2px_rgb(15_23_42/0.04)] transition duration-200 hover:-translate-y-0.5 hover:border-brand-secondary hover:shadow-md focus-visible:ring-3 focus-visible:ring-brand/50 focus-visible:outline-none motion-reduce:transform-none"
+              className="group flex min-h-36 flex-col rounded-xl border border-border bg-card p-5 text-card-foreground shadow-[0_1px_2px_rgb(15_23_42/0.04)] transition-[border-color,box-shadow,transform] duration-200 hover:-translate-y-0.5 hover:border-brand-secondary hover:shadow-md focus-visible:ring-3 focus-visible:ring-brand/40 focus-visible:outline-none motion-reduce:transform-none"
             >
               <div className="flex items-start justify-between gap-3">
-                <span className="grid size-10 place-items-center rounded-xl bg-slate-100 text-slate-700 transition group-hover:bg-brand/20 group-hover:text-brand-deep">
-                  <Icon className="size-5" />
+                <span className="grid size-10 place-items-center rounded-xl bg-muted text-muted-foreground transition-colors group-hover:bg-brand/20 group-hover:text-brand-deep dark:group-hover:text-brand">
+                  <Icon aria-hidden="true" className="size-5" />
                 </span>
-                <span className="text-[0.65rem] font-bold tracking-[0.14em] text-slate-400 uppercase">
+                <span className="text-[0.65rem] font-bold tracking-[0.14em] text-muted-foreground uppercase">
                   {group}
                 </span>
               </div>
-              <h3 className="mt-4 font-heading font-bold text-slate-900">{title}</h3>
+              <h3 className="mt-4 font-heading font-bold text-foreground">{title}</h3>
               <div className="mt-1 flex items-end gap-3">
-                <p className="flex-1 text-sm leading-5 text-slate-500">{description}</p>
-                <ArrowRight className="size-4 shrink-0 text-slate-400 transition-transform group-hover:translate-x-0.5 group-hover:text-brand-accent" />
+                <p className="flex-1 text-sm leading-5 text-muted-foreground">{description}</p>
+                <ArrowRight
+                  aria-hidden="true"
+                  className="size-4 shrink-0 text-muted-foreground transition-[color,transform] group-hover:translate-x-0.5 group-hover:text-brand-accent"
+                />
               </div>
             </Link>
           ))}

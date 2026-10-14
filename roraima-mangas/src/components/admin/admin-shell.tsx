@@ -21,6 +21,8 @@ import Image from "next/image";
 
 import AdminLogout from "@/src/components/admin/admin-logout";
 import ThemeToggle from "@/src/components/theme-toggle";
+import { Button } from "@/src/components/ui/button";
+import { Sheet, SheetContent } from "@/src/components/ui/sheet";
 
 const navigation = [
   {
@@ -53,7 +55,7 @@ function NavigationContent({ onNavigate }: { onNavigate?: () => void }) {
     <>
       <div className="flex h-20 items-center gap-3 border-b border-white/10 px-5">
         <div className="grid size-10 place-items-center text-lg font-black">
-          <Image src={logo} alt="logo" className="rounded-full" />
+          <Image src={logo} alt="Roraima Mangás" className="rounded-full" />
         </div>
         <div className="min-w-0">
           <p className="truncate font-heading text-base font-bold text-white">Roraima Mangás</p>
@@ -81,15 +83,19 @@ function NavigationContent({ onNavigate }: { onNavigate?: () => void }) {
                     href={item.href}
                     onClick={onNavigate}
                     aria-current={active ? "page" : undefined}
-                    className={`group flex min-h-10 items-center gap-3 rounded-lg px-3 text-sm font-medium transition-all duration-200 focus-visible:ring-2 focus-visible:ring-brand-secondary focus-visible:outline-none ${
+                    className={`group flex min-h-10 items-center gap-3 rounded-lg px-3 text-sm font-medium transition-[color,background-color,box-shadow] duration-200 focus-visible:ring-2 focus-visible:ring-brand-secondary focus-visible:outline-none ${
                       active
                         ? "bg-brand text-brand-deep shadow-sm"
                         : "text-slate-300 hover:bg-white/8 hover:text-white"
                     }`}
                   >
-                    <Icon className="size-[1.05rem]" strokeWidth={active ? 2.3 : 1.9} />
+                    <Icon
+                      aria-hidden="true"
+                      className="size-[1.05rem]"
+                      strokeWidth={active ? 2.3 : 1.9}
+                    />
                     <span className="flex-1">{item.label}</span>
-                    {active && <ChevronRight className="size-3.5 opacity-60" />}
+                    {active && <ChevronRight aria-hidden="true" className="size-3.5 opacity-60" />}
                   </Link>
                 );
               })}
@@ -110,12 +116,6 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
   const [open, setOpen] = useState(false);
 
   useEffect(() => setOpen(false), [pathname]);
-  useEffect(() => {
-    document.body.style.overflow = open ? "hidden" : "";
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, [open]);
 
   return (
     <div className="min-h-screen bg-background text-foreground lg:flex">
@@ -123,46 +123,46 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
         <NavigationContent />
       </aside>
 
-      {open && (
-        <div className="fixed inset-0 z-50 lg:hidden">
-          <button
+      <Sheet open={open} onOpenChange={setOpen}>
+        <SheetContent
+          side="left"
+          showCloseButton={false}
+          className="w-[min(20rem,88vw)] max-w-none gap-0 border-white/10 bg-brand-ink p-0 text-white lg:hidden"
+        >
+          <Button
             type="button"
-            aria-label="Fechar menu"
-            className="absolute inset-0 bg-slate-950/55 backdrop-blur-[2px]"
+            variant="ghost"
+            size="icon"
+            aria-label="Fechar navegação"
+            className="absolute top-4 right-3 z-10 text-slate-300 hover:bg-white/10 hover:text-white"
             onClick={() => setOpen(false)}
-          />
-          <aside className="relative flex h-full w-[min(20rem,88vw)] flex-col bg-brand-ink shadow-2xl motion-safe:animate-in motion-safe:duration-200 motion-safe:ease-out motion-safe:slide-in-from-left">
-            <button
-              type="button"
-              aria-label="Fechar navegação"
-              className="absolute top-5 right-3 z-10 grid size-9 place-items-center rounded-lg text-slate-300 transition hover:bg-white/10 hover:text-white"
-              onClick={() => setOpen(false)}
-            >
-              <X className="size-5" />
-            </button>
-            <NavigationContent onNavigate={() => setOpen(false)} />
-          </aside>
-        </div>
-      )}
+          >
+            <X aria-hidden="true" />
+          </Button>
+          <NavigationContent onNavigate={() => setOpen(false)} />
+        </SheetContent>
+      </Sheet>
 
       <div className="min-w-0 flex-1 lg:pl-64">
         <header className="sticky top-0 z-30 flex h-16 items-center border-b border-border bg-background/90 px-4 backdrop-blur sm:px-6 lg:justify-end">
-          <button
+          <Button
             type="button"
+            variant="outline"
+            size="icon"
             aria-label="Abrir navegação"
-            className="grid size-10 place-items-center rounded-lg border border-border text-foreground transition-colors duration-200 hover:bg-muted lg:hidden"
+            className="lg:hidden"
             onClick={() => setOpen(true)}
           >
-            <Menu className="size-5" />
-          </button>
+            <Menu aria-hidden="true" />
+          </Button>
           <div className="ml-3 lg:hidden">
             <p className="font-heading text-sm font-bold">Roraima Mangás</p>
-            <p className="text-xs text-slate-500">Admin</p>
+            <p className="text-xs text-muted-foreground">Admin</p>
           </div>
           <ThemeToggle className="ml-auto lg:ml-0" />
         </header>
 
-        <main data-admin className="px-4 py-6 sm:px-6 sm:py-8 xl:px-10">
+        <main id="main-content" data-admin className="px-4 py-6 sm:px-6 sm:py-8 xl:px-10">
           <div className="mx-auto w-full max-w-7xl">{children}</div>
         </main>
       </div>

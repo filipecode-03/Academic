@@ -28,8 +28,8 @@ export default function ProductPurchaseControls({ product }: { product: PublicPr
     <div className="w-full space-y-4">
       {!available ? (
         <div className="space-y-3">
-          <div className="flex items-center gap-2 text-sm font-semibold text-red-700">
-            <span className="size-2 rounded-full bg-red-600" />
+          <div className="flex items-center gap-2 text-sm font-semibold text-destructive">
+            <span className="size-2 rounded-full bg-destructive" />
             Produto indisponível
           </div>
 
@@ -40,7 +40,7 @@ export default function ProductPurchaseControls({ product }: { product: PublicPr
         </div>
       ) : (
         <div className="flex w-full flex-col gap-3 sm:flex-row sm:items-center">
-          <div className="flex h-12 items-center justify-between rounded-lg border bg-white sm:w-auto">
+          <div className="flex h-12 items-center justify-between rounded-lg border border-border bg-card sm:w-auto">
             <Button
               type="button"
               variant="ghost"
@@ -73,7 +73,7 @@ export default function ProductPurchaseControls({ product }: { product: PublicPr
           <Button
             type="button"
             size="lg"
-            className="h-12 w-full gap-2 bg-neutral-900 text-white transition-colors hover:bg-neutral-700 sm:flex-1"
+            className="h-12 w-full gap-2 sm:flex-1"
             onClick={addToCart}
           >
             {added ? <Check className="size-5" /> : <ShoppingBag className="size-5" />}
@@ -84,13 +84,13 @@ export default function ProductPurchaseControls({ product }: { product: PublicPr
       )}
 
       {error && (
-        <p role="alert" className="text-sm font-medium text-red-700">
+        <p role="alert" className="text-sm font-medium text-destructive">
           {error}
         </p>
       )}
 
       {added && !error && (
-        <p role="status" className="text-sm text-green-700">
+        <p role="status" className="text-sm text-success">
           {quantity} {quantity === 1 ? "unidade adicionada" : "unidades adicionadas"} à sacola.
         </p>
       )}

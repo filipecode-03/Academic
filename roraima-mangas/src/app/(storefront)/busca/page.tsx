@@ -15,7 +15,7 @@ export default async function SearchPage({
   return (
     <main className="mx-auto min-h-[50vh] max-w-7xl space-y-8 px-4 py-8 sm:px-6 lg:px-8">
       <header>
-        <p className="text-sm text-neutral-500">Resultados da busca</p>
+        <p className="text-sm text-muted-foreground">Resultados da busca</p>
         <h1 className="mt-1 text-2xl font-bold sm:text-3xl">
           {query ? `“${query}”` : "Buscar no catálogo"}
         </h1>
@@ -27,7 +27,7 @@ export default async function SearchPage({
             {results.collections.map((item) => (
               <Link
                 key={item.id}
-                className="rounded-full border bg-white px-4 py-2 text-sm hover:bg-neutral-100"
+                className="rounded-full border border-border bg-card px-4 py-2 text-sm transition-colors hover:bg-muted"
                 href={`/colecoes/${item.slug}`}
               >
                 {item.name}
@@ -42,11 +42,11 @@ export default async function SearchPage({
           <ProductListing products={results.products.map(serializePublicProduct)} />
         </section>
       ) : query.length >= 2 ? (
-        <p className="rounded-lg border bg-white p-5 text-neutral-600">
+        <p className="rounded-lg border border-border bg-card p-5 text-muted-foreground">
           Nenhum produto encontrado. Tente outro termo.
         </p>
       ) : (
-        <p className="rounded-lg border bg-white p-5 text-neutral-600">
+        <p className="rounded-lg border border-border bg-card p-5 text-muted-foreground">
           Digite pelo menos dois caracteres para buscar.
         </p>
       )}

@@ -1,6 +1,8 @@
 import type { LucideIcon } from "lucide-react";
 import { AlertCircle, CheckCircle2, Inbox, Search } from "lucide-react";
 
+import { Button } from "@/src/components/ui/button";
+import Skeleton from "@/src/components/ui/skeleton";
 import { cn } from "@/src/lib/utils";
 
 export function AdminPageHeader({
@@ -39,7 +41,7 @@ export function AdminFeedback({
       role={type === "error" ? "alert" : "status"}
       className={`admin-feedback admin-feedback-${type}`}
     >
-      <Icon className="size-4 shrink-0" />
+      <Icon aria-hidden="true" className="size-4 shrink-0" />
       <span>{children}</span>
     </div>
   );
@@ -58,18 +60,21 @@ export function AdminSearch({
 }) {
   return (
     <div className="admin-search">
-      <Search className="size-4" />
+      <Search aria-hidden="true" className="size-4" />
       <input
         type="search"
+        name="admin-search"
+        autoComplete="off"
+        spellCheck={false}
         value={value}
         onChange={(event) => onChange(event.target.value)}
         placeholder={placeholder}
         aria-label={label}
       />
       {value && (
-        <button type="button" onClick={() => onChange("")}>
+        <Button type="button" variant="ghost" size="xs" onClick={() => onChange("")}>
           Limpar
-        </button>
+        </Button>
       )}
     </div>
   );
@@ -89,7 +94,7 @@ export function AdminEmptyState({
   return (
     <div className="admin-empty-state">
       <div className="admin-empty-icon">
-        <Icon className="size-5" />
+        <Icon aria-hidden="true" className="size-5" />
       </div>
       <h3>{title}</h3>
       <p>{description}</p>
@@ -116,10 +121,7 @@ export function AdminSkeletonList({ rows = 3 }: { rows?: number }) {
   return (
     <div className="space-y-3" aria-label="Carregando conteúdo" role="status">
       {Array.from({ length: rows }).map((_, index) => (
-        <div
-          key={index}
-          className="h-24 animate-pulse rounded-xl border border-slate-200 bg-white"
-        />
+        <Skeleton key={index} className="h-24 rounded-xl border border-border" />
       ))}
     </div>
   );

@@ -8,7 +8,7 @@ export default function StorefrontLoading() {
     >
       <Skeleton className="h-4 w-44" />
       <Skeleton className="h-9 w-64" />
-      <div className="flex items-center justify-between rounded-lg border bg-white p-4">
+      <div className="flex items-center justify-between rounded-lg border border-border bg-card p-4">
         <Skeleton className="h-5 w-24" />
         <Skeleton className="h-9 w-44" />
       </div>

@@ -31,6 +31,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={cn("h-full", "antialiased", roboto.variable, nunito.variable)}
     >
       <body>
+        <a href="#main-content" className="skip-link">
+          Ir para o conteúdo principal
+        </a>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"

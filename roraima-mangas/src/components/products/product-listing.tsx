@@ -33,15 +33,15 @@ export default function ProductListing({
 
   return (
     <section className="space-y-5 sm:space-y-6">
-      <div className="flex flex-wrap items-center justify-between gap-3 rounded-lg border bg-white px-4 py-3 shadow-sm">
-        <p className="text-sm text-neutral-600">
-          <span className="font-semibold text-neutral-950">{products.length}</span>{" "}
+      <div className="flex flex-wrap items-center justify-between gap-3 rounded-lg border border-border bg-card px-4 py-3 text-card-foreground shadow-sm">
+        <p className="text-sm text-muted-foreground">
+          <span className="font-semibold text-foreground">{products.length}</span>{" "}
           {products.length === 1 ? "produto" : "produtos"}
         </p>
         <label className="flex items-center gap-2 text-sm">
-          <span className="whitespace-nowrap text-neutral-600">Ordenar por</span>
+          <span className="whitespace-nowrap text-muted-foreground">Ordenar por</span>
           <select
-            className="max-w-[11rem] rounded-md border border-neutral-300 bg-white px-3 py-2 font-medium transition outline-none focus:border-neutral-900 focus:ring-2 focus:ring-neutral-900/15"
+            className="max-w-[11rem] rounded-md border border-input bg-background px-3 py-2 font-medium transition-colors outline-none focus:border-ring focus:ring-2 focus:ring-ring/30"
             value={sort}
             onChange={(event) => setSort(event.target.value as ProductSort)}
           >
@@ -55,7 +55,7 @@ export default function ProductListing({
         </label>
       </div>
       {products.length === 0 ? (
-        <p className="rounded-xl border bg-white p-10 text-center text-neutral-600 shadow-sm">
+        <p className="rounded-xl border border-border bg-card p-10 text-center text-muted-foreground shadow-sm">
           {emptyMessage}
         </p>
       ) : (

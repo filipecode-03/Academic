@@ -511,12 +511,12 @@ export default function ProductForm({ product, onSuccess, onCancel }: ProductFor
             role="dialog"
             aria-modal="true"
             aria-labelledby="quick-collection-title"
-            className="w-full max-w-md rounded-xl border bg-white p-5 shadow-2xl"
+            className="w-full max-w-md rounded-xl border border-border bg-popover p-5 text-popover-foreground shadow-2xl"
           >
             <h2 id="quick-collection-title" className="text-lg font-semibold">
               Criar coleção
             </h2>
-            <p className="mt-1 text-sm text-neutral-600">
+            <p className="mt-1 text-sm text-muted-foreground">
               A coleção será adicionada a este produto e você continuará preenchendo o formulário.
             </p>
             <label className="mt-4 block space-y-1 text-sm font-medium">
@@ -643,7 +643,7 @@ export default function ProductForm({ product, onSuccess, onCancel }: ProductFor
             />
           </label>
         </div>
-        <p className="text-xs text-neutral-500">
+        <p className="text-xs text-muted-foreground">
           A novidade termina automaticamente ao fim da data selecionada. A duração pode ser
           escolhida ou ajustada pela data.
         </p>
@@ -712,7 +712,7 @@ export default function ProductForm({ product, onSuccess, onCancel }: ProductFor
             </label>
           )}
         </div>
-        <p className="text-xs text-neutral-500">
+        <p className="text-xs text-muted-foreground">
           Sem expiração mantém o destaque até desativá-lo. Com período, ele termina automaticamente
           após a data final.
         </p>
@@ -726,7 +726,7 @@ export default function ProductForm({ product, onSuccess, onCancel }: ProductFor
             {existingImages.map((image, index) => (
               <div
                 key={image}
-                className="relative overflow-hidden rounded-xl border border-slate-200 bg-white"
+                className="relative overflow-hidden rounded-xl border border-border bg-card"
               >
                 <img
                   src={image}
@@ -797,8 +797,8 @@ export default function ProductForm({ product, onSuccess, onCancel }: ProductFor
         <Button type="submit" size="lg" className="sm:min-w-40" disabled={isSubmitting}>
           {isSubmitting
             ? isEditing
-              ? "Salvando..."
-              : "Cadastrando..."
+              ? "Salvando…"
+              : "Cadastrando…"
             : isEditing
               ? "Salvar alterações"
               : "Cadastrar produto"}

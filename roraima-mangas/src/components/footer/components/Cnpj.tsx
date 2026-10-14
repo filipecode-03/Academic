@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { ArrowUp } from "lucide-react";
+import { Button } from "@/src/components/ui/button";
 
 import master from "@/public/payment/mastercard@2x.png";
 import visa from "@/public/payment/visa@2x.png";
@@ -45,8 +46,10 @@ export default function Cnpj() {
 
         {/* Voltar ao topo */}
         <div className="mt-8 flex justify-center lg:mt-10">
-          <button
+          <Button
             type="button"
+            variant="ghost"
+            size="icon-lg"
             onClick={() =>
               window.scrollTo({
                 top: 0,
@@ -54,10 +57,10 @@ export default function Cnpj() {
               })
             }
             aria-label="Voltar ao topo"
-            className="cursor-pointer transition-transform duration-200 hover:-translate-y-1"
+            className="text-yellow-400 transition-transform duration-200 hover:-translate-y-1 hover:bg-white/10 hover:text-yellow-300 motion-reduce:transition-none motion-reduce:hover:translate-y-0"
           >
-            <ArrowUp className="h-5 w-5 text-yellow-400" />
-          </button>
+            <ArrowUp aria-hidden="true" className="size-5" />
+          </Button>
         </div>
       </div>
     </div>

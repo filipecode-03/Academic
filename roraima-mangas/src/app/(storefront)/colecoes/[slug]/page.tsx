@@ -14,7 +14,7 @@ export default async function CollectionPage({ params }: PageProps<"/colecoes/[s
       <Breadcrumb current={collection.name} />
 
       {collection.image ? (
-        <header className="relative isolate flex min-h-52 w-full items-end overflow-hidden rounded-2xl bg-neutral-200 shadow-sm sm:min-h-64 lg:min-h-80">
+        <header className="relative isolate flex min-h-52 w-full items-end overflow-hidden rounded-2xl bg-muted shadow-sm sm:min-h-64 lg:min-h-80">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={collection.image}
@@ -41,7 +41,7 @@ export default async function CollectionPage({ params }: PageProps<"/colecoes/[s
           <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">{collection.name}</h1>
 
           {collection.description && (
-            <p className="mt-2 max-w-3xl leading-relaxed text-neutral-700">
+            <p className="mt-2 max-w-3xl leading-relaxed text-muted-foreground">
               {collection.description}
             </p>
           )}

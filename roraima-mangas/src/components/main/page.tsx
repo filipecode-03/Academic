@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
+import { ArrowRight, ChevronLeft, ChevronRight, Pause, Play } from "lucide-react";
 import ProductCard from "@/src/components/products/product-card";
 import Skeleton from "@/src/components/ui/skeleton";
 import type { PublicProduct } from "@/src/types/storefront";
@@ -113,17 +113,18 @@ function NoticeStrip({ notices }: { notices: PromoNotice[] }) {
 function BannerCarousel({ banners }: { banners: Banner[] }) {
   const [activeIndex, setActiveIndex] = useState(0);
   const [timerVersion, setTimerVersion] = useState(0);
+  const [paused, setPaused] = useState(false);
   const touchStart = useRef<number | null>(null);
   const swipeHandled = useRef(false);
 
   useEffect(() => {
-    if (banners.length < 2) return;
+    if (banners.length < 2 || paused) return;
     const timer = window.setInterval(
       () => setActiveIndex((index) => (index + 1) % banners.length),
       10_000,
     );
     return () => window.clearInterval(timer);
-  }, [banners.length, timerVersion]);
+  }, [banners.length, paused, timerVersion]);
 
   if (banners.length === 0) return null;
   const banner = banners[activeIndex % banners.length];
@@ -134,6 +135,8 @@ function BannerCarousel({ banners }: { banners: Banner[] }) {
     <img
       src={banner.image}
       alt="Banner da loja"
+      width={1920}
+      height={640}
       className="h-full w-full object-cover motion-safe:animate-[heroEnter_650ms_cubic-bezier(0.22,1,0.36,1)]"
       fetchPriority="high"
     />
@@ -197,20 +200,37 @@ function BannerCarousel({ banners }: { banners: Banner[] }) {
           >
             <ChevronRight aria-hidden="true" className="size-5" />
           </button>
-          <div className="absolute bottom-3 left-1/2 flex -translate-x-1/2 items-center gap-1.5 rounded-full bg-brand-ink/45 px-2.5 py-2 backdrop-blur-sm sm:bottom-5">
+          <div className="absolute bottom-3 left-1/2 flex -translate-x-1/2 items-center gap-0.5 rounded-full bg-brand-ink/55 p-1 backdrop-blur-sm sm:bottom-5">
             {banners.map((item, index) => (
               <button
                 key={item.id}
                 type="button"
                 aria-label={`Mostrar banner ${index + 1}`}
                 aria-current={index === activeIndex ? "true" : undefined}
-                className={`h-1.5 rounded-full transition-[width,background-color] duration-300 focus-visible:ring-2 focus-visible:ring-brand focus-visible:outline-none ${index === activeIndex ? "w-6 bg-brand" : "w-1.5 bg-white/70 hover:bg-white"}`}
+                className="group grid size-8 place-items-center rounded-full focus-visible:ring-2 focus-visible:ring-brand focus-visible:outline-none"
                 onClick={() => {
                   setActiveIndex(index);
                   setTimerVersion((version) => version + 1);
                 }}
-              />
+              >
+                <span
+                  className={`h-1.5 rounded-full transition-[width,background-color] duration-300 ${index === activeIndex ? "w-6 bg-brand" : "w-1.5 bg-white/70 group-hover:bg-white"}`}
+                />
+              </button>
             ))}
+            <button
+              type="button"
+              className="grid size-8 place-items-center rounded-full text-white focus-visible:ring-2 focus-visible:ring-brand focus-visible:outline-none"
+              aria-label={paused ? "Retomar rotação dos banners" : "Pausar rotação dos banners"}
+              aria-pressed={paused}
+              onClick={() => setPaused((current) => !current)}
+            >
+              {paused ? (
+                <Play aria-hidden="true" className="size-3.5" />
+              ) : (
+                <Pause aria-hidden="true" className="size-3.5" />
+              )}
+            </button>
           </div>
         </>
       )}
@@ -298,6 +318,8 @@ function CollectionShowcase({ blocks }: { blocks: CollectionBlock[] }) {
             <img
               src={block.image}
               alt=""
+              width={640}
+              height={800}
               loading="lazy"
               className="absolute inset-0 size-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.035]"
             />
@@ -463,7 +485,7 @@ export default function Main() {
                         ? `/colecoes/${section.collection.slug}`
                         : `/secoes/${section.id}`
                     }
-                    className="group/link flex shrink-0 items-center gap-1.5 rounded-lg px-2 py-2 text-sm font-semibold text-brand-deep transition-colors hover:bg-brand/15 focus-visible:ring-2 focus-visible:ring-brand-secondary focus-visible:outline-none"
+                    className="group/link flex min-h-11 shrink-0 items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-semibold text-brand-deep transition-colors hover:bg-brand/15 focus-visible:ring-2 focus-visible:ring-brand-secondary focus-visible:outline-none dark:text-brand"
                   >
                     Ver todos
                     <ArrowRight
@@ -473,7 +495,7 @@ export default function Main() {
                   </Link>
                 </div>
                 {section.displayProducts.length === 0 ? (
-                  <p className="rounded-2xl border border-dashed border-neutral-300 bg-white p-6 text-sm text-neutral-600">
+                  <p className="rounded-2xl border border-dashed border-border bg-card p-6 text-sm text-muted-foreground">
                     Nenhum produto disponível nesta seção.
                   </p>
                 ) : (

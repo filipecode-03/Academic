@@ -1,8 +1,15 @@
 "use client";
 
 import Link from "next/link";
-import { Minus, Plus, ShoppingBag, Trash2, X } from "lucide-react";
+import { Minus, Plus, ShoppingBag, Trash2 } from "lucide-react";
 import { Button } from "@/src/components/ui/button";
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+} from "@/src/components/ui/sheet";
 import { useCart } from "@/src/components/cart/cart-context";
 import { useState } from "react";
 
@@ -14,8 +21,6 @@ export default function CartPanel({ open, onClose }: { open: boolean; onClose: (
   const { items, itemCount, subtotal, setQuantity, removeProduct } = useCart();
   const [checkout, setCheckout] = useState(false);
   const [checkoutError, setCheckoutError] = useState("");
-  if (!open) return null;
-
   async function confirmOrder() {
     setCheckout(true);
     setCheckoutError("");
@@ -40,30 +45,20 @@ export default function CartPanel({ open, onClose }: { open: boolean; onClose: (
   }
 
   return (
-    <div
-      className="fixed inset-0 z-50 bg-black/50"
-      onMouseDown={(event) => {
-        if (event.target === event.currentTarget) onClose();
-      }}
-    >
-      <section
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="cart-title"
-        className="absolute inset-y-0 right-0 flex w-full max-w-md flex-col bg-white shadow-2xl"
-      >
-        <header className="flex items-center justify-between border-b px-5 py-4">
-          <h2 id="cart-title" className="flex items-center gap-2 text-lg font-semibold">
-            <ShoppingBag className="size-5" /> Sacola ({itemCount})
-          </h2>
-          <Button variant="ghost" size="icon" aria-label="Fechar sacola" onClick={onClose}>
-            <X />
-          </Button>
-        </header>
+    <Sheet open={open} onOpenChange={(nextOpen) => !nextOpen && onClose()}>
+      <SheetContent side="right" className="gap-0 p-0 sm:max-w-md">
+        <SheetHeader className="border-b px-5 py-4 text-left">
+          <SheetTitle className="flex items-center gap-2 text-lg">
+            <ShoppingBag className="size-5" aria-hidden="true" /> Sacola ({itemCount})
+          </SheetTitle>
+          <SheetDescription className="sr-only">
+            Revise os produtos adicionados antes de continuar para o WhatsApp.
+          </SheetDescription>
+        </SheetHeader>
         {items.length === 0 ? (
           <div className="flex flex-1 flex-col items-center justify-center gap-4 p-6 text-center">
-            <ShoppingBag className="size-10 text-neutral-400" />
-            <p className="text-neutral-600">Sua sacola está vazia.</p>
+            <ShoppingBag className="size-10 text-muted-foreground" aria-hidden="true" />
+            <p className="text-muted-foreground">Sua sacola está vazia.</p>
             <Button variant="outline" onClick={onClose}>
               Continuar comprando
             </Button>
@@ -76,13 +71,13 @@ export default function CartPanel({ open, onClose }: { open: boolean; onClose: (
                   <Link
                     href={`/produtos/${item.slug}`}
                     onClick={onClose}
-                    className="size-20 shrink-0 overflow-hidden rounded bg-neutral-100"
+                    className="size-20 shrink-0 overflow-hidden rounded bg-muted"
                   >
                     {item.image ? (
                       // eslint-disable-next-line @next/next/no-img-element
                       <img src={item.image} alt="" className="size-full object-contain" />
                     ) : (
-                      <span className="flex h-full items-center justify-center text-center text-xs text-neutral-500">
+                      <span className="flex h-full items-center justify-center text-center text-xs text-muted-foreground">
                         Sem imagem
                       </span>
                     )}
@@ -142,7 +137,7 @@ export default function CartPanel({ open, onClose }: { open: boolean; onClose: (
                 <span>{formatPrice(subtotal)}</span>
               </div>
               {checkoutError && (
-                <p role="alert" className="text-sm text-red-700">
+                <p role="alert" className="text-sm text-destructive">
                   {checkoutError}
                 </p>
               )}
@@ -152,12 +147,12 @@ export default function CartPanel({ open, onClose }: { open: boolean; onClose: (
                 disabled={checkout}
                 onClick={() => void confirmOrder()}
               >
-                {checkout ? "Confirmando pedido..." : "Confirmar e continuar no WhatsApp"}
+                {checkout ? "Confirmando pedido…" : "Confirmar e continuar no WhatsApp"}
               </Button>
             </footer>
           </>
         )}
-      </section>
-    </div>
+      </SheetContent>
+    </Sheet>
   );
 }
