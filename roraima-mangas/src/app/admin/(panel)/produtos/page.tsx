@@ -151,7 +151,7 @@ export default function ProductsPage() {
         <SheetContent
           data-admin
           className="overflow-x-hidden"
-          style={{ width: "min(94vw, 96rem)", maxWidth: "none" }}
+          style={{ width: "min(74vw, 76rem)", maxWidth: "none" }}
           side="right"
         >
           <SheetHeader className="border-b px-5 py-4 pr-12">
