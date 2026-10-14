@@ -274,7 +274,7 @@
     @apply inline-flex items-center rounded-full px-2 py-0.5 text-xs font-semibold;
   }
   .admin-badge-success {
-    @apply bg-brand/20 text-brand-deep ring-1 ring-brand-secondary/40 ring-inset;
+    @apply bg-green-100 text-green-700 ring-1 ring-green-300 ring-inset dark:bg-green-500/15 dark:text-green-300 dark:ring-green-500/30;
   }
   .admin-badge-muted {
     @apply bg-muted text-muted-foreground ring-1 ring-border ring-inset;

@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { ArrowRight, ChevronLeft, ChevronRight, Pause, Play } from "lucide-react";
+import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
 import ProductCard from "@/src/components/products/product-card";
 import Skeleton from "@/src/components/ui/skeleton";
 import type { PublicProduct } from "@/src/types/storefront";
@@ -113,22 +113,24 @@ function NoticeStrip({ notices }: { notices: PromoNotice[] }) {
 function BannerCarousel({ banners }: { banners: Banner[] }) {
   const [activeIndex, setActiveIndex] = useState(0);
   const [timerVersion, setTimerVersion] = useState(0);
-  const [paused, setPaused] = useState(false);
   const touchStart = useRef<number | null>(null);
   const swipeHandled = useRef(false);
 
   useEffect(() => {
-    if (banners.length < 2 || paused) return;
-    const timer = window.setInterval(
-      () => setActiveIndex((index) => (index + 1) % banners.length),
-      10_000,
-    );
+    if (banners.length < 2) return;
+
+    const timer = window.setInterval(() => {
+      setActiveIndex((index) => (index + 1) % banners.length);
+    }, 10_000);
+
     return () => window.clearInterval(timer);
-  }, [banners.length, paused, timerVersion]);
+  }, [banners.length, timerVersion]);
 
   if (banners.length === 0) return null;
+
   const banner = banners[activeIndex % banners.length];
   const href = getBannerHref(banner);
+
   const image = (
     // Banner URLs come from the configured object storage host.
     // eslint-disable-next-line @next/next/no-img-element
@@ -143,7 +145,11 @@ function BannerCarousel({ banners }: { banners: Banner[] }) {
   );
 
   function move(direction: -1 | 1) {
-    setActiveIndex((index) => (index + direction + banners.length) % banners.length);
+    setActiveIndex(
+      (index) => (index + direction + banners.length) % banners.length,
+    );
+
+    // Reinicia o temporizador após mudança manual
     setTimerVersion((version) => version + 1);
   }
 
@@ -152,13 +158,23 @@ function BannerCarousel({ banners }: { banners: Banner[] }) {
       aria-label="Banners em destaque"
       className="relative aspect-[16/9] w-full touch-pan-y overflow-hidden bg-neutral-100 sm:aspect-[12/5] lg:aspect-[16/5] xl:max-h-[34rem]"
       onPointerDown={(event) => {
-        if (event.pointerType === "touch") touchStart.current = event.clientX;
+        if (event.pointerType === "touch") {
+          touchStart.current = event.clientX;
+        }
       }}
       onPointerUp={(event) => {
-        if (event.pointerType !== "touch" || touchStart.current === null) return;
+        if (
+          event.pointerType !== "touch" ||
+          touchStart.current === null
+        ) {
+          return;
+        }
+
         const distance = event.clientX - touchStart.current;
         touchStart.current = null;
+
         if (Math.abs(distance) < 40 || banners.length < 2) return;
+
         swipeHandled.current = true;
         move(distance < 0 ? 1 : -1);
       }}
@@ -182,6 +198,7 @@ function BannerCarousel({ banners }: { banners: Banner[] }) {
           image
         )}
       </div>
+
       {banners.length > 1 && (
         <>
           <button
@@ -192,6 +209,7 @@ function BannerCarousel({ banners }: { banners: Banner[] }) {
           >
             <ChevronLeft aria-hidden="true" className="size-5" />
           </button>
+
           <button
             type="button"
             aria-label="Próximo banner"
@@ -200,37 +218,33 @@ function BannerCarousel({ banners }: { banners: Banner[] }) {
           >
             <ChevronRight aria-hidden="true" className="size-5" />
           </button>
+
           <div className="absolute bottom-3 left-1/2 flex -translate-x-1/2 items-center gap-0.5 rounded-full bg-brand-ink/55 p-1 backdrop-blur-sm sm:bottom-5">
             {banners.map((item, index) => (
               <button
                 key={item.id}
                 type="button"
                 aria-label={`Mostrar banner ${index + 1}`}
-                aria-current={index === activeIndex ? "true" : undefined}
+                aria-current={
+                  index === activeIndex ? "true" : undefined
+                }
                 className="group grid size-8 place-items-center rounded-full focus-visible:ring-2 focus-visible:ring-brand focus-visible:outline-none"
                 onClick={() => {
                   setActiveIndex(index);
+
+                  // Reinicia o temporizador
                   setTimerVersion((version) => version + 1);
                 }}
               >
                 <span
-                  className={`h-1.5 rounded-full transition-[width,background-color] duration-300 ${index === activeIndex ? "w-6 bg-brand" : "w-1.5 bg-white/70 group-hover:bg-white"}`}
+                  className={`h-1.5 rounded-full transition-[width,background-color] duration-300 ${
+                    index === activeIndex
+                      ? "w-6 bg-brand"
+                      : "w-1.5 bg-white/70 group-hover:bg-white"
+                  }`}
                 />
               </button>
             ))}
-            <button
-              type="button"
-              className="grid size-8 place-items-center rounded-full text-white focus-visible:ring-2 focus-visible:ring-brand focus-visible:outline-none"
-              aria-label={paused ? "Retomar rotação dos banners" : "Pausar rotação dos banners"}
-              aria-pressed={paused}
-              onClick={() => setPaused((current) => !current)}
-            >
-              {paused ? (
-                <Play aria-hidden="true" className="size-3.5" />
-              ) : (
-                <Pause aria-hidden="true" className="size-3.5" />
-              )}
-            </button>
           </div>
         </>
       )}
