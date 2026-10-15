@@ -121,7 +121,7 @@ function BannerCarousel({ banners }: { banners: Banner[] }) {
 
     const timer = window.setInterval(() => {
       setActiveIndex((index) => (index + 1) % banners.length);
-    }, 10_000);
+    }, 5_000);
 
     return () => window.clearInterval(timer);
   }, [banners.length, timerVersion]);

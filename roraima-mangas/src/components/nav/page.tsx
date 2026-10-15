@@ -144,6 +144,43 @@ export default function Nav() {
     setMobileOpenId(null);
   }
 
+  // função de fechar o input da pesquisa
+
+  const searchRef = useRef<HTMLFormElement>(null);
+
+  useEffect(() => {
+    function closeSearch() {
+      setQuery("");
+      setSearchError("");
+    }
+  
+    function handleClickOutside(event: PointerEvent) {
+      if (
+        searchRef.current &&
+        !searchRef.current.contains(event.target as Node)
+      ) {
+        closeSearch();
+      }
+    }
+  
+    function handleEscape(event: KeyboardEvent) {
+      if (event.key === "Escape") {
+        closeSearch();
+        searchRef.current
+          ?.querySelector("input")
+          ?.blur();
+      }
+    }
+  
+    document.addEventListener("pointerdown", handleClickOutside);
+    document.addEventListener("keydown", handleEscape);
+  
+    return () => {
+      document.removeEventListener("pointerdown", handleClickOutside);
+      document.removeEventListener("keydown", handleEscape);
+    };
+  }, []);
+
   return (
     <>
       <header className="sticky top-0 z-40 border-b border-border bg-background/95 shadow-[0_2px_14px_rgb(13_13_13/0.05)] backdrop-blur-xl">
@@ -185,6 +222,7 @@ export default function Nav() {
           </div>
 
           <form
+            ref={searchRef}
             onSubmit={submitSearch}
             role="search"
             className="relative order-3 flex min-w-0 basis-full md:order-none md:flex-1 md:basis-auto lg:mx-auto lg:max-w-2xl"
