@@ -82,7 +82,7 @@ export default async function AdminPage() {
         title={`Olá, ${userName}`}
         description="Acesse rapidamente as áreas usadas para manter o catálogo e o conteúdo da loja atualizados."
         actions={
-          <Button render={<Link href="/admin/produtos" />} size="lg">
+          <Button render={<Link href="/admin/produtos" />} nativeButton={false} size="lg">
             <Plus aria-hidden="true" /> Novo produto
           </Button>
         }

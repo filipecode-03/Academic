@@ -4,7 +4,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { AlertCircle, LockKeyhole } from "lucide-react";
 import Image from "next/image";
 import { signIn } from "next-auth/react";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -22,8 +21,7 @@ const loginSchema = z.object({
 
 type LoginFormData = z.infer<typeof loginSchema>;
 
-export default function AdminLoginForm({ callbackUrl }: { callbackUrl: string }) {
-  const router = useRouter();
+export default function AdminLoginForm() {
   const [error, setError] = useState("");
   const {
     register,
@@ -33,20 +31,24 @@ export default function AdminLoginForm({ callbackUrl }: { callbackUrl: string })
 
   async function onSubmit(data: LoginFormData) {
     setError("");
-    const result = await signIn("credentials", {
-      email: data.email,
-      password: data.password,
-      callbackUrl,
-      redirect: false,
-    });
 
-    if (!result || result.error) {
-      setError("E-mail ou senha inválidos.");
-      return;
+    try {
+      const result = await signIn("credentials", {
+        email: data.email,
+        password: data.password,
+        callbackUrl: "/admin",
+        redirect: false,
+      });
+
+      if (!result?.ok || result.error) {
+        setError("E-mail ou senha inválidos.");
+        return;
+      }
+
+      window.location.replace("/admin");
+    } catch {
+      setError("Não foi possível entrar agora. Tente novamente.");
     }
-
-    router.replace(result.url ?? callbackUrl);
-    router.refresh();
   }
 
   return (
@@ -79,7 +81,7 @@ export default function AdminLoginForm({ callbackUrl }: { callbackUrl: string })
           </p>
         </div>
 
-        <form className="space-y-5" onSubmit={handleSubmit(onSubmit)} noValidate>
+        <form className="space-y-5" method="post" onSubmit={handleSubmit(onSubmit)} noValidate>
           <div className="space-y-2">
             <Label htmlFor="email">E-mail</Label>
             <Input
